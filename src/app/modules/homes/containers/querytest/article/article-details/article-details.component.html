@@ -1,0 +1,21 @@
+<div *ngIf="article">
+  <div class="uk-text-large">
+  <a href="{{article.urls}}"><h4> {{article.titles}} </h4></a>
+    
+  </div>
+
+  <div class="uk-text-left">
+     {{ (article.bodys.length > 80) ? (article.bodys | slice:0:80)+'..' : (article.bodys)}}
+  </div>
+
+  <div class="uk-text-muted">
+    {{article.dates | date:"yyyy/MM/dd"}} |  {{article.writers}}
+  </div>
+
+ 
+   
+  
+  
+  <hr>
+</div>
+

@@ -1,0 +1,83 @@
+import { Injectable } from '@angular/core';
+import { Client } from 'elasticsearch-browser';
+import * as elasticsearch from 'elasticsearch-browser'
+import { InheritDefinitionFeature } from '@angular/core/src/render3';
+import { ArticleSource} from '../containers/querytest/article.interface';
+import { Subject } from 'rxjs';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ElasticsearchService {
+
+  private client: Client;
+  
+  private results: ArticleSource[];
+  private articleSource = new Subject<ArticleSource[]>();
+  articleInfo$ = this.articleSource.asObservable();
+
+  getResult(info: ArticleSource[]){
+    return this.articleSource.next(info);
+  }
+
+  private queryalldocs = {
+    'query': {
+      'match_all': {}
+    }
+  }
+
+  constructor() {
+    if(!this.client){
+      this._connect();
+    }
+   }
+
+   getAllDocument(_index, _type): any{
+     return this.client.search({
+       index: _index,
+       type: _type,
+       body: this.queryalldocs,
+       filterPath: ['hits.hits._source']
+     });
+   }
+
+   fullTextSearch(_index, _type, _field, _queryText): any {
+     return this.client.search({
+       index: _index, 
+       type: _type,
+       filterPath: ['hits.hits._source', 'hits.total', '_scroll_id'],
+       body: {
+         'query' : {
+           'match_phrase_prefix': {
+             [_field]: _queryText,
+           }
+         }
+       },
+       '_source': ['titles','dates','urls','writers', 'bodys']
+     })
+   }
+
+
+   //Elasticsearch Connection
+   private connect(){
+     this.client = new Client({
+       host: 'http://203.252.103.86:8080',
+       log: 'trace'
+     })
+   }
+
+   private _connect(){
+     this.client = new elasticsearch.Client({
+       host: 'http://203.252.103.86:8080',
+       log: 'trace'
+     });
+   }
+
+   isAvailable(): any{
+     return this.client.ping({
+       requestTimeout: Infinity,
+       body: 'hello! Sapphire!'
+     });
+   }
+}
