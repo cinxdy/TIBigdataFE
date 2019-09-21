@@ -9,13 +9,6 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './modules/core/core.module';
 import { HomesModule } from './modules/homes/homes.module';
 
-import { D3Service,  } from './d3/d3.service';
-import { D3_DIRECTIVES  } from './d3/directives/';
-
-import { GraphComponent} from './visuals/graph/graph.component';
-import { SHARED_VISUALS} from './visuals/shared';
-
-
 
 
 
@@ -34,7 +27,7 @@ import { SHARED_VISUALS} from './visuals/shared';
     
 
   ],
-  providers: [D3Service],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

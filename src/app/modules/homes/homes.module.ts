@@ -8,12 +8,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HttpModule} from '@angular/http';
-
-import { D3Service,  } from '../../d3/d3.service';
-import { D3_DIRECTIVES  } from '../../d3/directives/';
-
-import { GraphComponent} from '../../visuals/graph/graph.component';
-import { SHARED_VISUALS} from '../../visuals/shared';
 import { ParserContainerComponent } from './containers/parser-container/parser-container.component';
 import { QuerytestComponent } from './containers/querytest/querytest.component';
 import { ArticleDetailsComponent } from './containers/querytest/article/article-details/article-details.component';
@@ -26,9 +20,7 @@ import { FlaskComponent } from './containers/flask/flask.component';
   declarations: [
     HomeListContainerComponent,
     ParserContainerComponent,
-    GraphComponent,
-    ...SHARED_VISUALS,
-    ...D3_DIRECTIVES,
+
     QuerytestComponent,
     ArticleDetailsComponent,
     ShowArticlesComponent,
@@ -47,7 +39,7 @@ import { FlaskComponent } from './containers/flask/flask.component';
 
   ],
   providers: [
-    D3Service
+
   ],
   exports:[HomeListContainerComponent, LineChartComponent]
 })
