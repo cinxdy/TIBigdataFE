@@ -6,7 +6,11 @@ import { NavComponent } from './componets/nav/nav.component';
 import { FiltersComponent } from './componets/filters/filters.component';
 
 @NgModule({
-  declarations: [HeaderContainerComponent, NavComponent, FiltersComponent],
+  declarations: [
+    HeaderContainerComponent, 
+    NavComponent, 
+    FiltersComponent
+  ],
   imports: [
     CommonModule
   ],

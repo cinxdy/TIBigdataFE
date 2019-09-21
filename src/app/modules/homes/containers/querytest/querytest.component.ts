@@ -1,8 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, Input} from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ElasticsearchService } from '../../service/elasticsearch.service';
 import { ArticleSource } from './article.interface';
 import { Subscription } from 'rxjs';
+import { Observable, of} from 'rxjs';
+import { Client } from 'elasticsearch';
 
 @Component({
   selector: 'app-querytest',
@@ -11,55 +13,55 @@ import { Subscription } from 'rxjs';
 })
 export class QuerytestComponent implements OnInit {
 
+
+  //Flask data
+  private BASE_URL: string = 'http://localhost:5000/test';
+  private headers: Headers = new Headers({'Content-Type': 'application/json'});
+  serverData: JSON;
+
+
   isConnected = false;
   status: string;
 
   subscription: Subscription
 
+  searchKeyword: string;
+
 
   articleSources: ArticleSource[];
 
-  constructor(private es: ElasticsearchService, private cd: ChangeDetectorRef) { 
+  queryResults: ArticleSource[];
+
+  constructor(
+    private http:HttpClient,
+    private es: ElasticsearchService, 
+    private cd: ChangeDetectorRef) { 
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe( info => {
       this.articleSources=info;
+      console.log(this.articleSources);
     });
  
   }
 
+
   ngOnInit() {
-   this.es.isAvailable().then(()=> {
-     this.status = 'OK';
-     this.isConnected = true;
-   }, error => {
-     this.status = 'ERROR';
-     this.isConnected = false;
-     console.error('Server is down', error);
-   }).then (()=> {
-     this.cd.detectChanges();
-   })
+
   }
-  
-  sources: 
 
-  // url: string = 'http://203.252.103.86:8080/_search?pretty';
-  // headers = new HttpHeaders()
-  //            .set('content-type', 'application/json')
-  // getContext(){
-  //   const body = {
-  //     "_source": ["titles","writers"],
-  //     "query":{
-  //        "match":{
-  //           "numbers":"86"
-  //        }
-  //     }
-  //  }
-  //    return this.http
-  //               .get(this.url,{ headers: this.headers })
-  //               .subscribe(res => {
-               
+  //Get result from flask
+  getResult(){
+    this.searchKeyword = this.es.getKeyword();
+    let body= 
+      {"keyword":this.searchKeyword}
+    
+    this.http.post(this.BASE_URL, 
+      body)
+      .subscribe(
+        (data) => {
+          console.log(data);
+        }
+      )
+  }
 
-  //                 console.log(res);
-  //               });
-  // }
 }

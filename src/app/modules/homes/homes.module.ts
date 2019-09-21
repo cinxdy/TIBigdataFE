@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HomeListContainerComponent } from './containers/home-list-container/home-list-container.component';
 import { HomesRoutingModule } from './homes-routing.module';
 import { CoreModule } from '../core/core.module';
-
+import { TagCloudModule } from 'angular-tag-cloud-module';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -18,6 +18,8 @@ import { ParserContainerComponent } from './containers/parser-container/parser-c
 import { QuerytestComponent } from './containers/querytest/querytest.component';
 import { ArticleDetailsComponent } from './containers/querytest/article/article-details/article-details.component';
 import { ShowArticlesComponent } from './containers/querytest/article/show-articles/show-articles.component';
+import { LineChartComponent } from './containers/line-chart/line-chart.component';
+import { FlaskComponent } from './containers/flask/flask.component';
 
 
 @NgModule({
@@ -27,10 +29,11 @@ import { ShowArticlesComponent } from './containers/querytest/article/show-artic
     GraphComponent,
     ...SHARED_VISUALS,
     ...D3_DIRECTIVES,
-    ParserContainerComponent,
     QuerytestComponent,
     ArticleDetailsComponent,
     ShowArticlesComponent,
+    LineChartComponent,
+    FlaskComponent
    
   ],
   imports: [
@@ -40,11 +43,12 @@ import { ShowArticlesComponent } from './containers/querytest/article/show-artic
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    TagCloudModule
 
   ],
   providers: [
     D3Service
   ],
-  exports:[HomeListContainerComponent]
+  exports:[HomeListContainerComponent, LineChartComponent]
 })
 export class HomesModule { }

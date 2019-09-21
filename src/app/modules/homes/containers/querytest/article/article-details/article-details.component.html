@@ -1,19 +1,25 @@
 <div *ngIf="article">
+
+
+<article class="uk-article">
   <div class="uk-text-large">
   <a href="{{article.urls}}"><h4> {{article.titles}} </h4></a>
     
   </div>
 
-  <div class="uk-text-left">
+  <p>
      {{ (article.bodys.length > 80) ? (article.bodys | slice:0:80)+'..' : (article.bodys)}}
-  </div>
+  </p>
 
-  <div class="uk-text-muted">
+  
+
+  <div class="uk-grid-small uk-child-width-auto" uk-grid>
+       
     {{article.dates | date:"yyyy/MM/dd"}} |  {{article.writers}}
-  </div>
-
+  
+    </div>
  
-   
+   </article>
   
   
   <hr>

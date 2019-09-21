@@ -18,9 +18,11 @@ import { SHARED_VISUALS} from './visuals/shared';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,7 @@ import { SHARED_VISUALS} from './visuals/shared';
     CoreModule,
     FormsModule,
     HttpModule,
+    
 
   ],
   providers: [D3Service],

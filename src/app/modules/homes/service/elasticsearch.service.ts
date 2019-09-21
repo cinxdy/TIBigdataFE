@@ -16,9 +16,18 @@ export class ElasticsearchService {
   private results: ArticleSource[];
   private articleSource = new Subject<ArticleSource[]>();
   articleInfo$ = this.articleSource.asObservable();
+  private searchKeyword: string;
 
   getResult(info: ArticleSource[]){
     return this.articleSource.next(info);
+  }
+
+  setKeyword(keyword){
+    this.searchKeyword = keyword;
+  }
+
+  getKeyword(){
+    return this.searchKeyword;
   }
 
   private queryalldocs = {
@@ -60,16 +69,11 @@ export class ElasticsearchService {
 
 
    //Elasticsearch Connection
-   private connect(){
-     this.client = new Client({
-       host: 'http://203.252.103.86:8080',
-       log: 'trace'
-     })
-   }
 
    private _connect(){
+     let es_url='http://203.252.103.86:8080'
      this.client = new elasticsearch.Client({
-       host: 'http://203.252.103.86:8080',
+       host: es_url,
        log: 'trace'
      });
    }

@@ -10,8 +10,8 @@ import { ArticleSource } from '../../../homes/containers/querytest/article.inter
 })
 export class NavComponent implements OnInit {
 
-  private static readonly INDEX = 'test';
-  private static readonly TYPE = 'ifes';
+  private static readonly INDEX = 'crawling';
+  private static readonly TYPE = 'nkdboard';
 
   private queryText = '';
  
@@ -37,6 +37,7 @@ export class NavComponent implements OnInit {
         'bodys', this.queryText).then(
           response=> {
             this.articleSources = response.hits.hits;
+            console.log(this.articleSources);
           }, error => {
             //console.error(error);
           }).then(()=> {
@@ -49,8 +50,9 @@ export class NavComponent implements OnInit {
 
   sendResult(){
     this.es.getResult(this.articleSources);
-    console.log('Sent!!');
-    console.log(this.articleSources);
+    this.es.setKeyword(this.queryText);
+    // console.log('Sent!!');
+    // console.log(this.articleSources);
   }
 
   navigateParser(){
@@ -63,6 +65,14 @@ export class NavComponent implements OnInit {
 
   navigateQT(){
     this._router.navigateByUrl("/homes/querytest");
+  }
+
+  LineChart(){
+    this._router.navigateByUrl("/homes/line-chart");
+  }
+
+  toFlask(){
+    this._router.navigateByUrl("/homes/flask");
   }
   // 페이지 이동
 
