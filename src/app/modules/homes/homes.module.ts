@@ -8,11 +8,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HttpModule} from '@angular/http';
-import { ParserContainerComponent } from './containers/parser-container/parser-container.component';
+
 import { QuerytestComponent } from './containers/querytest/querytest.component';
 import { ArticleDetailsComponent } from './containers/querytest/article/article-details/article-details.component';
 import { ShowArticlesComponent } from './containers/querytest/article/show-articles/show-articles.component';
-import { LineChartComponent } from './containers/line-chart/line-chart.component';
+
 import { FlaskComponent } from './containers/flask/flask.component';
 import { IssueComponent } from './containers/issue/issue.component';
 import { SearchComponent } from './containers/search/search.component';
@@ -23,12 +23,12 @@ import { FooterComponent } from './containers/footer/footer.component';
 @NgModule({
   declarations: [
     HomeListContainerComponent,
-    ParserContainerComponent,
+
 
     QuerytestComponent,
     ArticleDetailsComponent,
     ShowArticlesComponent,
-    LineChartComponent,
+
     FlaskComponent,
     IssueComponent,
     SearchComponent,
