@@ -49,6 +49,6 @@ import { FooterComponent } from './containers/footer/footer.component';
   providers: [
 
   ],
-  exports:[HomeListContainerComponent, LineChartComponent]
+  exports:[HomeListContainerComponent]
 })
 export class HomesModule { }
