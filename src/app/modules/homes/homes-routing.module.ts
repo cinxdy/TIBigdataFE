@@ -10,6 +10,9 @@ import { FlaskComponent } from './containers/flask/flask.component';
 
 
 const routes: Routes = [
+    { path: '',
+      component: HomeListContainerComponent,
+    },
     {
         path: 'library',
         component: HomeListContainerComponent,

@@ -14,6 +14,10 @@ import { ArticleDetailsComponent } from './containers/querytest/article/article-
 import { ShowArticlesComponent } from './containers/querytest/article/show-articles/show-articles.component';
 import { LineChartComponent } from './containers/line-chart/line-chart.component';
 import { FlaskComponent } from './containers/flask/flask.component';
+import { IssueComponent } from './containers/issue/issue.component';
+import { SearchComponent } from './containers/search/search.component';
+import { GraphComponent } from './containers/graph/graph.component';
+import { FooterComponent } from './containers/footer/footer.component';
 
 
 @NgModule({
@@ -25,7 +29,11 @@ import { FlaskComponent } from './containers/flask/flask.component';
     ArticleDetailsComponent,
     ShowArticlesComponent,
     LineChartComponent,
-    FlaskComponent
+    FlaskComponent,
+    IssueComponent,
+    SearchComponent,
+    GraphComponent,
+    FooterComponent
    
   ],
   imports: [
