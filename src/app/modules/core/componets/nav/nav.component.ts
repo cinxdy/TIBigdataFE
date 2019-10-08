@@ -56,7 +56,7 @@ export class NavComponent implements OnInit {
   }
 
   navigateParser(){
-    this._router.navigateByUrl("/homes/parser");
+    this._router.navigateByUrl("/homes/flask");
   }
 
   navigateLibrary(){

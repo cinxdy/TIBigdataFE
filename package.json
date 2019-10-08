@@ -31,7 +31,10 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.10.0",
+    "@angular-devkit/build-angular": "^0.803.8",
+    "@angular/cli": "~7.0.4",
+    "@angular/compiler-cli": "~7.0.0",
+    "@angular/language-service": "~7.0.0",
     "@types/d3-array": "1.2.1",
     "@types/d3-axis": "1.0.10",
     "@types/d3-brush": "1.0.8",
@@ -42,9 +45,6 @@
     "@types/d3-shape": "1.2.3",
     "@types/d3-time-format": "2.1.0",
     "@types/d3-zoom": "1.7.1",
-    "@angular/cli": "~7.0.4",
-    "@angular/compiler-cli": "~7.0.0",
-    "@angular/language-service": "~7.0.0",
     "@types/elasticsearch": "^5.0.34",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",

@@ -16,9 +16,13 @@ import { Observable, of} from 'rxjs';
 export class FlaskComponent implements OnInit {
 
   private BASE_URL: string = 'http://localhost:5000/wordrank';
+  private TEST_URL: string = 'http://localhost:5000/test';
+
+
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   serverData: JSON;
   employeeData: JSON;
+  searchKeyword;
 
   constructor(private http:HttpClient, private es: ElasticsearchService) { }
 
@@ -37,43 +41,58 @@ export class FlaskComponent implements OnInit {
 
     this.http.get(this.BASE_URL).subscribe(data => {
       
+       console.log(data);
+      // //Retrieve data from flask.
+      // const changedData$: Observable<CloudData[]> = of([]);
+      // changedData$.subscribe(res => this.cData = res);
 
-      //Retrieve data from flask.
-      const changedData$: Observable<CloudData[]> = of([]);
-      changedData$.subscribe(res => this.cData = res);
-
-      //Convert data as JSON format.
-      this.serverData = data as JSON;
-
-
-      //Push data for WordCloud.
-      for(let i in data){
-        this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
-      }
-      // console.log(this.cData);
+      // //Convert data as JSON format.
+      // this.serverData = data as JSON;
 
 
-      //Push data for Bar Chart.
-      let chart = new CanvasJS.Chart("chartContainer",  {
-        animationEnabled: true,
-        exportEnabled: true,
-        title: {
-          text: "Basic Column Chart in Angular"
-        },
-        data: [{
-          type: "column",
-          dataPoints: this.serverData
-        }]
-      });
+      // //Push data for WordCloud.
+      // for(let i in data){
+      //   this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
+      // }
+      // // console.log(this.cData);
+
+
+      // //Push data for Bar Chart.
+      // let chart = new CanvasJS.Chart("chartContainer",  {
+      //   animationEnabled: true,
+      //   exportEnabled: true,
+      //   title: {
+      //     text: "Basic Column Chart in Angular"
+      //   },
+      //   data: [{
+      //     type: "column",
+      //     dataPoints: this.serverData
+      //   }]
+      // });
   
-      chart.render();
+      // chart.render();
       
     })
+
+ 
+    this.getResult();
 
 
     
   }
-
+  getResult(){
+    this.searchKeyword = "flask test"
+    let body= 
+      {"keyword":this.searchKeyword}
+    
+    this.http.post(this.TEST_URL, 
+      body)
+      .subscribe(
+        (data) => {
+          console.log(data);
+        }
+      )
+  }
   
 
   
