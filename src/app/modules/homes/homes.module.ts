@@ -18,6 +18,8 @@ import { IssueComponent } from './containers/issue/issue.component';
 import { SearchComponent } from './containers/search/search.component';
 import { GraphComponent } from './containers/graph/graph.component';
 import { FooterComponent } from './containers/footer/footer.component';
+import { SearchResultComponent } from './containers/search-result/search-result.component';
+import { SearchNavComponent } from './containers/search-nav/search-nav.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { FooterComponent } from './containers/footer/footer.component';
     IssueComponent,
     SearchComponent,
     GraphComponent,
-    FooterComponent
+    FooterComponent,
+    SearchResultComponent,
+    SearchNavComponent
    
   ],
   imports: [

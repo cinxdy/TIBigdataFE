@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ElasticsearchService } from '../../../homes/service/elasticsearch.service';
+import { Router } from '@angular/router';
+import { ArticleSource } from '../../../homes/containers/querytest/article.interface';
+
 
 @Component({
   selector: 'app-search',
@@ -7,9 +11,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
 
-  constructor() { }
+  private static readonly INDEX = 'crawling';
+  private static readonly TYPE = 'nkdboard';
+
+  private queryText = '';
+ 
+  private lastKeypress = 0;
+
+  articleSources: ArticleSource[];
+
+  constructor(public _router: Router, private es: ElasticsearchService) {
+    this.queryText='';
+   }
 
   ngOnInit() {
+    
   }
+
+
+  onKey($event){
+    this.queryText=$event.target.value;
+  }
+  sendResult(){
+
+    this.es.getResult(this.articleSources);
+    this.es.setKeyword(this.queryText);
+    this.toResultPage();
+  }
+
+  toResultPage(){
+    this._router.navigateByUrl("/homes/searchResult");
+  }
+
 
 }

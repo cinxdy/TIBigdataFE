@@ -51,7 +51,7 @@ export class QuerytestComponent implements OnInit {
 
   //Get result from flask
   getResult(){
-    this.searchKeyword = this.es.getKeyword();
+    this.searchKeyword = "flask test"
     let body= 
       {"keyword":this.searchKeyword}
     

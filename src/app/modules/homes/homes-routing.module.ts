@@ -7,7 +7,7 @@ import { HomeListContainerComponent } from './containers/home-list-container/hom
 import { QuerytestComponent } from './containers/querytest/querytest.component';
 
 import { FlaskComponent } from './containers/flask/flask.component';
-
+import { SearchResultComponent } from './containers/search-result/search-result.component';
 
 const routes: Routes = [
     { path: '',
@@ -27,6 +27,10 @@ const routes: Routes = [
     {
       path:'flask',
             component: FlaskComponent
+    },
+    {
+      path:'searchResult',
+            component: SearchResultComponent
     }
 ];
 

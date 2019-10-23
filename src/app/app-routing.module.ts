@@ -7,6 +7,11 @@ const routes: Routes = [
     path: 'homes',
     loadChildren: './modules/homes/homes.module#HomesModule'
   },
+  {
+    path: 'specials',
+    loadChildren: './modules/specials/specials.module#SpecialsModule'
+  },
+ 
  
 
   
