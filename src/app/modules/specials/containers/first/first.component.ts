@@ -31,7 +31,7 @@ export class FirstComponent implements OnInit {
   private TEST_URL: string = 'http://localhost:5000/test';
 
 
-  private headers: Headers = new Headers({'Content-Type': 'application/json'});
+  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   serverData: JSON;
   employeeData: JSON;
   searchKeyword;
@@ -41,7 +41,7 @@ export class FirstComponent implements OnInit {
  
   ngOnInit() {
 
-    this.http.get(this.TEST_URL).subscribe(data => {
+    this.http.get(this.TEST_URL, {headers:this.headers}).subscribe(data => {
       
        console.log(data);
       //Retrieve data from flask.
@@ -73,26 +73,25 @@ export class FirstComponent implements OnInit {
       });
 
 
-      let pieChart = new CanvasJS.Chart("chartContainer", {
-        theme: "light2",
-        animationEnabled: true,
-        exportEnabled: true,
-        title:{
-          text: "Monthly Expense"
-        },
-        data: [{
-          type: "pie",
-          showInLegend: true,
-          toolTipContent: "<b>{label}</b>: ${y} (#percent%)",
-          indexLabel: "{label} - #percent%",
-          dataPoints: this.serverData
+      // let pieChart = new CanvasJS.Chart("chartContainer", {
+      //   theme: "light2",
+      //   animationEnabled: true,
+      //   exportEnabled: true,
+      //   title:{
+      //     text: "Monthly Expense"
+      //   },
+      //   data: [{
+      //     type: "pie",
+      //     showInLegend: true,
+      //     toolTipContent: "<b>{label}</b>: ${y} (#percent%)",
+      //     indexLabel: "{label} - #percent%",
+      //     dataPoints: this.serverData
           
-        }]
-      });
+      //   }]
+      // });
         
       
   
-      pieChart.render();
       barChart.render();
       
     })
