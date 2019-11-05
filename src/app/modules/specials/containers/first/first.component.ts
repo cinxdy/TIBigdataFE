@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Headers } from '@angular/http';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../../homes/service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
+import CirclePack from 'circlepack-chart';
 
-import { Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-first',
@@ -25,26 +26,146 @@ export class FirstComponent implements OnInit {
   };
 
   cData: CloudData[] = [];
-  
-  
+
+
   private BASE_URL: string = 'http://localhost:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/test';
+  private TEST_URL: string = 'http://localhost:5000/two';
 
 
-  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   serverData: JSON;
   employeeData: JSON;
   searchKeyword;
 
-  constructor(private http:HttpClient, private es: ElasticsearchService) { }
+  constructor(private http: HttpClient, private es: ElasticsearchService) { }
 
- 
+
+
   ngOnInit() {
 
-    this.http.get(this.TEST_URL, {headers:this.headers}).subscribe(data => {
+    this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
+
+      console.log(data);
+
+      console.log(data.length);
+      var num_topic = data.length;
+
+      /**
+       * data의 길이를 구한다.
+       * data는 similar documents으로 구성되어 있다.
+       * array의 길이를 구하면 topic의 수를 알 수 있다.
+       * 
+       * 각각의 토픽에는 문서별로 정리되어 있다.
+       * 문서의 수를 구하면 그 토픽의 크기를 알 수 있다.
+       * 문서의 수로 원의 크기를 만든다.
+       * 
+       data의 구조
+       [ { "similar documents": [ { "documents #0": [ "호", ... ,"하"]},
+                                   ... ,
+                                  {"documents #x" : ["하",..."호"]}
+         },
+         ...,
+         { "similar documents": [ { "documents #y": [ "호", ... ,"하"]},
+                                   ... ,
+                                  {"documents #z" : ["하",..."호"]}
+         }
+       ]
+
+       data[0] = { "similar documents": [ { "documents #0": [ "호", ... ,"하"]},
+                                   ... ,
+                                  {"documents #x" : ["하",..."호"]}
+                 }
+       data[i] = ...
+
+       num_docs = data[i]["similar documents"].length //이 값을 angular에서 시각화
+       
+       * 
+       */
+      console.log(data[0]["similar documents"]);
+
+      class dataSet{
+        name: string;
+        children: chdNode[];
+      }
+
+      class chdNode{
+        name : string;
+        value : number;
+        color? : string;
+      }
+
+      var dataset = new dataSet();
+      console.log("dataset");
+      /**
+       * 토픽의 수 만큼 for문으로 반복문을 돈다.
+       * for i = 0 -> num_topic
+       * 각각의 토픽에서 array를 뚫고서 접근한다. 
+       * num_docs = data[i]["similar documents"].length 
+       * 각 토픽에서 array의 수를 찾는다 = 토픽에 속해 있는 문서의 수
+       * 각 토픽은 childNode가 된다.
+       * dataset.name = "root";
+       * dataset.children : chdNode = <any>[];
+       * 
+       * 
+       * 
+       * dataset.children[i].name = i
+       * dataset.children[i].value = num_docs;
+       * 각 토픽에서 문서의 수를 childNode의 value으로 둔다.
+       * name은 각 토픽의 index으로 하면 될 것 같다.
+       * 
+       * 
+       */
+      var chds = new Array<chdNode>();
+      console.log("chdNode[]")
+      dataset.name = "root";
+
+      console.log("dataset.name");
       
-       console.log(data);
+      dataset.children = chds;
+
+      console.log(dataset.children);
+
+      for(var i = 0 ; i < num_topic; i++){
+        dataset.children[i] = new chdNode();
+        dataset.children[i].name = "" + i;
+        dataset.children[i].value = data[i].length;
+        // toColor()
+      }
+
+      console.log(dataset);
+
+      var data_sample = {
+        name: "root",
+        children: [
+          {
+            name: "leafA",
+            value: 3,
+            color: "magenta"
+          },
+          {
+            name: "nodeB",
+            children: [
+              {
+                name: "leafBA",
+                value: 5,
+                color: "rgba(165,42,42,1)"
+              },
+              {
+                name: "leafBB",
+                value: 1,
+                color: "blue"
+              }
+            ]
+          }
+        ]
+      }
+      var myChart = CirclePack();
+      myChart.data(dataset)
+        .size('value')
+        .color('color')
+        (document.getElementById('chart'));
       //Retrieve data from flask.
+      /*
       const changedData$: Observable<CloudData[]> = of([]);
       changedData$.subscribe(res => this.cData = res);
 
@@ -89,23 +210,24 @@ export class FirstComponent implements OnInit {
           
       //   }]
       // });
+      
         
       
   
       barChart.render();
-      
+      */
     })
 
 
 
-    
+
   }
-  getResult(){
+  getResult() {
     this.searchKeyword = "flask test"
-    let body= 
-      {"keyword":this.searchKeyword}
-    
-    this.http.post(this.TEST_URL, 
+    let body =
+      { "keyword": this.searchKeyword }
+
+    this.http.post(this.TEST_URL,
       body)
       .subscribe(
         (data) => {
@@ -113,5 +235,14 @@ export class FirstComponent implements OnInit {
         }
       )
   }
+
+  toColor(num) {
+    num >>>= 0;
+    var b = num & 0xFF,
+        g = (num & 0xFF00) >>> 8,
+        r = (num & 0xFF0000) >>> 16,
+        a = ( (num & 0xFF000000) >>> 24 ) / 255 ;
+    return "rgba(" + [r, g, b, a].join(",") + ")";
+}
 
 }
