@@ -42,19 +42,19 @@ export class FlaskComponent implements OnInit {
     this.http.get(this.BASE_URL).subscribe(data => {
       
        console.log(data);
-      // //Retrieve data from flask.
-      // const changedData$: Observable<CloudData[]> = of([]);
-      // changedData$.subscribe(res => this.cData = res);
+      //Retrieve data from flask.
+      const changedData$: Observable<CloudData[]> = of([]);
+      changedData$.subscribe(res => this.cData = res);
 
-      // //Convert data as JSON format.
-      // this.serverData = data as JSON;
+      //Convert data as JSON format.
+      this.serverData = data as JSON;
 
 
-      // //Push data for WordCloud.
-      // for(let i in data){
-      //   this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
-      // }
-      // // console.log(this.cData);
+      //Push data for WordCloud.
+      for(let i in data){
+        this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
+      }
+      console.log(this.cData);
 
 
       // //Push data for Bar Chart.
@@ -75,7 +75,7 @@ export class FlaskComponent implements OnInit {
     })
 
  
-    this.getResult();
+
 
 
     
