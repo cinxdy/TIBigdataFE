@@ -14,12 +14,12 @@ import { Observable, of} from 'rxjs';
 export class SearchResultComponent implements OnInit {
 
  //Flask data
- private BASE_URL: string = 'http://localhost:5000/test';
- private headers: Headers = new Headers({'Content-Type': 'application/json'});
+ private BASE_URL: string = 'http://localhost:5000/keywordGraph';
+ private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
  serverData: JSON;
 
 
- private static readonly INDEX = 'crawling';
+ private static readonly INDEX = 'nkdboard';
   private static readonly TYPE = 'nkdboard';
 
   private queryText = '';
@@ -56,17 +56,21 @@ export class SearchResultComponent implements OnInit {
 
   //Get result from flask
   getResult(){
-    this.searchKeyword = "flask test"
+    this.searchKeyword = this.es.getKeyword();
+
     let body= 
       {"keyword":this.searchKeyword}
     
     this.http.post(this.BASE_URL, 
-      body)
+      body, {headers:this.headers})
       .subscribe(
         (data) => {
           console.log(data);
         }
       )
+
+      this._router.navigateByUrl('/homes/analysis');
+
   }
 
   

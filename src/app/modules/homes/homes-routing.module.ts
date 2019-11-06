@@ -8,6 +8,8 @@ import { QuerytestComponent } from './containers/querytest/querytest.component';
 
 import { FlaskComponent } from './containers/flask/flask.component';
 import { SearchResultComponent } from './containers/search-result/search-result.component';
+import { AnalysisComponent } from './containers/search-result/analysis/analysis.component';
+
 
 const routes: Routes = [
     { path: '',
@@ -31,6 +33,10 @@ const routes: Routes = [
     {
       path:'searchResult',
             component: SearchResultComponent
+    },
+    {
+      path:'analysis',
+        component: AnalysisComponent
     }
 ];
 
