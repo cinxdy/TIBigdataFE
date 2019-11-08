@@ -5,18 +5,30 @@ import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../../homes/service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
+import { Config, ConfigService } from './first.service';
+
 
 import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-first',
   templateUrl: './first.component.html',
+  providers: [ ConfigService ],
   styleUrls: ['./first.component.less']
 })
 export class FirstComponent implements OnInit {
+  constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) {}
+  config: Config;
 
 
-
+  showConfig() {
+    this.configService.getConfig()
+      .subscribe((data: Config) => this.config = {
+        classification : data[0]
+        
+      });
+    alert(this.config.classification);
+  }
 
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
@@ -37,12 +49,12 @@ export class FirstComponent implements OnInit {
   employeeData: JSON;
   searchKeyword;
 
-  constructor(private http: HttpClient, private es: ElasticsearchService) { }
 
 
 
   ngOnInit() {
-
+    this.showConfig();
+    console.log(this.showConfig());
     this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
 
       console.log(data);
@@ -83,15 +95,15 @@ export class FirstComponent implements OnInit {
        */
       console.log(data[0]["similar documents"]);
 
-      class dataSet{
+      class dataSet {
         name: string;
         children: chdNode[];
       }
 
-      class chdNode{
-        name : string;
-        value : number;
-        color? : string;
+      class chdNode {
+        name: string;
+        value: number;
+        color?: string;
       }
 
       var dataset = new dataSet();
@@ -120,12 +132,12 @@ export class FirstComponent implements OnInit {
       dataset.name = "root";
 
       console.log("dataset.name");
-      
+
       dataset.children = chds;
 
       console.log(dataset.children);
 
-      for(var i = 0 ; i < num_topic; i++){
+      for (var i = 0; i < num_topic; i++) {
         dataset.children[i] = new chdNode();
         dataset.children[i].name = "" + i;
         dataset.children[i].value = data[i].length;
@@ -239,10 +251,10 @@ export class FirstComponent implements OnInit {
   toColor(num) {
     num >>>= 0;
     var b = num & 0xFF,
-        g = (num & 0xFF00) >>> 8,
-        r = (num & 0xFF0000) >>> 16,
-        a = ( (num & 0xFF000000) >>> 24 ) / 255 ;
+      g = (num & 0xFF00) >>> 8,
+      r = (num & 0xFF0000) >>> 16,
+      a = ((num & 0xFF000000) >>> 24) / 255;
     return "rgba(" + [r, g, b, a].join(",") + ")";
-}
+  }
 
 }

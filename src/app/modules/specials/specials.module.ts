@@ -8,7 +8,7 @@ import { SpecialsRoutingModule } from './specials-routing.module';
     FirstComponent
   ],
   imports: [
-    SpecialsRoutingModule,
+    SpecialsRoutingModule,``
     CommonModule
   ],
   exports: [FirstComponent]
