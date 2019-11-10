@@ -5,8 +5,7 @@ import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../../homes/service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
-import { Config, ConfigService } from './first.service';
-
+import { ConfigService } from './first.service';
 
 import { Observable, of } from 'rxjs';
 
@@ -18,17 +17,26 @@ import { Observable, of } from 'rxjs';
 })
 export class FirstComponent implements OnInit {
   constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) {}
-  config: Config;
-
-
-  showConfig() {
-    this.configService.getConfig()
-      .subscribe((data: Config) => this.config = {
-        classification : data[0]
-        
-      });
-    alert(this.config.classification);
+  data : any[] = new Array();
+  getConfig(){
+    this.data.push(1);
+    // alert(this.data);
+    alert(this.configService.getConfig());
+    // this.data = this.configService.getConfig()["data"];
+    
+    // alert(this.data);
   }
+  // ddata = json;
+
+  // showConfig() {
+  //   this.configService.getConfig()
+  //     .subscribe((data) => this.config = {
+        
+  //       classification : data["data"]
+        
+  //     });
+  //   alert(this.config.classification);
+  // }
 
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
@@ -53,8 +61,10 @@ export class FirstComponent implements OnInit {
 
 
   ngOnInit() {
-    this.showConfig();
-    console.log(this.showConfig());
+    this.getConfig();
+    alert(this.ddata);
+    // this.showConfig();
+    // console.log(this.showConfig());
     this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
 
       console.log(data);
