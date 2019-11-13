@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { dataJson } from '\assets\special_first\file.json';
-
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -13,10 +13,12 @@ export class ConfigService {
     // data = dataJson;
     // constructor(){}
 
-    configUrl = 'assets\special_first\file.json';
+    configUrl = 'assets/special_first/file2.json';
     
 
-    getConfig() {
+    getConfig() : Observable<any>{
+        console.log("from first.service\n")
+        console.log(this.http.get(this.configUrl));
         return this.http.get(this.configUrl);
     }
     // getConfig(){

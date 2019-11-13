@@ -12,28 +12,28 @@ import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-first',
   templateUrl: './first.component.html',
-  providers: [ ConfigService ],
+  providers: [ConfigService],
   styleUrls: ['./first.component.less']
 })
 export class FirstComponent implements OnInit {
-  constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) {}
-  data : any[] = new Array();
-  getConfig(){
-    this.data.push(1);
-    // alert(this.data);
-    alert(this.configService.getConfig());
-    // this.data = this.configService.getConfig()["data"];
-    
-    // alert(this.data);
-  }
+  constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
+  // data: any[] = new Array();
+  // getConfig(){
+  //   this.data.push(1);
+  //   // alert(this.data);
+  //   alert(this.configService.getConfig());
+  //   // this.data = this.configService.getConfig()["data"];
+
+  //   // alert(this.data);
+  // }
   // ddata = json;
 
   // showConfig() {
   //   this.configService.getConfig()
   //     .subscribe((data) => this.config = {
-        
+
   //       classification : data["data"]
-        
+
   //     });
   //   alert(this.config.classification);
   // }
@@ -61,15 +61,16 @@ export class FirstComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getConfig();
-    alert(this.ddata);
-    // this.showConfig();
-    // console.log(this.showConfig());
-    this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
-
+    this.configService.getConfig().subscribe(data => {
       console.log(data);
+      // console.log(this.configService.getConfig());
+      // this.getConfig();
+      // alert(this.ddata);
+      // this.showConfig();
+      // console.log(this.showConfig());
+      // console.log(data);
 
-      console.log(data.length);
+      // console.log(data.length);
       var num_topic = data.length;
 
       /**
@@ -103,21 +104,32 @@ export class FirstComponent implements OnInit {
        
        * 
        */
-      console.log(data[0]["similar documents"]);
+      // console.log(data[0]["similar documents"]);
 
       class dataSet {
         name: string;
-        children: chdNode[];
+        children: _topic[];
       }
 
-      class chdNode {
+      class _topic {
         name: string;
         value: number;
+        showLabels: boolean = true;
+        tooltipTitle: string;
         color?: string;
+        children?: doc[];
+      }
+
+      class doc{
+        name: string;
+        url? : string;  //해당 문서의 url 바로 보내주기
+        color? : string;
+        value: number;
+        keyWords? : string; // 해당 문서에서 높은 단어 빈도 수 띄우기
       }
 
       var dataset = new dataSet();
-      console.log("dataset");
+      // console.log("dataset");
       /**
        * 토픽의 수 만큼 for문으로 반복문을 돈다.
        * for i = 0 -> num_topic
@@ -126,7 +138,7 @@ export class FirstComponent implements OnInit {
        * 각 토픽에서 array의 수를 찾는다 = 토픽에 속해 있는 문서의 수
        * 각 토픽은 childNode가 된다.
        * dataset.name = "root";
-       * dataset.children : chdNode = <any>[];
+       * dataset.children : _topic = <any>[];
        * 
        * 
        * 
@@ -137,24 +149,37 @@ export class FirstComponent implements OnInit {
        * 
        * 
        */
-      var chds = new Array<chdNode>();
-      console.log("chdNode[]")
-      dataset.name = "root";
+      var chds = new Array<_topic>();
+      // console.log("_topic[]")
+      dataset.name = "통일 연구 동향";
 
-      console.log("dataset.name");
+      // console.log("dataset.name");
 
       dataset.children = chds;
 
-      console.log(dataset.children);
+      // console.log(dataset.children);
 
       for (var i = 0; i < num_topic; i++) {
-        dataset.children[i] = new chdNode();
-        dataset.children[i].name = "" + i;
-        dataset.children[i].value = data[i].length;
+        dataset.children[i] = new _topic();
+        dataset.children[i].name = "Topic #"+ i;
+        dataset.children[i].tooltipTitle = "tooltop?";
+        // dataset.children[i].showTooltip = true;
+        dataset.children[i].value = data[i].length * 5;
+        dataset.children[i].children = new Array<doc>();
+
+        var num_doc = data[i].length;
+        // var docs = 
+        for(var j = 0; j < num_doc; j++){
+          dataset.children[i].children[j] = new doc();
+          dataset.children[i].children[j].url = "To Be Added...";
+          dataset.children[i].children[j].name = "Document #" + j;
+          dataset.children[i].children[j].value = 1;
+
+        }
         // toColor()
       }
 
-      console.log(dataset);
+      // console.log(dataset);
 
       var data_sample = {
         name: "root",
@@ -181,11 +206,20 @@ export class FirstComponent implements OnInit {
           }
         ]
       }
+
+
       var myChart = CirclePack();
       myChart.data(dataset)
+        .label('name')
         .size('value')
         .color('color')
         (document.getElementById('chart'));
+    }
+    );//this.configService.getConfig().subscribe
+
+    this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
+
+
       //Retrieve data from flask.
       /*
       const changedData$: Observable<CloudData[]> = of([]);
