@@ -62,49 +62,17 @@ export class FirstComponent implements OnInit {
 
   ngOnInit() {
     this.configService.getConfig().subscribe(data => {
-      console.log(data);
-      // console.log(this.configService.getConfig());
-      // this.getConfig();
-      // alert(this.ddata);
-      // this.showConfig();
-      // console.log(this.showConfig());
-      // console.log(data);
-
-      // console.log(data.length);
-      var num_topic = data.length;
-
       /**
-       * data의 길이를 구한다.
-       * data는 similar documents으로 구성되어 있다.
-       * array의 길이를 구하면 topic의 수를 알 수 있다.
+       * 플라스크는 업데이트가 있을 때마다 static file을 업데이트 해서 asset 폴더에 넣어준다.
        * 
-       * 각각의 토픽에는 문서별로 정리되어 있다.
-       * 문서의 수를 구하면 그 토픽의 크기를 알 수 있다.
-       * 문서의 수로 원의 크기를 만든다.
-       * 
-       data의 구조
-       [ { "similar documents": [ { "documents #0": [ "호", ... ,"하"]},
-                                   ... ,
-                                  {"documents #x" : ["하",..."호"]}
-         },
-         ...,
-         { "similar documents": [ { "documents #y": [ "호", ... ,"하"]},
-                                   ... ,
-                                  {"documents #z" : ["하",..."호"]}
-         }
-       ]
-
-       data[0] = { "similar documents": [ { "documents #0": [ "호", ... ,"하"]},
-                                   ... ,
-                                  {"documents #x" : ["하",..."호"]}
-                 }
-       data[i] = ...
-
-       num_docs = data[i]["similar documents"].length //이 값을 angular에서 시각화
-       
-       * 
+       * 마지막 static file update 시간을 local에서 불러온다
+       * 가지고 온 data 파일에서 마지막 업데이트 시간을 읽는다.
+       * 같으면 그대로 진행.
+       * 다르면 일단 출력하고, 플라스크로 통신... 뭐가 먼저이지? 그냥 읽으면 되는거 아닌가... 
        */
-      // console.log(data[0]["similar documents"]);
+      // console.log(data);
+      
+      var num_topic = data.length;
 
       class dataSet {
         name: string;
@@ -129,57 +97,32 @@ export class FirstComponent implements OnInit {
       }
 
       var dataset = new dataSet();
-      // console.log("dataset");
-      /**
-       * 토픽의 수 만큼 for문으로 반복문을 돈다.
-       * for i = 0 -> num_topic
-       * 각각의 토픽에서 array를 뚫고서 접근한다. 
-       * num_docs = data[i]["similar documents"].length 
-       * 각 토픽에서 array의 수를 찾는다 = 토픽에 속해 있는 문서의 수
-       * 각 토픽은 childNode가 된다.
-       * dataset.name = "root";
-       * dataset.children : _topic = <any>[];
-       * 
-       * 
-       * 
-       * dataset.children[i].name = i
-       * dataset.children[i].value = num_docs;
-       * 각 토픽에서 문서의 수를 childNode의 value으로 둔다.
-       * name은 각 토픽의 index으로 하면 될 것 같다.
-       * 
-       * 
-       */
+      
       var chds = new Array<_topic>();
-      // console.log("_topic[]")
       dataset.name = "통일 연구 동향";
-
-      // console.log("dataset.name");
 
       dataset.children = chds;
 
-      // console.log(dataset.children);
 
       for (var i = 0; i < num_topic; i++) {
         dataset.children[i] = new _topic();
-        dataset.children[i].name = "Topic #"+ i;
-        dataset.children[i].tooltipTitle = "tooltop?";
-        // dataset.children[i].showTooltip = true;
-        dataset.children[i].value = data[i].length * 5;
-        dataset.children[i].children = new Array<doc>();
+        var parentNode = dataset.children[i];
+        parentNode.name = "Topic #"+ i;
+        parentNode.tooltipTitle = "tooltop?";
+        // parentNode.showTooltip = true;
+        parentNode.value = data[i].length * 100;
+        parentNode.children = new Array<doc>();
 
         var num_doc = data[i].length;
-        // var docs = 
-        for(var j = 0; j < num_doc; j++){
-          dataset.children[i].children[j] = new doc();
-          dataset.children[i].children[j].url = "To Be Added...";
-          dataset.children[i].children[j].name = "Document #" + j;
-          dataset.children[i].children[j].value = 1;
-
+        for(var j = 0; j < num_doc; j++){ //개별 토픽 안에서 각각 문서 선택
+          parentNode.children[j] = new doc();
+          var node = parentNode.children[j];
+          node.url = "To Be Added...";
+          node.name = data[i][0][1] + j;  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
+                                          // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
+          node.value = parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
         }
-        // toColor()
       }
-
-      // console.log(dataset);
 
       var data_sample = {
         name: "root",

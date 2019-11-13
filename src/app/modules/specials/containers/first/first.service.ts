@@ -13,12 +13,12 @@ export class ConfigService {
     // data = dataJson;
     // constructor(){}
 
-    configUrl = 'assets/special_first/file2.json';
+    configUrl = 'assets/special_first/data.json';
     
 
     getConfig() : Observable<any>{
-        console.log("from first.service\n")
-        console.log(this.http.get(this.configUrl));
+        // console.log("from first.service\n")
+        // console.log(this.http.get(this.configUrl));
         return this.http.get(this.configUrl);
     }
     // getConfig(){
