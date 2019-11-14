@@ -10,24 +10,3 @@
 </angular-tag-cloud>
     </div>
 
-<h1>BarChart Data</h1>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
-
-    <table>
-    <thead>
-    <tr>
-        <th>No</th>
-        <th>Word</th>
-        <th>TF_IDF</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let data of serverData; let i=index">
-        <td>{{i+1}}</td>
-        <td>{{data.label}}</td>
-        <td>{{data.y | number : fractionSize}}</td>
-    </tr>
-    </tbody>
-    </table>
-</div>

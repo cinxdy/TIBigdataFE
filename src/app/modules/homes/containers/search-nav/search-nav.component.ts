@@ -19,7 +19,7 @@ export class SearchNavComponent implements OnInit {
  serverData: JSON;
 
 
- private static readonly INDEX = 'crawling';
+ private static readonly INDEX = 'nkdboard';
   private static readonly TYPE = 'nkdboard';
 
   private queryText = '';

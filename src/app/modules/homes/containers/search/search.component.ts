@@ -11,7 +11,7 @@ import { ArticleSource } from '../../../homes/containers/querytest/article.inter
 })
 export class SearchComponent implements OnInit {
 
-  private static readonly INDEX = 'crawling';
+  private static readonly INDEX = 'nkdboard';
   private static readonly TYPE = 'nkdboard';
 
   private queryText = '';
