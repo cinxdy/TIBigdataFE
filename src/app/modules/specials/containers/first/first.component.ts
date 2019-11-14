@@ -68,7 +68,6 @@ export class FirstComponent implements OnInit {
        * 마지막 static file update 시간을 local에서 불러온다
        * 가지고 온 data 파일에서 마지막 업데이트 시간을 읽는다.
        * 같으면 그대로 진행.
-       * 다르면 일단 출력하고, 플라스크로 통신... 뭐가 먼저이지? 그냥 읽으면 되는거 아닌가... 
        */
       // console.log(data);
       
