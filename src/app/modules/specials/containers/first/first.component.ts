@@ -17,26 +17,6 @@ import { Observable, of } from 'rxjs';
 })
 export class FirstComponent implements OnInit {
   constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
-  // data: any[] = new Array();
-  // getConfig(){
-  //   this.data.push(1);
-  //   // alert(this.data);
-  //   alert(this.configService.getConfig());
-  //   // this.data = this.configService.getConfig()["data"];
-
-  //   // alert(this.data);
-  // }
-  // ddata = json;
-
-  // showConfig() {
-  //   this.configService.getConfig()
-  //     .subscribe((data) => this.config = {
-
-  //       classification : data["data"]
-
-  //     });
-  //   alert(this.config.classification);
-  // }
 
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
