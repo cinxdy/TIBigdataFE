@@ -29,7 +29,7 @@ export class FirstComponent implements OnInit {
 
 
   private BASE_URL: string = 'http://localhost:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/two';
+  private TEST_URL: string = 'http://localhost:5000/three';
 
 
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -49,7 +49,7 @@ export class FirstComponent implements OnInit {
        * 가지고 온 data 파일에서 마지막 업데이트 시간을 읽는다.
        * 같으면 그대로 진행.
        */
-      // console.log(data);
+      console.log(data);
       
       var num_topic = data.length;
 
@@ -89,7 +89,7 @@ export class FirstComponent implements OnInit {
         parentNode.name = "Topic #"+ i;
         parentNode.tooltipTitle = "tooltop?";
         // parentNode.showTooltip = true;
-        parentNode.value = data[i].length * 100;
+        parentNode.value = data[i].length * 1000000;
         parentNode.children = new Array<doc>();
 
         var num_doc = data[i].length;
@@ -97,7 +97,7 @@ export class FirstComponent implements OnInit {
           parentNode.children[j] = new doc();
           var node = parentNode.children[j];
           node.url = "To Be Added...";
-          node.name = data[i][0][1] + j;  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
+          node.name = data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
                                           // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
           node.value = parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
         }

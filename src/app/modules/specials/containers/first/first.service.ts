@@ -10,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigService {
     constructor(private http: HttpClient) { }
 
+    // configUrl = 'assets/special_first/data1000.json';
     configUrl = 'assets/special_first/data.json';
-    
 
     getConfig() : Observable<any>{
         return this.http.get(this.configUrl);
