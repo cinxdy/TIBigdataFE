@@ -63,7 +63,7 @@ export class ElasticsearchService {
            }
          }
        },
-       '_source': ['titles','dates','urls','writers', 'bodys']
+       '_source': ['post_title','post_date','published_institution_url','post_writer', 'post_body']
      })
    }
 

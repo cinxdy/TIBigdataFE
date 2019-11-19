@@ -3,19 +3,19 @@
 
 <article class="uk-article">
   <div class="uk-text-large">
-  <a href="{{article.urls}}"><h4> {{article.titles}} </h4></a>
+  <a href="{{article.published_institution_url}}"><h4> {{article.post_title}} </h4></a>
     
   </div>
 
   <p>
-     {{ (article.bodys.length > 80) ? (article.bodys | slice:0:80)+'..' : (article.bodys)}}
+     {{ (article.post_body.length > 80) ? (article.post_body | slice:0:80)+'..' : (article.post_body)}}
   </p>
 
   
 
   <div class="uk-grid-small uk-child-width-auto" uk-grid>
        
-    {{article.dates | date:"yyyy/MM/dd"}} |  {{article.writers}}
+    {{article.post_date | date:"yyyy/MM/dd"}} |  {{article.post_writer}}
   
     </div>
  

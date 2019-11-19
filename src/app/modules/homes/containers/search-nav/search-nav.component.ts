@@ -48,7 +48,7 @@ export class SearchNavComponent implements OnInit {
     this.es.fullTextSearch(
       SearchNavComponent.INDEX,
       SearchNavComponent.TYPE,
-      'bodys', this.queryText).then(
+      'post_body', this.queryText).then(
         response=> {
           this.articleSources = response.hits.hits;
           // console.log(this.articleSources);
@@ -67,7 +67,7 @@ export class SearchNavComponent implements OnInit {
       this.es.fullTextSearch(
         SearchNavComponent.INDEX,
         SearchNavComponent.TYPE,
-        'bodys', this.queryText).then(
+        'post_body', this.queryText).then(
           response=> {
             this.articleSources = response.hits.hits;
             // console.log(this.articleSources);

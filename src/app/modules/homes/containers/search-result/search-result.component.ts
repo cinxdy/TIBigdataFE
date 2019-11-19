@@ -15,7 +15,7 @@ export class SearchResultComponent implements OnInit {
 
  //Flask data
  private BASE_URL: string = 'http://localhost:5000/keywordGraph';
- private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+
  serverData: JSON;
 
 
@@ -58,16 +58,7 @@ export class SearchResultComponent implements OnInit {
   getResult(){
     this.searchKeyword = this.es.getKeyword();
 
-    let body= 
-      {"keyword":this.searchKeyword}
-    
-    this.http.post(this.BASE_URL, 
-      body, {headers:this.headers})
-      .subscribe(
-        (data) => {
-          console.log(data);
-        }
-      )
+   
 
       this._router.navigateByUrl('/homes/analysis');
 

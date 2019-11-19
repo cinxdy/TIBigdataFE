@@ -1,10 +1,10 @@
 export interface Article {
-    dates: Date,
-    titles: string,
-    writer: string,
+    post_date: Date,
+    post_title: string,
+    post_writer: string,
     number: string,
-    url: string,
-    body: string
+    published_institution_url: string,
+    post_body: string
 }
 
 export interface ArticleSource {
