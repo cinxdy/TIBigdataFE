@@ -15,7 +15,7 @@ import { Observable, of} from 'rxjs';
 })
 export class FlaskComponent implements OnInit {
 
-  private BASE_URL: string = 'http://localhost:5000/wordrank';
+  private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/test';
 
 
@@ -55,30 +55,7 @@ export class FlaskComponent implements OnInit {
         this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
       }
       console.log(this.cData);
-
-
-      // //Push data for Bar Chart.
-      // let chart = new CanvasJS.Chart("chartContainer",  {
-      //   animationEnabled: true,
-      //   exportEnabled: true,
-      //   title: {
-      //     text: "Basic Column Chart in Angular"
-      //   },
-      //   data: [{
-      //     type: "column",
-      //     dataPoints: this.serverData
-      //   }]
-      // });
-  
-      // chart.render();
-      
     })
-
- 
-
-
-
-    
   }
   getResult(){
     this.searchKeyword = "flask test"

@@ -1,19 +1,33 @@
-<div class="uk-section uk-section-default">
+<div class="uk-section  uk-preserve-color">
     <div class="uk-container">
+        <div class="uk-grid-match uk-column-1-1@m" uk-grid>
+            
+            <div class="uk-align-center">
 
-        <h3>Graph Section</h3>
+                 <div class="uk-text-bold uk-flex-center">오늘의 키워드</div>
+                    <ul class="uk-flex-center" uk-tab>
+ 
+                        <li class="uk-active"><a href="#" (click)="getTopic($event)" id="WHO">전체</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="POL">정치</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="ECO">경제</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="SOC">사회</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="CUL">문화</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="INT">국제</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="REG">지역</a></li>
+                        <li><a href="#" (click)="getTopic($event)" id="SPO">스포츠</a></li>
+                    </ul>
 
-        <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-            </div>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-            </div>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-            </div>
+                <div>
+                    <angular-tag-cloud
+                    [data]="cData"
+                    [width]="options.width"
+                    [height]="options.height"
+                    [overflow]="options.overflow">
+                    </angular-tag-cloud>
+                </div>
+            </div>  
+
+    
         </div>
-
     </div>
 </div>
