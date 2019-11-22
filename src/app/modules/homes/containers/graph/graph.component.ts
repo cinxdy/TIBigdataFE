@@ -15,7 +15,7 @@ export class GraphComponent implements OnInit {
 
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/wordrank';
-  
+
   private topics = {
     WHO : "전체",
     POL : "정치",
@@ -64,10 +64,12 @@ export class GraphComponent implements OnInit {
   getTopic(event){
     var topic = event.target.id;
     this.getWordCloud(topic);
-   })
+   }
+
   }
+  
 
 
  
 
-}
+  
