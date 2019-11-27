@@ -21,6 +21,7 @@ import { FooterComponent } from './containers/footer/footer.component';
 import { SearchResultComponent } from './containers/search-result/search-result.component';
 import { SearchNavComponent } from './containers/search-nav/search-nav.component';
 import { AnalysisComponent } from './containers/search-result/analysis/analysis.component';
+import { SearchFilterComponent } from './containers/search-filter/search-filter.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { AnalysisComponent } from './containers/search-result/analysis/analysis.
     FooterComponent,
     SearchResultComponent,
     SearchNavComponent,
-    AnalysisComponent
+    AnalysisComponent,
+    SearchFilterComponent
    
   ],
   imports: [

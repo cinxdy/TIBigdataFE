@@ -16,6 +16,7 @@ export class SearchResultComponent implements OnInit {
  //Flask data
  private BASE_URL: string = 'http://localhost:5000/keywordGraph';
 
+ public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
  serverData: JSON;
 
 
@@ -28,6 +29,8 @@ export class SearchResultComponent implements OnInit {
 
   articleSources: ArticleSource[];
 
+
+  
   
   isConnected = false;
   status: string;
