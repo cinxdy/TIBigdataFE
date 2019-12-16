@@ -44,8 +44,7 @@ export class ElasticsearchService {
 
    getAllDocument(_index, _type): any{
      return this.client.search({
-       index: _index,
-       type: _type,
+
        body: this.queryalldocs,
        filterPath: ['hits.hits._source']
      });
@@ -53,8 +52,7 @@ export class ElasticsearchService {
 
    fullTextSearch(_index, _type, _field, _queryText): any {
      return this.client.search({
-       index: _index, 
-       type: _type,
+ 
        filterPath: ['hits.hits._source', 'hits.total', '_scroll_id'],
        body: {
          'query' : {

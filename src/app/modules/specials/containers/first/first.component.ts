@@ -41,6 +41,8 @@ export class FirstComponent implements OnInit {
 
 
   ngOnInit() {
+
+    console.log('hi');
     this.configService.getConfig().subscribe(data => {
       /**
        * 플라스크는 업데이트가 있을 때마다 static file을 업데이트 해서 asset 폴더에 넣어준다.
@@ -103,32 +105,6 @@ export class FirstComponent implements OnInit {
         }
       }
 
-      var data_sample = {
-        name: "root",
-        children: [
-          {
-            name: "leafA",
-            value: 3,
-            color: "magenta"
-          },
-          {
-            name: "nodeB",
-            children: [
-              {
-                name: "leafBA",
-                value: 5,
-                color: "rgba(165,42,42,1)"
-              },
-              {
-                name: "leafBB",
-                value: 1,
-                color: "blue"
-              }
-            ]
-          }
-        ]
-      }
-
 
       var myChart = CirclePack();
       myChart.data(dataset)
@@ -139,62 +115,7 @@ export class FirstComponent implements OnInit {
     }
     );//this.configService.getConfig().subscribe
 
-    this.http.get(this.TEST_URL, { headers: this.headers }).subscribe((data: any[]) => {
 
-
-      //Retrieve data from flask.
-      /*
-      const changedData$: Observable<CloudData[]> = of([]);
-      changedData$.subscribe(res => this.cData = res);
-
-      //Convert data as JSON format.
-      this.serverData = data as JSON;
-
-
-      //Push data for WordCloud.
-      for(let i in data){
-        this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
-      }
-      // console.log(this.cData);
-
-
-      //Push data for Bar Chart.
-      let barChart = new CanvasJS.Chart("chartContainer",  {
-        animationEnabled: true,
-        exportEnabled: true,
-        title: {
-          text: "The Number of posts in 2004/11"
-        },
-        data: [{
-          type: "column",
-          dataPoints: this.serverData
-        }]
-      });
-
-
-      // let pieChart = new CanvasJS.Chart("chartContainer", {
-      //   theme: "light2",
-      //   animationEnabled: true,
-      //   exportEnabled: true,
-      //   title:{
-      //     text: "Monthly Expense"
-      //   },
-      //   data: [{
-      //     type: "pie",
-      //     showInLegend: true,
-      //     toolTipContent: "<b>{label}</b>: ${y} (#percent%)",
-      //     indexLabel: "{label} - #percent%",
-      //     dataPoints: this.serverData
-          
-      //   }]
-      // });
-      
-        
-      
-  
-      barChart.render();
-      */
-    })
 
 
 
