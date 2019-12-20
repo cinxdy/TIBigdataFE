@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'specials',
     loadChildren: './modules/specials/specials.module#SpecialsModule'
   },
+  {
+    path: 'membership',
+    loadChildren: './modules/core/core.module#CoreModule'
+  },
  
  
 

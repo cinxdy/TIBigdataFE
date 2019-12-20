@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { EPAuthService } from '../membership/auth.service'
 
 @Component({
   selector: 'app-nav',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
-  constructor(public _router: Router) {
+  constructor(public _router: Router, private _auth: EPAuthService) {
 
    }
 
@@ -39,6 +40,18 @@ export class NavComponent implements OnInit {
 
   toFlask(){
     this._router.navigateByUrl("/homes/flask");
+  }
+
+  toLogin(){
+    this._router.navigateByUrl("/membership/login");
+  }
+
+  toRegister(){
+    this._router.navigateByUrl("/membership/register");
+  }
+
+  toEvent(){
+    this._router.navigateByUrl("/membership/event");
   }
   // 페이지 이동
 
