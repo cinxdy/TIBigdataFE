@@ -42,7 +42,7 @@ export class FirstComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('hi');
+    // console.log('hi');
     this.configService.getConfig().subscribe(data => {
       /**
        * 플라스크는 업데이트가 있을 때마다 static file을 업데이트 해서 asset 폴더에 넣어준다.
