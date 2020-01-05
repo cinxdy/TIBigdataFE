@@ -42,16 +42,6 @@ export class GraphComponent implements OnInit {
   cData: CloudData[] = [];
   constructor(private http:HttpClient, private es: ElasticsearchService) { }
   
-   dData: CloudData[] = [
-      {text: '한국어가 문제?', weight: 8, link: 'https://google.com', color: '#ffaaee'},
-      {text: '한국어?', weight: 10, link: 'https://google.com', tooltip: 'display a tooltip', color: '#ffaaee'},
-      {text: '국뽕!!', weight: 8, link: 'https://google.com', color: '#ffaaee'},
-    {text: '한국어?', weight: 10, link: 'https://google.com', tooltip: 'display a tooltip'},{text: '국뽕!!', weight: 8, link: 'https://google.com', color: '#ffaaee'},
-    {text: '한국어?', weight: 10, link: 'https://google.com', tooltip: 'display a tooltip'},{text: '국뽕!!', weight: 8, link: 'https://google.com', color: '#ffaaee'},
-    {text: '한국어?', weight: 10, link: 'https://google.com', tooltip: 'display a tooltip'},{text: '국뽕!!', weight: 8, link: 'https://google.com', color: '#ffaaee'},
-    {text: '한국어?', weight: 10, link: 'https://google.com', tooltip: 'display a tooltip'}
-    ];
-
   ngOnInit() {
     this.getWordCloud("전체");
   }
