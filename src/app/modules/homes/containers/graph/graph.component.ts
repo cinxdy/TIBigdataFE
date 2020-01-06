@@ -38,11 +38,16 @@ export class GraphComponent implements OnInit {
   constructor(private http:HttpClient, private es: ElasticsearchService) { }
 
   ngOnInit() {
-    this.getWordCloud("전체");
+    try{
+      this.getWordCloud("전체");
+    }
+    catch{
+      console.log("error");
+    }
   }
 
   getWordCloud(topic){
-    this.http.get(this.BASE_URL).subscribe(data => {
+    this.http.get(this.TEST_URL).subscribe(data => {
 
       //Retrieve data from flask.
       const changedData$: Observable<CloudData[]> = of([]);

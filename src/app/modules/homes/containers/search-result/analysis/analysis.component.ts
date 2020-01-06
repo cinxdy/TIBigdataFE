@@ -26,7 +26,7 @@ export class AnalysisComponent implements OnInit {
     let body= 
     {"keyword":this.searchKeyword}
   
-  this.http.post(this.BASE_URL, 
+  this.http.post(this.TEST_URL, 
     body, {headers:this.headers})
     .subscribe(
       (data) => {
