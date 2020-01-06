@@ -15,6 +15,7 @@ export class GraphComponent implements OnInit {
 
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/wordrank';
+  private currURL = this.TEST_URL;
 
   private topics = {
     WHO : "전체",
@@ -38,16 +39,11 @@ export class GraphComponent implements OnInit {
   constructor(private http:HttpClient, private es: ElasticsearchService) { }
 
   ngOnInit() {
-    try{
       this.getWordCloud("전체");
-    }
-    catch{
-      console.log("error");
-    }
   }
 
   getWordCloud(topic){
-    this.http.get(this.TEST_URL).subscribe(data => {
+    this.http.get(this.currURL).subscribe(data => {
 
       //Retrieve data from flask.
       const changedData$: Observable<CloudData[]> = of([]);
