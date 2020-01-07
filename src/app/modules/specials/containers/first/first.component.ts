@@ -42,7 +42,6 @@ export class FirstComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('hi');
     this.configService.getConfig().subscribe(data => {
       /**
        * 플라스크는 업데이트가 있을 때마다 static file을 업데이트 해서 asset 폴더에 넣어준다.
@@ -65,14 +64,14 @@ export class FirstComponent implements OnInit {
         value: number;
         showLabels: boolean = true;
         tooltipTitle: string;
-        color?: string;
+        color?: string = "DarkSlateGray";
         children?: doc[];
       }
 
       class doc{
         name: string;
         url? : string;  //해당 문서의 url 바로 보내주기
-        color? : string;
+        color? : string = "DarkGray";
         value: number;
         keyWords? : string; // 해당 문서에서 높은 단어 빈도 수 띄우기
       }
