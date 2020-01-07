@@ -101,6 +101,7 @@ export class FirstComponent implements OnInit {
           node.name = data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
                                           // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
           node.value = parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
+          node.keyWords = data[i][j][2];
         }
       }
 
@@ -110,6 +111,7 @@ export class FirstComponent implements OnInit {
         .label('name')
         .size('value')
         .color('color')
+        .onClick((d)=>console.log(d.keyWords))
         (document.getElementById('chart'));
     }
     );//this.configService.getConfig().subscribe
