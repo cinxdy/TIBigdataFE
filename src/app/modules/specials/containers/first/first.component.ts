@@ -108,6 +108,8 @@ export class FirstComponent implements OnInit {
 
       var myChart = CirclePack();
       myChart.data(dataset)
+        .width(300)
+        .height(300)
         .label('name')
         .size('value')
         .color('color')
