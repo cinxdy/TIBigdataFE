@@ -15,7 +15,7 @@ export class GraphComponent implements OnInit {
 
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/wordrank';
-  private currURL = this.TEST_URL;
+  private currURL = "assets/homes_graph/data.json"
 
   private topics = {
     WHO : "전체",
@@ -45,12 +45,14 @@ export class GraphComponent implements OnInit {
   getWordCloud(topic){
     this.http.get(this.currURL).subscribe(data => {
 
+
+      console.log(data);
       //Retrieve data from flask.
       const changedData$: Observable<CloudData[]> = of([]);
       changedData$.subscribe(res => this.cData = res);
  
       //Convert data as JSON format.
-      this.serverData = data as JSON;
+      // this.serverData = data as JSON;
  
  
       //Push data for WordCloud.
