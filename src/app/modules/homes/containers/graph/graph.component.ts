@@ -6,6 +6,7 @@ import { ElasticsearchService } from '../../service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 
 import { Observable, of} from 'rxjs';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
@@ -15,7 +16,8 @@ export class GraphComponent implements OnInit {
 
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/wordrank';
-
+  private data : any;
+  private fileDir : string = 'assets/homes_graph/data.json';
   private topics = {
     WHO : "전체",
     POL : "정치",
@@ -40,26 +42,38 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.getWordCloud("전체");
   }
-
   getWordCloud(topic){
-    this.http.get(this.BASE_URL).subscribe(data => {
+    // console.log(this.http.get(this.fileDir));
+    this.http.get(this.fileDir).subscribe(data => {
+      console.log(data)
+      // this.data = data;  
 
-      //Retrieve data from flask.
+      // Retrieve data from flask.
       const changedData$: Observable<CloudData[]> = of([]);
       changedData$.subscribe(res => this.cData = res);
- 
-      //Convert data as JSON format.
-      this.serverData = data as JSON;
- 
- 
-      //Push data for WordCloud.
-      for(let i in data){
-        this.cData.push({text:data[i]["label"], weight:data[i]["y"]})
-      }
-      //console.log(this.cData);
-    })
 
-  }
+      //Convert data as JSON format.
+      // this.serverData = data as unknown as JSON;#####################
+      // for(let i in data){
+      //   // data[i][1] = Math.round(data[i][1]* 10);
+      // }
+      //Push data for WordCloud.
+      //console.log(data[0][1][0])
+
+      var sample = data[2][1]
+        for(let i in sample){
+          if(Number(i)>=30)
+            break
+          else if(Number(i)<=4)
+          this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'red'})
+          else
+          this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'gray'})
+        }
+      
+    });
+
+
+}
 
   getTopic(event){
     var topic = event.target.id;
