@@ -5,6 +5,7 @@ export interface Article {
     number: string,
     published_institution_url: string,
     post_body: string
+    
 }
 
 export interface ArticleSource {
