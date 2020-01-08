@@ -13,7 +13,8 @@ export class AnalysisComponent implements OnInit {
   private searchKeyword;
   private TEST_URL: string = 'http://localhost:5000/keywordGraph';
   private BASE_URL: string = 'http://203.252.103.123:5000/keywordGraph';
-  
+  private currURL = this.TEST_URL;
+
   private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   constructor(
     private http:HttpClient,
@@ -26,7 +27,7 @@ export class AnalysisComponent implements OnInit {
     let body= 
     {"keyword":this.searchKeyword}
   
-  this.http.post(this.BASE_URL, 
+  this.http.post(this.currURL, 
     body, {headers:this.headers})
     .subscribe(
       (data) => {
