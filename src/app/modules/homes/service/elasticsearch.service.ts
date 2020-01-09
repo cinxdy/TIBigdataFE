@@ -50,6 +50,23 @@ export class ElasticsearchService {
      });
    }
 
+
+  fullTextSearch(_field, _queryText): any {
+    return this.client.search({
+
+      filterPath: ['hits.hits._source', 'hits.total', '_scroll_id'],
+      body: {
+        'query' : {
+          'match_phrase_prefix': {
+            [_field]: _queryText,
+          }
+        }
+      },
+      '_source': ['post_title','post_date','published_institution_url','post_writer', 'post_body']
+    })
+  }
+  // fullTextSearch original version
+  /**
    fullTextSearch(_index, _type, _field, _queryText): any {
      return this.client.search({
  
@@ -64,7 +81,7 @@ export class ElasticsearchService {
        '_source': ['post_title','post_date','published_institution_url','post_writer', 'post_body']
      })
    }
-
+  */
 
    //Elasticsearch Connection
 
