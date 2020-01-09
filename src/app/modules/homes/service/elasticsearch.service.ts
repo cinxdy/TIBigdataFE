@@ -54,7 +54,7 @@ export class ElasticsearchService {
   fullTextSearch(_field, _queryText): any {
     return this.client.search({
 
-      filterPath: ['hits.hits._source', 'hits.total', '_scroll_id'],
+      filterPath: ['hits.hits._source','hits.hits._id', 'hits.total', '_scroll_id'],
       body: {
         'query' : {
           'match_phrase_prefix': {
