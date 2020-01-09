@@ -68,8 +68,10 @@ export class GraphComponent implements OnInit {
         for(let i in sample){
           if(Number(i)>=30)
             break
-          else if(Number(i)<=4)
+          else if(Number(i)<=4){
           this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'red'})
+          console.log(sample[i][1])
+          }
           else
           this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'gray'})
         }
