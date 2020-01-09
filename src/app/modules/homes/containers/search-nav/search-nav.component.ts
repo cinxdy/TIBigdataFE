@@ -67,7 +67,8 @@ export class SearchNavComponent implements OnInit {
         'post_body', this.queryText).then(
           response=> {
             this.articleSources = response.hits.hits;
-            // console.log(this.articleSources);
+            console.log("search result test : ")
+            console.log(this.articleSources);
           }, error => {
             //console.error(error);
           }).then(()=> {

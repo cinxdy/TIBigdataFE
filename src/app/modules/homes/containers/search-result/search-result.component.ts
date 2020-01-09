@@ -20,12 +20,12 @@ export class SearchResultComponent implements OnInit {
  serverData: JSON;
 
 
- private static readonly INDEX = 'nkdboard';
-  private static readonly TYPE = 'nkdboard';
+  // private static readonly INDEX = 'nkdboard';
+  // private static readonly TYPE = 'nkdboard';
 
-  private queryText = '';
+  // private queryText = '';
  
-  private lastKeypress = 0;
+  // private lastKeypress = 0;
 
   articleSources: ArticleSource[];
 
