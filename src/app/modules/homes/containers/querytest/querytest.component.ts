@@ -15,7 +15,7 @@ export class QuerytestComponent implements OnInit {
 
 
   //Flask data
-  private BASE_URL: string = 'http://localhost:5000/test';
+  private BASE_URL: string = 'http://localhost:5000/queryTest';
   private headers: Headers = new Headers({'Content-Type': 'application/json'});
   serverData: JSON;
 
