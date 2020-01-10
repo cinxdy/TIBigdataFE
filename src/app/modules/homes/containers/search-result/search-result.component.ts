@@ -30,7 +30,7 @@ export class SearchResultComponent implements OnInit {
   articleSources: ArticleSource[];
 
 
-  
+  docId : string;
   
   isConnected = false;
   status: string;
@@ -67,6 +67,22 @@ export class SearchResultComponent implements OnInit {
 
   }
 
+  getNothing(){
+    console.log("button clicked!");
+  }
+
+  onSubmit(){
+    console.log("summited!");
+    console.log(this.docId)
+    // console.log(e);
+    // console.log(e.target.value)
+    // e.preventDefault();
+  }
+
+  addList(i){
+    console.log(this.articleSources[i]);
+    // console.log(i);
+  }
   
 
 }
