@@ -26,21 +26,23 @@
     </div>
 
     <div class="search-result">
-      <div *ngFor="let articleSource of articleSources">
-        <div class="row">
-          <div class="col-xs">
-            <form #userForm="ngForm">
+      <form #userForm="ngForm">
+        <button class="uk-button uk-button-primary">TEST DATA</button>
+
+        <div *ngFor="let articleSource of articleSources">
+          <div class="row">
+            <div class="col-xs">
               <div class="form-group">
                 <input type="checkbox" />
               </div>
-            </form>
-          </div>
-          <div class="col">
-            <app-article-details [article]="articleSource._source">
-            </app-article-details>
+            </div>
+            <div class="col">
+              <app-article-details [article]="articleSource._source">
+              </app-article-details>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
 
       <div *ngIf="articleSources?.length < 1" style="margin-top:20px">
         <div class="uk-position-center">
