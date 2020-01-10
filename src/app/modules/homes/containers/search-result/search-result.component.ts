@@ -31,6 +31,7 @@ export class SearchResultComponent implements OnInit {
 
 
   docId : string;
+  idList : string[] = [];
   
   isConnected = false;
   status: string;
@@ -80,8 +81,13 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i){
-    console.log(this.articleSources[i]);
+    this.idList.push(this.articleSources[i]["_id"])
+    console.log(this.articleSources[i]["_id"]);
     // console.log(i);
+  }
+
+  navToDataChart(){
+    // this._router.navigateByUrl('homes/')
   }
   
 
