@@ -13,7 +13,7 @@ export class AnalysisComponent implements OnInit {
   private searchKeyword;
   private TEST_URL: string = 'http://localhost:5000/keywordGraph';
   private BASE_URL: string = 'http://203.252.103.123:5000/keywordGraph';
-  private currURL = this.TEST_URL;
+  private currURL = this.BASE_URL;
 
   private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   constructor(
