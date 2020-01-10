@@ -26,14 +26,14 @@
     </div>
 
     <div class="search-result">
-      <form #userForm="ngForm">
-        <button class="uk-button uk-button-primary">TEST DATA</button>
+      <form #dataForm="ngForm"(ngSubmit)="onSubmit(dataForm)">
+        <button (click)="this.getNothing()" class="uk-button uk-button-primary">TEST DATA</button>
 
-        <div *ngFor="let articleSource of articleSources">
+        <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
             <div class="col-xs">
               <div class="form-group">
-                <input type="checkbox" />
+                <input type="checkbox" (click)="this.addList(i)" />
               </div>
             </div>
             <div class="col">
