@@ -32,7 +32,7 @@ export class GraphComponent implements OnInit {
     REG : "지역",
     SPO : "스포츠"
   }
-
+  
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
     width: 1000,
@@ -47,6 +47,16 @@ export class GraphComponent implements OnInit {
     this.getWordCloud("전체");
   }
   getWordCloud(topic){
+    
+    var wColor = "gold";
+    if(topic=="POL"){
+      wColor = "red";
+    }else if(topic=="ECO"){
+      wColor = "orange";
+    }else if(topic=="SOC"){
+      wColor = "green";
+    }
+   
     // console.log(this.http.get(this.fileDir));
     this.http.get(this.fileDir).subscribe(data => {
       console.log(data)
@@ -64,18 +74,17 @@ export class GraphComponent implements OnInit {
       //Push data for WordCloud.
       //console.log(data[0][1][0])
 
-      var sample = data[2][1]
+      var sample = data[1][1]
         for(let i in sample){
           if(Number(i)>=30)
             break
           else if(Number(i)<=4){
-          this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'red'})
+          this.cData.push({text:sample[i][0], weight: sample[i][1], color: wColor})
           console.log(sample[i][1])
           }
           else
           this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'gray'})
         }
-      
     });
 
 
