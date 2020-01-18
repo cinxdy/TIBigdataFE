@@ -47,8 +47,7 @@ export class GraphComponent implements OnInit {
     this.getWordCloud("전체");
   }
   getWordCloud(topic){
-<<<<<<< Updated upstream
-=======
+
     
     var wColor = "pink";
     var docNum = 9;
@@ -78,7 +77,6 @@ export class GraphComponent implements OnInit {
       docNum = 6;
     }
    
->>>>>>> Stashed changes
     // console.log(this.http.get(this.fileDir));
     this.http.get(this.fileDir).subscribe(data => {
       console.log(data)
@@ -96,11 +94,8 @@ export class GraphComponent implements OnInit {
       //Push data for WordCloud.
       //console.log(data[0][1][0])
 
-<<<<<<< Updated upstream
-      var sample = data[2][1]
-=======
       var sample = data[docNum][1] //2번째 문서 
->>>>>>> Stashed changes
+
         for(let i in sample){
           if(Number(i)>=30)
             break
