@@ -5,6 +5,7 @@ import { ElasticsearchService } from '../../service/elasticsearch.service';
 import { ArticleSource } from '../shared/article.interface';
 import { Subscription } from 'rxjs';
 import { Observable, of} from 'rxjs';
+import { IdListService } from './id-list-service/id-list.service';
 
 @Component({
   selector: 'app-search-result',
@@ -20,17 +21,18 @@ export class SearchResultComponent implements OnInit {
  serverData: JSON;
 
 
- private static readonly INDEX = 'nkdboard';
-  private static readonly TYPE = 'nkdboard';
+  // private static readonly INDEX = 'nkdboard';
+  // private static readonly TYPE = 'nkdboard';
 
-  private queryText = '';
+  // private queryText = '';
  
-  private lastKeypress = 0;
+  // private lastKeypress = 0;
 
   articleSources: ArticleSource[];
 
 
-  
+  docId : string;
+  // idList : string[] = [];
   
   isConnected = false;
   status: string;
@@ -39,6 +41,7 @@ export class SearchResultComponent implements OnInit {
   searchKeyword: string;
 
   constructor(
+    private idList : IdListService,
     public _router: Router,
     private http:HttpClient,
     private es: ElasticsearchService, 
@@ -51,7 +54,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.es.getKeyword());
+    // console.log(this.es.getKeyword());
     this.subscription = this.es.articleInfo$.subscribe( info => {
       this.articleSources=info;
     });
@@ -67,6 +70,27 @@ export class SearchResultComponent implements OnInit {
 
   }
 
+  getNothing(){
+    console.log("button clicked!");
+  }
+
+  onSubmit(){
+    console.log("summited!");
+    console.log(this.idList)
+    // console.log(e);
+    // console.log(e.target.value)
+    // e.preventDefault();
+  }
+
+  addList(i){
+    this.idList.setIdList(this.articleSources[i]["_id"])
+    // console.log(this.articleSources[i]["_id"]);
+    // console.log(i);
+  }
+
+  navToDataChart(){
+    this._router.navigateByUrl('homes/wordcloud');
+  }
   
 
 }

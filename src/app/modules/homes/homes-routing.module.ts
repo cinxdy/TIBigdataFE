@@ -9,7 +9,7 @@ import { QuerytestComponent } from './containers/querytest/querytest.component';
 import { FlaskComponent } from './containers/flask/flask.component';
 import { SearchResultComponent } from './containers/search-result/search-result.component';
 import { AnalysisComponent } from './containers/search-result/analysis/analysis.component';
-
+import { WordcloudComponent } from './containers/search-result/wordcloud/wordcloud.component';
 
 const routes: Routes = [
     { path: '',
@@ -37,6 +37,10 @@ const routes: Routes = [
     {
       path:'analysis',
         component: AnalysisComponent
+    },
+    {
+      path:'wordcloud',
+        component: WordcloudComponent
     }
 ];
 
