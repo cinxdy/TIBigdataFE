@@ -14,7 +14,7 @@
 
   <div *ngIf="articleSources?.length > 1" class="uk-flex uk-flex-right">
     <button (click)="getResult()" class="uk-button uk-button-primary">
-      Data Analysis
+      All Search Freq Analysis
     </button>
   </div>
 
@@ -27,7 +27,7 @@
 
     <div class="search-result">
       <form #dataForm="ngForm"(ngSubmit)="onSubmit(dataForm)">
-        <button (click)="this.getNothing()" class="uk-button uk-button-primary">TEST DATA</button>
+        <button (click)="this.navToDataChart()" class="uk-button uk-button-success">Chosen Doc WordCloud</button>
 
         <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
