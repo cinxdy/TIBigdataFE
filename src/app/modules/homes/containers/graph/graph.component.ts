@@ -6,6 +6,7 @@ import { ElasticsearchService } from '../../service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 
 import { Observable, of} from 'rxjs';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
@@ -18,7 +19,7 @@ export class GraphComponent implements OnInit {
 
   // 2020 0103 TEXTRANK
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/textrank';
+  private TEST_URL: string = 'http://localhost:5000/wordrank';
   private data : any;
   private fileDir : string = 'assets/homes_graph/data.json';
   private topics = {
@@ -45,33 +46,76 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.getWordCloud("전체");
   }
-
-
-
   getWordCloud(topic){
-      // console.log(this.http.get(this.fileDir));
-      this.http.get(this.fileDir).subscribe(data => {
-        // console.log(data)
-        // this.data = data;  
+<<<<<<< Updated upstream
+=======
+    
+    var wColor = "pink";
+    var docNum = 9;
+    if(topic=="POL"){
+      wColor = "red";
+      docNum = 0;
+    }else if(topic=="ECO"){
+      wColor = "orange";
+      docNum = 1;
+    }else if(topic=="SOC"){
+      wColor = "gold";
+      docNum = 2;
+    }
+    else if(topic=="CUL"){
+      wColor = "green";
+      docNum = 3;
+    }
+    else if(topic=="INT"){
+      wColor = "blue";
+      docNum = 4;
+    }
+    else if(topic=="REG"){
+      wColor = "navy";
+      docNum = 5;
+    } else if(topic=="SPO"){
+      wColor = "purple";
+      docNum = 6;
+    }
+   
+>>>>>>> Stashed changes
+    // console.log(this.http.get(this.fileDir));
+    this.http.get(this.fileDir).subscribe(data => {
+      console.log(data)
+      // this.data = data;  
 
-        // Retrieve data from flask.
-        const changedData$: Observable<CloudData[]> = of([]);
-        changedData$.subscribe(res => this.cData = res);
-  
-        // //Convert data as JSON format.
-        // this.serverData = data as unknown as JSON;
-        // for(let i in data){
-        //   // data[i][1] = Math.round(data[i][1]* 10);
-        // }
-        //Push data for WordCloud.
-        for(let i in data){
-          this.cData.push({text:data[i][0], weight: data[i][1] , color: 'lightblue'})
+      // Retrieve data from flask.
+      const changedData$: Observable<CloudData[]> = of([]);
+      changedData$.subscribe(res => this.cData = res);
+
+      //Convert data as JSON format.
+      // this.serverData = data as unknown as JSON;#####################
+      // for(let i in data){
+      //   // data[i][1] = Math.round(data[i][1]* 10);
+      // }
+      //Push data for WordCloud.
+      //console.log(data[0][1][0])
+
+<<<<<<< Updated upstream
+      var sample = data[2][1]
+=======
+      var sample = data[docNum][1] //2번째 문서 
+>>>>>>> Stashed changes
+        for(let i in sample){
+          if(Number(i)>=30)
+            break
+          else if(Number(i)<=4){
+          this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'red'})
+          console.log(sample[i][1])
+          }
+          else
+          this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'gray'})
         }
-        
-      });
+      
+    });
 
 
-  }
+}
 
   getTopic(event){
     var topic = event.target.id;
