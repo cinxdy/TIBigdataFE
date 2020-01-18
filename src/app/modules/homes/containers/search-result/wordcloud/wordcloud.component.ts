@@ -12,11 +12,13 @@ import { IdListService } from '../id-list-service/id-list.service'
 
 export class WordcloudComponent implements OnInit {
 
-  constructor(private http:HttpClient, private idList : IdListService) { }
+  constructor(private http:HttpClient, private _idList : IdListService) { }
   private fileDir : string = 'assets//homes_search_result_wordcloud/tfidfData.json';
   private tfIdfData : any;
-  private oneID : string;
-  private tfIdfIdList : string[] = new Array();
+  // private cData: CloudData[] ;//= new Array<CloudData>();
+  private cDatas : any[];
+  // private oneID : string;
+  private idList_tfidf : string[] = new Array();
   ngOnInit() {
     this.http.get(this.fileDir).subscribe(data => {
       this.tfIdfData = data as [];
@@ -25,12 +27,35 @@ export class WordcloudComponent implements OnInit {
       for(var i = 0 ; i <= this.tfIdfData.length; i++){
         // console.log(this.tfIdfData[i]["docID"]);
         try{
-          this.tfIdfIdList.push(this.tfIdfData[i]["docID"]);
+          //find each matching tf-idf
+          //generate wordcloud
+          this.idList_tfidf.push(this.tfIdfData[i]["docID"]);
+          // this.tfIdfData[i]["docID"]
+
         }
         catch{
           console.log("index " + i + " does have error!");
           console.log(this.tfIdfData[i]);
         }
+      }
+
+      var idList = this._idList.getIdList()
+      for(var i = 0 ; i <= idList.length; i++){
+        var idx = this.idList_tfidf.indexOf(idList[i]);
+        var tfidfValList = this.tfIdfData[idx]["IFIDF"];
+        var kwList = [];
+        for(var j = 0 ; j <= tfidfValList.length; j++){
+          kwList.push(tfidfValList[j][0]);
+          if (j > tfidfValList.length / 2){
+            break;
+          }
+        }
+        //gen word cloud with kwList
+        let cData = new Array<CloudData>();
+        for(var k = 0 ; k <= kwList.length; k++){
+          cData.push({text: kwList[k], weight: 10, link: 'https://google.com', color: '#ffaaee'});
+        }
+        this.cDatas.push(cData);
       }
       // let idList = 
       
@@ -47,20 +72,20 @@ export class WordcloudComponent implements OnInit {
   
   // genWrdCld(cData : CloudData){
   
-    data: Array<CloudData> = [
-      {text: 'Weight-10-link-color', weight: 10, link: 'https://google.com', color: '#ffaaee'},
-      {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
-      // ...
-    ]
+    // data: Array<CloudData> = [
+    //   {text: 'Weight-10-link-color', weight: 10, link: 'https://google.com', color: '#ffaaee'},
+    //   {text: 'Weight-10-link', weight: 10, link: 'https://google.com'},
+    //   // ...
+    // ]
   // }
 
-  getID(){
-    let idInfos = this.idList.getIdList()
-    for (let i  = 0 ; i <= idInfos.length; i++){
+  // getID(){
+  //   let idInfos = this.idList.getIdList()
+  //   for (let i  = 0 ; i <= idInfos.length; i++){
 
-      this.tfIdfIdList.findIndex(idInfos[i])
-    }
+  //     this.tfIdfIdList.findIndex(idInfos[i])
+  //   }
     // var oneID = doc["id"];
     // oneID
-  }
+  // }
 }

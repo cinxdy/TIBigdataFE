@@ -2,10 +2,11 @@
   wordcloud works!
 </p>
 <div>
-  <angular-tag-cloud
-    [data]="data"
-    [width]="options.width"
-    [height]="options.height"
-    [overflow]="options.overflow">
-  </angular-tag-cloud>
+  <div *ngFor="let cData of cDatas"></div>
+    <angular-tag-cloud
+      [data]="cData"
+      [width]="options.width"
+      [height]="options.height"
+      [overflow]="options.overflow">
+    </angular-tag-cloud>
 </div>
