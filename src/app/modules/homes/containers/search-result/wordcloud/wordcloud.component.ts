@@ -16,9 +16,10 @@ export class WordcloudComponent implements OnInit {
   private fileDir : string = 'assets//homes_search_result_wordcloud/tfidfData.json';
   private tfIdfData : any;
   // private cData: CloudData[] ;//= new Array<CloudData>();
-  private cDatas : any[];
+  private cDatas : any[] = new Array();
   // private oneID : string;
   private idList_tfidf : string[] = new Array();
+
   ngOnInit() {
     this.http.get(this.fileDir).subscribe(data => {
       this.tfIdfData = data as [];
@@ -31,6 +32,7 @@ export class WordcloudComponent implements OnInit {
           //generate wordcloud
           this.idList_tfidf.push(this.tfIdfData[i]["docID"]);
           // this.tfIdfData[i]["docID"]
+          // console.log(this.tfIdfData[i]["IFIDF"]);
 
         }
         catch{
@@ -38,28 +40,45 @@ export class WordcloudComponent implements OnInit {
           console.log(this.tfIdfData[i]);
         }
       }
+      console.log("tfIdfData done!")
+      // console.log(this.tfIdfData);
+      //tfIDfData : tfIdf value가 있는 데이터
+      //idList_tfidf : tfIdfData에서 id만 뽑아내서 리스트
+      //idList : 선택한 문서들의 id가 있는 리스트.
+      //
 
       var idList = this._idList.getIdList()
       for(var i = 0 ; i <= idList.length; i++){
         var idx = this.idList_tfidf.indexOf(idList[i]);
+        if(idx < 0) continue;
+        console.log("idx = " + idx);
         var tfidfValList = this.tfIdfData[idx]["IFIDF"];
         var kwList = [];
         for(var j = 0 ; j <= tfidfValList.length; j++){
-          kwList.push(tfidfValList[j][0]);
-          if (j > tfidfValList.length / 2){
+          kwList.push([tfidfValList[j][0],tfidfValList[j][1]]);
+          // console.log(kwList[j])
+          if (j > 30){
             break;
           }
         }
         //gen word cloud with kwList
         let cData = new Array<CloudData>();
         for(var k = 0 ; k <= kwList.length; k++){
-          cData.push({text: kwList[k], weight: 10, link: 'https://google.com', color: '#ffaaee'});
+          try{
+          cData.push({text: kwList[k][0], weight:kwList[k][1] , link: 'https://google.com', color: '#ffaaee'});
+          }
+          catch{
+            console.log("index " + k + " has an error");
+          }
         }
+        console.log("this cData = " + cData);
         this.cDatas.push(cData);
       }
       // let idList = 
+      console.log(this.cDatas);
       
     });
+
   }
 
   cldData:CloudData;
