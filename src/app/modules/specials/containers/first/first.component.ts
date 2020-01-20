@@ -7,6 +7,8 @@ import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
 import { ConfigService } from './first.service';
 
+import Sunburst from 'sunburst-chart';
+
 import { Observable, of } from 'rxjs';
 
 import { dataSet } from './nodes';
@@ -25,26 +27,8 @@ import { doc } from './nodes';
 export class FirstComponent implements OnInit {
   constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
 
-  options: CloudOptions = {
-    // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
-    width: 500,
-    height: 400,
-    overflow: true,
-  };
-
-  cData: CloudData[] = [];
-
-
   private BASE_URL: string = 'http://localhost:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/three';
-
-
-  private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-  serverData: JSON;
-  employeeData: JSON;
-  searchKeyword;
-
-
 
   ngOnInit() {
 
@@ -101,41 +85,96 @@ export class FirstComponent implements OnInit {
         parentNode.tooltipTitle = "tooltop?";
         parentNode.order = i;
         // parentNode.showTooltip = true;
-        parentNode.value = data[i].length * 1000000;
+        parentNode.value = 30;//data[i].length * 1000000;
         parentNode.children = new Array<doc>();
 
         var num_doc = data[i].length;
         // this.addChildren(parentNode,num_doc,data,i);
-        // for(var j = 0; j < num_doc; j++){ //개별 토픽 안에서 각각 문서 선택
-        //   parentNode.children[j] = new doc();
-        //   var node = parentNode.children[j];
-        //   node.url = "To Be Added...";
-        //   node.name = data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
-        //                                   // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
-        //   node.value = parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
-        //   node.keyWords = data[i][j][2];
-        // }
+        for(var j = 0; j < num_doc; j++){ //개별 토픽 안에서 각각 문서 선택
+          parentNode.children[j] = new doc();
+          var node = parentNode.children[j];
+          node.url = "To Be Added...";
+          node.name = data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
+                                          // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
+          node.value = 10;//parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
+          node.keyWords = data[i][j][2];
+        }
       }
 
 
-      var myChart = CirclePack();
+      var myChart = Sunburst();
       myChart.data(dataset)
-        .width(300)
-        .height(300)
+        // .width(300)
+        // .height(300)
         .label('name')
+        // .minSliceAngle(0.4)	
         .size('value')
-        .color('color')
-        .onClick((d)=>{
-          if(d.level == "child")
-            console.log(d.name+d.keyWords)
-          else if (d.level == "parent"){
-            console.log("parent clicked")
-            var num_doc = data[d.order].length;
-            this.addChildren(d,num_doc,data,d.order);
-          }
-
+        .showTooltip((d)=>{
+          if(d.level != "child")
+            return false;
+          else
+            return true;
         })
-        (document.getElementById('chart'));
+        .tooltipTitle((d)=>{
+          if(d.level != "child")
+            return false;
+          else
+            return d.name;
+        })
+        // .showLabels(true)
+        .color('color')
+        // .onClick((d)=>{
+        //   if(d.level == "child")
+        //     console.log(d.name+d.keyWords)
+        //   else if (d.level == "parent"){
+        //     console.log("parent clicked")
+        //     var num_doc = data[d.order].length;
+        //     this.addChildren(d,num_doc,data,d.order);
+        //   }
+
+        // })
+        (
+          // document.getElementById('chartSun'),
+          document.getElementById('chartSun')
+        );
+        myChart = CirclePack();
+        myChart.data(dataset)
+        // .width(300)
+        // .height(300)
+        .label('name')
+        // .minSliceAngle(0.4)	
+        .size('value')
+        .showTooltip((d)=>{
+          if(d.level == "root")
+            return false;
+          else
+            return d.name;
+        })
+        .tooltipTitle((d)=>{
+          if(d.level != "root")
+            return d.name;
+          else
+            return false;
+        })
+        // .showLabels(true)
+        .color('color')
+        // .onClick((d)=>{
+        //   if(d.level == "child")
+        //     console.log(d.name+d.keyWords)
+        //   else if (d.level == "parent"){
+        //     console.log("parent clicked")
+        //     var num_doc = data[d.order].length;
+        //     this.addChildren(d,num_doc,data,d.order);
+        //   }
+
+        // })
+        (
+          // document.getElementById('chartSun'),
+          document.getElementById('chartCircle')
+        );
+
+
+        // myChart()
     }
     );//this.configService.getConfig().subscribe
 
@@ -157,27 +196,5 @@ export class FirstComponent implements OnInit {
     }
   }
 
-  getResult() {
-    this.searchKeyword = "flask test"
-    let body =
-      { "keyword": this.searchKeyword }
-
-    this.http.post(this.TEST_URL,
-      body)
-      .subscribe(
-        (data) => {
-          console.log(data);
-        }
-      )
-  }
-
-  toColor(num) {
-    num >>>= 0;
-    var b = num & 0xFF,
-      g = (num & 0xFF00) >>> 8,
-      r = (num & 0xFF0000) >>> 16,
-      a = ((num & 0xFF000000) >>> 24) / 255;
-    return "rgba(" + [r, g, b, a].join(",") + ")";
-  }
 
 }
