@@ -14,8 +14,8 @@ import { Observable, of} from 'rxjs';
 export class SearchNavComponent implements OnInit {
 
   //Flask data
- private BASE_URL: string = 'http://localhost:5000/test';
- private headers: Headers = new Headers({'Content-Type': 'application/json'});
+//  private BASE_URL: string = 'http://localhost:5000/test';
+//  private headers: Headers = new Headers({'Content-Type': 'application/json'});
  serverData: JSON;
 
 
@@ -46,8 +46,6 @@ export class SearchNavComponent implements OnInit {
   ngOnInit() {
     this.queryText= this.es.getKeyword();
     this.es.fullTextSearch(
-      SearchNavComponent.INDEX,
-      SearchNavComponent.TYPE,
       'post_body', this.queryText).then(
         response=> {
           this.articleSources = response.hits.hits;
@@ -56,6 +54,7 @@ export class SearchNavComponent implements OnInit {
           //console.error(error);
         }).then(()=> {
           this.sendResult();
+          console.log("ngOnInit");
         });
     
   }
@@ -65,16 +64,17 @@ export class SearchNavComponent implements OnInit {
       this.queryText = $event.target.value;
 
       this.es.fullTextSearch(
-        SearchNavComponent.INDEX,
-        SearchNavComponent.TYPE,
         'post_body', this.queryText).then(
           response=> {
             this.articleSources = response.hits.hits;
-            // console.log(this.articleSources);
+            console.log("in search function...")
+            console.log("search result test : ")
+            console.log(this.articleSources);
           }, error => {
             //console.error(error);
           }).then(()=> {
-            console.log('Search Completed!');
+            // console.log('Search Completed!');
+            console.log("20200109");
           });
         
     }

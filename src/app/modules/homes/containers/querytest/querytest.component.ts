@@ -15,32 +15,34 @@ export class QuerytestComponent implements OnInit {
 
 
   //Flask data
-  private BASE_URL: string = 'http://localhost:5000/test';
-  private headers: Headers = new Headers({'Content-Type': 'application/json'});
-  serverData: JSON;
+  private BASE_URL: string = 'http://localhost:5000/queryTest';
+  // private headers: Headers = new Headers({'Content-Type': 'application/json'});
+  // serverData: JSON;
 
 
-  isConnected = false;
-  status: string;
+  // isConnected = false;
+  // status: string;
 
-  subscription: Subscription
+  // subscription: Subscription
 
   searchKeyword: string;
 
 
-  articleSources: ArticleSource[];
+  // articleSources: ArticleSource[];
 
-  queryResults: ArticleSource[];
+  // queryResults: ArticleSource[];
 
   constructor(
     private http:HttpClient,
-    private es: ElasticsearchService, 
-    private cd: ChangeDetectorRef) { 
-    this.isConnected = false;
-    this.subscription = this.es.articleInfo$.subscribe( info => {
-      this.articleSources=info;
-      console.log(this.articleSources);
-    });
+    // private es: ElasticsearchService
+    )// , 
+    // private cd: ChangeDetectorRef) 
+    { 
+    // this.isConnected = false;
+    // this.subscription = this.es.articleInfo$.subscribe( info => {
+    //   this.articleSources=info;
+    //   console.log(this.articleSources);
+    // });
  
   }
 
