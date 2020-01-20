@@ -1,14 +1,19 @@
 <p>
   선택한 문서 워드 클라우드 분석
 </p>
-<div>
-  <div class="card card-body mb-2" *ngFor="let cData of cDatas; index as i">
-    <h1>{{ titles[i]}}</h1>
-    <angular-tag-cloud
-      [data]="cData"
-      [width]="options.width"
-      [height]="options.height"
-      [overflow]="options.overflow">
-    </angular-tag-cloud>
+<div class="uk-container">
+  <div class="row">
+    <div class="col-md">
+      <div class="card card-body mb-2" *ngFor="let cData of cDatas; index as i">
+        <h1>{{ titles[i] }}</h1>
+        <angular-tag-cloud
+          [data]="cData"
+          [width]="options.width"
+          [height]="options.height"
+          [overflow]="options.overflow"
+        >
+        </angular-tag-cloud>
+      </div>
+    </div>
   </div>
 </div>
