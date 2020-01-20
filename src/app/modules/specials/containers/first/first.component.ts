@@ -16,6 +16,7 @@ import { _topic } from './nodes';
 import { doc } from './nodes';
 
 
+
 @Component({
   selector: 'app-first',
   templateUrl: './first.component.html',
@@ -115,6 +116,7 @@ export class FirstComponent implements OnInit {
           else
             return true;
         })
+        .onClick(myChart.focusOnNode)
         .tooltipTitle((d)=>{
           if(d.level != "child")
             return false;
