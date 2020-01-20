@@ -16,4 +16,8 @@ export class IdListService {
     return this.idList;
   }
 
+  clearIds(){
+    this.idList = [];
+  }
+
 }
