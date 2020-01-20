@@ -32,7 +32,7 @@ export class GraphComponent implements OnInit {
     REG : "지역",
     SPO : "스포츠"
   }
-
+  
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value 
     width: 1000,
@@ -46,9 +46,7 @@ export class GraphComponent implements OnInit {
   ngOnInit() {
     this.getWordCloud("전체");
   }
-  getWordCloud(topic){
-
-    
+  getWordCloud(topic){  
     var wColor = "pink";
     var docNum = 9;
     if(topic=="POL"){
@@ -75,6 +73,7 @@ export class GraphComponent implements OnInit {
     } else if(topic=="SPO"){
       wColor = "purple";
       docNum = 6;
+
     }
    
     // console.log(this.http.get(this.fileDir));
@@ -94,6 +93,7 @@ export class GraphComponent implements OnInit {
       //Push data for WordCloud.
       //console.log(data[0][1][0])
 
+
       var sample = data[docNum][1] //2번째 문서 
 
         for(let i in sample){
@@ -106,7 +106,7 @@ export class GraphComponent implements OnInit {
           else
           this.cData.push({text:sample[i][0], weight: sample[i][1], color: 'gray'})
         }
-      
+
     });
 
 
