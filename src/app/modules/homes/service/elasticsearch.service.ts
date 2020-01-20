@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Client } from 'elasticsearch-browser';
 import * as elasticsearch from 'elasticsearch-browser'
-import { InheritDefinitionFeature } from '@angular/core/src/render3';
+//import { InheritDefinitionFeature } from '@angular/core/src/render3';
 import { ArticleSource} from '../containers/querytest/article.interface';
 import { Subject } from 'rxjs';
 

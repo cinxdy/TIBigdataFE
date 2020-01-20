@@ -24,7 +24,12 @@ export class SearchResultComponent implements OnInit {
 
   // private queryText = '';
 
-  // private lastKeypress = 0;
+  private static readonly INDEX = 'nkdb';
+  private static readonly TYPE = 'nkdb';
+
+  private queryText = '';
+ 
+  private lastKeypress = 0;
 
   articleSources: ArticleSource[];
 
