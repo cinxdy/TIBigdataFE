@@ -14,7 +14,7 @@ export class WordcloudComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
-
+  private keywords : string[] = new Array<string>();
   ngOnInit() {
     this.http.get(this.fileDir).subscribe(data => {
       let tfidfData = data as [];
@@ -27,14 +27,15 @@ export class WordcloudComponent implements OnInit {
         cData에 저장.
        */
       let idList = this._idList.getIdList(); // service에서 선택한 문서 id 받아온다.
-
+       console.log("ABC MART");
       for (var i = 0; i <= idList.length; i++) {
         let needData = {};
         needData = tfidfData.find(d => 
           d["docID"] === idList[i]
         );
-
-        let tfIdfVal = needData["IFIDF"];
+        let tfIdfVal = needData["TFIDF"];
+        
+        console.log(tf2);
         this.titles.push(needData["docTitle"]);
 
         //gen word cloud with kwList
@@ -50,6 +51,7 @@ export class WordcloudComponent implements OnInit {
                 // link: "https://google.com",
                 // color: "#ffaaee"
               });
+              
             } catch {
               console.log("index " + k + " has an error");
             }

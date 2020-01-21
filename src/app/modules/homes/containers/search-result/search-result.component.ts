@@ -6,7 +6,7 @@ import { ArticleSource } from "../shared/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdListService } from "./id-list-service/id-list.service";
-
+import { HttpClient } from "@angular/common/http";
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -15,7 +15,7 @@ import { IdListService } from "./id-list-service/id-list.service";
 export class SearchResultComponent implements OnInit {
   //Flask data
   private BASE_URL: string = "http://localhost:5000/keywordGraph";
-
+  private fileDir: string = "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
 
@@ -32,7 +32,7 @@ export class SearchResultComponent implements OnInit {
   private lastKeypress = 0;
 
   articleSources: ArticleSource[];
-
+  
   docId: string;
   isConnected = false;
   status: string;
@@ -58,6 +58,7 @@ export class SearchResultComponent implements OnInit {
       this.articleSources = info;
     });
     this.idList.clearIds();
+    //this.showKeyword();
   }
 
   //Get result from flask
@@ -69,8 +70,11 @@ export class SearchResultComponent implements OnInit {
   addList(i) {
     this.idList.setIdList(this.articleSources[i]["_id"]);
   }
+ //검색되어 나온 글들의 id 값을 array에 넣어줌 
 
   navToDataChart() {
     this._router.navigateByUrl("homes/wordcloud");
   }
+
+  
 }

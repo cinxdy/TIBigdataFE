@@ -24,7 +24,6 @@ import { AnalysisComponent } from './containers/search-result/analysis/analysis.
 import { SearchFilterComponent } from './containers/search-filter/search-filter.component';
 import { WordcloudComponent } from './containers/search-result/wordcloud/wordcloud.component';
 
-
 @NgModule({
   declarations: [
     HomeListContainerComponent,
@@ -43,7 +42,8 @@ import { WordcloudComponent } from './containers/search-result/wordcloud/wordclo
     SearchNavComponent,
     AnalysisComponent,
     SearchFilterComponent,
-    WordcloudComponent
+    WordcloudComponent,
+
    
   ],
   imports: [

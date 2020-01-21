@@ -11,17 +11,9 @@
      {{ (article.post_body.length > 80) ? (article.post_body | slice:0:80)+'..' : (article.post_body)}}
   </p>
 
-  
-
   <div class="uk-grid-small uk-child-width-auto" uk-grid>
-       
     {{article.post_date | date:"yyyy/MM/dd"}} |  {{article.post_writer}}
-  
-    </div>
- 
-   </article>
-  
-  
-  <hr>
+  </div>
+</article>
 </div>
 
