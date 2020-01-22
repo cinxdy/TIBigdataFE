@@ -19,7 +19,7 @@
   </div>
 
   <div class="uk-child-width-expand@s" uk-grid>
-    <div class="uk-width-1-4@m">
+    <div class="uk-width-1-4@s">
       <div class="search-filter">
         <app-search-filter></app-search-filter>
       </div>
@@ -28,7 +28,6 @@
     <div class="search-result">
       <form #dataForm="ngForm"(ngSubmit)="this.navToDataChart()">
         <button class="uk-button uk-button-success">Chosen Doc WordCloud</button>
-         
         <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
             <div class="col-xs">
@@ -37,8 +36,15 @@
               </div>
             </div>
             <div class="col">
-              <app-article-details [article]="articleSource._source">
-              </app-article-details> 키워드 위치
+              <div class = "row">
+                <div class = "container">
+                <app-article-details [article]="articleSource._source">
+                </app-article-details>
+              </div>
+         </div>
+              <div class = "row">
+                키워드 : {{keywords[i]}}
+              </div>
               <hr>
             </div>
           </div> <!--검색 결과의 마지막 -->

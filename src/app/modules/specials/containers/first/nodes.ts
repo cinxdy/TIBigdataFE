@@ -4,7 +4,6 @@
     level: string = "root";
     children: _topic[];
     color : string = "gray";
-    size : number = "40"; 
   }
   
   export class _topic {

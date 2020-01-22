@@ -14,7 +14,7 @@ export class WordcloudComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
-  private keywords : string[] = new Array<string>();
+  
   ngOnInit() {
     this.http.get(this.fileDir).subscribe(data => {
       let tfidfData = data as [];
@@ -34,8 +34,6 @@ export class WordcloudComponent implements OnInit {
           d["docID"] === idList[i]
         );
         let tfIdfVal = needData["TFIDF"];
-        
-        console.log(tf2);
         this.titles.push(needData["docTitle"]);
 
         //gen word cloud with kwList
