@@ -14,19 +14,20 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 })
 export class SearchResultComponent implements OnInit {
   //Flask data
-  private BASE_URL: string = "http://localhost:5000/keywordGraph";
+  // private BASE_URL: string = "http://localhost:5000/keywordGraph";
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
+  private RCMD_URL: string = "http://localhost:5000/rcmd";
+  // private static readonly INDEX = "nkdb";
+  // private static readonly TYPE = "nkdb";
 
-  private static readonly INDEX = "nkdb";
-  private static readonly TYPE = "nkdb";
+  // private queryText = "";
 
-  private queryText = "";
-
-  private lastKeypress = 0;
+  // private lastKeypress = 0;
   private idList: string[] = [];
+  private rcmdList : any[] = [];
 
   articleSources: ArticleSource[]; //이친구를 포문돌려서
   docId: string;
@@ -47,7 +48,7 @@ export class SearchResultComponent implements OnInit {
     });
   }
 
-  private thisURL: string = "http://localhost:4200/homes/searchResult";
+  // private thisURL: string = "http://localhost:4200/homes/searchResult";
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
@@ -56,6 +57,14 @@ export class SearchResultComponent implements OnInit {
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
       this.showKeyword();
+
+      this.http.post(this.RCMD_URL,{"idList" : this.idList},{headers : this.headers})
+      .subscribe(data =>{
+        this.rcmdList = data as [];
+        // console.log(data);
+      });
+
+
     });
 
     this.choiceIdList.clearIds();
@@ -132,7 +141,7 @@ export class SearchResultComponent implements OnInit {
           console.log("looking for : ", tfData[j]["docID"]);
         }
       }
-      // console.log(this.keywords);
+      console.log(this.idList);
     });
   }
 }
