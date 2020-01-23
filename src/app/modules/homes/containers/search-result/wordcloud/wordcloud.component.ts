@@ -58,7 +58,7 @@ export class WordcloudComponent implements OnInit {
         }
       }
 
-      console.log(this.cDatas);
+      // console.log(this.cDatas);
     });
   }
 
