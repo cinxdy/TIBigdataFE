@@ -32,8 +32,7 @@ export class WordcloudComponent implements OnInit {
         let needData = {};
         needData = tfidfData.find(d => d["docID"] === idList[i]);
         try {
-          let tfIdfVal = needData["IFIDF"];
-
+          let tfIdfVal = needData["TFIDF"];
           this.titles.push(needData["docTitle"]);
 
           //gen word cloud with kwList
@@ -65,8 +64,8 @@ export class WordcloudComponent implements OnInit {
   cldData: CloudData;
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
-    width: 1000,
-    height: 400,
+    width: 600,
+    height: 300,
     overflow: false
   };
 }
