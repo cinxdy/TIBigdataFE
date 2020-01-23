@@ -19,8 +19,8 @@ export class SearchNavComponent implements OnInit {
  serverData: JSON;
 
 
- private static readonly INDEX = 'nkdboard';
-  private static readonly TYPE = 'nkdboard';
+//  private static readonly INDEX = 'nkdboard';
+  // private static readonly TYPE = 'nkdboard';
 
   private queryText = '';
  
@@ -38,10 +38,10 @@ export class SearchNavComponent implements OnInit {
 
   constructor(
     public _router: Router,
-    private http:HttpClient,
+    // private http:HttpClient,
     private es: ElasticsearchService, 
-    private cd: ChangeDetectorRef) { 
-  }
+    // private cd: ChangeDetectorRef
+    ) { }
 
   ngOnInit() {
     this.queryText= this.es.getKeyword();
@@ -67,14 +67,14 @@ export class SearchNavComponent implements OnInit {
         'post_body', this.queryText).then(
           response=> {
             this.articleSources = response.hits.hits;
-            console.log("in search function...")
-            console.log("search result test : ")
-            console.log(this.articleSources);
+            // console.log("in search function...")
+            // console.log("search result test : ")
+            // console.log(this.articleSources);
           }, error => {
             //console.error(error);
           }).then(()=> {
             // console.log('Search Completed!');
-            console.log("20200109");
+            // console.log("20200109");
           });
         
     }

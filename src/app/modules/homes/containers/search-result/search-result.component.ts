@@ -79,7 +79,7 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("homes/wordcloud");
   }
 
-  private keywords: [] = [];
+  private keywords: any[] = [];
   
   showKeyword(){
   this.http.get(this.fileDir).subscribe(data => {
@@ -113,9 +113,6 @@ export class SearchResultComponent implements OnInit {
       for(var k = 0; k<3; k++){
         word = tfVal[k][0];
         kws.push(word);
-        //console.log(word);
-        //kws[k] = word;
-        //console.log(kws[j]);
       }
       console.log(kws);
       this.keywords.push(kws);
