@@ -6,19 +6,21 @@ import { ArticleSource } from "../shared/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdListService } from "./id-list-service/id-list.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
   styleUrls: ["./search-result.component.less"]
 })
+
 export class SearchResultComponent implements OnInit {
   //Flask data
   private BASE_URL: string = "http://localhost:5000/keywordGraph";
   private fileDir: string = "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
-
+ 
+  
   private static readonly INDEX = 'nkdb';
   private static readonly TYPE = 'nkdb';
 
@@ -48,12 +50,18 @@ export class SearchResultComponent implements OnInit {
     });
   }
 
+  private thisURL :string = "http://localhost:4200/homes/searchResult";
+  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  
   ngOnInit() {
-    this.subscription = this.es.articleInfo$.subscribe(info => {
-      this.articleSources = info;
-      this.showKeyword();
-    });
-    this.idList.clearIds();
+    
+      this.subscription = this.es.articleInfo$.subscribe(info => {
+        this.articleSources = info;
+        this.showKeyword();
+      });
+      
+      this.idList.clearIds();
+    
   }
 
   //Get result from flask
@@ -71,7 +79,7 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("homes/wordcloud");
   }
 
-  private keywords: any[] = [];
+  private keywords: [] = [];
   
   showKeyword(){
   this.http.get(this.fileDir).subscribe(data => {
@@ -99,7 +107,7 @@ export class SearchResultComponent implements OnInit {
       
       let tfVal = needData["TFIDF"];
       
-      let kws : string[]=[];
+      const kws = [] as any;
       let word;
       console.log(j, " 문서");
       for(var k = 0; k<3; k++){

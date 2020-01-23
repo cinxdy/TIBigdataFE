@@ -14,7 +14,7 @@ export class WordcloudComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
-  
+
   ngOnInit() {
     this.http.get(this.fileDir).subscribe(data => {
       let tfidfData = data as [];
@@ -27,12 +27,13 @@ export class WordcloudComponent implements OnInit {
         cData에 저장.
        */
       let idList = this._idList.getIdList(); // service에서 선택한 문서 id 받아온다.
-       console.log("ABC MART");
+
       for (var i = 0; i <= idList.length; i++) {
         let needData = {};
         needData = tfidfData.find(d => 
           d["docID"] === idList[i]
         );
+
         let tfIdfVal = needData["TFIDF"];
         this.titles.push(needData["docTitle"]);
 
@@ -49,7 +50,6 @@ export class WordcloudComponent implements OnInit {
                 // link: "https://google.com",
                 // color: "#ffaaee"
               });
-              
             } catch {
               console.log("index " + k + " has an error");
             }
@@ -106,8 +106,8 @@ export class WordcloudComponent implements OnInit {
   cldData: CloudData;
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
-    width: 1000,
-    height: 400,
+    width: 600,
+    height: 300,
     overflow: false
   };
 
