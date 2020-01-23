@@ -102,12 +102,12 @@ export class SearchResultComponent implements OnInit {
         j1 = titles[i]["_id"];
         // let j2 = [];
         // j2 = j1["_id"];
-        console.log(j1);
+        // console.log(j1);
         this.idList[i] = j1;
       }
 
-      console.log("TTT");
-      console.log(this.idList); //아이디를 담고있는 배열
+      // console.log("TTT");
+      // console.log(this.idList); //아이디를 담고있는 배열
 
       for (var j = 0; j < this.idList.length; j++) {
         let needData = {};
@@ -128,6 +128,8 @@ export class SearchResultComponent implements OnInit {
         } catch {
           console.log("error at index " + j);
           console.log("obejct detail : " + needData);
+          // console.l
+          console.log("looking for : ", tfData[j]["docID"]);
         }
       }
       // console.log(this.keywords);

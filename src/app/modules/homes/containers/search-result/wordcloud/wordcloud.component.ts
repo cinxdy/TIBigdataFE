@@ -53,7 +53,7 @@ export class WordcloudComponent implements OnInit {
           this.cDatas.push(cData);
         } catch {
           console.log("error in " + i);
-          console.log("object detail : " + needData);
+          console.log("object detail : " + tfidfData[i]["docID"]);
         }
       }
 
