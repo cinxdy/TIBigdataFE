@@ -27,7 +27,7 @@ export class SearchResultComponent implements OnInit {
 
   // private lastKeypress = 0;
   private idList: string[] = [];
-  private rcmdList : any[] = [];
+  private rcmdList : {};
 
   articleSources: ArticleSource[]; //이친구를 포문돌려서
   docId: string;
@@ -60,8 +60,19 @@ export class SearchResultComponent implements OnInit {
 
       this.http.post(this.RCMD_URL,{"idList" : this.idList},{headers : this.headers})
       .subscribe(data =>{
-        this.rcmdList = data as [];
-        // console.log(data);
+        this.rcmdList = data;
+        // console.log(this.rcmdList);
+        /**
+         * 해야 할 것.
+         * 받은 rcmdList = { "id" : "abcd", "rcmd" : ["a", ...]}
+         * 여기서 받은 id의 순서와 보낸 id의 순서가 일치하는지 확인해야 한다.
+         * 그리고 만약 페이지가 2개 이상이 되면...어떻게 바뀌어야 하는지도 생각해보아야 함.
+         * 
+         * 아무튼...
+         * rcdmList에서 하니씩 뽑은 다음에...
+         * ngFor = "rcdm in this.rcdmList"
+         * rcdm["rcmd"]
+         */
       });
 
 
