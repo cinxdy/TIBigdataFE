@@ -56,12 +56,12 @@ export class SearchResultComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
-      this.showKeyword();
-
+      
       this.http.post(this.RCMD_URL,{"idList" : this.idList},{headers : this.headers})
       .subscribe(data =>{
+        console.log("data : " + data);
         this.rcmdList = data;
-        // console.log(this.rcmdList);
+        console.log("this.rcmdList : " + this.rcmdList);
         /**
          * 해야 할 것.
          * 받은 rcmdList = { "id" : "abcd", "rcmd" : ["a", ...]}
@@ -73,6 +73,7 @@ export class SearchResultComponent implements OnInit {
          * ngFor = "rcdm in this.rcdmList"
          * rcdm["rcmd"]
          */
+        this.showKeyword();
       });
 
 
