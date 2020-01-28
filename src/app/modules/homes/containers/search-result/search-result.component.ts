@@ -6,7 +6,7 @@ import { ArticleSource } from "../shared/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdListService } from "./id-list-service/id-list.service";
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -19,24 +19,24 @@ export class SearchResultComponent implements OnInit {
   private fileDir: string = "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
- 
-  
+
+
   private static readonly INDEX = 'nkdb';
   private static readonly TYPE = 'nkdb';
 
   private queryText = '';
- 
+
   private lastKeypress = 0;
 
-  
+
   articleSources: ArticleSource[]; //이친구를 포문돌려서 
   docId: string;
   isConnected = false;
   status: string;
   subscription: Subscription;
   searchKeyword: string;
-  
-   
+
+
   constructor(
     private idList: IdListService,
     public _router: Router,
@@ -46,22 +46,22 @@ export class SearchResultComponent implements OnInit {
   ) {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
-    this.articleSources = info;
+      this.articleSources = info;
     });
   }
 
-  private thisURL :string = "http://localhost:4200/homes/searchResult";
-  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
-  
+  private thisURL: string = "http://localhost:4200/homes/searchResult";
+  private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+
   ngOnInit() {
-    
-      this.subscription = this.es.articleInfo$.subscribe(info => {
-        this.articleSources = info;
-        this.showKeyword();
-      });
-      
-      this.idList.clearIds();
-    
+
+    this.subscription = this.es.articleInfo$.subscribe(info => {
+      this.articleSources = info;
+      this.showKeyword();
+    });
+
+    this.idList.clearIds();
+
   }
 
   //Get result from flask
@@ -73,51 +73,51 @@ export class SearchResultComponent implements OnInit {
   addList(i) {
     this.idList.setIdList(this.articleSources[i]["_id"]);
   }
- //검색되어 나온 글들의 id 값을 array에 넣어줌 
+  //검색되어 나온 글들의 id 값을 array에 넣어줌 
 
   navToDataChart() {
     this._router.navigateByUrl("homes/wordcloud");
   }
 
   private keywords: any[] = [];
-  
-  showKeyword(){
-  this.http.get(this.fileDir).subscribe(data => {
-        let tfData = data as []; //전체 자료 불러오고
-  
-    let titles = this.articleSources as []; //검색된 데이터들을 받음 
 
-    let a1 = [];
+  showKeyword() {
+    this.http.get(this.fileDir).subscribe(data => {
+      let tfData = data as []; //전체 자료 불러오고
 
-    for(var i  in titles){
-  //  for(var i = 0; titles[i];i++){
-      let j1 : [];
-      j1 = titles[i];
-      let j2 = [];
-      j2 = j1["_id"];
-      console.log(j2);
-      a1[i] = j2;
-    }
-    
-    console.log("TTT");
-    console.log(a1); //아이디를 담고있는 배열 
-    
-    for(var j = 0; j<a1.length;j++){
-      let needData = {}; needData = tfData.find(d=>d["docID"] === a1[j]);
-      
-      let tfVal = needData["TFIDF"];
-      
-      const kws = [] as any;
-      let word;
-      console.log(j, " 문서");
-      for(var k = 0; k<3; k++){
-        word = tfVal[k][0];
-        kws.push(word);
+      let titles = this.articleSources as []; //검색된 데이터들을 받음 
+
+      let a1 = [];
+
+      for (var i in titles) {
+        //  for(var i = 0; titles[i];i++){
+        let j1: [];
+        j1 = titles[i];
+        let j2 = [];
+        j2 = j1["_id"];
+        console.log(j2);
+        a1[i] = j2;
       }
-      console.log(kws);
-      this.keywords.push(kws);
-    }
-    console.log(this.keywords);
-  }); 
+
+      console.log("TTT");
+      console.log(a1); //아이디를 담고있는 배열 
+
+      for (var j = 0; j < a1.length; j++) {
+        let needData = {}; needData = tfData.find(d => d["docID"] === a1[j]);
+
+        let tfVal = needData["TFIDF"];
+
+        const kws = [] as any;
+        let word;
+        console.log(j, " 문서");
+        for (var k = 0; k < 3; k++) {
+          word = tfVal[k][0];
+          kws.push(word);
+        }
+        console.log(kws);
+        this.keywords.push(kws);
+      }
+      console.log(this.keywords);
+    });
   }
 }

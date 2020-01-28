@@ -12,7 +12,6 @@ export class NavComponent implements OnInit {
   constructor(public _router: Router, private _auth: EPAuthService) {
 
    }
-
   ngOnInit() {
     
   }
@@ -20,6 +19,10 @@ export class NavComponent implements OnInit {
   
   navigateSpecials(){
     this._router.navigateByUrl("/specials/first");
+  }
+
+  toDashBoard(){
+    this._router.navigateByUrl("/specials/second");
   }
 
   navigateParser(){
@@ -53,8 +56,6 @@ export class NavComponent implements OnInit {
   toEvent(){
     this._router.navigateByUrl("/membership/event");
   }
-  // 페이지 이동
-
 
 }
 

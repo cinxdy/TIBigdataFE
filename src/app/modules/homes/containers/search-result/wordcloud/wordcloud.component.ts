@@ -9,7 +9,7 @@ import { IdListService } from "../id-list-service/id-list.service";
   styleUrls: ["./wordcloud.component.less"]
 })
 export class WordcloudComponent implements OnInit {
-  constructor(private http: HttpClient, private _idList: IdListService) {}
+  constructor(private http: HttpClient, private _idList: IdListService) { }
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
@@ -30,7 +30,7 @@ export class WordcloudComponent implements OnInit {
 
       for (var i = 0; i <= idList.length; i++) {
         let needData = {};
-        needData = tfidfData.find(d => 
+        needData = tfidfData.find(d =>
           d["docID"] === idList[i]
         );
 
@@ -43,17 +43,17 @@ export class WordcloudComponent implements OnInit {
           if (k > 30) {
             break;
           }
-            try {
-              cData.push({
-                text: tfIdfVal[k][0],
-                weight: tfIdfVal[k][1]
-                // link: "https://google.com",
-                // color: "#ffaaee"
-              });
-            } catch {
-              console.log("index " + k + " has an error");
-            }
-          
+          try {
+            cData.push({
+              text: tfIdfVal[k][0],
+              weight: tfIdfVal[k][1]
+              // link: "https://google.com",
+              // color: "#ffaaee"
+            });
+          } catch {
+            console.log("index " + k + " has an error");
+          }
+
         }
         this.cDatas.push(cData);
       }

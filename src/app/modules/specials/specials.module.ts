@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FirstComponent } from './containers/first/first.component';
 import { SpecialsRoutingModule } from './specials-routing.module';
+import { FirstComponent } from './containers/first/first.component';
+import { SecondComponent } from './containers/second/second.component';
+//import { DashboardComponent } from './containers/second/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
-    FirstComponent
+    FirstComponent,
+    SecondComponent
+   // DashboardComponent
   ],
   imports: [
     SpecialsRoutingModule,
     CommonModule
   ],
-  exports: [FirstComponent]
+  exports: [FirstComponent, SecondComponent]
 })
 export class SpecialsModule { }
