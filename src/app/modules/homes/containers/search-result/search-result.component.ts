@@ -29,7 +29,8 @@ export class SearchResultComponent implements OnInit {
 
   // private lastKeypress = 0;
   private idList: string[] = [];
-  private rcmdList : {};
+  private rcmdList: {};
+  private loaded: boolean = false;
 
   articleSources: ArticleSource[]; //이친구를 포문돌려서
   docId: string;
@@ -56,32 +57,78 @@ export class SearchResultComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.loaded = false;
+    this.idList = [];
+
+    // let searchRst = new Promise(resolve =>
+    // resolve(() => {
+    this.es.articleInfo$.subscribe(articles => {
+      new Promise(r => {
+        // console.log("1st entered");
+        this.articleSources = articles;
+        r();
+      }).then(() => {
+        // console.log("2nd entered");
+        this.showKeyword();
+      /***
+           * 받아와서 해야 할 세가지 일이 있다.
+           * id을 딴다.
+           * TF-IDF 테이블을 받아온다.
+           * 비교한다.
+           * flask에 요청해서 받아온다.
+
+           */
+
+      // this.articleSources = info;
+
+      // this.loaded = true;
+    });
+    // })
+    // );
+
+    // searchRst.then(() => {
+    // console.log("idList : " + this.idList);
+    // console.log("airticles : " + this.articleSources);
+    // this.getRcmd();
+    // });
+
+    /***
+
+
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
-      
-      this.http.post(this.RCMD_URL,{"idList" : this.idList},{headers : this.headers})
-      .subscribe(data =>{
-        console.log("data : " + data);
-        this.rcmdList = data;
-        console.log("this.rcmdList : " + this.rcmdList);
-        /**
-         * 해야 할 것.
-         * 받은 rcmdList = { "id" : "abcd", "rcmd" : ["a", ...]}
-         * 여기서 받은 id의 순서와 보낸 id의 순서가 일치하는지 확인해야 한다.
-         * 그리고 만약 페이지가 2개 이상이 되면...어떻게 바뀌어야 하는지도 생각해보아야 함.
-         * 
-         * 아무튼...
-         * rcdmList에서 하니씩 뽑은 다음에...
-         * ngFor = "rcdm in this.rcdmList"
-         * rcdm["rcmd"]
-         */
-        this.showKeyword();
+
+
+
+
+
+      this.showKeyword().then(() => {
+        console.log("showKeyword done");
+        console.log("after show keywords this idList " + this.idList);
+
+
+        
+
+            console.log("load done!");
+            this.loaded = true;
+          });
       });
-
-
     });
 
     this.choiceIdList.clearIds();
+    */
+  })
+}
+
+  getRcmd() {
+    this.http
+      .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
+      .subscribe(data => {
+        // console.log("data : " + data);
+        this.rcmdList = data;
+        this.loaded = true;
+        // console.log("this.rcmdList : " + this.rcmdList);
+      });
   }
 
   //Get result from flask
@@ -107,30 +154,11 @@ export class SearchResultComponent implements OnInit {
 
       let titles = this.articleSources as []; //검색된 데이터들을 받음
 
-      // let idList = [];
-
-      //   for(var i  in titles){
-      // //  for(var i = 0; titles[i];i++){
-      //     let j1 : [];
-      //     j1 = titles[i];
-      //     let j2 = [];
-      //     j2 = j1["_id"];
-      //     console.log(j2);
-      //     idList[i] = j2;
-      //   }
-
       for (var i in titles) {
-        //  for(var i = 0; titles[i];i++){
         let j1: string;
         j1 = titles[i]["_id"];
-        // let j2 = [];
-        // j2 = j1["_id"];
-        // console.log(j1);
         this.idList[i] = j1;
       }
-
-      // console.log("TTT");
-      // console.log(this.idList); //아이디를 담고있는 배열
 
       for (var j = 0; j < this.idList.length; j++) {
         let needData = {};
@@ -141,21 +169,21 @@ export class SearchResultComponent implements OnInit {
 
           const kws = [] as any;
           let word;
-          // console.log(j, " 문서");
           for (var k = 0; k < 3; k++) {
             word = tfVal[k][0];
             kws.push(word);
           }
-          // console.log(kws);
           this.keywords.push(kws);
         } catch {
           console.log("error at index " + j);
           console.log("obejct detail : " + needData);
-          // console.l
           console.log("looking for : ", tfData[j]["docID"]);
         }
       }
-      console.log(this.idList);
+
+      // console.log("in http this.idlist" + this.idList);
+      this.getRcmd();
     });
+    // console.log("outer http this.idList" + this.idList);
   }
 }
