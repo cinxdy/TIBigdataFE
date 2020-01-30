@@ -5,19 +5,19 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './modules/homes/homes.module#HomesModule'
+    loadChildren: () => import('./modules/homes/homes.module').then(m => m.HomesModule)
   },
   {
     path: 'homes',
-    loadChildren: './modules/homes/homes.module#HomesModule'
+    loadChildren: () => import('./modules/homes/homes.module').then(m => m.HomesModule)
   },
   {
     path: 'specials',
-    loadChildren: './modules/specials/specials.module#SpecialsModule'
+    loadChildren: () => import('./modules/specials/specials.module').then(m => m.SpecialsModule)
   },
   {
     path: 'membership',
-    loadChildren: './modules/core/core.module#CoreModule'
+    loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule)
   },
  
  
