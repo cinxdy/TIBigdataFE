@@ -4,7 +4,7 @@ import { HomeListContainerComponent } from './containers/home-list-container/hom
 import { HomesRoutingModule } from './homes-routing.module';
 import { CoreModule } from '../core/core.module';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { BrowserModule } from '@angular/platform-browser';
+//import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HttpModule} from '@angular/http';

@@ -21,10 +21,6 @@ export class NavComponent implements OnInit {
     this._router.navigateByUrl("/specials/first");
   }
 
-  toDashBoard(){
-    this._router.navigateByUrl("/specials/second");
-  }
-
   navigateParser(){
     this._router.navigateByUrl("/homes/flask");
   }
