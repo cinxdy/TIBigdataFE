@@ -19,8 +19,8 @@ export class SearchResultComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
-  private RCMD_URL: string = "http://localhost:5000/rcmd";
-  // private RCMD_URL: string = "http://203.252.103.123:5000/rcmd";
+  // private RCMD_URL: string = "http://localhost:5000/rcmd";
+  private RCMD_URL: string = "http://203.252.103.123:5000/rcmd";
 
   // private static readonly INDEX = "nkdb";
   // private static readonly TYPE = "nkdb";
@@ -60,63 +60,15 @@ export class SearchResultComponent implements OnInit {
     this.loaded = false;
     this.idList = [];
 
-    // let searchRst = new Promise(resolve =>
-    // resolve(() => {
     this.es.articleInfo$.subscribe(articles => {
       new Promise(r => {
-        // console.log("1st entered");
         this.articleSources = articles;
         r();
       }).then(() => {
-        // console.log("2nd entered");
         this.showKeyword();
-      /***
-           * 받아와서 해야 할 세가지 일이 있다.
-           * id을 딴다.
-           * TF-IDF 테이블을 받아온다.
-           * 비교한다.
-           * flask에 요청해서 받아온다.
-
-           */
-
-      // this.articleSources = info;
-
-      // this.loaded = true;
+    
     });
-    // })
-    // );
-
-    // searchRst.then(() => {
-    // console.log("idList : " + this.idList);
-    // console.log("airticles : " + this.articleSources);
-    // this.getRcmd();
-    // });
-
-    /***
-
-
-    this.subscription = this.es.articleInfo$.subscribe(info => {
-      this.articleSources = info;
-
-
-
-
-
-      this.showKeyword().then(() => {
-        console.log("showKeyword done");
-        console.log("after show keywords this idList " + this.idList);
-
-
-        
-
-            console.log("load done!");
-            this.loaded = true;
-          });
-      });
-    });
-
-    this.choiceIdList.clearIds();
-    */
+    
   })
 }
 
@@ -124,10 +76,8 @@ export class SearchResultComponent implements OnInit {
     this.http
       .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
       .subscribe(data => {
-        // console.log("data : " + data);
         this.rcmdList = data;
         this.loaded = true;
-        // console.log("this.rcmdList : " + this.rcmdList);
       });
   }
 
@@ -181,9 +131,7 @@ export class SearchResultComponent implements OnInit {
         }
       }
 
-      // console.log("in http this.idlist" + this.idList);
       this.getRcmd();
     });
-    // console.log("outer http this.idList" + this.idList);
   }
 }
