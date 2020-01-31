@@ -15,7 +15,7 @@ interface Post{
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.less']
 })
-export class FiltersComponent implements OnInit {
+/*export*/ class FiltersComponent implements OnInit {
 
   public post;
 
