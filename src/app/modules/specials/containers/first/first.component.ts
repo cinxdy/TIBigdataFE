@@ -129,53 +129,57 @@ export class FirstComponent implements OnInit {
         .color('color')
         .onClick((d)=>{
           if(d.level == "child")
-            console.log(d.name+d.contents+d.keyWords)
-          else if (d.level == "parent"){
-            console.log(d.name)
+            console.log(d.name+d.contents+d.keyWords);
+          else
+            myChart.focusOnNode(d);
+            // focusOn
+            // console.log("hey");
+            // else if (d.level == "parent"){
+            // console.log(d.name)
             // var num_doc = data[d.order].length;
             // this.addChildren(d,num_doc,data,d.order);
-          }
+          // }
 
         })
         (
           // document.getElementById('chartSun'),
           document.getElementById('chartSun')
         );
-        myChart = CirclePack();
-        myChart.data(dataset)
-        // .width(300)
-        // .height(300)
-        .label('name')
-        // .minSliceAngle(0.4)	
-        .size('value')
-        .showTooltip((d)=>{
-          if(d.level == "root")
-            return false;
-          else
-            return d.name;
-        })
-        .tooltipTitle((d)=>{
-          if(d.level != "root")
-            return d.name;
-          else
-            return false;
-        })
-        // .showLabels(true)
-        .color('color')
-        // .onClick((d)=>{
-        //   if(d.level == "child")
-        //     console.log(d.name+d.keyWords)
-        //   else if (d.level == "parent"){
-        //     console.log("parent clicked")
-        //     // var num_doc = data[d.order].length;
-        //     // this.addChildren(d,num_doc,data,d.order);
-        //   }
-
+        // myChart = CirclePack();
+        // myChart.data(dataset)
+        // // .width(300)
+        // // .height(300)
+        // .label('name')
+        // // .minSliceAngle(0.4)	
+        // .size('value')
+        // .showTooltip((d)=>{
+        //   if(d.level == "root")
+        //     return false;
+        //   else
+        //     return d.name;
         // })
-        (
-          // document.getElementById('chartSun'),
-          document.getElementById('chartCircle')
-        );
+        // .tooltipTitle((d)=>{
+        //   if(d.level != "root")
+        //     return d.name;
+        //   else
+        //     return false;
+        // })
+        // // .showLabels(true)
+        // .color('color')
+        // // .onClick((d)=>{
+        // //   if(d.level == "child")
+        // //     console.log(d.name+d.keyWords)
+        // //   else if (d.level == "parent"){
+        // //     console.log("parent clicked")
+        // //     // var num_doc = data[d.order].length;
+        // //     // this.addChildren(d,num_doc,data,d.order);
+        // //   }
+
+        // // })
+        // (
+        //   // document.getElementById('chartSun'),
+        //   document.getElementById('chartCircle')
+        // );
 
 
         // myChart()
