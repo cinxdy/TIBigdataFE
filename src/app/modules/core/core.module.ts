@@ -22,7 +22,7 @@ import {
 
 import { HeaderContainerComponent } from './containers/header-container/header-container.component';
 import { NavComponent } from './componets/nav/nav.component';
-import { FiltersComponent } from './componets/filters/filters.component';
+// import { FiltersComponent } from './componets/filters/filters.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { RegisterComponent } from './componets/membership/register/register.component';
 import { LoginComponent } from './componets/membership/login/login.component';
@@ -45,7 +45,7 @@ let config = new AuthServiceConfig([
   declarations: [
     HeaderContainerComponent, 
     NavComponent, 
-    FiltersComponent,
+    // FiltersComponent,
     RegisterComponent,
     LoginComponent,
     EventsComponent

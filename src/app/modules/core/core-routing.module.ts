@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HeaderContainerComponent } from './containers/header-container/header-container.component';
 import { NavComponent } from './componets/nav/nav.component';
 
-import { FiltersComponent } from './componets/filters/filters.component';
+// import { FiltersComponent } from './componets/filters/filters.component';
 
 import { RegisterComponent } from './componets/membership/register/register.component';
 import { LoginComponent } from './componets/membership/login/login.component';
