@@ -30,6 +30,10 @@ export class FirstComponent implements OnInit {
   private BASE_URL: string = 'http://localhost:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/three';
 
+  private title : string;
+  private contents : string;
+  private keywords : string;
+
   ngOnInit() {
 
     this.configService.getConfig().subscribe(data => {
@@ -108,8 +112,8 @@ export class FirstComponent implements OnInit {
 
       var myChart = Sunburst();
       myChart.data(dataset)
-        // .width(300)
-        // .height(300)
+        .width(500)
+        .height(500)
         .label('name')
         // .minSliceAngle(0.4)	
         .size('value')
@@ -128,8 +132,13 @@ export class FirstComponent implements OnInit {
         // .showLabels(true)
         .color('color')
         .onClick((d)=>{
-          if(d.level == "child")
-            console.log(d.name+d.contents+d.keyWords);
+          if(d.level == "child"){
+            this.title = "" + d.name;
+            this.contents = "Contents : " + d.contents;
+            this.keywords = "Keywords : " + d.keyWords;
+            // console.log(d.name+d.contents+d.keyWords);
+            
+          }
           else
             myChart.focusOnNode(d);
             // focusOn
