@@ -16,7 +16,6 @@ import { _topic } from './nodes';
 import { doc } from './nodes';
 
 
-
 @Component({
   selector: 'app-first',
   templateUrl: './first.component.html',
@@ -78,27 +77,31 @@ export class FirstComponent implements OnInit {
 
       dataset.children = chds;
 
+//({"topic" : {"topic_num":topicIdx, "words" : arr},
+//   "doc" : sameTopicDocArrTitle[topicIdx]})
 
       for (var i = 0; i < num_topic; i++) {
         dataset.children[i] = new _topic();
         var parentNode = dataset.children[i];
-        parentNode.name = "Topic #"+ i;
-        parentNode.tooltipTitle = "tooltop?";
+        parentNode.name = data[i]["topic"]["words"];//"Topic #"+ i;
+        // parentNode.tooltipTitle = "tooltop?";
         parentNode.order = i;
         // parentNode.showTooltip = true;
         parentNode.value = 30;//data[i].length * 1000000;
         parentNode.children = new Array<doc>();
 
-        var num_doc = data[i].length;
+        var num_doc = data[i]["doc"].length;
+        // console.log(num_doc);
         // this.addChildren(parentNode,num_doc,data,i);
         for(var j = 0; j < num_doc; j++){ //개별 토픽 안에서 각각 문서 선택
           parentNode.children[j] = new doc();
           var node = parentNode.children[j];
           node.url = "To Be Added...";
-          node.name = data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
+          node.name = data[i]["doc"][j]["title"];//data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
                                           // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
           node.value = 10;//parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
-          node.keyWords = data[i][j][2];
+          node.contents = data[i]["doc"][j]["contents"];
+          node.keyWords = data[i]["doc"][j]["words"];
         }
       }
 
@@ -111,30 +114,29 @@ export class FirstComponent implements OnInit {
         // .minSliceAngle(0.4)	
         .size('value')
         .showTooltip((d)=>{
-          if(d.level != "child")
-            return false;
-          else
-            return true;
-        })
-        .onClick(myChart.focusOnNode)
-        .tooltipTitle((d)=>{
-          if(d.level != "child")
+          if(d.level == "root")
             return false;
           else
             return d.name;
         })
+        .tooltipTitle((d)=>{
+          if(d.level != "root")
+            return d.name;
+          else
+            return false;
+        })
         // .showLabels(true)
         .color('color')
-        // .onClick((d)=>{
-        //   if(d.level == "child")
-        //     console.log(d.name+d.keyWords)
-        //   else if (d.level == "parent"){
-        //     console.log("parent clicked")
-        //     var num_doc = data[d.order].length;
-        //     this.addChildren(d,num_doc,data,d.order);
-        //   }
+        .onClick((d)=>{
+          if(d.level == "child")
+            console.log(d.name+d.contents+d.keyWords)
+          else if (d.level == "parent"){
+            console.log(d.name)
+            // var num_doc = data[d.order].length;
+            // this.addChildren(d,num_doc,data,d.order);
+          }
 
-        // })
+        })
         (
           // document.getElementById('chartSun'),
           document.getElementById('chartSun')
@@ -165,8 +167,8 @@ export class FirstComponent implements OnInit {
         //     console.log(d.name+d.keyWords)
         //   else if (d.level == "parent"){
         //     console.log("parent clicked")
-        //     var num_doc = data[d.order].length;
-        //     this.addChildren(d,num_doc,data,d.order);
+        //     // var num_doc = data[d.order].length;
+        //     // this.addChildren(d,num_doc,data,d.order);
         //   }
 
         // })
