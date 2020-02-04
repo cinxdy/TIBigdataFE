@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HeaderContainerComponent } from './containers/header-container/header-container.component';
-import { NavComponent } from './componets/nav/nav.component';
+import { NavComponent } from '../homes/nav/nav.component';
 
 // import { FiltersComponent } from './componets/filters/filters.component';
 

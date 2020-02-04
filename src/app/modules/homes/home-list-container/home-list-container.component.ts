@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import APP_CONFIG from '../../../../app.config';
+import APP_CONFIG from '../../../app.config';
 
 @Component({
   selector: 'app-home-list-container',

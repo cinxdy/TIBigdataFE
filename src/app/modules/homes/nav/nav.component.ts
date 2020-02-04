@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { EPAuthService } from '../membership/auth.service'
+import { EPAuthService } from '../../core/componets/membership/auth.service'
 
 @Component({
   selector: 'app-nav',

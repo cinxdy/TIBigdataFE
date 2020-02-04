@@ -21,7 +21,7 @@ import {
   MatSnackBarModule } from '@angular/material';
 
 import { HeaderContainerComponent } from './containers/header-container/header-container.component';
-import { NavComponent } from './componets/nav/nav.component';
+import { NavComponent } from '../homes/nav/nav.component';
 // import { FiltersComponent } from './componets/filters/filters.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { RegisterComponent } from './componets/membership/register/register.component';
