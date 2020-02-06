@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import { ElasticsearchService } from '../../../homes/body/search/service/elasticsearch.service';
-import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
+import { ElasticsearchService } from '../../../search/service/elasticsearch.service';
+
+import * as CanvasJS from '../../../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
 import { ConfigService } from './first.service';
 
