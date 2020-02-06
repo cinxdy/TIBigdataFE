@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ElasticsearchService } from '../../../homes/service/elasticsearch.service';
+import { ElasticsearchService } from '../service/elasticsearch.service';
 import { Router } from '@angular/router';
-import { ArticleSource } from '../../../containers/querytest/article.interface';
+import { ArticleSource } from '../article/article.interface';
 
 
 @Component({

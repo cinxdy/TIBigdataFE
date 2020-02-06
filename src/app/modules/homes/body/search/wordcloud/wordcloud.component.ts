@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { IdListService } from "../id-list-service/id-list.service";
+import { IdListService } from "../search-result/id-list-service/id-list.service";
 
 @Component({
   selector: "app-wordcloud",

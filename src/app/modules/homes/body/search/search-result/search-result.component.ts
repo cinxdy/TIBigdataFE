@@ -2,8 +2,8 @@
 import { Component, OnInit, ChangeDetectorRef, Input } from "@angular/core";
 import { Router } from "@angular/router";
 // import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ElasticsearchService } from "../../body/search/service/elasticsearch.service";
-import { ArticleSource } from "../shared/article.interface";
+import { ElasticsearchService } from "../service/elasticsearch.service";
+import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdListService } from "./id-list-service/id-list.service";

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, Input} from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ElasticsearchService } from '../../body/search/service/elasticsearch.service';
-import { ArticleSource } from './article.interface';
+import { ArticleSource } from '../../body/search/article/article.interface';
 import { Subscription } from 'rxjs';
 import { Observable, of} from 'rxjs';
 import { Client } from 'elasticsearch';
