@@ -12,6 +12,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { SearchNavComponent } from './search-nav/search-nav.component';
 import { SearchFilterComponent } from './search-filter/search-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
+import { SearchComponent } from './search/search.component';
 
 // import {} from './article/'
 @NgModule({
@@ -22,6 +23,7 @@ import { ArticleDetailsComponent } from './article/article-details/article-detai
     ArticleDetailsComponent,
     FreqAnalysisComponent,
     ChosenDocAnalysisComponent,
+    SearchComponent,
 
   ],
   imports: [

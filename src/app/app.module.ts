@@ -11,7 +11,7 @@ import { SpecialsModule } from './modules/homes/body/specials/specials.module';
 import { FooterComponent } from './modules/homes/footer/footer.component';
 import { NavComponent } from './modules/homes/nav/nav.component';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
-import { SearchComponent } from './modules/homes/body/search/search/search.component';
+import { SearchBarComponent } from './modules/homes/body/main-home-container/search-bar/search-bar.component';
 import { HomeGraphComponent } from './modules/homes/body/main-home-container/home-graph/home-graph.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 
@@ -21,7 +21,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     FooterComponent,
     NavComponent,
     MainHomeContainerComponent,
-    SearchComponent,
+    SearchBarComponent,
     HomeGraphComponent
   ],
   imports: [

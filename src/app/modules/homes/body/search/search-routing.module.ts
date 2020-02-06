@@ -3,16 +3,17 @@ import { Routes, RouterModule } from "@angular/router";
 import { SearchResultComponent } from "./search-result/search-result.component";
 import { FreqAnalysisComponent } from "./freq-analysis/freq-analysis.component";
 import { ChosenDocAnalysisComponent } from "./chosen-doc-analysis/chosen-doc-analysis.component";
+import { SearchComponent } from "./search/search.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: SearchResultComponent
-  },
-  {
-    path: "homes/searchResult",
-    component: SearchResultComponent,
+    component: SearchComponent,
     children: [
+      {
+        path: "",
+        component: SearchResultComponent
+      },
       {
         path: "freqAnalysis",
         component: FreqAnalysisComponent
@@ -23,6 +24,11 @@ const routes: Routes = [
       }
     ]
   }
+  // {
+  //   path: "homes/searchResult",
+  //   component: SearchResultComponent,
+
+  // }
 ];
 
 @NgModule({

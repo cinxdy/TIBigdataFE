@@ -85,7 +85,7 @@ export class SearchResultComponent implements OnInit {
   //Get result from flask
   getResult() {
     this.searchKeyword = this.es.getKeyword();
-    this._router.navigateByUrl("homes/searchResult/freqAnalysis");
+    this._router.navigateByUrl("search/freqAnalysis");
   }
 
   addList(i) {
@@ -94,7 +94,7 @@ export class SearchResultComponent implements OnInit {
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   navToDataChart() {
-    this._router.navigateByUrl("homes/wordcloud");
+    this._router.navigateByUrl("search/ChosenDocAnalysis");
   }
 
   private keywords: any[] = [];
