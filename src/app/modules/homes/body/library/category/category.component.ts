@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ConfigService } from "../first/first.service";
+import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
 
 @Component({

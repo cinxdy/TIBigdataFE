@@ -6,7 +6,7 @@ import { ElasticsearchService } from '../../search/service/elasticsearch.service
 
 import * as CanvasJS from '../../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
-import { ConfigService } from './first.service';
+import { ConfigService } from './category-graph.service';
 
 import Sunburst from 'sunburst-chart';
 
@@ -18,14 +18,14 @@ import { doc } from './nodes';
 
 
 @Component({
-  selector: 'app-first',
-  templateUrl: './first.component.html',
+  selector: 'app-category-graph',
+  templateUrl: './category-graph.component.html',
   providers: [ConfigService],
-  styleUrls: ['./first.component.less']
+  styleUrls: ['./category-graph.component.less']
 })
 
 
-export class FirstComponent implements OnInit {
+export class CatGraphComponent implements OnInit {
   constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
 
   private BASE_URL: string = 'http://localhost:5000/wordrank';

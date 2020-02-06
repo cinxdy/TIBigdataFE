@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FirstComponent } from '../library/first/first.component';
 import { SpecialsRoutingModule } from './specials-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SpecialsRootComponent } from './specials-root/specials-root.component';
 
 @NgModule({
   declarations: [
-    FirstComponent
+    DashboardComponent,
+    SpecialsRootComponent
   ],
   imports: [
     SpecialsRoutingModule,
     CommonModule
   ],
-  exports: [FirstComponent]
+  // exports: [DashboardComponent]
 })
 export class SpecialsModule { }
