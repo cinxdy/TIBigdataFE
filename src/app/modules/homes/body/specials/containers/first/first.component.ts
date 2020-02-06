@@ -31,7 +31,7 @@ export class FirstComponent implements OnInit {
   private BASE_URL: string = 'http://localhost:5000/wordrank';
   private TEST_URL: string = 'http://localhost:5000/three';
 
-  private title : string;
+  private title : string = "개별 문서를 선택하세요! :)";
   private contents : string;
   private keywords : string;
 
@@ -45,7 +45,7 @@ export class FirstComponent implements OnInit {
        * 가지고 온 data 파일에서 마지막 업데이트 시간을 읽는다.
        * 같으면 그대로 진행.
        */
-      console.log(data);
+      // console.log(data);
       
       var num_topic = data.length;
 
