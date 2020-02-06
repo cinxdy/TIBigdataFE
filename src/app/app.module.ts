@@ -6,8 +6,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SearchModule } from './modules/homes/body/search/search.module';
 // import { CoreModule } from './modules/core/core.module';
 // import { HomesModule } from './modules/homes/homes.module';
+
 import { FooterComponent } from './modules/homes/footer/footer.component';
 import { NavComponent } from './modules/homes/nav/nav.component';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
@@ -28,6 +30,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    SearchModule,
     // CoreModule,
     FormsModule,
     HttpModule,

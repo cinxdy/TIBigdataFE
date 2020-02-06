@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'homes',
     component : MainHomeContainerComponent
   },
+  {
+    path: 'search',
+    loadChildren : ()=> import('./modules/homes/body/search/search.module').then(m => m.SearchModule)
+  }
   // {
   //   path: 'specials',
   //   loadChildren: () => import('./modules/specials/specials.module').then(m => m.SpecialsModule)
