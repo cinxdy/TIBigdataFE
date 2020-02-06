@@ -8,7 +8,7 @@ import { IdListService } from "../search-result/id-list-service/id-list.service"
   templateUrl: "./chosen-doc-analysis.component.html",
   styleUrls: ["./chosen-doc-analysis.component.less"]
 })
-export class ChosenDocAnalysis implements OnInit {
+export class ChosenDocAnalysisComponent implements OnInit {
   constructor(private http: HttpClient, private _idList: IdListService) {}
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
