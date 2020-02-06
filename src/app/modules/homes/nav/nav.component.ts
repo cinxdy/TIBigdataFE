@@ -27,7 +27,7 @@ export class NavComponent implements OnInit {
   }
 
   navigateLibrary(){
-    this._router.navigateByUrl("/homes/library");
+    this._router.navigateByUrl("/library");
   }
 
   navigateQT(){

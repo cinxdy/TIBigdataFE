@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'specials',
     loadChildren : ()=> import('./modules/homes/body/specials/specials.module').then(m => m.SpecialsModule)
+  },
+  {
+    path : 'library',
+    loadChildren : ()=> import('./modules/homes/body/library/library.module').then(m => m.LibraryModule)
   }
   // {
   //   path: 'specials',

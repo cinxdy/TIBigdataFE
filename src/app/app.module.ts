@@ -14,6 +14,7 @@ import { MainHomeContainerComponent } from './modules/homes/body/main-home-conta
 import { SearchBarComponent } from './modules/homes/body/main-home-container/search-bar/search-bar.component';
 import { HomeGraphComponent } from './modules/homes/body/main-home-container/home-graph/home-graph.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { LibraryModule } from './modules/homes/body/library/library.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     FormsModule,
     HttpModule,
     TagCloudModule,
+    LibraryModule,
     
 
   ],

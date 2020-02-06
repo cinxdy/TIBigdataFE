@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FirstComponent } from './containers/first/first.component';
+import { FirstComponent } from '../library/first/first.component';
 import { SpecialsRoutingModule } from './specials-routing.module';
 
 @NgModule({

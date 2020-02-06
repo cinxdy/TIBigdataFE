@@ -3,12 +3,12 @@ import { Routes, RouterModule } from "@angular/router";
 import { SearchResultComponent } from "./search-result/search-result.component";
 import { FreqAnalysisComponent } from "./freq-analysis/freq-analysis.component";
 import { ChosenDocAnalysisComponent } from "./chosen-doc-analysis/chosen-doc-analysis.component";
-import { SearchComponent } from "./search/search.component";
+import { SearchRootComponent } from "./search-root/search-root.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: SearchComponent,
+    component: SearchRootComponent,
     children: [
       {
         path: "",

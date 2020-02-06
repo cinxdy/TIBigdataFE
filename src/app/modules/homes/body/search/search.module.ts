@@ -12,7 +12,8 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { SearchNavComponent } from './search-nav/search-nav.component';
 import { SearchFilterComponent } from './search-filter/search-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
-import { SearchComponent } from './search/search.component';
+import { SearchRootComponent } from './search-root/search-root.component';
+import { SearchDetailComponent } from './search-detail/search-detail.component';
 
 // import {} from './article/'
 @NgModule({
@@ -23,7 +24,8 @@ import { SearchComponent } from './search/search.component';
     ArticleDetailsComponent,
     FreqAnalysisComponent,
     ChosenDocAnalysisComponent,
-    SearchComponent,
+    SearchRootComponent,
+    SearchDetailComponent,
 
   ],
   imports: [
