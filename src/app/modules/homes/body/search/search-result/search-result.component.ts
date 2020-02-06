@@ -85,7 +85,7 @@ export class SearchResultComponent implements OnInit {
   //Get result from flask
   getResult() {
     this.searchKeyword = this.es.getKeyword();
-    this._router.navigateByUrl("/homes/analysis");
+    this._router.navigateByUrl("homes/searchResult/freqAnalysis");
   }
 
   addList(i) {

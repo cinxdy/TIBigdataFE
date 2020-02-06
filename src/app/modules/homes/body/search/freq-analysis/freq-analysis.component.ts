@@ -4,11 +4,11 @@ import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
-  selector: "app-analysis",
-  templateUrl: "./analysis.component.html",
-  styleUrls: ["./analysis.component.less"]
+  selector: "app-freq-analysis",
+  templateUrl: "./freq-analysis.component.html",
+  styleUrls: ["./freq-analysis.component.less"]
 })
-export class AnalysisComponent implements OnInit {
+export class FreqAnalysisComponent implements OnInit {
   private searchKeyword;
   private TEST_URL: string = "http://localhost:5000/keywordGraph";
   private BASE_URL: string = "http://203.252.103.123:5000/keywordGraph";

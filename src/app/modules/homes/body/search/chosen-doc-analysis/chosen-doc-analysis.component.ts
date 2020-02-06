@@ -4,11 +4,11 @@ import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { IdListService } from "../search-result/id-list-service/id-list.service";
 
 @Component({
-  selector: "app-wordcloud",
-  templateUrl: "./wordcloud.component.html",
-  styleUrls: ["./wordcloud.component.less"]
+  selector: "app-chsDocAnalysis",
+  templateUrl: "./chosen-doc-analysis.component.html",
+  styleUrls: ["./chosen-doc-analysis.component.less"]
 })
-export class WordcloudComponent implements OnInit {
+export class ChosenDocAnalysis implements OnInit {
   constructor(private http: HttpClient, private _idList: IdListService) {}
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
