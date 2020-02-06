@@ -8,11 +8,11 @@ import * as CanvasJS from '../../../../../../assets/canvasjs.min.js';
 import { Observable, of} from 'rxjs';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
 @Component({
-  selector: 'app-graph',
-  templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.less']
+  selector: 'app-home-graph',
+  templateUrl: './home-graph.component.html',
+  styleUrls: ['./home-graph.component.less']
 })
-export class GraphComponent implements OnInit {
+export class HomeGraphComponent implements OnInit {
 
 
 

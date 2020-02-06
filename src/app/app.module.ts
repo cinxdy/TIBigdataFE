@@ -12,7 +12,7 @@ import { FooterComponent } from './modules/homes/footer/footer.component';
 import { NavComponent } from './modules/homes/nav/nav.component';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
 import { SearchComponent } from './modules/homes/body/search/search/search.component';
-import { GraphComponent } from './modules/homes/body/main-home-container/graph/graph.component';
+import { HomeGraphComponent } from './modules/homes/body/main-home-container/home-graph/home-graph.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
     NavComponent,
     MainHomeContainerComponent,
     SearchComponent,
-    GraphComponent
+    HomeGraphComponent
   ],
   imports: [
     BrowserModule,
