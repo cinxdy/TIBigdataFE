@@ -12,6 +12,8 @@ import { FooterComponent } from './modules/homes/footer/footer.component';
 import { NavComponent } from './modules/homes/nav/nav.component';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
 import { SearchComponent } from './modules/homes/body/search/search/search.component';
+import { GraphComponent } from './modules/homes/body/main-home-container/graph/graph.component';
+import { TagCloudModule } from 'angular-tag-cloud-module';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { SearchComponent } from './modules/homes/body/search/search/search.compo
     NavComponent,
     MainHomeContainerComponent,
     SearchComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +31,7 @@ import { SearchComponent } from './modules/homes/body/search/search/search.compo
     // CoreModule,
     FormsModule,
     HttpModule,
+    TagCloudModule,
     
 
   ],
