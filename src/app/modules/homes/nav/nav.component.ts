@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
 
   
   navigateSpecials(){
-    this._router.navigateByUrl("/specials/first");
+    this._router.navigateByUrl("/specials");
   }
 
   navigateParser(){
