@@ -1,37 +1,34 @@
 <p>search-detail works!</p>
 <h1>search-detail</h1>
-<h1>Title</h1>
-<h2>Author</h2>
+<h1>Title : {{article.post_title}}</h1>
+<h2>Author : {{article.post_writer}}</h2>
 <div class="row">
   <div class="col">
-    <li>
+    <ul>
       <ul>
-        institution
+        institution : {{article.published_institution_url}}
       </ul>
       <ul>
         type of publish
       </ul>
       <ul>
-        page
+        date of release : {{article.post_date}}
       </ul>
       <ul>
-        date of release
+        page : {{article.number}}
       </ul>
-      <ul>
-        page
-      </ul>
-    </li>
+    </ul>
   </div>
   <div class="col">
     <h3>brief</h3>
-    <li>
+    <ul>
       brief...
-    </li>
+    </ul>
   </div>
 </div>
 <div class="row">
   <div class="col">
-    summary
+    summary : {{article.post_body}}
   </div>
   <div class="col">
     Figures(pic, tables...)

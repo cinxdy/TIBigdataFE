@@ -54,7 +54,7 @@ export class SearchNavComponent implements OnInit {
           //console.error(error);
         }).then(()=> {
           this.sendResult();
-          console.log("ngOnInit");
+          // console.log("ngOnInit");
         });
     
   }

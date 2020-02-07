@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ChangeDetectorRef, Input } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef, Input, Inject } from "@angular/core";
 import { Router } from "@angular/router";
 // import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ElasticsearchService } from "../service/elasticsearch.service";
@@ -102,7 +102,9 @@ export class SearchResultComponent implements OnInit {
   }
 
   chooseDoc(i){
-    this.articleSources[i]["_id"]
+    // this.idControl.clearIdChosen();
+    this.idControl.setArticle(this.articleSources[i]);
+    this.navToDocDetail();
   }
 
   private keywords: any[] = [];

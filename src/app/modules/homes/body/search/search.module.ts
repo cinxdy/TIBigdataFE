@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import { TagCloudModule } from 'angular-tag-cloud-module';
 
+import { IdControlService } from './search-result/id-control-service/id-control.service';
 
 import { ChosenDocAnalysisComponent } from './chosen-doc-analysis/chosen-doc-analysis.component';
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
@@ -34,6 +35,9 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
     FormsModule,
     TagCloudModule
 
+  ],
+  providers :[
+    IdControlService
   ],
   exports: [
     SearchResultComponent
