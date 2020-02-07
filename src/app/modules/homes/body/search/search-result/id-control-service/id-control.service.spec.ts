@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IdListService } from './id-list.service';
+import { IdControlService } from './id-control.service';
 
 describe('IdListService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: IdListService = TestBed.get(IdListService);
+    const service: IdControlService = TestBed.get(IdControlService);
     expect(service).toBeTruthy();
   });
 });

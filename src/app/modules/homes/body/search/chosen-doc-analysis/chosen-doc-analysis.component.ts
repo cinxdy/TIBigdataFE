@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { IdListService } from "../search-result/id-list-service/id-list.service";
+import { IdControlService } from "../search-result/id-control-service/id-control.service";
 
 @Component({
   selector: "app-chsDocAnalysis",
@@ -9,7 +9,7 @@ import { IdListService } from "../search-result/id-list-service/id-list.service"
   styleUrls: ["./chosen-doc-analysis.component.less"]
 })
 export class ChosenDocAnalysisComponent implements OnInit {
-  constructor(private http: HttpClient, private _idList: IdListService) {}
+  constructor(private http: HttpClient, private _idList: IdControlService) {}
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();

@@ -6,7 +6,7 @@ import { ElasticsearchService } from "../service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
-import { IdListService } from "./id-list-service/id-list.service";
+import { IdControlService } from "./id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 @Component({
   selector: "app-search-result",
@@ -41,7 +41,7 @@ export class SearchResultComponent implements OnInit {
   searchKeyword: string;
 
   constructor(
-    private choiceIdList: IdListService,
+    private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
     private es: ElasticsearchService //private cd: ChangeDetectorRef
@@ -89,7 +89,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
-    this.choiceIdList.setIdList(this.articleSources[i]["_id"]);
+    this.idControl.setIdList(this.articleSources[i]["_id"]);
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
@@ -99,6 +99,10 @@ export class SearchResultComponent implements OnInit {
   
   navToDocDetail(){
     this._router.navigateByUrl("search/DocDetail");
+  }
+
+  chooseDoc(i){
+    this.articleSources[i]["_id"]
   }
 
   private keywords: any[] = [];

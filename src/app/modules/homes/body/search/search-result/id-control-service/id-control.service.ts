@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class IdListService {
+export class IdControlService {
+  private idChosen : string = "";
   private idList : string[] = new Array<string>();
   constructor() { }
 
@@ -18,6 +19,14 @@ export class IdListService {
 
   clearIds(){
     this.idList = [];
+  }
+
+  setIdChosen(id : string){
+    this.idChosen = id;
+  }
+
+  clearIdChosen(){
+    this.idChosen = "";
   }
 
 }
