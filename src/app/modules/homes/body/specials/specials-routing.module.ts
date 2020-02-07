@@ -9,7 +9,7 @@ const routes: Routes = [
     path:"",
     component : SpecialsRootComponent,
     children:[
-      { path: 'dashboard',
+      { path: "",
         component: DashboardComponent,
       }
 
