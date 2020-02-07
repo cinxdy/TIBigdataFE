@@ -9,14 +9,14 @@ import { IdControlService } from "../search-result/id-control-service/id-control
   styleUrls: ["./chosen-doc-analysis.component.less"]
 })
 export class ChosenDocAnalysisComponent implements OnInit {
-  constructor(private http: HttpClient, private _idList: IdControlService) {}
-  private fileDir: string =
+  constructor(private http: HttpClient, private idCont: IdControlService) {}
+  private FILE_DIR: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
 
   ngOnInit() {
-    this.http.get(this.fileDir).subscribe(data => {
+    this.http.get(this.FILE_DIR).subscribe(data => {
       let tfidfData = data as [];
       /**
          * 
@@ -26,13 +26,13 @@ export class ChosenDocAnalysisComponent implements OnInit {
           찾으면 tf-idf값을 빼낸다.
           cData에 저장.
         */
-      let idList = this._idList.getIdList(); // service에서 선택한 문서 id 받아온다.
+      let idList = this.idCont.getIdList(); // service에서 선택한 문서 id 받아온다.
 
       for (var i = 0; i <= idList.length; i++) {
         let needData = {};
         needData = tfidfData.find(d => d["docID"] === idList[i]);
         try {
-          let tfIdfVal = needData["TFIDF"];
+          let tfIdfVal = needData["TFIDF"] as [];
           this.titles.push(needData["docTitle"]);
 
           //gen word cloud with kwList

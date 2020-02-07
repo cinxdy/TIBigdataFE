@@ -15,6 +15,7 @@ import { SearchBarComponent } from './modules/homes/body/main-home-container/sea
 import { HomeGraphComponent } from './modules/homes/body/main-home-container/home-graph/home-graph.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { LibraryModule } from './modules/homes/body/library/library.module';
+import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { LibraryModule } from './modules/homes/body/library/library.module';
     
 
   ],
-  providers: [],
+  providers: [WordcloudService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

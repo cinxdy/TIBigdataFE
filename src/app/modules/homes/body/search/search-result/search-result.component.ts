@@ -89,7 +89,9 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
+    // console.log(this.articleSources[i]);
     this.idControl.setIdList(this.articleSources[i]["_id"]);
+    // console.log(this.articleSources[i]["_id"]);
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
