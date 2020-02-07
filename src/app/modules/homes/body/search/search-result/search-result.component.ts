@@ -96,6 +96,10 @@ export class SearchResultComponent implements OnInit {
   navToDataChart() {
     this._router.navigateByUrl("search/ChosenDocAnalysis");
   }
+  
+  navToDocDetail(){
+    this._router.navigateByUrl("search/DocDetail");
+  }
 
   private keywords: any[] = [];
 

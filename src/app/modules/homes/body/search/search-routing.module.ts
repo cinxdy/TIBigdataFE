@@ -23,7 +23,7 @@ const routes: Routes = [
         component: ChosenDocAnalysisComponent
       },
       {
-        path:"searchDetail",
+        path:"DocDetail",
         component : SearchDetailComponent
       }
     ]
