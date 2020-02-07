@@ -28,8 +28,8 @@ import { doc } from './nodes';
 export class CatGraphComponent implements OnInit {
   constructor(private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
 
-  private BASE_URL: string = 'http://localhost:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/three';
+  // private BASE_URL: string = 'http://localhost:5000/wordrank';
+  // private TEST_URL: string = 'http://localhost:5000/three';
 
   private title : string = "개별 문서를 선택하세요! :)";
   private contents : string;

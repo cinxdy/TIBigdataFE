@@ -18,5 +18,8 @@ export class IpService {
     if (ip != this.SERVER_IP){
       this.curIP = this.DEV_IP;
     }
+    else{
+      this.curIP = this.SERVER_IP;
+    }
   }
 }

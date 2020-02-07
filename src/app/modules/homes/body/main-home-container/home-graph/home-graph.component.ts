@@ -18,8 +18,8 @@ export class HomeGraphComponent implements OnInit {
 
 
   // 2020 0103 TEXTRANK
-  private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/wordrank';
+  // private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
+  // private TEST_URL: string = 'http://localhost:5000/wordrank';
   private data : any;
   private fileDir : string = 'assets/homes_graph/data.json';
   private topics = {

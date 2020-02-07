@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 })
 export class FreqAnalysisComponent implements OnInit {
   private searchKeyword;
-  private TEST_URL: string = "http://localhost:5000/keywordGraph";
+  // private TEST_URL: string = "http://localhost:5000/keywordGraph";
   private BASE_URL: string = "http://203.252.103.123:5000/keywordGraph";
   private currURL = this.BASE_URL;
 
