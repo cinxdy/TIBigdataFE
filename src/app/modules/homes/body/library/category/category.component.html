@@ -16,8 +16,8 @@
 
           <div *ngIf="toggleTopics[i] == true">
             <div class="uk-card uk-card-body uk-card-default">
-              <div *ngFor="let doc of topic.doc">
-                  <div class="row">{{ doc["titles"] }}</div>
+              <div *ngFor="let doc of topic.doc;">
+                  <a (click) = "navToDetail(doc)" class="row">{{ doc["titles"] }}</a>
               </div>
             </div>
           </div>

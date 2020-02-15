@@ -2,13 +2,18 @@ import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
 
+import { IdControlService } from "../../search/search-result/id-control-service/id-control.service";
+
+
 @Component({
   selector: "app-category",
   templateUrl: "./category.component.html",
   styleUrls: ["./category.component.less"]
 })
 export class CategoryComponent implements OnInit {
-  constructor(private configService: ConfigService, public _router: Router ) {}
+  constructor(private configService: ConfigService, 
+              private idControl: IdControlService,
+              public _router: Router ) {}
   private isLoaded: boolean = false;
   private data: any;
   private toggleTopics : boolean[];
@@ -42,11 +47,19 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  navToGraph(){
-    this._router.navigateByUrl("search/library/graph");
-  }
+  // navToGraph(){
+  //   this._router.navigateByUrl("search/library/graph");
+  // }
 
   toggleTopic(i){
     this.toggleTopics[i] = ! this.toggleTopics[i];
+  }
+
+  navToDetail(doc){
+    // console.log(doc);
+    let id = doc["idList"];
+    this.idControl.setIdChosen(id);
+    this._router.navigateByUrl("search/DocDetail");
+
   }
 }
