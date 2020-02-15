@@ -11,7 +11,7 @@ export class ConfigService {
     constructor(private http: HttpClient) { }
 
     // configUrl = 'assets/special_first/data1000.json';
-    configUrl = 'assets/special_first/9091AS.json';
+    configUrl = 'assets/special_first/ctgRNNResult.json';
 
     getConfig() : Observable<any>{
         return this.http.get(this.configUrl);

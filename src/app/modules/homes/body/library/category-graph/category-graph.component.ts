@@ -88,7 +88,7 @@ export class CatGraphComponent implements OnInit {
       for (var i = 0; i < num_topic; i++) {
         dataset.children[i] = new _topic();
         var parentNode = dataset.children[i];
-        parentNode.name = data[i]["topic"]["words"];//"Topic #"+ i;
+        parentNode.name = data[i]["topic"];//"Topic #"+ i;
         // parentNode.tooltipTitle = "tooltop?";
         parentNode.order = i;
         // parentNode.showTooltip = true;
@@ -102,7 +102,7 @@ export class CatGraphComponent implements OnInit {
           parentNode.children[j] = new doc();
           var node = parentNode.children[j];
           node.url = "To Be Added...";
-          node.name = data[i]["doc"][j]["title"];//data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
+          node.name = data[i]["doc"][j]["titles"];//data[i][j][1];  //totalData[[topic1],...,[[문서 이름,문서 내용],...,[문서 이름,문서 내용]]
                                           // i번째 문서, 0은 그 문서 선택, 1이 문서 내용 선택
           node.value = 10;//parentNode.value / num_doc; // 모든 문서들의 크기는 전체 토픽 크기의 N 등분
           node.contents = data[i]["doc"][j]["contents"];
@@ -137,7 +137,8 @@ export class CatGraphComponent implements OnInit {
             this.title = "" + d.name;
             this.contents = "Contents : " + d.contents;
             this.keywords = "Keywords : " + d.keyWords;
-            // console.log(d.name+d.contents+d.keyWords);
+            
+            console.log(d.name+d.contents+d.keyWords);
             
           }
           else

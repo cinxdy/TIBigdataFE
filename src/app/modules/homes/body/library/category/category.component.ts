@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit {
       let j = 0;
       try {
         for (i = 0; i <= num_topic; i++) {
-          let topic = data[i]["topic"]["words"];
+          let topic = data[i]["topic"];
           // console.log(topic);
           var num_doc = data[i]["doc"].length;
           // for (j = 0; j < num_doc; j++) {
@@ -39,5 +39,9 @@ export class CategoryComponent implements OnInit {
 
   navToGraph(){
     this._router.navigateByUrl("search/library/graph");
+  }
+
+  toggleTopic(i){
+    console.log(i + "clicked!");
   }
 }

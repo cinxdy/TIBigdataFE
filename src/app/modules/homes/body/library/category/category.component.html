@@ -3,13 +3,13 @@
   <div class="col">
     <div class="uk-container">
       <div *ngIf="isLoaded == true">
-        <div *ngFor="let topic of data">
+        <div *ngFor="let topic of data; index as i">
           <div class="row">
-            <h2>토픽 : {{ topic["topic"]["words"] }}</h2>
+            <h2 onclick="toggleTopic(i)">토픽 : {{ topic["topic"] }}</h2>
           </div>
 
           <div *ngFor="let doc of topic.doc">
-            <div class="row">{{ doc["title"] }}</div>
+            <div class="row">{{ doc["titles"] }}</div>
           </div>
 
           <!-- <div class="row"></div> -->
