@@ -18,30 +18,30 @@ import { IpService } from 'src/app/ip.service'
 export class SearchResultComponent implements OnInit {
   //Flask data
   // private BASE_URL: string = "http://localhost:5000/keywordGraph";
+  // serverData: JSON;
+  // private RCMD_URL: string = "http://localhost:5000/rcmd";
+  // private static readonly INDEX = "nkdb";
+  // private static readonly TYPE = "nkdb";
+  // private queryText = "";
+  // private lastKeypress = 0;
+  // private thisURL: string = "http://localhost:4200/homes/searchResult";
+
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
-  serverData: JSON;
   private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
-  // private RCMD_URL: string = "http://localhost:5000/rcmd";
-  
-
-  // private static readonly INDEX = "nkdb";
-  // private static readonly TYPE = "nkdb";
-
-  // private queryText = "";
-
-  // private lastKeypress = 0;
   private idList: string[] = [];
   private rcmdList: {};
   private loaded: boolean = false;
-
-  articleSources: ArticleSource[]; //이친구를 포문돌려서
-  docId: string;
-  isConnected = false;
-  status: string;
-  subscription: Subscription;
-  searchKeyword: string;
+  private headers: HttpHeaders = new HttpHeaders({
+    "Content-Type": "application/json"
+  });
+  private articleSources: ArticleSource[]; //이친구를 포문돌려서
+  private docId: string;
+  private isConnected = false;
+  private status: string;
+  private subscription: Subscription;
+  private searchKeyword: string;
 
   constructor(
     private idControl: IdControlService,
@@ -55,22 +55,22 @@ export class SearchResultComponent implements OnInit {
     });
   }
 
-  // private thisURL: string = "http://localhost:4200/homes/searchResult";
-  private headers: HttpHeaders = new HttpHeaders({
-    "Content-Type": "application/json"
-  });
+
 
   ngOnInit() {
     this.loaded = false;
     this.idList = [];
 
+    console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
+      console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
+        console.log("result comp : recieved search result article sources");
         r();
       }).then(() => {
+        console.log("result comp : showKeyword() start");
         this.showKeyword();
-    
     });
     
   })
@@ -82,6 +82,7 @@ export class SearchResultComponent implements OnInit {
       .subscribe(data => {
         this.rcmdList = data;
         this.loaded = true;
+        console.log("getRcmd() done. loading done!");
       });
   }
 
@@ -115,6 +116,7 @@ export class SearchResultComponent implements OnInit {
   private keywords: any[] = [];
 
   showKeyword() {
+    console.log("result comp : showKeyword() start");
     this.http.get(this.fileDir).subscribe(data => {
       let tfData = data as []; //전체 자료 불러오고
 
@@ -146,7 +148,7 @@ export class SearchResultComponent implements OnInit {
           console.log("looking for : ", tfData[j]["docID"]);
         }
       }
-
+      console.log("showKeyword() done...");
       this.getRcmd();
     });
   }

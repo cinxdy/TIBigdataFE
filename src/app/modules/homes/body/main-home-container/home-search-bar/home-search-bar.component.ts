@@ -34,7 +34,7 @@ export class HomeSearchBarComponent implements OnInit {
   }
   sendResult(){
 
-    this.es.getResult(this.articleSources);
+    this.es.fillSubscrb(this.articleSources);
     this.es.setKeyword(this.queryText);
     this.toResultPage();
   }

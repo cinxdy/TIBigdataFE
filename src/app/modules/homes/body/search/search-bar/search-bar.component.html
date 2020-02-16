@@ -4,7 +4,7 @@
     <input
       class="uk-search-input"
       type="search"
-      (keyup)="search($event)"
+      (keyup)="updateKeyword($event)"
       value="{{ queryText }}"
       (keydown.enter)="sendResult()"
     />
