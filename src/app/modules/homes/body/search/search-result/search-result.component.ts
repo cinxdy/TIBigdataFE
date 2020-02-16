@@ -52,21 +52,24 @@ export class SearchResultComponent implements OnInit {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
+      console.log(info) 
     });
   }
 
 
 
   ngOnInit() {
-    this.loaded = false;
+    this.loaded = false  ;
+    console.log("loaded is false");
     this.idList = [];
-
+    console.log(this.es.articleSource);
     console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
       console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
         console.log("result comp : recieved search result article sources");
+        // console.log(articles);
         r();
       }).then(() => {
         console.log("result comp : showKeyword() start");
@@ -82,6 +85,8 @@ export class SearchResultComponent implements OnInit {
       .subscribe(data => {
         this.rcmdList = data;
         this.loaded = true;
+        console.log("loaded is true");
+
         console.log("getRcmd() done. loading done!");
       });
   }
@@ -93,9 +98,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
-    // console.log(this.articleSources[i]);
     this.idControl.setIdList(this.articleSources[i]["_id"]);
-    // console.log(this.articleSources[i]["_id"]);
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 

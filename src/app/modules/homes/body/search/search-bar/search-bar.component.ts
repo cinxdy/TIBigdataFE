@@ -35,27 +35,11 @@ export class SearchBarComponent implements OnInit {
   constructor(
     public _router: Router,
     // private http:HttpClient,
-    private es: ElasticsearchService
-  ) // private cd: ChangeDetectorRef
-  {}
+    private es: ElasticsearchService // private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.queryText = this.es.getKeyword();
-    this.es
-      .fullTextSearch("post_body", this.queryText)
-      .then(
-        response => {
-          this.articleSources = response.hits.hits;
-          // console.log(this.articleSources);
-        },
-        error => {
-          //console.error(error);
-        }
-      )
-      .then(() => {
-        this.sendResult();
-        // console.log("bar comp : ngOnInit");
-      });
   }
 
   updateKeyword($event) {
@@ -63,52 +47,9 @@ export class SearchBarComponent implements OnInit {
     console.log("bar comp : keyword accepted : " + this.queryText);
   }
 
-  // search($event) {
-  //   if ($event.timeStamp - this.lastKeypress > 100) {
-  //     this.queryText = $event.target.value;
-
-  //     this.es
-  //       .fullTextSearch("post_body", this.queryText)
-  //       .then(
-  //         response => {
-  //           this.articleSources = response.hits.hits;
-  //           console.log("bar comp : in search function...");
-  //           // console.log("bar comp : search result test : ")
-  //           // console.log(this.articleSources);
-  //         },
-  //         error => {
-  //           //console.error(error);
-  //         }
-  //       )
-  //       .then(() => {
-  //         console.log("bar comp : Search Completed!");
-  //         // console.log("bar comp : 20200109");
-  //       });
-  //   }
-  //   this.lastKeypress = $event.timeStamp;
-  // }
-
-  sendResult() {
-    this.es
-      .fullTextSearch("post_body", this.queryText)
-      .then(
-        response => {
-          this.articleSources = response.hits.hits;
-          console.log("bar comp : search result with key with : " + this.queryText);
-          // console.log("bar comp : search result test : ")
-          // console.log(this.articleSources);
-        },
-        error => {
-          console.error(error);
-        }
-      )
-      .then(() => {
-        console.log("bar comp : Search Completed!");
-        // console.log("bar comp : 20200109");
-        // this.es.setKeyword(this.queryText);
-      });
-      this._router.navigateByUrl("search");
-    this.es.fillSubscrb(this.articleSources);
-
+  search() {
+    this.es.fullTextSearch("post_body", this.queryText);
+    console.log("search bar : fulltextsearch done with " + this.queryText);
+    this._router.navigateByUrl("search");
   }
 }

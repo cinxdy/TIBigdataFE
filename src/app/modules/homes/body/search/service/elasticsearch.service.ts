@@ -3,14 +3,15 @@ import { Client } from "elasticsearch-browser";
 import * as elasticsearch from "elasticsearch-browser";
 //import { InheritDefinitionFeature } from '@angular/core/src/render3';
 import { ArticleSource } from "../article/article.interface";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class ElasticsearchService {
   private client: Client;
-  private articleSource = new Subject<ArticleSource[]>();
+  articleSource = new Subject<ArticleSource[]>();
+  // articleSource = new Observable<ArticleSource[]>();
   articleInfo$ = this.articleSource.asObservable();
   private searchKeyword: string;
 
@@ -30,14 +31,15 @@ export class ElasticsearchService {
    *
    */
   fillSubscrb(info: ArticleSource[]) {
-    this.articleSource.next(info);
+      this.articleSource.next(info);
+      console.log("saved : ", this.articleSource);
   }
 
   /**
    * @function setKeyword
    * 키워드를 이 서비스에 저장한다. 저장한 이후에 검색 가능.
    * @param keyword
-   * 저장할 키워드
+   * 저장할 키워드 string
    */
   setKeyword(keyword: string) {
     this.searchKeyword = keyword;
@@ -70,8 +72,8 @@ export class ElasticsearchService {
    * @param _queryText
    * es에서 검색할 키워드 텍스트
    */
-  fullTextSearch(_field, _queryText): any {
-    return this.client.search({
+  fullTextSearch(_field, _queryText) {
+    this.client.search({
       filterPath: [
         "hits.hits._source",
         "hits.hits._id",
@@ -92,7 +94,10 @@ export class ElasticsearchService {
         "post_writer",
         "post_body"
       ]
-    });
+    }).then((response)=>{
+      console.log(response)
+      this.fillSubscrb(response.hits.hits);
+    })
   }
 
   //Elasticsearch Connection

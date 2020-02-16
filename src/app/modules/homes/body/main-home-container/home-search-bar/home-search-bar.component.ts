@@ -29,19 +29,18 @@ export class HomeSearchBarComponent implements OnInit {
   }
 
 
-  onKey($event){
-    this.queryText=$event.target.value;
-  }
-  sendResult(){
+  // onKey($event){
+  //   this.queryText=$event.target.value;
+  // }
+  // sendResult(){
+  //   // this.es.fillSubscrb(this.articleSources);
+  //   this.es.setKeyword(this.queryText);
+  //   this.toResultPage();
+  // }
 
-    this.es.fillSubscrb(this.articleSources);
-    this.es.setKeyword(this.queryText);
-    this.toResultPage();
-  }
-
-  toResultPage(){
-    this._router.navigateByUrl("search");
-  }
+  // toResultPage(){
+  //   this._router.navigateByUrl("search");
+  // }
 
 
 }
