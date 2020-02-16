@@ -7,11 +7,11 @@ import { Subscription } from 'rxjs';
 import { Observable, of} from 'rxjs';
 
 @Component({
-  selector: 'app-search-nav',
-  templateUrl: './search-nav.component.html',
-  styleUrls: ['./search-nav.component.less']
+  selector: 'app-search-bar',
+  templateUrl: './search-bar.component.html',
+  styleUrls: ['./search-bar.component.less']
 })
-export class SearchNavComponent implements OnInit {
+export class SearchBarComponent implements OnInit {
 
   //Flask data
 //  private BASE_URL: string = 'http://localhost:5000/test';

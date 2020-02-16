@@ -10,7 +10,7 @@ import { ChosenDocAnalysisComponent } from './chosen-doc-analysis/chosen-doc-ana
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
 import { SearchRoutingModule } from './search-routing.module';
 import { SearchResultComponent } from './search-result/search-result.component';
-import { SearchNavComponent } from './search-nav/search-nav.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchFilterComponent } from './search-filter/search-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { SearchRootComponent } from './search-root/search-root.component';
@@ -20,7 +20,7 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
 @NgModule({
   declarations: [
     SearchResultComponent,
-    SearchNavComponent,
+    SearchBarComponent,
     SearchFilterComponent,
     ArticleDetailsComponent,
     FreqAnalysisComponent,
