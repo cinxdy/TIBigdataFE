@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
 
-import { IdControlService } from "../../search/search-result/id-control-service/id-control.service";
+import { IdControlService } from "../../search/id-control-service/id-control.service";
 
 
 @Component({
