@@ -1,7 +1,7 @@
 // import { Injectable } from '@angular/core';
 import { IdControlService } from '../id-control-service/id-control.service';
-import { ArticleSource } from "../article/article.interface";
-// import { ElasticsearchService } from '../service/elasticsearch.service';
+import { Article } from "../article/article.interface";
+import { ElasticsearchService } from '../service/elasticsearch.service';
 import { Component, OnInit, Inject } from '@angular/core';
 // import { Article } from '../article/article.interface';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
@@ -14,26 +14,40 @@ import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 })
 export class SearchDetailComponent implements OnInit {
   
-  private article : ArticleSource;
+  private article : Article;
   private cData: CloudData[];
   private isLoaded : boolean = false;
   constructor(
     private idControl: IdControlService,
-    private wordcloud : WordcloudService
-    // private es: ElasticsearchService,
+    private wordcloud : WordcloudService,
+    private es: ElasticsearchService,
     ) { }
 
   ngOnInit() {
     this.isLoaded = false;
-    this.article = this.idControl.getArticle()["_source"];
-    let id = this.idControl.getArticle()["_id"];
-    // console.log(this.article);
-    this.wordcloud.createCloud(id)
+    // this.article = this.idControl.getArticle()["_source"];
+    let id = this.idControl.getIdChosen();
+    // this.es.idSearch(id).then((r) =>{
+    //   this.article = r;
+    // });
+    this.es.idSearch(id).then((res)=>{
+      // this.article = res.hits.hits._source
+      // console.log("돌겠네 진짜 " + this.article)
+      console.log(res);
+      this.article = res["hits"]["hits"][0]["_source"];
+      console.log(this.article)
+      this.wordcloud.createCloud(id)
       .then((data)=>{
         this.cData = data as  CloudData[]
-        // console.log("detail comp data store test : " + this.cData);
         this.isLoaded = true;
+
+        // console.log("detail comp data store test : " + this.cData);
       });
+    })
+    // let id = this.idControl.getArticle()["_id"];
+
+    // console.log(this.article);
+    
   }
 
   // cldData: CloudData;

@@ -44,12 +44,12 @@ export class SearchBarComponent implements OnInit {
 
   updateKeyword($event) {
     this.queryText = $event.target.value;
-    console.log("bar comp : keyword accepted : " + this.queryText);
+    // console.log("bar comp : keyword accepted : " + this.queryText);
   }
 
   search() {
     this.es.fullTextSearch("post_body", this.queryText);
-    console.log("search bar : fulltextsearch done with " + this.queryText);
+    // console.log("search bar : fulltextsearch done with " + this.queryText);
     this._router.navigateByUrl("search");
   }
 }

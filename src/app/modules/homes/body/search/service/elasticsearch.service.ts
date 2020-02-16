@@ -95,9 +95,33 @@ export class ElasticsearchService {
         "post_body"
       ]
     }).then((response)=>{
-      console.log(response)
+      // console.log(response)
       this.fillSubscrb(response.hits.hits);
     })
+  }
+
+  idSearch(id : string){
+     return this.client.search({
+      filterPath:[
+        "hits.hits",
+      ],
+      body:{
+        query:{
+          terms :{
+            "_id" : [id]
+          }
+        }
+      },
+      _source: [
+        "post_title",
+        "post_date",
+        "published_institution_url",
+        "post_writer",
+        "post_body"
+      ]
+    })
+
+    
   }
 
   //Elasticsearch Connection

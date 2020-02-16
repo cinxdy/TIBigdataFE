@@ -52,7 +52,7 @@ export class SearchResultComponent implements OnInit {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
-      console.log(info) 
+      // console.log(info) 
     });
   }
 
@@ -60,19 +60,19 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit() {
     this.loaded = false  ;
-    console.log("loaded is false");
+    // console.log("loaded is false");
     this.idList = [];
-    console.log(this.es.articleSource);
-    console.log("result comp : subscribe from es start!");
+    // console.log(this.es.articleSource);
+    // console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
-      console.log("result comp : pomise start!");
+      // console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
-        console.log("result comp : recieved search result article sources");
+        // console.log("result comp : recieved search result article sources");
         // console.log(articles);
         r();
       }).then(() => {
-        console.log("result comp : showKeyword() start");
+        // console.log("result comp : showKeyword() start");
         this.showKeyword();
     });
     
@@ -85,9 +85,9 @@ export class SearchResultComponent implements OnInit {
       .subscribe(data => {
         this.rcmdList = data;
         this.loaded = true;
-        console.log("loaded is true");
+        // console.log("loaded is true");
 
-        console.log("getRcmd() done. loading done!");
+        // console.log("getRcmd() done. loading done!");
       });
   }
 
@@ -112,14 +112,15 @@ export class SearchResultComponent implements OnInit {
 
   chooseDoc(i){
     // this.idControl.clearIdChosen();
-    this.idControl.setArticle(this.articleSources[i]);
+    // this.idControl.setArticle(this.articleSources[i]);
+    this.idControl.setIdChosen(this.articleSources[i]["_id"]);
     this.navToDocDetail();
   }
 
   private keywords: any[] = [];
 
   showKeyword() {
-    console.log("result comp : showKeyword() start");
+    // console.log("result comp : showKeyword() start");
     this.http.get(this.fileDir).subscribe(data => {
       let tfData = data as []; //전체 자료 불러오고
 
@@ -151,7 +152,7 @@ export class SearchResultComponent implements OnInit {
           console.log("looking for : ", tfData[j]["docID"]);
         }
       }
-      console.log("showKeyword() done...");
+      // console.log("showKeyword() done...");
       this.getRcmd();
     });
   }

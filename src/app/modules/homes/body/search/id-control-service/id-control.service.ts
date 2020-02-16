@@ -33,7 +33,7 @@ export class IdControlService {
     this.idChosen = id;
   }
 
-  getIdChoen(){
+  getIdChosen(){
     return this.idChosen;
   }
 
