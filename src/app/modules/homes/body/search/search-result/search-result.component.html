@@ -64,7 +64,7 @@
             <div class="col">
               <div class="row">
                 <div class="container">
-                  <app-article-details [article]="articleSource" >
+                  <app-article-details [article]="articleSource">
                   </app-article-details>
                 </div>
               </div>
@@ -77,20 +77,34 @@
                 </div>
                 <ng-template #infoLoadFin>
                   <div class="col">키워드 : {{ keywords[i] }}</div>
-                  <div class="col">
+                  <!-- <div class="col">
                     <div class="row">연관문서</div>
                     <div class="row">{{ rcmdList[i]["rcmd"] }}</div>
-                  </div>
+                  </div> -->
                 </ng-template>
               </div>
             </div>
-            <div class="col-xs">
-              <button
-                class="uk-button uk-button-secondary"
-                (click)="chooseDoc(i)"
-              >
-                Document Detail
-              </button>
+            <div
+              uk-spinner="ratio: 4.5 "
+              *ngIf="isInfoLoaded == false;"
+            >
+              Loading...
+            </div>
+            <div *ngIf = "isInfoLoaded == true">
+              <div class="col-xs">
+                <button
+                  class="uk-button uk-button-secondary"
+                  (click)="tgglRelated(i)"
+                >
+                  연관문서
+                </button>
+                <div *ngIf="relateToggle[i] == true">
+                  <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
+                    <!-- {{ rcmdList[i]["rcmd"] }} -->
+                    <a (click)="setThisDoc(i, r)">{{ rcmd }}</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <!--검색 결과의 마지막 -->

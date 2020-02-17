@@ -48,6 +48,8 @@ export class SearchResultComponent implements OnInit {
   private status: string;
   private subscription: Subscription;
   private searchKeyword: string;
+  // private isToggleRelated: boolean
+  private relateToggle : Array<boolean>;
 
   queryText : string;
 
@@ -111,9 +113,9 @@ export class SearchResultComponent implements OnInit {
   //   this._router.navigateByUrl("search/ChosenDocAnalysis");
   // }
 
-  // navToDocDetail() {
-  //   this._router.navigateByUrl("search/DocDetail");
-  // }
+  navToDocDetail() {
+    this._router.navigateByUrl("search/DocDetail");
+  }
 
   // chooseDoc(i) {
   //   // this.idControl.clearIdChosen();
@@ -121,7 +123,25 @@ export class SearchResultComponent implements OnInit {
   //   this.idControl.setIdChosen(this.articleSources[i]["_id"]);
   //   this.navToDocDetail();
   // }
+  setThisDoc(i : number, r : number){
+    this.rcmdList[i]["id"][r]
+    console.log(this.rcmdList[i]["id"][r]);
+    this.idControl.setIdChosen(this.rcmdList[i]["id"][r]);
+    this.navToDocDetail();
 
+    // this.docId = this.article["_id"];
+    // console.log(this.docId);
+    
+  }
+  tgglRelated(i:number) {
+    this.relateToggle[i] = !this.relateToggle[i];
+    // console.log(this.relateToggle[i])
+
+    // this.idControl.clearIdChosen();
+    // this.idControl.setArticle(this.articleSources[i]);
+    // this.idControl.setIdChosen(this.articleSources[i]["_id"]);
+    // this.navToDocDetail();
+  }
   private keywords: any[];
 
   showKeyword() {
@@ -129,12 +149,13 @@ export class SearchResultComponent implements OnInit {
     this.http.get(this.fileDir).subscribe(data => {
       this.keywords = [];
       let tfData = data as []; //전체 자료 불러오고
-      console.log("tfidf table is loaded")
+      // console.log("tfidf table is loaded")
       // console.log(data);
       let titles = this.articleSources as []; //검색된 데이터들을 받음
-
+      this.relateToggle = []
       for (var i in titles) {
         this.idList[i] = titles[i]["_id"];
+        this.relateToggle.push(false);
       }
 
       for (var j = 0; j < this.idList.length; j++) {
