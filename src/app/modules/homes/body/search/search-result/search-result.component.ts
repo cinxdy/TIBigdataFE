@@ -1,5 +1,10 @@
-
-import { Component, OnInit, ChangeDetectorRef, Input, Inject } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  Input,
+  Inject
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from "../service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
@@ -7,7 +12,7 @@ import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { IpService } from 'src/app/ip.service'
+import { IpService } from "src/app/ip.service";
 
 @Component({
   selector: "app-search-result",
@@ -32,7 +37,7 @@ export class SearchResultComponent implements OnInit {
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
-  private isInfoLoaded : boolean = false;
+  private isInfoLoaded: boolean = false;
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
@@ -52,40 +57,37 @@ export class SearchResultComponent implements OnInit {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
-      // console.log(info) 
+      // console.log(info)
     });
   }
 
-
-
   ngOnInit() {
-    let queryText = this.es.getKeyword()
+    let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText);
-    console.log("search bar : fulltextsearch done with " + queryText);
-  
-    this.isSearchLoaded = false  ;
-    this.isInfoLoaded = false  ;
+    // console.log("search bar : fulltextsearch done with " + queryText);
 
-    console.log("isSearchLoaded is false");
+    this.isSearchLoaded = false;
+    this.isInfoLoaded = false;
+
+    // console.log("isSearchLoaded is false");
     this.idList = [];
-    console.log(this.es.articleSource);
-    console.log("result comp : subscribe from es start!");
+    // console.log(this.es.articleSource);
+    // console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
-      console.log("result comp : pomise start!");
+      // console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
-        console.log("result comp : recieved search result article sources");
-        console.log(articles);
+        // console.log("result comp : recieved search result article sources");
+        // console.log(articles);
         this.isSearchLoaded = true;
 
         r();
       }).then(() => {
-        console.log("result comp : showKeyword() start");
+        // console.log("result comp : showKeyword() start");
         this.showKeyword();
+      });
     });
-    
-  })
-}
+  }
 
   getRcmd() {
     this.http
@@ -106,19 +108,23 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
-    this.idControl.setIdList(this.articleSources[i]["_id"]);
+    this.idControl.setIdList( this.idList[i] );
+    console.log("new id added to list! : " +     this.idList[i]  );
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   navToDataChart() {
+    console.log("cumulative id list so far : ");
+    let v = this.idControl.getIdList();
+    console.log(v);
     this._router.navigateByUrl("search/ChosenDocAnalysis");
   }
-  
-  navToDocDetail(){
+
+  navToDocDetail() {
     this._router.navigateByUrl("search/DocDetail");
   }
 
-  chooseDoc(i){
+  chooseDoc(i) {
     // this.idControl.clearIdChosen();
     // this.idControl.setArticle(this.articleSources[i]);
     this.idControl.setIdChosen(this.articleSources[i]["_id"]);
@@ -135,9 +141,7 @@ export class SearchResultComponent implements OnInit {
       let titles = this.articleSources as []; //검색된 데이터들을 받음
 
       for (var i in titles) {
-        let j1: string;
-        j1 = titles[i]["_id"];
-        this.idList[i] = j1;
+        this.idList[i] = titles[i]["_id"];
       }
 
       for (var j = 0; j < this.idList.length; j++) {
