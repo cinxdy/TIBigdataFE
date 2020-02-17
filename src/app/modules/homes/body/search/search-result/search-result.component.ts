@@ -93,10 +93,10 @@ export class SearchResultComponent implements OnInit {
   }
 
   //Get result from flask
-  // getResult() {
-  //   this.searchKeyword = this.es.getKeyword();
-  //   this._router.navigateByUrl("search/freqAnalysis");
-  // }
+  getResult() {
+    this.searchKeyword = this.es.getKeyword();
+    this._router.navigateByUrl("search/freqAnalysis");
+  }
 
   addList(i) {
     this.idControl.setIdList( this.idList[i] );
