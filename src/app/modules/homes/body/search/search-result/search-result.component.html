@@ -31,7 +31,7 @@
     </div>
 
     <div class="search-result">
-      <div *ngIf="isSearchLoaded == false; else loadFin">Loading...</div>
+      <div uk-spinner="ratio: 4.5 "*ngIf="isSearchLoaded == false; else loadFin">Loading...</div>
       <ng-template #loadFin>
         <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div>
-                <div *ngIf="isInfoLoaded == false; else infoLoadFin">
+                <div uk-spinner="ratio: 4.5 "*ngIf="isInfoLoaded == false; else infoLoadFin">
                   Loading...
                 </div>
                 <ng-template #infoLoadFin>

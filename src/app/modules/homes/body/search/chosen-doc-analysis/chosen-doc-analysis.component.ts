@@ -14,6 +14,7 @@ export class ChosenDocAnalysisComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
+  private isLoaded : boolean = false;
 
   ngOnInit() {
     this.http.get(this.FILE_DIR).subscribe(data => {
@@ -61,6 +62,7 @@ export class ChosenDocAnalysisComponent implements OnInit {
       }
 
       // console.log(this.cDatas);
+      this.isLoaded = true;
     });
 
   }
