@@ -6,7 +6,7 @@ import { ElasticsearchService } from "../service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
-import { IdControlService } from "./id-control-service/id-control.service";
+import { IdControlService } from "../id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from 'src/app/ip.service'
 

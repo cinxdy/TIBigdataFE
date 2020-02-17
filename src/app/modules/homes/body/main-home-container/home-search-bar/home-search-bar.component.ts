@@ -5,11 +5,11 @@ import { ArticleSource } from '../../search/article/article.interface';
 
 
 @Component({
-  selector: 'app-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.less']
+  selector: 'app-home-search-bar',
+  templateUrl: './home-search-bar.component.html',
+  styleUrls: ['./home-search-bar.component.less']
 })
-export class SearchBarComponent implements OnInit {
+export class HomeSearchBarComponent implements OnInit {
 
   private static readonly INDEX = 'nkdboard';
   private static readonly TYPE = 'nkdboard';
