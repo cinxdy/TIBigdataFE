@@ -33,7 +33,7 @@ export class SearchResultComponent implements OnInit {
 
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
-  public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
+  public relatedKeywords = [];
   private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
   private idList: string[] = [];
   private rcmdList: {};
