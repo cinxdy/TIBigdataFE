@@ -32,7 +32,7 @@ export class ElasticsearchService {
    */
   fillSubscrb(info: ArticleSource[]) {
       this.articleSource.next(info);
-      console.log("saved : ", this.articleSource);
+      // console.log("saved : ", this.articleSource);
   }
 
   /**

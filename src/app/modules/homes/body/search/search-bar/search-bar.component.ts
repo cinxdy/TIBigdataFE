@@ -48,7 +48,8 @@ export class SearchBarComponent implements OnInit {
   }
 
   search() {
-    this.es.fullTextSearch("post_body", this.queryText);
+    this.es.setKeyword(this.queryText);
+    // this.es.fullTextSearch("post_body", this.queryText);
     // console.log("search bar : fulltextsearch done with " + this.queryText);
     this._router.navigateByUrl("search");
   }

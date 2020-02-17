@@ -1,7 +1,6 @@
 
 import { Component, OnInit, ChangeDetectorRef, Input, Inject } from "@angular/core";
 import { Router } from "@angular/router";
-// import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ElasticsearchService } from "../service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
@@ -59,20 +58,24 @@ export class SearchResultComponent implements OnInit {
 
 
   ngOnInit() {
+    let queryText = this.es.getKeyword()
+    this.es.fullTextSearch("post_body", queryText);
+    console.log("search bar : fulltextsearch done with " + queryText);
+  
     this.loaded = false  ;
-    // console.log("loaded is false");
+    console.log("loaded is false");
     this.idList = [];
-    // console.log(this.es.articleSource);
-    // console.log("result comp : subscribe from es start!");
+    console.log(this.es.articleSource);
+    console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
-      // console.log("result comp : pomise start!");
+      console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
-        // console.log("result comp : recieved search result article sources");
-        // console.log(articles);
+        console.log("result comp : recieved search result article sources");
+        console.log(articles);
         r();
       }).then(() => {
-        // console.log("result comp : showKeyword() start");
+        console.log("result comp : showKeyword() start");
         this.showKeyword();
     });
     
