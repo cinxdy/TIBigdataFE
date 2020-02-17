@@ -68,7 +68,7 @@ export class SearchResultComponent implements OnInit {
 
     this.isSearchLoaded = false;
     this.isInfoLoaded = false;
-
+    this.idControl.clearIdList();
     // console.log("isSearchLoaded is false");
     this.idList = [];
     // console.log(this.es.articleSource);

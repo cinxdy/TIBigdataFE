@@ -30,7 +30,7 @@ export class ChosenDocAnalysisComponent implements OnInit {
       // console.log("idList contents : ");
       // console.log(idList);
       for (var i = 0; i <= idList.length; i++) {
-        let needData : {} = undefined;
+        let needData : {} = [];
         needData = tfidfData.find(d => d["docID"] === idList[i]);
 
         try {
@@ -63,7 +63,6 @@ export class ChosenDocAnalysisComponent implements OnInit {
       // console.log(this.cDatas);
     });
 
-    this.idCont.clearIdList();
   }
 
   cldData: CloudData;
