@@ -32,7 +32,7 @@ export class IdControlService {
   }
 
   setIdChosen(id : string){
-    this.clear();
+    this.clearAll();
     this.idChosen = id;
   }
 
@@ -49,7 +49,7 @@ export class IdControlService {
   }
 
   setArticle(art:ArticleSource){
-    this.clear();
+    this.clearAll();
     this.article = art;
   }
 
