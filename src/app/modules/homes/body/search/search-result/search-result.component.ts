@@ -125,7 +125,7 @@ export class SearchResultComponent implements OnInit {
   // }
   setThisDoc(i : number, r : number){
     this.rcmdList[i]["id"][r]
-    // console.log(this.rcmdList[i]["id"][r]);
+    console.log(this.rcmdList);
     this.idControl.setIdChosen(this.rcmdList[i]["id"][r]);
     this.navToDocDetail();
 
