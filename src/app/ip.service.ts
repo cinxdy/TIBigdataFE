@@ -48,6 +48,7 @@ export class IpService {
 
   static getCommonIp(){
     let ip = window.location.origin;
+    console.log(ip)
     if (ip != this.SERVER_IP){
       this.curIP = this.DEV_IP;
     }
