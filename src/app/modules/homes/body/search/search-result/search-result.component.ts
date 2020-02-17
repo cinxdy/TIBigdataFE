@@ -31,7 +31,8 @@ export class SearchResultComponent implements OnInit {
   private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
   private idList: string[] = [];
   private rcmdList: {};
-  private loaded: boolean = false;
+  private isSearchLoaded: boolean = false;
+  private isInfoLoaded : boolean = false;
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
@@ -62,8 +63,10 @@ export class SearchResultComponent implements OnInit {
     this.es.fullTextSearch("post_body", queryText);
     console.log("search bar : fulltextsearch done with " + queryText);
   
-    this.loaded = false  ;
-    console.log("loaded is false");
+    this.isSearchLoaded = false  ;
+    this.isInfoLoaded = false  ;
+
+    console.log("isSearchLoaded is false");
     this.idList = [];
     console.log(this.es.articleSource);
     console.log("result comp : subscribe from es start!");
@@ -73,6 +76,8 @@ export class SearchResultComponent implements OnInit {
         this.articleSources = articles;
         console.log("result comp : recieved search result article sources");
         console.log(articles);
+        this.isSearchLoaded = true;
+
         r();
       }).then(() => {
         console.log("result comp : showKeyword() start");
@@ -87,8 +92,8 @@ export class SearchResultComponent implements OnInit {
       .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
       .subscribe(data => {
         this.rcmdList = data;
-        this.loaded = true;
-        // console.log("loaded is true");
+        this.isInfoLoaded = true;
+        // console.log("isSearchLoaded is true");
 
         // console.log("getRcmd() done. loading done!");
       });
