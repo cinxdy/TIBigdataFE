@@ -60,6 +60,10 @@ export class IpService {
     return this.curIP;
     
   }
+
+  static getDevIp(){
+    return this.DEV_IP;
+  }
 }
 
 

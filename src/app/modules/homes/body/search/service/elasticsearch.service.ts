@@ -13,7 +13,7 @@ export class ElasticsearchService {
   articleSource = new Subject<ArticleSource[]>();
   // articleSource = new Observable<ArticleSource[]>();
   articleInfo$ = this.articleSource.asObservable();
-  private searchKeyword: string;
+  private searchKeyword: string = undefined;
 
   constructor() {
     if (!this.client) {

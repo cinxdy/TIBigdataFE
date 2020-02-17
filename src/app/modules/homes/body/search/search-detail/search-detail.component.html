@@ -1,4 +1,5 @@
 <div class="uk-container">
+  <div uk-spinner="ratio: 4.5" *ngIf="isLoaded == false">Loading...</div>
   <div *ngIf="isLoaded == true">
     <div class="row">
       <h1>문서제목 : {{ article.post_title }}</h1>

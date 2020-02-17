@@ -3,7 +3,8 @@ import {
   OnInit,
   ChangeDetectorRef,
   Input,
-  Inject
+  Inject,
+  Output
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from "../service/elasticsearch.service";
@@ -48,6 +49,8 @@ export class SearchResultComponent implements OnInit {
   private subscription: Subscription;
   private searchKeyword: string;
 
+  @Output() queryText : string;
+
   constructor(
     private idControl: IdControlService,
     public _router: Router,
@@ -62,31 +65,14 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    let queryText = this.es.getKeyword();
-    this.es.fullTextSearch("post_body", queryText);
-    // console.log("search bar : fulltextsearch done with " + queryText);
+    if (IpService.getCommonIp()==IpService.getDevIp()) {
+      if(this.es.getKeyword() == undefined){
+        this.es.setKeyword("북한산");
+        this.queryText = "북한산"
+      }
+    }
 
-    this.isSearchLoaded = false;
-    this.isInfoLoaded = false;
-    this.idControl.clearIdList();
-    // console.log("isSearchLoaded is false");
-    this.idList = [];
-    // console.log(this.es.articleSource);
-    // console.log("result comp : subscribe from es start!");
-    this.es.articleInfo$.subscribe(articles => {
-      // console.log("result comp : pomise start!");
-      new Promise(r => {
-        this.articleSources = articles;
-        // console.log("result comp : recieved search result article sources");
-        // console.log(articles);
-        this.isSearchLoaded = true;
-
-        r();
-      }).then(() => {
-        // console.log("result comp : showKeyword() start");
-        this.showKeyword();
-      });
-    });
+    this.loadResultPage();
   }
 
   getRcmd() {
@@ -95,6 +81,8 @@ export class SearchResultComponent implements OnInit {
       .subscribe(data => {
         this.rcmdList = data;
         this.isInfoLoaded = true;
+        console.log("isInfoLoaded is true");
+
         // console.log("isSearchLoaded is true");
 
         // console.log("getRcmd() done. loading done!");
@@ -151,13 +139,13 @@ export class SearchResultComponent implements OnInit {
         try {
           let tfVal = needData["TFIDF"];
 
-          const kws = [] as any;
+          const kwd = [] as any;
           let word;
           for (var k = 0; k < 3; k++) {
             word = tfVal[k][0];
-            kws.push(word);
+            kwd.push(word);
           }
-          this.keywords.push(kws);
+          this.keywords.push(kwd);
         } catch {
           console.log("error at index " + j);
           console.log("obejct detail : " + needData);
@@ -166,6 +154,62 @@ export class SearchResultComponent implements OnInit {
       }
       // console.log("showKeyword() done...");
       this.getRcmd();
+      this.relatedKeywords = [];
+
+      let keys = this.keywords;
+      for (let i = 0; i < keys.length; i++){
+        // console.log(this.keywords[i])
+        for(let j = 0 ; j < keys[i].length; j++){
+          this.relatedKeywords.push(keys[i][j]);
+        }
+      }
+      this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
+      // console.log(this.relatedKeywords);
+    });
+  }
+
+  relatedSearch(keyword : string){
+    this.es.setKeyword(keyword);
+    this.queryText = keyword;
+
+    // this.es.fullTextSearch("post_body", keyword);
+    // this.isSearchLoaded = false;
+    // this.isInfoLoaded = false;
+    // console.log("isInfoLoaded is false");
+    this.loadResultPage()
+    // console.log("search bar : fulltextsearch done with " + this.queryText);
+    // this._router.navigateByUrl("search");  }
+  }
+
+  loadResultPage(){
+    this.isSearchLoaded = false;
+    this.isInfoLoaded = false;
+    console.log("isInfoLoaded is false");
+    console.log(this.es.getKeyword());
+
+    let queryText = this.es.getKeyword();
+    this.es.fullTextSearch("post_body", queryText);
+    // console.log("search bar : fulltextsearch done with " + queryText);
+
+    this.idControl.clearIdList();
+    // console.log("isSearchLoaded is false");
+    this.idList = [];
+    // console.log(this.es.articleSource);
+    // console.log("result comp : subscribe from es start!");
+    this.es.articleInfo$.subscribe(articles => {
+      // console.log("result comp : pomise start!");
+      new Promise(r => {
+        this.articleSources = articles;
+        // console.log("result comp : recieved search result article sources");
+        // console.log(articles);
+        this.isSearchLoaded = true;
+
+        r();
+      }).then(() => {
+        // console.log("result comp : showKeyword() start");
+        this.showKeyword();
+      });
     });
   }
 }
+

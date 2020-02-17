@@ -24,13 +24,15 @@ export class SearchBarComponent implements OnInit {
 
   private lastKeypress = 0;
 
-  articleSources: ArticleSource[];
+
+
+  // articleSources: ArticleSource[];
 
   isConnected = false;
   status: string;
-  subscription: Subscription;
+  // subscription: Subscription;
 
-  searchKeyword: string;
+  // searchKeyword: string;
 
   constructor(
     public _router: Router,

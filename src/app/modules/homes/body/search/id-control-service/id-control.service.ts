@@ -48,7 +48,6 @@ export class IdControlService {
   }
 
   setArticle(art:ArticleSource){
-    this.clear();
     this.article = art;
   }
 

@@ -6,11 +6,19 @@
     <button class="uk-button uk-button-text">
       연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
     </button>
-    <ul class="keyword-list" *ngFor="let keyword of relatedKeywords">
-      <li>
-        <a href="#">{{ keyword }}</a>
-      </li>
-    </ul>
+    <div
+      uk-spinner="ratio: 4.5 "
+      *ngIf="isInfoLoaded == false; else infoLoadFin"
+    >
+      Loading...
+    </div>
+    <ng-template #infoLoadFin>
+      <ul class="keyword-list" *ngFor="let keyword of relatedKeywords">
+        <li>
+          <a (click)="relatedSearch(keyword)">{{ keyword }}</a>
+        </li>
+      </ul>
+    </ng-template>
   </div>
   <form #dataForm="ngForm" (ngSubmit)="this.navToDataChart()">
     <div *ngIf="articleSources?.length > 1" class="uk-flex uk-flex-right">
@@ -25,13 +33,18 @@
   <hr />
   <div class="uk-child-width-expand@s" uk-grid>
     <div class="uk-width-small">
-      <div class="search-filter" style="width = 50px;">
+      <div class="search-filter" style="width : 50px;">
         <app-search-filter></app-search-filter>
       </div>
     </div>
 
     <div class="search-result">
-      <div uk-spinner="ratio: 4.5 "*ngIf="isSearchLoaded == false; else loadFin">Loading...</div>
+      <div
+        uk-spinner="ratio: 4.5 "
+        *ngIf="isSearchLoaded == false; else loadFin"
+      >
+        Loading...
+      </div>
       <ng-template #loadFin>
         <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
@@ -49,7 +62,10 @@
                 </div>
               </div>
               <div>
-                <div uk-spinner="ratio: 4.5 "*ngIf="isInfoLoaded == false; else infoLoadFin">
+                <div
+                  uk-spinner="ratio: 4.5 "
+                  *ngIf="isInfoLoaded == false; else infoLoadFin"
+                >
                   Loading...
                 </div>
                 <ng-template #infoLoadFin>
