@@ -1,14 +1,18 @@
-
-import { Component, OnInit, ChangeDetectorRef, Input, Inject } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  Input,
+  Inject
+} from "@angular/core";
 import { Router } from "@angular/router";
-// import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ElasticsearchService } from "../service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { IpService } from 'src/app/ip.service'
+import { IpService } from "src/app/ip.service";
 
 @Component({
   selector: "app-search-result",
@@ -18,30 +22,31 @@ import { IpService } from 'src/app/ip.service'
 export class SearchResultComponent implements OnInit {
   //Flask data
   // private BASE_URL: string = "http://localhost:5000/keywordGraph";
+  // serverData: JSON;
+  // private RCMD_URL: string = "http://localhost:5000/rcmd";
+  // private static readonly INDEX = "nkdb";
+  // private static readonly TYPE = "nkdb";
+  // private queryText = "";
+  // private lastKeypress = 0;
+  // private thisURL: string = "http://localhost:4200/homes/searchResult";
+
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
-  serverData: JSON;
   private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
-  // private RCMD_URL: string = "http://localhost:5000/rcmd";
-  
-
-  // private static readonly INDEX = "nkdb";
-  // private static readonly TYPE = "nkdb";
-
-  // private queryText = "";
-
-  // private lastKeypress = 0;
   private idList: string[] = [];
   private rcmdList: {};
-  private loaded: boolean = false;
-
-  articleSources: ArticleSource[]; //이친구를 포문돌려서
-  docId: string;
-  isConnected = false;
-  status: string;
-  subscription: Subscription;
-  searchKeyword: string;
+  private isSearchLoaded: boolean = false;
+  private isInfoLoaded: boolean = false;
+  private headers: HttpHeaders = new HttpHeaders({
+    "Content-Type": "application/json"
+  });
+  private articleSources: ArticleSource[]; //이친구를 포문돌려서
+  private docId: string;
+  private isConnected = false;
+  private status: string;
+  private subscription: Subscription;
+  private searchKeyword: string;
 
   constructor(
     private idControl: IdControlService,
@@ -52,36 +57,47 @@ export class SearchResultComponent implements OnInit {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
+      // console.log(info)
     });
   }
 
-  // private thisURL: string = "http://localhost:4200/homes/searchResult";
-  private headers: HttpHeaders = new HttpHeaders({
-    "Content-Type": "application/json"
-  });
-
   ngOnInit() {
-    this.loaded = false;
-    this.idList = [];
+    let queryText = this.es.getKeyword();
+    this.es.fullTextSearch("post_body", queryText);
+    // console.log("search bar : fulltextsearch done with " + queryText);
 
+    this.isSearchLoaded = false;
+    this.isInfoLoaded = false;
+    this.idControl.clearIdList();
+    // console.log("isSearchLoaded is false");
+    this.idList = [];
+    // console.log(this.es.articleSource);
+    // console.log("result comp : subscribe from es start!");
     this.es.articleInfo$.subscribe(articles => {
+      // console.log("result comp : pomise start!");
       new Promise(r => {
         this.articleSources = articles;
+        // console.log("result comp : recieved search result article sources");
+        // console.log(articles);
+        this.isSearchLoaded = true;
+
         r();
       }).then(() => {
+        // console.log("result comp : showKeyword() start");
         this.showKeyword();
-    
+      });
     });
-    
-  })
-}
+  }
 
   getRcmd() {
     this.http
       .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
       .subscribe(data => {
         this.rcmdList = data;
-        this.loaded = true;
+        this.isInfoLoaded = true;
+        // console.log("isSearchLoaded is true");
+
+        // console.log("getRcmd() done. loading done!");
       });
   }
 
@@ -92,38 +108,40 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
-    // console.log(this.articleSources[i]);
-    this.idControl.setIdList(this.articleSources[i]["_id"]);
-    // console.log(this.articleSources[i]["_id"]);
+    this.idControl.setIdList( this.idList[i] );
+    console.log("new id added to list! : " +     this.idList[i]  );
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   navToDataChart() {
+    console.log("cumulative id list so far : ");
+    let v = this.idControl.getIdList();
+    console.log(v);
     this._router.navigateByUrl("search/ChosenDocAnalysis");
   }
-  
-  navToDocDetail(){
+
+  navToDocDetail() {
     this._router.navigateByUrl("search/DocDetail");
   }
 
-  chooseDoc(i){
+  chooseDoc(i) {
     // this.idControl.clearIdChosen();
-    this.idControl.setArticle(this.articleSources[i]);
+    // this.idControl.setArticle(this.articleSources[i]);
+    this.idControl.setIdChosen(this.articleSources[i]["_id"]);
     this.navToDocDetail();
   }
 
   private keywords: any[] = [];
 
   showKeyword() {
+    // console.log("result comp : showKeyword() start");
     this.http.get(this.fileDir).subscribe(data => {
       let tfData = data as []; //전체 자료 불러오고
 
       let titles = this.articleSources as []; //검색된 데이터들을 받음
 
       for (var i in titles) {
-        let j1: string;
-        j1 = titles[i]["_id"];
-        this.idList[i] = j1;
+        this.idList[i] = titles[i]["_id"];
       }
 
       for (var j = 0; j < this.idList.length; j++) {
@@ -146,7 +164,7 @@ export class SearchResultComponent implements OnInit {
           console.log("looking for : ", tfData[j]["docID"]);
         }
       }
-
+      // console.log("showKeyword() done...");
       this.getRcmd();
     });
   }

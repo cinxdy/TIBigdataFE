@@ -1,6 +1,7 @@
 <div class="uk-container">
-  <app-search-bar></app-search-bar>
-
+  <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6">
+    <app-search-bar></app-search-bar>
+  </form>
   <div class="uk-flex-inline">
     <button class="uk-button uk-button-text">
       연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
@@ -30,7 +31,7 @@
     </div>
 
     <div class="search-result">
-      <div *ngIf="loaded == false; else loadFin">Loading...</div>
+      <div *ngIf="isSearchLoaded == false; else loadFin">Loading...</div>
       <ng-template #loadFin>
         <div *ngFor="let articleSource of articleSources; index as i">
           <div class="row">
@@ -47,9 +48,15 @@
                   </app-article-details>
                 </div>
               </div>
-              <div class="row">키워드 : {{ keywords[i] }}</div>
-              <div class="row">연관문서 : {{ rcmdList[i]["rcmd"] }}</div>
-              <hr />
+              <div>
+                <div *ngIf="isInfoLoaded == false; else infoLoadFin">
+                  Loading...
+                </div>
+                <ng-template #infoLoadFin>
+                  <div class="row">키워드 : {{ keywords[i] }}</div>
+                  <div class="row">연관문서 : {{ rcmdList[i]["rcmd"] }}</div>
+                </ng-template>
+              </div>
             </div>
             <div class="col-xs">
               <button

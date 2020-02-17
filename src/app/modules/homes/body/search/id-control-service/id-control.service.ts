@@ -9,15 +9,18 @@ export class IdControlService {
   private article : ArticleSource;
   constructor() { }
 
-  clear(){
+  clearAll(){
     this.idChosen = "";
     this.idList = [];
     this.idChosen = "";
   }
 
   setIdList(id:string){
-    this.clear();
     this.idList.push(id);
+  }
+
+  clearIdList(){
+    this.idList = [];
   }
 
   getIdList(){
@@ -33,7 +36,7 @@ export class IdControlService {
     this.idChosen = id;
   }
 
-  getIdChoen(){
+  getIdChosen(){
     return this.idChosen;
   }
 

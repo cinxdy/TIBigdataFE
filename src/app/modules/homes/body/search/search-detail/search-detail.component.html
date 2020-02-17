@@ -1,53 +1,53 @@
 <div class="uk-container">
-  <div class="row">
-    <h1>문서제목 : {{ article.post_title }}</h1>
-  </div>
-  <div class="row">
-    <h2>저자 : {{ article.post_writer }}</h2>
-  </div>
-  <div class="row">
-    <div class="col">
-      <ul>
-        <ul>
-          institution :
-          {{
-            article.published_institution_url
-          }}
-        </ul>
-        <ul>
-          type of publish
-        </ul>
-        <ul>
-          date of release :
-          {{
-            article.post_date
-          }}
-        </ul>
-        <ul>
-          page :
-          {{
-            article.number
-          }}
-        </ul>
-      </ul>
+  <div *ngIf="isLoaded == true">
+    <div class="row">
+      <h1>문서제목 : {{ article.post_title }}</h1>
     </div>
-    <div class="col">
-      <h3>brief</h3>
-      <ul>
-        brief...
-      </ul>
+    <div class="row">
+      <h2>저자 : {{ article.post_writer }}</h2>
     </div>
-  </div>
+    <div class="row">
+      <div class="col">
+        <ul>
+          <ul>
+            institution :
+            {{
+              article.published_institution_url
+            }}
+          </ul>
+          <ul>
+            type of publish
+          </ul>
+          <ul>
+            date of release :
+            {{
+              article.post_date
+            }}
+          </ul>
+          <ul>
+            page :
+            {{
+              article.number
+            }}
+          </ul>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>brief</h3>
+        <ul>
+          brief...
+        </ul>
+      </div>
+    </div>
 
-  <div class="row">
-    <!-- <div class="uk-container"> -->
-    <div class="col">
-      <h3>summary :</h3>
-      <!-- {{ article.post_body }}</div> -->
-    </div>
-    <div class="col">
-      <h3>워드클라우드 : 이 문서의 키워드</h3>
-      <div *ngIf="isLoaded == true">
+    <div class="row">
+      <!-- <div class="uk-container"> -->
+      <div class="col">
+        <h3>summary :</h3>
+        <!-- {{ article.post_body }}</div> -->
+      </div>
+      <div class="col">
+        <h3>워드클라우드 : 이 문서의 키워드</h3>
         <div class="uk-container">
           <div class="card card-body mb-2">
             <div>

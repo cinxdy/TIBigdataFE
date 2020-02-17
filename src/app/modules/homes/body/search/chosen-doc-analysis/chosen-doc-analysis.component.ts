@@ -27,10 +27,12 @@ export class ChosenDocAnalysisComponent implements OnInit {
           cData에 저장.
         */
       let idList = this.idCont.getIdList(); // service에서 선택한 문서 id 받아온다.
-
+      // console.log("idList contents : ");
+      // console.log(idList);
       for (var i = 0; i <= idList.length; i++) {
-        let needData = {};
+        let needData : {} = [];
         needData = tfidfData.find(d => d["docID"] === idList[i]);
+
         try {
           let tfIdfVal = needData["TFIDF"] as [];
           this.titles.push(needData["docTitle"]);
@@ -46,12 +48,13 @@ export class ChosenDocAnalysisComponent implements OnInit {
                 text: tfIdfVal[k][0],
                 weight: tfIdfVal[k][1]
               });
-            } catch {
-              console.log("index " + k + " has an error");
+            } catch(err) {
+              console.log("error in creating cloud : " + "index " + k + " has an error");
             }
           }
           this.cDatas.push(cData);
-        } catch {
+        } catch(err){
+          console.log(err.message);
           console.log("error in " + i);
           console.log("object detail : " + tfidfData[i]["docID"]);
         }
@@ -59,6 +62,7 @@ export class ChosenDocAnalysisComponent implements OnInit {
 
       // console.log(this.cDatas);
     });
+
   }
 
   cldData: CloudData;

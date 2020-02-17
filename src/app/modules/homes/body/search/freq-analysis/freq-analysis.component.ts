@@ -21,7 +21,7 @@ export class FreqAnalysisComponent implements OnInit {
 
   ngOnInit() {
     this.searchKeyword = this.es.getKeyword();
-    // console.log(this.searchKeyword);
+    console.log("search keyword : "+this.searchKeyword);
 
     let body = { keyword: this.searchKeyword };
 
