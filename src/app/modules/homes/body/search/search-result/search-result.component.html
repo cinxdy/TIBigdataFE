@@ -1,6 +1,9 @@
 <div class="uk-container">
   <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6">
-    <app-search-bar [queryText]="queryText"  (searched)="loadResultPage()"></app-search-bar>
+    <app-search-bar
+      [queryText]="queryText"
+      (searched)="loadResultPage()"
+    ></app-search-bar>
   </form>
   <div class="uk-flex-inline">
     <button class="uk-button uk-button-text">
@@ -22,19 +25,23 @@
   </div>
   <form #dataForm="ngForm" (ngSubmit)="this.navToDataChart()">
     <div *ngIf="articleSources?.length > 1" class="uk-flex uk-flex-right">
-      <button (click)="getResult()" class="uk-button uk-button-primary">
-        All Search Freq Analysis
-      </button>
-      <button class="uk-button uk-button-danger">
+      <!-- <button class="uk-button uk-button-danger">
         Chosen Doc WordCloud
-      </button>
+      </button> -->
     </div>
   </form>
   <hr />
   <div class="uk-child-width-expand@s" uk-grid>
     <div class="uk-width-small">
-      <div class="search-filter" style="width : 50px;">
-        <app-search-filter></app-search-filter>
+      <div class="row">
+        <button (click)="getResult()" class="uk-button uk-button-primary">
+          키워드 분석
+        </button>
+      </div>
+      <div class="row">
+        <div class="search-filter" style="width : 50px;">
+          <app-search-filter></app-search-filter>
+        </div>
       </div>
     </div>
 
@@ -57,11 +64,11 @@
             <div class="col">
               <div class="row">
                 <div class="container">
-                  <app-article-details [article]="articleSource._source">
+                  <app-article-details [article]="articleSource" >
                   </app-article-details>
                 </div>
               </div>
-              <div>
+              <div class="row">
                 <div
                   uk-spinner="ratio: 4.5 "
                   *ngIf="isInfoLoaded == false; else infoLoadFin"
@@ -69,8 +76,11 @@
                   Loading...
                 </div>
                 <ng-template #infoLoadFin>
-                  <div class="row">키워드 : {{ keywords[i] }}</div>
-                  <div class="row">연관문서 : {{ rcmdList[i]["rcmd"] }}</div>
+                  <div class="col">키워드 : {{ keywords[i] }}</div>
+                  <div class="col">
+                    <div class="row">연관문서</div>
+                    <div class="row">{{ rcmdList[i]["rcmd"] }}</div>
+                  </div>
                 </ng-template>
               </div>
             </div>

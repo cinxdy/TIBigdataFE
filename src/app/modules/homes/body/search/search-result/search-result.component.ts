@@ -91,10 +91,10 @@ export class SearchResultComponent implements OnInit {
   }
 
   //Get result from flask
-  getResult() {
-    this.searchKeyword = this.es.getKeyword();
-    this._router.navigateByUrl("search/freqAnalysis");
-  }
+  // getResult() {
+  //   this.searchKeyword = this.es.getKeyword();
+  //   this._router.navigateByUrl("search/freqAnalysis");
+  // }
 
   addList(i) {
     this.idControl.setIdList( this.idList[i] );
@@ -102,23 +102,25 @@ export class SearchResultComponent implements OnInit {
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
-  navToDataChart() {
-    // console.log("cumulative id list so far : ");
-    let v = this.idControl.getIdList();
-    // console.log(v);
-    this._router.navigateByUrl("search/ChosenDocAnalysis");
-  }
 
-  navToDocDetail() {
-    this._router.navigateByUrl("search/DocDetail");
-  }
 
-  chooseDoc(i) {
-    // this.idControl.clearIdChosen();
-    // this.idControl.setArticle(this.articleSources[i]);
-    this.idControl.setIdChosen(this.articleSources[i]["_id"]);
-    this.navToDocDetail();
-  }
+  // navToDataChart() {
+  //   // console.log("cumulative id list so far : ");
+  //   let v = this.idControl.getIdList();
+  //   // console.log(v);
+  //   this._router.navigateByUrl("search/ChosenDocAnalysis");
+  // }
+
+  // navToDocDetail() {
+  //   this._router.navigateByUrl("search/DocDetail");
+  // }
+
+  // chooseDoc(i) {
+  //   // this.idControl.clearIdChosen();
+  //   // this.idControl.setArticle(this.articleSources[i]);
+  //   this.idControl.setIdChosen(this.articleSources[i]["_id"]);
+  //   this.navToDocDetail();
+  // }
 
   private keywords: any[];
 

@@ -33,6 +33,7 @@ export class IdControlService {
 
   setIdChosen(id : string){
     this.idChosen = id;
+    console.log(this.idChosen);
   }
 
   getIdChosen(){

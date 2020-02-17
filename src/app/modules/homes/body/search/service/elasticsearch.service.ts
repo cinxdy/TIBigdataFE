@@ -100,7 +100,7 @@ export class ElasticsearchService {
     })
   }
 
-  idSearch(id : string){
+  searchById(id : string){
      return this.client.search({
       filterPath:[
         "hits.hits",

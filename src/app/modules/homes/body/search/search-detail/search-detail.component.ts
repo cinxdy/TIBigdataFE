@@ -27,10 +27,11 @@ export class SearchDetailComponent implements OnInit {
     this.isLoaded = false;
     // this.article = this.idControl.getArticle()["_source"];
     let id = this.idControl.getIdChosen();
+    console.log("id : " + id)
     // this.es.idSearch(id).then((r) =>{
     //   this.article = r;
     // });
-    this.es.idSearch(id).then((res)=>{
+    this.es.searchById(id).then((res)=>{
       // this.article = res.hits.hits._source
       // console.log("돌겠네 진짜 " + this.article)
       console.log(res);
