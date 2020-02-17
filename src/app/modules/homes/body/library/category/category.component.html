@@ -2,17 +2,25 @@
 <div class="row">
   <div class="col">
     <div class="uk-container">
+      <div *ngIf="isLoaded == false">문서 주제 목록 loading...</div>
       <div *ngIf="isLoaded == true">
-        <div *ngFor="let topic of data">
+        <div *ngFor="let topic of data; let i = index">
           <div class="row">
-            <h2>토픽 : {{ topic["topic"]["words"] }}</h2>
+            <button
+              class="uk-button uk-button-primary uk-margin uk-width-1-4"
+              (click)="toggleTopic(i)"
+            >
+              토픽 : {{ topic["topic"] }}
+            </button>
           </div>
 
-          <div *ngFor="let doc of topic.doc">
-            <div class="row">{{ doc["title"] }}</div>
+          <div *ngIf="toggleTopics[i] == true">
+            <div class="uk-card uk-card-body uk-card-default">
+              <div *ngFor="let doc of topic.doc;">
+                  <a (click) = "navToDetail(doc)" class="row">{{ doc["titles"] }}</a>
+              </div>
+            </div>
           </div>
-
-          <!-- <div class="row"></div> -->
         </div>
       </div>
     </div>
@@ -20,7 +28,7 @@
   <div class="col">
     <app-category-graph></app-category-graph>
     <!-- <button (click)="navToGraph()" class="uk-button uk-button-primary"> -->
-      <!-- Show Category Graph -->
+    <!-- Show Category Graph -->
     <!-- </button> -->
   </div>
 </div>

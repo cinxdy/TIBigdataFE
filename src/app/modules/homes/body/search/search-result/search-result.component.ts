@@ -8,6 +8,8 @@ import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "./id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { IpService } from 'src/app/ip.service'
+
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -20,8 +22,9 @@ export class SearchResultComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = ["북한", "김정은", "북핵", "문재인", "미사일"];
   serverData: JSON;
+  private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
   // private RCMD_URL: string = "http://localhost:5000/rcmd";
-  private RCMD_URL: string = "http://203.252.103.123:5000/rcmd";
+  
 
   // private static readonly INDEX = "nkdb";
   // private static readonly TYPE = "nkdb";

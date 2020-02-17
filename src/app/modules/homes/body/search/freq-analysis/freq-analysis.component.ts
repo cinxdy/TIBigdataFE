@@ -3,6 +3,8 @@ import { ElasticsearchService } from "../service/elasticsearch.service";
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
+import { IpService } from 'src/app/ip.service'
+
 @Component({
   selector: "app-freq-analysis",
   templateUrl: "./freq-analysis.component.html",
@@ -10,9 +12,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 })
 export class FreqAnalysisComponent implements OnInit {
   private searchKeyword;
-  // private TEST_URL: string = "http://localhost:5000/keywordGraph";
-  private BASE_URL: string = "http://203.252.103.123:5000/keywordGraph";
-  private currURL = this.BASE_URL;
+  private URL = IpService.getCommonIp() + ":5000/keywordGraph"
 
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
@@ -21,12 +21,12 @@ export class FreqAnalysisComponent implements OnInit {
 
   ngOnInit() {
     this.searchKeyword = this.es.getKeyword();
-    console.log(this.searchKeyword);
+    // console.log(this.searchKeyword);
 
     let body = { keyword: this.searchKeyword };
 
     this.http
-      .post(this.currURL, body, { headers: this.headers })
+      .post(this.URL, body, { headers: this.headers })
       .subscribe(data => {
         let chart = new CanvasJS.Chart("chartContainer", {
           animationEnabled: true,

@@ -6,10 +6,17 @@ import { Injectable } from '@angular/core';
 export class IdControlService {
   private idChosen : string = "";
   private idList : string[] = new Array<string>();
-  private article : ArticleSource
+  private article : ArticleSource;
   constructor() { }
 
+  clear(){
+    this.idChosen = "";
+    this.idList = [];
+    this.idChosen = "";
+  }
+
   setIdList(id:string){
+    this.clear();
     this.idList.push(id);
   }
 
@@ -22,6 +29,7 @@ export class IdControlService {
   }
 
   setIdChosen(id : string){
+    this.clear();
     this.idChosen = id;
   }
 
@@ -38,6 +46,7 @@ export class IdControlService {
   }
 
   setArticle(art:ArticleSource){
+    this.clear();
     this.article = art;
   }
 
