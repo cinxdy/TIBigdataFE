@@ -49,7 +49,7 @@ export class SearchResultComponent implements OnInit {
   private subscription: Subscription;
   private searchKeyword: string;
 
-  @Output() queryText : string;
+  queryText : string;
 
   constructor(
     private idControl: IdControlService,

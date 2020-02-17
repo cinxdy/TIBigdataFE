@@ -20,7 +20,7 @@ export class SearchBarComponent implements OnInit {
   //  private static readonly INDEX = 'nkdboard';
   // private static readonly TYPE = 'nkdboard';
 
-  private queryText = "";
+  @Input() queryText : string = "";
 
   private lastKeypress = 0;
 
