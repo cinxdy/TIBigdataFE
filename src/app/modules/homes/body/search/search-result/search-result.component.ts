@@ -157,11 +157,15 @@ export class SearchResultComponent implements OnInit {
       this.relatedKeywords = [];
 
       let keys = this.keywords;
+      let count = 0;
       for (let i = 0; i < keys.length; i++){
         // console.log(this.keywords[i])
         for(let j = 0 ; j < keys[i].length; j++){
           this.relatedKeywords.push(keys[i][j]);
+          count ++;
+          if(count > 5) break;
         }
+        if(count > 5) break;
       }
       this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
       // console.log(this.relatedKeywords);
@@ -184,7 +188,7 @@ export class SearchResultComponent implements OnInit {
   loadResultPage(){
     this.isSearchLoaded = false;
     this.isInfoLoaded = false;
-    console.log("isInfoLoaded is false");
+    // console.log("isInfoLoaded is false");
     console.log(this.es.getKeyword());
 
     let queryText = this.es.getKeyword();
