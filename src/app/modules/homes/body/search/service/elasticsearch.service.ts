@@ -129,7 +129,7 @@ export class ElasticsearchService {
     let es_url = "http://203.252.103.86:8080";
     this.client = new elasticsearch.Client({
       host: es_url,
-      log: "trace"
+      // log: "trace"//to log the query and response in stdout
     });
   }
 

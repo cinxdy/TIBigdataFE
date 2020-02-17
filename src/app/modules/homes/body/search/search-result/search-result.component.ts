@@ -80,8 +80,9 @@ export class SearchResultComponent implements OnInit {
       .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
       .subscribe(data => {
         this.rcmdList = data;
+        // console.log(data);
         this.isInfoLoaded = true;
-        console.log("isInfoLoaded is true");
+        // console.log("isInfoLoaded is true");
 
         // console.log("isSearchLoaded is true");
 
@@ -97,14 +98,14 @@ export class SearchResultComponent implements OnInit {
 
   addList(i) {
     this.idControl.setIdList( this.idList[i] );
-    console.log("new id added to list! : " +     this.idList[i]  );
+    // console.log("new id added to list! : " +     this.idList[i]  );
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   navToDataChart() {
-    console.log("cumulative id list so far : ");
+    // console.log("cumulative id list so far : ");
     let v = this.idControl.getIdList();
-    console.log(v);
+    // console.log(v);
     this._router.navigateByUrl("search/ChosenDocAnalysis");
   }
 
@@ -119,13 +120,15 @@ export class SearchResultComponent implements OnInit {
     this.navToDocDetail();
   }
 
-  private keywords: any[] = [];
+  private keywords: any[];
 
   showKeyword() {
     // console.log("result comp : showKeyword() start");
     this.http.get(this.fileDir).subscribe(data => {
+      this.keywords = [];
       let tfData = data as []; //전체 자료 불러오고
-
+      console.log("tfidf table is loaded")
+      // console.log(data);
       let titles = this.articleSources as []; //검색된 데이터들을 받음
 
       for (var i in titles) {
@@ -186,10 +189,11 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadResultPage(){
+    // console.log("loadResultPage started")
     this.isSearchLoaded = false;
     this.isInfoLoaded = false;
     // console.log("isInfoLoaded is false");
-    console.log(this.es.getKeyword());
+    // console.log(this.es.getKeyword());
 
     let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText);
