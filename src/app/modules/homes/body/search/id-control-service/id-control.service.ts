@@ -32,7 +32,6 @@ export class IdControlService {
   }
 
   setIdChosen(id : string){
-    this.clear();
     this.idChosen = id;
   }
 
