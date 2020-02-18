@@ -7,14 +7,14 @@ import {
   Output
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { ElasticsearchService } from "../service/elasticsearch.service";
+import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from "src/app/ip.service";
-
+import { RecomandationService } from '../service/recommandation-service/recommandation.service';
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -34,7 +34,7 @@ export class SearchResultComponent implements OnInit {
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = [];
-  private RCMD_URL: string = IpService.getCommonIp() + ":5000/rcmd";
+  private RCMD_URL: string = this.ipService.getCommonIp() + ":5000/rcmd";
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
@@ -42,7 +42,7 @@ export class SearchResultComponent implements OnInit {
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
-  private articleSources: ArticleSource[]; //이친구를 포문돌려서
+  private articleSources: ArticleSource[]; 
   private docId: string;
   private isConnected = false;
   private status: string;
@@ -54,6 +54,8 @@ export class SearchResultComponent implements OnInit {
   queryText : string;
 
   constructor(
+    private rcmd : RecomandationService,
+    private ipService : IpService,
     private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
@@ -67,7 +69,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (IpService.getCommonIp()==IpService.getDevIp()) {
+    if (this.ipService.getCommonIp()==this.ipService.getDevIp()) {
       if(this.es.getKeyword() == undefined){
         this.es.setKeyword("북한산");
         this.queryText = "북한산"
@@ -77,6 +79,8 @@ export class SearchResultComponent implements OnInit {
     this.loadResultPage();
   }
 
+
+  
   getRcmd() {
     this.http
       .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })

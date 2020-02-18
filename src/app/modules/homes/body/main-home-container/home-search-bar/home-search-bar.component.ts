@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ElasticsearchService } from '../../search/service/elasticsearch.service';
+import { ElasticsearchService } from '../../search/service/elasticsearch-service/elasticsearch.service';
 import { Router } from '@angular/router';
 import { ArticleSource } from '../../search/article/article.interface';
 
