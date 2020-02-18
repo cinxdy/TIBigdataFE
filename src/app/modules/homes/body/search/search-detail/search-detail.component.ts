@@ -1,11 +1,12 @@
 // import { Injectable } from '@angular/core';
 import { IdControlService } from '../id-control-service/id-control.service';
 import { Article } from "../article/article.interface";
-import { ElasticsearchService } from '../service/elasticsearch.service';
+import { ElasticsearchService } from '../service/elasticsearch-service/elasticsearch.service';
 import { Component, OnInit, Inject } from '@angular/core';
 // import { Article } from '../article/article.interface';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
+import { RecomandationService } from '../service/recommandation-service/recommandation.service';
 
 @Component({
   selector: 'app-search-detail',
@@ -17,23 +18,44 @@ export class SearchDetailComponent implements OnInit {
   private article : Article;
   private cData: CloudData[];
   private isLoaded : boolean = false;
+  private rcmdList : Array<string>;
+  private relateToggle : boolean = false;
   constructor(
+    private rcmd : RecomandationService,
     private idControl: IdControlService,
     private wordcloud : WordcloudService,
     private es: ElasticsearchService,
     ) { }
 
   ngOnInit() {
+    this.loadPage();
+
+    
+  }
+  goToDoc(r){
+    // console.log(r)
+    this.idControl.setIdChosen(this.rcmdList[0]["id"][r]);
+    this.loadPage();
+    // this.rcmd.goToDoc(r);
+  }
+
+  loadPage(){
     this.isLoaded = false;
+    this.relateToggle = false;
     // this.article = this.idControl.getArticle()["_source"];
     let id = this.idControl.getIdChosen();
     // console.log("id : " + id)
     // this.es.idSearch(id).then((r) =>{
     //   this.article = r;
     // });
+    this.rcmd.getRcmd([id]).then((data)=>{
+      // console.log(data);
+      this.rcmdList = data as [];
+      this.relateToggle = true;
+    })
+
     this.es.searchById(id).then((res)=>{
       // this.article = res.hits.hits._source
-      // console.log("돌겠네 진짜 " + this.article)
       // console.log(res);
       this.article = res["hits"]["hits"][0]["_source"];
       // console.log(this.article)
@@ -48,7 +70,6 @@ export class SearchDetailComponent implements OnInit {
     // let id = this.idControl.getArticle()["_id"];
 
     // console.log(this.article);
-    
   }
 
   // cldData: CloudData;
@@ -58,5 +79,7 @@ export class SearchDetailComponent implements OnInit {
     height: 300,
     overflow: false
   };
+
+
 
 }

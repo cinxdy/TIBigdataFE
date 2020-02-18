@@ -39,14 +39,14 @@ import { Injectable } from '@angular/core';
 })
 export class IpService {
 
-  private static SERVER_IP = "http://203.252.103.123";
-  private static DEV_IP = "http://localhost";
-  private static curIP = "";
+  private SERVER_IP = "http://203.252.103.123";
+  private DEV_IP = "http://localhost";
+  private curIP = "";
 
 
   constructor() { }
 
-  static getCommonIp(){
+  getCommonIp(){
     let ipArr = window.location.origin.split(/:[0-9]+/);
     let ip = ipArr[0]
     console.log("current ip address : " + ip);
@@ -61,7 +61,7 @@ export class IpService {
     
   }
 
-  static getDevIp(){
+  getDevIp(){
     return this.DEV_IP;
   }
 }

@@ -57,6 +57,12 @@
       </div>
       <div class="col">
         <h3>연관 문서</h3>
+        <div *ngIf="relateToggle == true">
+          <div *ngFor="let rcmd of rcmdList[0]['rcmd']; index as r">
+            <!-- {{ rcmdList[i]["rcmd"] }} -->
+            <a (click)="goToDoc(r)">{{ rcmd }}</a>
+          </div>
+        </div>
       </div>
 
     </div>
