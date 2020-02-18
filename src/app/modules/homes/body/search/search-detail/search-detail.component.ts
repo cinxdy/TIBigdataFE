@@ -33,7 +33,7 @@ export class SearchDetailComponent implements OnInit {
     // });
     this.es.searchById(id).then((res)=>{
       // this.article = res.hits.hits._source
-      console.log(res);
+      // console.log(res);
       this.article = res["hits"]["hits"][0]["_source"];
       // console.log(this.article)
       this.wordcloud.createCloud(id)
