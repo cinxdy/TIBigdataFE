@@ -183,11 +183,12 @@ export class SearchResultComponent implements OnInit {
           // console.log("looking for : ", tfData[j]["docID"]);
         }
       }
+      resolve();
       // console.log("loadKeywords");
     });
   }
   makeRelatedKey() {
-    // console.log("makeRelatedKey");
+    console.log("makeRelatedKey");
 
     this.relatedKeywords = [];
 
@@ -203,6 +204,8 @@ export class SearchResultComponent implements OnInit {
       if (count > 5) break;
     }
     this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
+    console.log(this.relatedKeywords);
+    
   }
 
   loadRelatedDocs() {
@@ -274,6 +277,8 @@ export class SearchResultComponent implements OnInit {
 
     //ready each independently after id table  => multi process
     this.loadKeywords().then(() => {//load from tfidf table
+      console.log("then work");
+      
       this.makeRelatedKey();//ready only after loadKeyworkds
     });
     this.loadRelatedDocs(); //load from flask
