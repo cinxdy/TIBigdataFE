@@ -216,7 +216,7 @@ export class SearchResultComponent implements OnInit {
       // console.log(data);
       // console.log(typeof data);
       this.rcmdList = data;
-      // console.log(data);
+      console.log(data);
       this.isRelatedLoaded = true;
     });
   }
@@ -263,21 +263,21 @@ export class SearchResultComponent implements OnInit {
     let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
-    //여기가 아니라 직접적인 위치에 넣으면 더 직관적이 될 듯.
 
     //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.loadSearchResult();
-    // let temp = await this.loadSearchResult();
-    // console.log("temp");
-
-    // console.log(temp);
-
     this.createIdTable();
 
     //ready each independently after id table  => multi process
     this.loadKeywords().then(() => {//load from tfidf table
       this.makeRelatedKey();//ready only after loadKeyworkds
+      console.log("비동기 테스트 1");
+      
     });
+    console.log("비동기 테스트 2");
+    
+    //연관문서 속도는 미들웨어에서 프로그램 실행할 때
+    //load한 상태로 데이터를 로드한 상태를 유지하는 것으로 해결
     this.loadRelatedDocs(); //load from flask
   }
 }
