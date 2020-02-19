@@ -90,8 +90,6 @@ export class HomeGraphComponent implements OnInit {
 
       // cul, eco, it, pol, soc,spo, innt, tot
       var sample = data[docNum]["keys"];
-      // console.log(sample);
-      console.log(docNum);
       
       
       for (let i in sample) {
@@ -115,7 +113,6 @@ export class HomeGraphComponent implements OnInit {
 
   getTopic(event) {
     var topic = event.target.id;
-    console.log(topic);
     
     this.getWordCloud(topic);
   }
