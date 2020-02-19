@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { IdControlService } from "../id-control-service/id-control.service";
+import { IdControlService } from "../service/id-control-service/id-control.service";
 
 @Component({
   selector: "app-chsDocAnalysis",

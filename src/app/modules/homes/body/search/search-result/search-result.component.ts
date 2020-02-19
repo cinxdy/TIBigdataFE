@@ -11,10 +11,10 @@ import { ElasticsearchService } from "../service/elasticsearch-service/elasticse
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
-import { IdControlService } from "../id-control-service/id-control.service";
+import { IdControlService } from "../service/id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from "src/app/ip.service";
-import { RecomandationService } from '../service/recommandation-service/recommandation.service';
+import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -42,20 +42,20 @@ export class SearchResultComponent implements OnInit {
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
-  private articleSources: ArticleSource[]; 
+  private articleSources: ArticleSource[];
   private docId: string;
   private isConnected = false;
   private status: string;
   private subscription: Subscription;
   private searchKeyword: string;
   // private isToggleRelated: boolean
-  private relateToggle : Array<boolean>;
+  private relateToggle: Array<boolean>;
 
-  queryText : string;
+  queryText: string;
 
   constructor(
-    private rcmd : RecomandationService,
-    private ipService : IpService,
+    private rcmd: RecomandationService,
+    private ipService: IpService,
     private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
@@ -69,46 +69,42 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.getCommonIp()==this.ipService.getDevIp()) {
-      if(this.es.getKeyword() == undefined){
+    if (this.ipService.getCommonIp() == this.ipService.getDevIp()) {
+      if (this.es.getKeyword() == undefined) {
         this.es.setKeyword("북한산");
-        this.queryText = "북한산"
+        this.queryText = "북한산";
       }
     }
 
     this.loadResultPage();
   }
 
+  // getRcmd() {
+  //   this.http
+  //     .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
+  //     .subscribe(data => {
+  //       this.rcmdList = data;
+  //       // console.log(data);
+  //       this.isInfoLoaded = true;
+  //       // console.log("isInfoLoaded is true");
 
-  
-  getRcmd() {
-    this.http
-      .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-      .subscribe(data => {
-        this.rcmdList = data;
-        // console.log(data);
-        this.isInfoLoaded = true;
-        // console.log("isInfoLoaded is true");
+  //       // console.log("isSearchLoaded is true");
 
-        // console.log("isSearchLoaded is true");
-
-        // console.log("getRcmd() done. loading done!");
-      });
-  }
+  //       // console.log("getRcmd() done. loading done!");
+  //     });
+  // }
 
   //Get result from flask
-  getResult() {
+  freqAnalysis() {
     this.searchKeyword = this.es.getKeyword();
     this._router.navigateByUrl("search/freqAnalysis");
   }
 
-  addList(i) {
-    this.idControl.setIdList( this.idList[i] );
-    // console.log("new id added to list! : " +     this.idList[i]  );
-  }
+  // addList(i) {
+  //   this.idControl.setIdList( this.idList[i] );
+  //   // console.log("new id added to list! : " +     this.idList[i]  );
+  // }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
-
-
 
   // navToDataChart() {
   //   // console.log("cumulative id list so far : ");
@@ -127,124 +123,141 @@ export class SearchResultComponent implements OnInit {
   //   this.idControl.setIdChosen(this.articleSources[i]["_id"]);
   //   this.navToDocDetail();
   // }
-  setThisDoc(i : number, r : number){
-    this.rcmdList[i]["id"][r]
+  setThisDoc(i: number, r: number) {
+    // this.rcmdList[i]["id"][r];
     // console.log(this.rcmdList[i]["id"][r]);
     this.idControl.setIdChosen(this.rcmdList[i]["id"][r]);
     this.navToDocDetail();
 
     // this.docId = this.article["_id"];
     // console.log(this.docId);
-    
   }
-  tgglRelated(i:number) {
+  tgglRelated(i: number) {
+    // console.log("tgglRelated")
     this.relateToggle[i] = !this.relateToggle[i];
-    // console.log(this.relateToggle[i])
 
     // this.idControl.clearIdChosen();
     // this.idControl.setArticle(this.articleSources[i]);
     // this.idControl.setIdChosen(this.articleSources[i]["_id"]);
     // this.navToDocDetail();
   }
+  
   private keywords: any[];
+  async loadKeywords() {
+    let tfidfData = (await this.http.get(this.fileDir).toPromise()) as [];
+    // tfidfData
+    this.keywords = [];
 
-  showKeyword() {
-    // console.log("result comp : showKeyword() start");
-    this.http.get(this.fileDir).subscribe(data => {
-      this.keywords = [];
-      let tfData = data as []; //전체 자료 불러오고
-      // console.log("tfidf table is loaded")
-      // console.log(data);
-      let titles = this.articleSources as []; //검색된 데이터들을 받음
-      this.relateToggle = []
-      for (var i in titles) {
-        this.idList[i] = titles[i]["_id"];
-        this.relateToggle.push(false);
-      }
+    for (var j = 0; j < this.idList.length; j++) {
+      let needData = {};
+      needData = tfidfData.find(d => d["docID"] === this.idList[j]);
 
-      for (var j = 0; j < this.idList.length; j++) {
-        let needData = {};
-        needData = tfData.find(d => d["docID"] === this.idList[j]);
+      try {
+        let tfVal = needData["TFIDF"];
 
-        try {
-          let tfVal = needData["TFIDF"];
-
-          const kwd = [] as any;
-          let word;
-          for (var k = 0; k < 3; k++) {
-            word = tfVal[k][0];
-            kwd.push(word);
-          }
-          this.keywords.push(kwd);
-        } catch {
-          console.log("error at index " + j);
-          console.log("obejct detail : " + needData);
-          console.log("looking for : ", tfData[j]["docID"]);
+        const kwd = [] as any;
+        let word;
+        for (var k = 0; k < 3; k++) {
+          word = tfVal[k][0];
+          kwd.push(word);
         }
+        this.keywords.push(kwd);
+      } catch {
+        // console.log("error at index " + j);
+        // console.log("obejct detail : " + needData);
+        // console.log("looking for : ", tfData[j]["docID"]);
       }
-      // console.log("showKeyword() done...");
-      this.getRcmd();
-      this.relatedKeywords = [];
+    }
+        console.log("loadKeywords");
 
-      let keys = this.keywords;
-      let count = 0;
-      for (let i = 0; i < keys.length; i++){
-        // console.log(this.keywords[i])
-        for(let j = 0 ; j < keys[i].length; j++){
-          this.relatedKeywords.push(keys[i][j]);
-          count ++;
-          if(count > 5) break;
-        }
-        if(count > 5) break;
+  }
+  makeRelatedKey() {
+    console.log("makeRelatedKey");
+
+    this.relatedKeywords = [];
+
+    let keys = this.keywords;
+    let count = 0;
+    for (let i = 0; i < keys.length; i++) {
+      // console.log(this.keywords[i])
+      for (let j = 0; j < keys[i].length; j++) {
+        this.relatedKeywords.push(keys[i][j]);
+        count++;
+        if (count > 5) break;
       }
-      this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
-      // console.log(this.relatedKeywords);
+      if (count > 5) break;
+    }
+    this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
+  }
+
+  loadRelatedDocs() {
+    console.log("this.idList");
+
+    console.log(this.idList);
+    this.rcmd.getRcmd(this.idList).then(data => {
+      console.log("loadRelatedDocs");
+
+      console.log(data);
+      console.log(typeof data);
+      this.rcmdList = data;
+      console.log(data);
+      this.isInfoLoaded = true;
     });
   }
 
-  relatedSearch(keyword : string){
+  relatedSearch(keyword: string) {
     this.es.setKeyword(keyword);
     this.queryText = keyword;
 
-    // this.es.fullTextSearch("post_body", keyword);
-    // this.isSearchLoaded = false;
-    // this.isInfoLoaded = false;
-    // console.log("isInfoLoaded is false");
-    this.loadResultPage()
-    // console.log("search bar : fulltextsearch done with " + this.queryText);
-    // this._router.navigateByUrl("search");  }
+    this.loadResultPage();
   }
 
-  loadResultPage(){
-    // console.log("loadResultPage started")
-    this.isSearchLoaded = false;
-    this.isInfoLoaded = false;
-    // console.log("isInfoLoaded is false");
-    // console.log(this.es.getKeyword());
-
-    let queryText = this.es.getKeyword();
-    this.es.fullTextSearch("post_body", queryText);
-    // console.log("search bar : fulltextsearch done with " + queryText);
-
-    this.idControl.clearIdList();
-    // console.log("isSearchLoaded is false");
-    this.idList = [];
-    // console.log(this.es.articleSource);
-    // console.log("result comp : subscribe from es start!");
-    this.es.articleInfo$.subscribe(articles => {
-      // console.log("result comp : pomise start!");
-      new Promise(r => {
+  loadSearchResult() {
+    console.log("loadSearchResult");
+    
+    return new Promise(resolve => {
+      this.es.articleInfo$.subscribe(articles => {
         this.articleSources = articles;
-        // console.log("result comp : recieved search result article sources");
-        // console.log(articles);
         this.isSearchLoaded = true;
-
-        r();
-      }).then(() => {
-        // console.log("result comp : showKeyword() start");
-        this.showKeyword();
+        resolve();
       });
     });
   }
-}
 
+  createIdTable() {
+    let temp = this.articleSources as []; //검색된 데이터들을 받음
+    this.relateToggle = []; //연관 문서 여닫는 버튼 토글 초기화
+    for (var i in temp) {
+      this.idList[i] = temp[i]["_id"];
+      this.relateToggle.push(false);
+    }
+    console.log("createTable");
+
+    // console.log(this.idList);
+  }
+
+  async loadResultPage() {
+    this.isSearchLoaded = false;
+    this.isInfoLoaded = false;
+
+    this.idControl.clearIdList();
+    this.idList = [];
+
+    let queryText = this.es.getKeyword();
+    this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
+
+    //여기가 아니라 직접적인 위치에 넣으면 더 직관적이 될 듯.
+
+    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
+    await this.loadSearchResult();
+    // let temp = await this.loadSearchResult();
+    // console.log("temp");
+
+    // console.log(temp);
+
+    this.createIdTable();
+    this.loadKeywords();//load from tfidf table
+    this.loadRelatedDocs();//load from flask
+    this.makeRelatedKey();
+  }
+}

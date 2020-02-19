@@ -49,7 +49,7 @@ export class IpService {
   getCommonIp(){
     let ipArr = window.location.origin.split(/:[0-9]+/);
     let ip = ipArr[0]
-    console.log("current ip address : " + ip);
+    // console.log("current ip address : " + ip);
     if (ip != this.SERVER_IP){
       this.curIP = this.DEV_IP;
     }

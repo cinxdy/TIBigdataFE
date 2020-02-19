@@ -1,5 +1,5 @@
 // import { Injectable } from '@angular/core';
-import { IdControlService } from '../id-control-service/id-control.service';
+import { IdControlService } from '../service/id-control-service/id-control.service';
 import { Article } from "../article/article.interface";
 import { ElasticsearchService } from '../service/elasticsearch-service/elasticsearch.service';
 import { Component, OnInit, Inject } from '@angular/core';

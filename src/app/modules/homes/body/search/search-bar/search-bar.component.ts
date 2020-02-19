@@ -64,7 +64,7 @@ export class SearchBarComponent implements OnInit {
     this.es.fullTextSearch("post_body", this.queryText); //검색 결과 창에서 새로운 검색어 입력할 때 필요.
     this.searched.emit();
     
-    console.log("emitted!")
+    // console.log("emitted!")
     // console.log("search bar : fulltextsearch done with " + this.queryText);
     this._router.navigateByUrl("search");
   }
