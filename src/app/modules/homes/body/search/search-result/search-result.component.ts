@@ -141,38 +141,53 @@ export class SearchResultComponent implements OnInit {
     // this.idControl.setIdChosen(this.articleSources[i]["_id"]);
     // this.navToDocDetail();
   }
-  
+
   private keywords: any[];
-  async loadKeywords() {
-    let tfidfData = (await this.http.get(this.fileDir).toPromise()) as [];
-    // tfidfData
-    this.keywords = [];
+  //aync가 의미하듯이, 비공기의 범위는 해당 함수까지만 이다.
+  //toPromise도 비동기이다. toPromise 혹은 subscribe을 만나면, 비동기는 비동기대로 하고, 나머지는 건너뛴다.
+  /***
+   * A()
+   * new Promise(r()=>B();...).then(C();)
+   * D();
+   * E();
+   *
+   * 이렇게 되어 있다면
+   * A  -> B -> C
+   *    -> D -> E
+   * 이렇게 병렬적으로 실행된다.
+   * 멀티프로세싱 혹은 시리즈 프로세싱...
+   */
+  loadKeywords() {
+    return new Promise(async resolve => {
+      let tfidfData = (await this.http.get(this.fileDir).toPromise()) as [];
+      // tfidfData
+      this.keywords = [];
 
-    for (var j = 0; j < this.idList.length; j++) {
-      let needData = {};
-      needData = tfidfData.find(d => d["docID"] === this.idList[j]);
+      for (var j = 0; j < this.idList.length; j++) {
+        let needData = {};
+        needData = tfidfData.find(d => d["docID"] === this.idList[j]);
 
-      try {
-        let tfVal = needData["TFIDF"];
+        try {
+          let tfVal = needData["TFIDF"];
 
-        const kwd = [] as any;
-        let word;
-        for (var k = 0; k < 3; k++) {
-          word = tfVal[k][0];
-          kwd.push(word);
+          const kwd = [] as any;
+          let word;
+          for (var k = 0; k < 3; k++) {
+            word = tfVal[k][0];
+            kwd.push(word);
+          }
+          this.keywords.push(kwd);
+        } catch {
+          // console.log("error at index " + j);
+          // console.log("obejct detail : " + needData);
+          // console.log("looking for : ", tfData[j]["docID"]);
         }
-        this.keywords.push(kwd);
-      } catch {
-        // console.log("error at index " + j);
-        // console.log("obejct detail : " + needData);
-        // console.log("looking for : ", tfData[j]["docID"]);
       }
-    }
-        console.log("loadKeywords");
-
+      // console.log("loadKeywords");
+    });
   }
   makeRelatedKey() {
-    console.log("makeRelatedKey");
+    // console.log("makeRelatedKey");
 
     this.relatedKeywords = [];
 
@@ -191,16 +206,16 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadRelatedDocs() {
-    console.log("this.idList");
+    // console.log("loadRelatedDocs");
 
-    console.log(this.idList);
+    // console.log(this.idList);
     this.rcmd.getRcmd(this.idList).then(data => {
-      console.log("loadRelatedDocs");
+      // console.log("getRcmd");
 
-      console.log(data);
-      console.log(typeof data);
+      // console.log(data);
+      // console.log(typeof data);
       this.rcmdList = data;
-      console.log(data);
+      // console.log(data);
       this.isInfoLoaded = true;
     });
   }
@@ -213,8 +228,8 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadSearchResult() {
-    console.log("loadSearchResult");
-    
+    // console.log("loadSearchResult");
+
     return new Promise(resolve => {
       this.es.articleInfo$.subscribe(articles => {
         this.articleSources = articles;
@@ -231,7 +246,7 @@ export class SearchResultComponent implements OnInit {
       this.idList[i] = temp[i]["_id"];
       this.relateToggle.push(false);
     }
-    console.log("createTable");
+    // console.log("createTable");
 
     // console.log(this.idList);
   }
@@ -256,8 +271,11 @@ export class SearchResultComponent implements OnInit {
     // console.log(temp);
 
     this.createIdTable();
-    this.loadKeywords();//load from tfidf table
-    this.loadRelatedDocs();//load from flask
-    this.makeRelatedKey();
+
+    //ready each independently after id table  => multi process
+    this.loadKeywords().then(() => {//load from tfidf table
+      this.makeRelatedKey();//ready only after loadKeyworkds
+    });
+    this.loadRelatedDocs(); //load from flask
   }
 }
