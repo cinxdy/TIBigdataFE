@@ -1,4 +1,4 @@
-import { ArticleSource } from '../article/article.interface';
+import { ArticleSource } from '../../article/article.interface';
 import { Injectable } from '@angular/core';
 // import { HomesModule } from '../../../homes.module'
 
@@ -33,7 +33,7 @@ export class IdControlService {
 
   setIdChosen(id : string){
     this.idChosen = id;
-    console.log(this.idChosen);
+    // console.log(this.idChosen);
   }
 
   getIdChosen(){
