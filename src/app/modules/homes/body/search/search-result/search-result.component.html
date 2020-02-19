@@ -11,7 +11,7 @@
     </button>
     <div
       uk-spinner="ratio: 4.5 "
-      *ngIf="isInfoLoaded == false; else infoLoadFin"
+      *ngIf="isKeyLoaded == false; else infoLoadFin"
     >
       Loading...
     </div>
@@ -68,10 +68,10 @@
                   </app-article-details>
                 </div>
               </div>
-              <div class="row">
+              <div #relatedKeyWords class="row">
                 <div
                   uk-spinner="ratio: 4.5 "
-                  *ngIf="isInfoLoaded == false; else infoLoadFin"
+                  *ngIf="isKeyLoaded == false; else infoLoadFin"
                 >
                   Loading...
                 </div>
@@ -84,29 +84,27 @@
                 </ng-template>
               </div>
             </div>
-            <div
-              uk-spinner="ratio: 4.5 "
-              *ngIf="isInfoLoaded == false;"
-            >
-              Loading...
-            </div>
-            <div *ngIf = "isInfoLoaded == true">
-              <div class="col-xs">
-                <button
-                  class="uk-button uk-button-secondary"
-                  (click)="tgglRelated(i)"
-                >
-                  연관문서
-                </button>
-                <div *ngIf="relateToggle[i] == true">
-                  <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
-                    <!-- {{ rcmdList[i]["rcmd"] }} -->
-                    <a (click)="setThisDoc(i, r)">{{ rcmd }}</a>
+            <div #relatedDocuments>
+              <div uk-spinner="ratio: 4.5 " *ngIf="isKeyLoaded == false">
+                Loading...
+              </div>
+              <div *ngIf="isRelatedLoaded == true">
+                <div class="col-xs">
+                  <button
+                    class="uk-button uk-button-secondary"
+                    (click)="tgglRelated(i)"
+                  >
+                    연관문서
+                  </button>
+                  <div *ngIf="relateToggle[i] == true">
+                    <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
+                      <!-- {{ rcmdList[i]["rcmd"] }} -->
+                      <a (click)="setThisDoc(i, r)">{{ rcmd }}</a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
           <!--검색 결과의 마지막 -->
         </div>

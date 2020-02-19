@@ -38,7 +38,8 @@ export class SearchResultComponent implements OnInit {
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
-  private isInfoLoaded: boolean = false;
+  private isRelatedLoaded : boolean = false;
+  private isKeyLoaded: boolean = false;
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
@@ -85,8 +86,8 @@ export class SearchResultComponent implements OnInit {
   //     .subscribe(data => {
   //       this.rcmdList = data;
   //       // console.log(data);
-  //       this.isInfoLoaded = true;
-  //       // console.log("isInfoLoaded is true");
+  //       this.isKeyLoaded = true;
+  //       // console.log("isKeyLoaded is true");
 
   //       // console.log("isSearchLoaded is true");
 
@@ -188,8 +189,6 @@ export class SearchResultComponent implements OnInit {
     });
   }
   makeRelatedKey() {
-    console.log("makeRelatedKey");
-
     this.relatedKeywords = [];
 
     let keys = this.keywords;
@@ -204,8 +203,7 @@ export class SearchResultComponent implements OnInit {
       if (count > 5) break;
     }
     this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
-    console.log(this.relatedKeywords);
-    
+    this.isKeyLoaded = true;
   }
 
   loadRelatedDocs() {
@@ -219,7 +217,7 @@ export class SearchResultComponent implements OnInit {
       // console.log(typeof data);
       this.rcmdList = data;
       // console.log(data);
-      this.isInfoLoaded = true;
+      this.isRelatedLoaded = true;
     });
   }
 
@@ -256,7 +254,8 @@ export class SearchResultComponent implements OnInit {
 
   async loadResultPage() {
     this.isSearchLoaded = false;
-    this.isInfoLoaded = false;
+    this.isKeyLoaded = false;
+    this.isRelatedLoaded = false;
 
     this.idControl.clearIdList();
     this.idList = [];
@@ -277,8 +276,6 @@ export class SearchResultComponent implements OnInit {
 
     //ready each independently after id table  => multi process
     this.loadKeywords().then(() => {//load from tfidf table
-      console.log("then work");
-      
       this.makeRelatedKey();//ready only after loadKeyworkds
     });
     this.loadRelatedDocs(); //load from flask
