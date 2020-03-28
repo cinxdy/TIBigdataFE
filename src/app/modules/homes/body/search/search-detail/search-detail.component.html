@@ -1,31 +1,36 @@
 <div class="uk-container">
+  <h2>문서 상세보기</h2>
+  <div uk-spinner="ratio: 4.5" *ngIf="isLoaded == false">Loading...</div>
   <div *ngIf="isLoaded == true">
     <div class="row">
-      <h1>문서제목 : {{ article.post_title }}</h1>
+      <h1>{{ article.post_title }}</h1>
     </div>
     <div class="row">
-      <h2>저자 : {{ article.post_writer }}</h2>
+      <h2>{{ article.post_writer }}</h2>
     </div>
     <div class="row">
       <div class="col">
         <ul>
           <ul>
-            institution :
+            발행기관 :
             {{
               article.published_institution_url
             }}
           </ul>
           <ul>
-            type of publish
+            간행물 :
           </ul>
           <ul>
-            date of release :
+            간행물 구분 :
+          </ul>
+          <ul>
+            발행년월 :
             {{
               article.post_date
             }}
           </ul>
           <ul>
-            page :
+            페이지 :
             {{
               article.number
             }}
@@ -33,9 +38,9 @@
         </ul>
       </div>
       <div class="col">
-        <h3>brief</h3>
+        <h3>목차</h3>
         <ul>
-          brief...
+          1.2.3.4.
         </ul>
       </div>
     </div>
@@ -43,8 +48,27 @@
     <div class="row">
       <!-- <div class="uk-container"> -->
       <div class="col">
-        <h3>summary :</h3>
+        <h3>초록보기</h3>
+        <p>
+          내가 그린 기린 그림은 잘 그린 기린 그림이고, 네가 그린 기린 그림도 잘
+          생겼다 :)
+        </p>
         <!-- {{ article.post_body }}</div> -->
+      </div>
+      <div class="col">
+        <h3>연관 문서</h3>
+        <div *ngIf="relateToggle == true">
+          <div *ngFor="let rcmd of rcmdList[0]['rcmd']; index as r">
+            <!-- {{ rcmdList[i]["rcmd"] }} -->
+            <a (click)="goToDoc(r)">{{ rcmd }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h3>추가 자료 보기 (그림, 표 등...)</h3>
       </div>
       <div class="col">
         <h3>워드클라우드 : 이 문서의 키워드</h3>
@@ -63,12 +87,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <h3>Figures(pic, tables...)</h3>
-  </div>
-  <div class="row">
-    <h3>연관 문서</h3>
   </div>
   <div class="row">
     <h3>키워드 바로가기</h3>

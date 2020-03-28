@@ -1,7 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  ChangeDetectorRef,
+  Input,
+  Output
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ElasticsearchService } from "../service/elasticsearch.service";
+import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
 import { ArticleSource } from "../../../containers/shared/article.interface";
 import { Subscription } from "rxjs";
 import { Observable, of } from "rxjs";
@@ -20,17 +27,18 @@ export class SearchBarComponent implements OnInit {
   //  private static readonly INDEX = 'nkdboard';
   // private static readonly TYPE = 'nkdboard';
 
-  private queryText = "";
+  @Input() queryText: string = "";
+  @Output() searched = new EventEmitter<any>();
 
   private lastKeypress = 0;
 
-  articleSources: ArticleSource[];
+  // articleSources: ArticleSource[];
 
   isConnected = false;
   status: string;
-  subscription: Subscription;
+  // subscription: Subscription;
 
-  searchKeyword: string;
+  // searchKeyword: string;
 
   constructor(
     public _router: Router,
@@ -47,16 +55,16 @@ export class SearchBarComponent implements OnInit {
     // console.log("bar comp : keyword accepted : " + this.queryText);
   }
 
-
-/**
- * 
- */
-
-
+  /**
+   *
+   */
 
   search() {
     this.es.setKeyword(this.queryText);
-    this.es.fullTextSearch("post_body", this.queryText);
+    this.es.fullTextSearch("post_body", this.queryText); //검색 결과 창에서 새로운 검색어 입력할 때 필요.
+    this.searched.emit();
+    
+    // console.log("emitted!")
     // console.log("search bar : fulltextsearch done with " + this.queryText);
     this._router.navigateByUrl("search");
   }

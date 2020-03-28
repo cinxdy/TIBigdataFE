@@ -11,7 +11,7 @@ const api = require('./api');
 const PORT = 4000;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 app.use('/api', api);
 
 app.get('/', function(req, res) {

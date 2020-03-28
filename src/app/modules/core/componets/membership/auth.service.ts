@@ -10,7 +10,7 @@ export class EPAuthService {
 
   private _registerUrl = "http://localhost:4000/api/register";
   private _loginUrl = "http://localhost:4000/api/login"
-
+  //mongoDB connection 
 
   constructor(private http: HttpClient, private _router: Router) { }
 

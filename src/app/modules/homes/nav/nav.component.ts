@@ -44,7 +44,7 @@ export class NavComponent implements OnInit {
   toLogin(){
     this._router.navigateByUrl("/membership/login");
   }
-
+///../core/componets/membership/login
   toRegister(){
     this._router.navigateByUrl("/membership/register");
   }
