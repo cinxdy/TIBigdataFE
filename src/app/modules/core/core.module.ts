@@ -33,10 +33,15 @@ import { AuthGuard } from './componets/membership/auth.guard';
 import { TokenInterceptorService} from './componets/membership/token-interceptor.service';
 
 
+const google_provider_jb : string = "287082486827-0junp0td4ajs1c5p0381topvh168o6l5.apps.googleusercontent.com"; //진범 localhost 승인
+const google_provider_sw : string = "1075125101450-9ji2fdcpdev4jf7sqv6en8vg3cp8irfi.apps.googleusercontent.com"; //상원 승인
+
+
+
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider("1075125101450-9ji2fdcpdev4jf7sqv6en8vg3cp8irfi.apps.googleusercontent.com") 
+    provider: new GoogleLoginProvider(google_provider_jb)
   //ex client Id:- 957178873235f2vyuit3q02hjm0d0sgntj3ttamuqr3cg2t.apps.googleuserconte.com
   }
   ]);
