@@ -1,9 +1,9 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
-var secret = 'harrypotter';
+const jwt = require('jsonwebtoken');//javscript with token lib
+// var secret = 'harrypotter';//???? no use?
 const router = express.Router();
 const User = require('./models/user');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');//mongo db database communication tool
 const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
 
 mongoose.connect(db, err => {

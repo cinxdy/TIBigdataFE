@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 
-const api = require('./api');
+const api = require('./api');//bring the backend func and feature
 
 const PORT = 4000;
 
