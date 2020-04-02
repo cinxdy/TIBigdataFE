@@ -14,9 +14,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);
 
+//root dir
 app.get('/', function(req, res) {
     res.send('Hello from server');
 })
 
+//server listen with no time interval?
 app.listen(PORT, function(){
     console.log('Express server running on port '+ PORT)});
