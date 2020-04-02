@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response)=>{
       console.log(platform + "Logged In User Data is = ", response);
+      this.nowlog = "signed"
       this.user = response;
       this._router.navigate(['/homes'])
     }
