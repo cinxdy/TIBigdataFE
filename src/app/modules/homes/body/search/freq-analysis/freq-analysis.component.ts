@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ElasticsearchService } from "../service/elasticsearch.service";
+import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
@@ -12,16 +12,16 @@ import { IpService } from 'src/app/ip.service'
 })
 export class FreqAnalysisComponent implements OnInit {
   private searchKeyword;
-  private URL = IpService.getCommonIp() + ":5000/keywordGraph"
+  private URL = this.ipService.getCommonIp() + ":5000/keywordGraph"
 
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
-  constructor(private http: HttpClient, private es: ElasticsearchService) {}
+  constructor(private ipService : IpService, private http: HttpClient, private es: ElasticsearchService) {}
 
   ngOnInit() {
     this.searchKeyword = this.es.getKeyword();
-    // console.log(this.searchKeyword);
+    console.log("search keyword : "+this.searchKeyword);
 
     let body = { keyword: this.searchKeyword };
 

@@ -3,22 +3,20 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 
-@Injectable(
-//   {
-//   providedIn: "root"
-// }
-)
+@Injectable({
+  providedIn: "root"
+})
 export class WordcloudService {
   private FILE_DIR: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   // private cData: CloudData[] = [];
-  // private 
+  // private
   constructor(private http: HttpClient) {}
 
-  createCloud(id : string){
-    return new Promise((resolve)=>{
+  createCloud(id: string) {
+    return new Promise(resolve => {
       let cData = new Array<CloudData>();
-      
+
       this.http.get(this.FILE_DIR).subscribe(data => {
         // console.log("tfidf service tfidf data : " + data);
         // this.cData = [];
@@ -39,11 +37,9 @@ export class WordcloudService {
             console.log("index " + k + " has an error");
           }
         }
-        console.log("service cData : " + cData);
+        // console.log("service cData : " + cData);
         resolve(cData);
       });
-
     });
   }
-
 }

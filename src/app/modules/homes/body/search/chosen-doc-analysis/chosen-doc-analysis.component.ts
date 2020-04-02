@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { IdControlService } from "../id-control-service/id-control.service";
+import { IdControlService } from "../service/id-control-service/id-control.service";
 
 @Component({
   selector: "app-chsDocAnalysis",
@@ -14,6 +14,7 @@ export class ChosenDocAnalysisComponent implements OnInit {
     "assets//homes_search_result_wordcloud/tfidfData.json";
   private cDatas: any[] = new Array();
   private titles: string[] = new Array<string>();
+  private isLoaded : boolean = false;
 
   ngOnInit() {
     this.http.get(this.FILE_DIR).subscribe(data => {
@@ -27,10 +28,12 @@ export class ChosenDocAnalysisComponent implements OnInit {
           cData에 저장.
         */
       let idList = this.idCont.getIdList(); // service에서 선택한 문서 id 받아온다.
-
+      // console.log("idList contents : ");
+      // console.log(idList);
       for (var i = 0; i <= idList.length; i++) {
-        let needData = {};
+        let needData : {} = [];
         needData = tfidfData.find(d => d["docID"] === idList[i]);
+
         try {
           let tfIdfVal = needData["TFIDF"] as [];
           this.titles.push(needData["docTitle"]);
@@ -46,19 +49,22 @@ export class ChosenDocAnalysisComponent implements OnInit {
                 text: tfIdfVal[k][0],
                 weight: tfIdfVal[k][1]
               });
-            } catch {
-              console.log("index " + k + " has an error");
+            } catch(err) {
+              console.log("error in creating cloud : " + "index " + k + " has an error");
             }
           }
           this.cDatas.push(cData);
-        } catch {
+        } catch(err){
+          console.log(err.message);
           console.log("error in " + i);
           console.log("object detail : " + tfidfData[i]["docID"]);
         }
       }
 
       // console.log(this.cDatas);
+      this.isLoaded = true;
     });
+
   }
 
   cldData: CloudData;
