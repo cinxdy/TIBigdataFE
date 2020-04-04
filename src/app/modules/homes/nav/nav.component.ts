@@ -12,7 +12,6 @@ export class NavComponent implements OnInit {
   constructor(public _router: Router, private _auth: EPAuthService) {
 
    }
-
   ngOnInit() {
     
   }
@@ -45,7 +44,7 @@ export class NavComponent implements OnInit {
   toLogin(){
     this._router.navigateByUrl("/membership/login");
   }
-
+///../core/componets/membership/login
   toRegister(){
     this._router.navigateByUrl("/membership/register");
   }
@@ -53,8 +52,6 @@ export class NavComponent implements OnInit {
   toEvent(){
     this._router.navigateByUrl("/membership/event");
   }
-  // 페이지 이동
-
 
 }
 

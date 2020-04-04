@@ -1,37 +1,26 @@
 <div class="uk-navbar-container" uk-navbar>
-  <div class="uk-navbar-right ">
-  <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active" >
-        <li>
-        <a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a>
-        </li>
-        
-        <li><a *ngIf="!_auth.loggedIn()" (click)="toRegister()">회원가입</a></li>
-        <li><a *ngIf="_auth.loggedIn()"(click)="_auth.logoutUser()">로그아웃</a></li>
-        <li><a (click)="LineChart()">사이트맵</a></li>
-      </ul>
+    <div class="uk-navbar-right ">
+        <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
+            <li>
+                <a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a>
+            </li>
+
+            <li><a *ngIf="!_auth.loggedIn()" (click)="toRegister()">회원가입</a></li>
+            <li><a *ngIf="_auth.loggedIn()" (click)="_auth.logoutUser()">로그아웃</a></li>
+            <li><a (click)="LineChart()">사이트맵</a></li>
+        </ul>
+    </div>
 </div>
-</div>
-
-
-
-
-
-
-
-
 
 
 
 
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left uk-flex-nowrap">
-    <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" 
-    uk-navbar-toggle-icon
-    uk-toggle
-    href="#hamburger-menu">
-    </a>
-        <a href="/homes" class="uk-navbar-item uk-logo uk-padding" >
-          <img src="assets/kubic_logo.png" alt="" width="120">
+        <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle href="#hamburger-menu">
+        </a>
+        <a href="/homes" class="uk-navbar-item uk-logo uk-padding">
+            <img src="assets/kubic_logo.png" alt="" width="120">
         </a>
     </div>
 
@@ -39,37 +28,37 @@
 
 
     <div class="uk-navbar-right">
-      <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active" >
-        <li><a (click)="navigateLibrary()">검색&middot;분석</a>
-        <div class="uk-navbar-dropdown">
+        <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
+            <li><a (click)="navigateLibrary()">검색&middot;분석</a>
+                <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <li><a href="#">메뉴1</a></li>
-                        <li><a href="#">메뉴2</a></li>
-                        <li><a href="#">메뉴3</a></li>
+                        <li><a href="#">검색</a></li>
+                        <li><a href="#">분석</a></li>
+                        <li><a href="#">기타</a></li>
                     </ul>
                 </div>
-        </li>
-        <li><a (click)="navigateQT()">자료열람</a>
-          <div class="uk-navbar-dropdown">
+            </li>
+            <li><a (click)="navigateQT()">자료열람</a>
+                <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a (click)="navigateLibrary()">자료열람</a></li>
                         <li><a href="#">메뉴2</a></li>
                         <li><a href="#">메뉴3</a></li>
                     </ul>
                 </div>
-        </li>
-        <li><a (click)="LineChart()">특별기획</a>
-          <div class="uk-navbar-dropdown">
+            </li>
+            <li><a (click)="LineChart()">특별기획</a>
+                <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a (click)="navigateSpecials()">대시보드</a></li>
                         <li><a href="#">기획2</a></li>
                         <li><a href="#">기획3</a></li>
                     </ul>
                 </div>
-        </li>
-        <li><a (click)="toFlask()">커뮤니티</a>
-        
-        <div class="uk-navbar-dropdown">
+            </li>
+            <li><a (click)="toFlask()">커뮤니티</a>
+
+                <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a href="#">공지사항</a></li>
                         <li><a href="#">FAQ</a></li>
@@ -77,9 +66,9 @@
                         <li><a href="#">이벤트</a></li>
                     </ul>
                 </div>
-                </li>
-        <li><a (click)="toFlask()">홈페이지 소개</a>
-          <div class="uk-navbar-dropdown">
+            </li>
+            <li><a (click)="toFlask()">홈페이지 소개</a>
+                <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a href="#">사이트 소개</a></li>
                         <li><a href="#">서비스 안내</a></li>
@@ -87,8 +76,8 @@
                         <li><a href="#">회원정책</a></li>
                     </ul>
                 </div>
-        </li>
-      </ul>
+            </li>
+        </ul>
     </div>
 
 
@@ -96,13 +85,13 @@
 
 
 <div id="hamburger-menu" uk-offcanvas="overlay: true">
-  <div class="uk-offcanvas-bar">
-    <ul class="uk-nav uk-nav-default uk-light">
-      <li><a href="">Menu1</a></li>
-        <li><a href="">Menu2</a></li>
-        <li><a href="">Menu3</a></li>
-        <li><a href="">Menu4</a></li>
-        <li><a href="">Menu4</a></li>
-    </ul>
-  </div>
+    <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-default uk-light">
+            <li><a href="">Menu1</a></li>
+            <li><a href="">Menu2</a></li>
+            <li><a href="">Menu3</a></li>
+            <li><a href="">Menu4</a></li>
+            <li><a href="">Menu4</a></li>
+        </ul>
+    </div>
 </div>
