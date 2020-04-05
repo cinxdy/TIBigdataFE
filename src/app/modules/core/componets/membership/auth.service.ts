@@ -8,7 +8,7 @@ import * as moment from "moment";
 })
 export class EPAuthService {
 
-  private _registerUrl = "http://localhost:4000/api/register";
+  private _registerUrl = "http://localhost:4000/api/register"; //mongoDB
   private _loginUrl = "http://localhost:4000/api/login"
   //mongoDB connection 
 

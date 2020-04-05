@@ -1,22 +1,29 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { EPAuthService } from '../../core/componets/membership/auth.service'
+import { EPAuthService } from '../../core/componets/membership/auth.service';
+import { LoginComponent} from '../../core/componets/membership/login/login.component';
+import { SocialUser, AuthService} from 'angular4-social-login';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.less']
+  styleUrls: ['./nav.component.less'],
+  providers:[LoginComponent]
 })
 export class NavComponent implements OnInit {
-
-  constructor(public _router: Router, private _auth: EPAuthService) {
-
-   }
-  ngOnInit() {
+  
+  nowUser : SocialUser;
+  
+  constructor(public _router: Router, private _auth: EPAuthService, private _login: LoginComponent, private _gauth:AuthService) {
     
   }
 
-  
+  ngOnInit() {
+    console.log(this.nowUser);
+    this._gauth.authState.subscribe((user) => { 
+      this.nowUser = user; });
+  }
+
   navigateSpecials(){
     this._router.navigateByUrl("/specials");
   }
