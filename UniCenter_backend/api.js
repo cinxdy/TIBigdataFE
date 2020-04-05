@@ -1,11 +1,15 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');//javscript with token lib
-// var secret = 'harrypotter';//???? no use?
+var secret = 'harrypotter';//???? no use?
 const router = express.Router();
 const User = require('./models/user');
 const mongoose = require('mongoose');//mongo db database communication tool
+
+
+//need to know how to connect here. seems like the db dir is on the mongodb server. not local.
 const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
 
+//connect to db
 mongoose.connect(db, err => {
     if(err) {
         console.error('Error!' + err)
@@ -15,38 +19,49 @@ mongoose.connect(db, err => {
 });
 
 function verifyToken(req, res, next) {
+    //if req header is not valid
     if(!req.headers.authorization) {
         return res.status(401).send('Unauthorized request')
     }
 
+    //parse
     let token = req.headers.authorization.split(' ')[1]
+    
+    //parser result is null => invalid
     if(token === 'null'){
         return res.status(401).send('Unauthorized request')
     }
 
-    let payload = jwt.verify(token, 'secretKey')
+    //js with token.
+    let payload = jwt.verify(token, 'secretKey')//'secret key' is specific syntax of jwt. decoded.
+
+    //if decoded is not wrong? invalid? how invalid then?
     if(!payload) {
         return res.status(401).send('Unauthorized request')
     }
-    req.userId = payload.subject
-    next()
+
+    
+    req.userId = payload.subject//need to know how the req is formed first....
+    //why do they again set value of req? not res?
+    next()//where does this function come from?
 }
 
-
+//yet useless dir
 router.get('/', (req, res) => {
     res.send('From API route')
 })
 
+//at register dir
 router.post('/register', (req, res) => {
-    let userData = req.body;
+    let userData = req.body;//req.body. what is req form?
     let user = new User(userData);
-    user.save((error, registeredUser) => {
+    user.save((error, registeredUser) => {//save new user data account
         if(error) {
             console.log(error)
         } else {
-            let payload = { subject : registeredUser._id};
-            var token = jwt.sign(payload, secret, { expiresIn: '24h'});
-            res.json({success: true, message: 'User registered!', token: token});
+            let payload = { subject : registeredUser._id};//new user id : subject => payload. create token.
+            var token = jwt.sign(payload, secret, { expiresIn: '24h'});//secret harry poter usage check required. //토큰 발급.
+            res.json({success: true, message: 'User registered!', token: token});//토큰 전송.
         }
     })
     
@@ -67,9 +82,9 @@ router.post('/login', (req, res) =>  {
                 if( user.password !== userData.password){
                     res.json({success: false, message: 'Could not authenticate password'});
                 }else {
-                    let payload = { subject : user._id};
-                    var token = jwt.sign(payload, secret, { expiresIn: '24h'});
-                    res.json({success: true, message: 'User authenticated!', token: token});
+                    let payload = { subject : user._id};//토큰에 오고 갈 정보 : id
+                    var token = jwt.sign(payload, secret, { expiresIn: '24h'});//토큰 발급.
+                    res.json({success: true, message: 'User authenticated!', token: token});//토큰 전송
         
                 }
             }

@@ -12,7 +12,7 @@ const PORT = 4000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/api', api);
+app.use('/api', api);//api 경로에서 항상 require("./api") 호출한다. use : middleware 함수.
 
 //root dir
 app.get('/', function(req, res) {
