@@ -1,19 +1,16 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <li>
-                <a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a>
-            </li>
-
+            <div *ngIf="nowUser">
+                <li>{{nowUser.name}}</li>
+            </div>
+            <li><a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a></li>
             <li><a *ngIf="!_auth.loggedIn()" (click)="toRegister()">회원가입</a></li>
             <li><a *ngIf="_auth.loggedIn()" (click)="_auth.logoutUser()">로그아웃</a></li>
             <li><a (click)="LineChart()">사이트맵</a></li>
         </ul>
     </div>
 </div>
-
-
-
 
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left uk-flex-nowrap">
@@ -23,9 +20,6 @@
             <img src="assets/kubic_logo.png" alt="" width="120">
         </a>
     </div>
-
-
-
 
     <div class="uk-navbar-right">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
@@ -82,7 +76,6 @@
 
 
 </nav>
-
 
 <div id="hamburger-menu" uk-offcanvas="overlay: true">
     <div class="uk-offcanvas-bar">
