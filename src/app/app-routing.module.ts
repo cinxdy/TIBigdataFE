@@ -22,15 +22,15 @@ const routes: Routes = [
   {
     path : 'library',
     loadChildren : ()=> import('./modules/homes/body/library/library.module').then(m => m.LibraryModule)
-  }
+  },
   // {
   //   path: 'specials',
   //   loadChildren: () => import('./modules/specials/specials.module').then(m => m.SpecialsModule)
   // },
-  // {
-  //   path: 'membership',
-  //   loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule)
-  // },
+  {
+    path: 'membership',
+    loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule)
+  },
  
  
 

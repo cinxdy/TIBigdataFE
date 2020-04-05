@@ -3,17 +3,19 @@ const jwt = require('jsonwebtoken');//javscript with token lib
 var secret = 'harrypotter';//???? no use?
 const router = express.Router();
 const User = require('./models/user');
-const mongoose = require('mongoose');//mongo db database communication tool
 
-
+// const mongoose = require('mongoose');//mongo db database communication tool
 //need to know how to connect here. seems like the db dir is on the mongodb server. not local.
-const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
+// const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
+const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
+const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
+const db = 'mongodb://localhost:27017';
 
 //connect to db
 mongoose.connect(db, err => {
-    if(err) {
+    if (err) {
         console.error('Error!' + err)
-    }else {
+    } else {
         console.log('Connected to mongodb');
     }
 });
@@ -64,16 +66,16 @@ router.post('/register', (req, res) => {
             res.json({success: true, message: 'User registered!', token: token});//토큰 전송.
         }
     })
-    
+
 })
 
 
 // http://localhost:4000/api/login
-router.post('/login', (req, res) =>  {
+router.post('/login', (req, res) => {
     let userData = req.body;
 
-    User.findOne({email: userData.email}, (error, user) => {
-        if(error) {
+    User.findOne({ email: userData.email }, (error, user) => {
+        if (error) {
             console.log(error)
         } else {
             if( !user) {
@@ -92,87 +94,85 @@ router.post('/login', (req, res) =>  {
     })
 })
 
-router.get('/events',  verifyToken, (req, res) => {
-    let events = [
-        {
+router.get('/events', verifyToken, (req, res) => {
+    let events = [{
             "_id": "1",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "2",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          }, 
-          {
+        },
+        {
             "_id": "3",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "4",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "5",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "6",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          }
+        }
     ]
 
     res.json(events)
 })
 
 router.get('/special', (req, res) => {
-    let events = [
-        {
+    let events = [{
             "_id": "1",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "2",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "3",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "4",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "5",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          },
-          {
+        },
+        {
             "_id": "6",
             "name": "Auto Expo",
             "description": "lorem ipsum",
             "date": "2012-04-23T18:25:43.511Z"
-          }
+        }
     ]
 
     res.json(events)
