@@ -10,6 +10,7 @@ import { RegisterComponent } from './componets/membership/register/register.comp
 import { LoginComponent } from './componets/membership/login/login.component';
 import { EventsComponent} from './componets/membership/events/events.component';
 import { AuthGuard } from './componets/membership/auth.guard';
+import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 const routes: Routes = [
  
@@ -22,6 +23,9 @@ const routes: Routes = [
     { path: 'event',
       component: EventsComponent,
       canActivate: [AuthGuard]
+    },
+    { path : 'userpage',
+      component : UserpageComponent
     },
  
 ];

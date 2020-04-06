@@ -31,6 +31,7 @@ import { EPAuthService } from './componets/membership/auth.service';
 import { EventService } from './componets/membership/event.service';
 import { AuthGuard } from './componets/membership/auth.guard';
 import { TokenInterceptorService} from './componets/membership/token-interceptor.service';
+import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 
 const google_provider_jb : string = "287082486827-0junp0td4ajs1c5p0381topvh168o6l5.apps.googleusercontent.com"; //진범 localhost 승인
@@ -53,7 +54,8 @@ let config = new AuthServiceConfig([
     // FiltersComponent,
     RegisterComponent,
     LoginComponent,
-    EventsComponent
+    EventsComponent,
+    UserpageComponent
   ],
   imports: [
     FormsModule,
