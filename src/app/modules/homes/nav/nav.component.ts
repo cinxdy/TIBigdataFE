@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core
 import { Router } from '@angular/router';
 import { EPAuthService } from '../../core/componets/membership/auth.service';
 import { LoginComponent} from '../../core/componets/membership/login/login.component';
+import { UserpageComponent } from '../../core/componets/membership/userpage/userpage.component';
 import { SocialUser, AuthService} from 'angular4-social-login';
 
 @Component({
@@ -60,6 +61,9 @@ export class NavComponent implements OnInit {
     this._router.navigateByUrl("/membership/event");
   }
 
+  toUserPage(){
+    this._router.navigateByUrl("/membership/userpage");
+  }
 }
 
 
