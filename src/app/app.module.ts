@@ -17,6 +17,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
 import { LibraryModule } from './modules/homes/body/library/library.module';
 import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
 import { CoreModule} from './modules/core/core.module';
+import { EPAuthService } from './modules/core/componets/membership/auth.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { CoreModule} from './modules/core/core.module';
     CoreModule
 
   ],
-  providers: [WordcloudService],
+  providers: [WordcloudService, EPAuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

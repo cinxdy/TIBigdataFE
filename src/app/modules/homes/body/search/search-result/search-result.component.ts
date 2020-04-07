@@ -15,6 +15,10 @@ import { IdControlService } from "../service/id-control-service/id-control.servi
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
+
+import { EventService } from "../../../../core/componets/membership/event.service";
+
+
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -55,6 +59,7 @@ export class SearchResultComponent implements OnInit {
   queryText: string;
 
   constructor(
+    private evtSvs : EventService,
     private rcmd: RecomandationService,
     private ipService: IpService,
     private idControl: IdControlService,
@@ -76,7 +81,7 @@ export class SearchResultComponent implements OnInit {
         this.queryText = "북한산";
       }
     }
-
+    console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
 

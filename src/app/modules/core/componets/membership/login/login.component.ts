@@ -23,22 +23,27 @@ export class LoginComponent implements OnInit {
       this.user = user; });
   }
 
-  loginUser() {
+  //login with email
+  emailLogIn() {
     this._auth.loginUser(this.loginUserData)
     .subscribe((res) => {
-      console.log(res);
       localStorage.setItem('token', res.token);
       this._router.navigate(['/homes/library'])
     })
   }
 
-  logIn(platform :string):void{
+
+  //login with google
+  googleLogIn(platform :string):void{
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response)=>{
       console.log(platform + "Logged In User Data is = ", response);
       this.logged = "alpha";
       this.user = response;
+
       this._router.navigate(['/homes'])
+      this._auth.gLonginUser();
+
     }
     );
   }

@@ -21,6 +21,9 @@ mongoose.connect(db, err => {
 });
 
 function verifyToken(req, res, next) {
+    console.log("verifyToken func has been inited!");
+
+
     //if req header is not valid
     if(!req.headers.authorization) {
         return res.status(401).send('Unauthorized request')
@@ -68,6 +71,8 @@ router.post('/register', (req, res) => {
     })
 
 })
+
+// router.post('/verify',(req,res)=>)
 
 
 // http://localhost:4000/api/login

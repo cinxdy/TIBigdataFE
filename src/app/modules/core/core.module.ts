@@ -27,7 +27,7 @@ import { CoreRoutingModule } from './core-routing.module';
 import { RegisterComponent } from './componets/membership/register/register.component';
 import { LoginComponent } from './componets/membership/login/login.component';
 import { EventsComponent } from './componets/membership/events/events.component';
-import { EPAuthService } from './componets/membership/auth.service';
+// import { EPAuthService } from './componets/membership/auth.service';
 import { EventService } from './componets/membership/event.service';
 import { AuthGuard } from './componets/membership/auth.guard';
 import { TokenInterceptorService} from './componets/membership/token-interceptor.service';
@@ -74,7 +74,7 @@ let config = new AuthServiceConfig([
     SocialLoginModule.initialize(config)
   ],
   providers: [
-    EPAuthService,
+    // EPAuthService,
     EventService,
     AuthGuard,
     {

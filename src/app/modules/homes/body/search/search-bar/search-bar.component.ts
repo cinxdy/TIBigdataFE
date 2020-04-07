@@ -12,6 +12,8 @@ import { ElasticsearchService } from "../service/elasticsearch-service/elasticse
 import { ArticleSource } from "../../../containers/shared/article.interface";
 import { Subscription } from "rxjs";
 import { Observable, of } from "rxjs";
+import { EventService } from "../../../../core/componets/membership/event.service";
+
 
 @Component({
   selector: "app-search-bar",
@@ -41,6 +43,7 @@ export class SearchBarComponent implements OnInit {
   // searchKeyword: string;
 
   constructor(
+    private eventSvs : EventService,
     public _router: Router,
     // private http:HttpClient,
     private es: ElasticsearchService // private cd: ChangeDetectorRef
@@ -60,6 +63,8 @@ export class SearchBarComponent implements OnInit {
    */
 
   search() {
+    this.eventSvs.addSrchHst(this.queryText);
+    
     this.es.setKeyword(this.queryText);
     this.es.fullTextSearch("post_body", this.queryText); //검색 결과 창에서 새로운 검색어 입력할 때 필요.
     this.searched.emit();
