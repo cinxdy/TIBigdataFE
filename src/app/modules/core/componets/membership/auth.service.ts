@@ -9,17 +9,26 @@ import {
 
 import * as moment from "moment";
 
+enum //enumerate login status
+logStat {
+  unsigned,
+  email,
+  google,
+}
+
 @Injectable({
   providedIn: "root",
 })
+
 export class EPAuthService {
   private _registerUrl = "http://localhost:4000/api/register"; //mongoDB
   private _loginUrl = "http://localhost:4000/api/login";
   // private _verifyUserUrl = "http://localhost:4000/api/login"
-  private isLogIn: boolean = false;
-  private logged = "Signed";
+
+  private isLogIn: logStat = logStat.unsigned;
+  // private logged = "Signed";
   private loginUserData = {};
-  private user: SocialUser;
+  private socUser: SocialUser;
 
   constructor(
     private http: HttpClient,
@@ -45,6 +54,7 @@ export class EPAuthService {
     this.emailLoginUser(this.loginUserData).subscribe((res) => {
       localStorage.setItem("token", res.token);
       this._router.navigate(["/homes/library"]);
+      this.isLogIn = logStat.email;
     });
   }
 
@@ -57,37 +67,20 @@ export class EPAuthService {
     return localStorage.getItem("token");
   }
 
-
-  //google login
-  gLonginUser() {
-    this.isLogIn = true;
-  }
-
-  // getGoogleLog() {
-  //   // console.log("getGoogleLog() func init");
-  //   // console.log(this.isLogIn);
-  //   return this.isLogIn;
-  // }
-
-
-
   //login with google
   googleLogIn(platform: string): void {
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response) => {
-      console.log(platform + "Logged In User Data is = ", response);
-      this.logged = "alpha";
-      this.user = response;
-
+      this.socUser = response;
+      this.isLogIn = logStat.google;
       this._router.navigate(["/homes"]);
-      this.gLonginUser();
     });
   }
   signInWithGoogle(): void {
     this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  signOut(): void {
+  googleSignOut(): void {
     this._gauth.signOut();
   }
 }

@@ -24,40 +24,40 @@ export class LoginComponent implements OnInit {
   }
 
   //login with email
-  emailLogIn() {
-    this._auth.emailLoginUser(this.loginUserData)
-    .subscribe((res) => {
-      localStorage.setItem('token', res.token);
-      this._router.navigate(['/homes/library'])
-    })
-  }
+  // emailLogIn() {
+  //   this._auth.emailLoginUser(this.loginUserData)
+  //   .subscribe((res) => {
+  //     localStorage.setItem('token', res.token);
+  //     this._router.navigate(['/homes/library'])
+  //   })
+  // }
 
 
   //login with google
-  googleLogIn(platform :string):void{
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this._gauth.signIn(platform).then((response)=>{
-      console.log(platform + "Logged In User Data is = ", response);
-      this.logged = "alpha";
-      this.user = response;
+  // googleLogIn(platform :string):void{
+  //   platform = GoogleLoginProvider.PROVIDER_ID;
+  //   this._gauth.signIn(platform).then((response)=>{
+  //     console.log(platform + "Logged In User Data is = ", response);
+  //     this.logged = "alpha";
+  //     this.user = response;
 
-      this._router.navigate(['/homes'])
-      this._auth.gLonginUser();
+  //     this._router.navigate(['/homes'])
+  //     this._auth.gLonginUser();
 
-    }
-    );
-  }
+  //   }
+  //   );
+  // }
 
   nowLog(){
     return this.user;
   }
 
-  signInWithGoogle(): void { 
-    this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+  // signInWithGoogle(): void { 
+  //   this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
 
-  signOut(): void { 
-   this._gauth.signOut(); 
-  } 
+  // signOut(): void { 
+  //  this._gauth.signOut(); 
+  // } 
 
 }
