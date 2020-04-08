@@ -1,53 +1,93 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
+import {
+  AuthService,
+  SocialUser,
+  GoogleLoginProvider,
+} from "angular4-social-login";
+
 import * as moment from "moment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class EPAuthService {
-
   private _registerUrl = "http://localhost:4000/api/register"; //mongoDB
-  private _loginUrl = "http://localhost:4000/api/login"
+  private _loginUrl = "http://localhost:4000/api/login";
   // private _verifyUserUrl = "http://localhost:4000/api/login"
-  private isGoogleLoggedIn : boolean = false;
-  //mongoDB connection 
+  private isLogIn: boolean = false;
+  private logged = "Signed";
+  private loginUserData = {};
+  private user: SocialUser;
 
-  constructor(private http: HttpClient, private _router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private _router: Router,
+    private _gauth: AuthService
+  ) {}
 
-  registerUser(user) {
-    return this.http.post<any>(this._registerUrl, user)
+  //common feature
+  loggedIn() {
+    return this.getToken() || this.isLogIn;
   }
 
-  loginUser(user) {
-    return this.http.post<any>(this._loginUrl, user)
+  //email login
+  emailRegisterUser(user) {
+    return this.http.post<any>(this._registerUrl, user);
   }
 
-  gLonginUser(){
-    this.isGoogleLoggedIn = true;
-
+  emailLoginUser(user) {
+    return this.http.post<any>(this._loginUrl, user);
   }
 
-  loggedIn(){
-    return this.getToken() || this.isGoogleLoggedIn;
+  emailLogIn() {
+    this.emailLoginUser(this.loginUserData).subscribe((res) => {
+      localStorage.setItem("token", res.token);
+      this._router.navigate(["/homes/library"]);
+    });
   }
 
-  getGoogleLog(){
-    console.log("getGoogleLog() func init");
-    console.log(this.isGoogleLoggedIn);
-    return this.isGoogleLoggedIn;
+  emailLogoutUser() {
+    localStorage.removeItem("token");
+    this._router.navigate(["/homes/library"]);
   }
 
-  logoutUser(){
-    localStorage.removeItem('token');
-    this._router.navigate(['/homes/library']);
-  }
-
-  getToken(){
-    return localStorage.getItem('token');
+  getToken() {
+    return localStorage.getItem("token");
   }
 
 
+  //google login
+  gLonginUser() {
+    this.isLogIn = true;
+  }
 
+  // getGoogleLog() {
+  //   // console.log("getGoogleLog() func init");
+  //   // console.log(this.isLogIn);
+  //   return this.isLogIn;
+  // }
+
+
+
+  //login with google
+  googleLogIn(platform: string): void {
+    platform = GoogleLoginProvider.PROVIDER_ID;
+    this._gauth.signIn(platform).then((response) => {
+      console.log(platform + "Logged In User Data is = ", response);
+      this.logged = "alpha";
+      this.user = response;
+
+      this._router.navigate(["/homes"]);
+      this.gLonginUser();
+    });
+  }
+  signInWithGoogle(): void {
+    this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this._gauth.signOut();
+  }
 }

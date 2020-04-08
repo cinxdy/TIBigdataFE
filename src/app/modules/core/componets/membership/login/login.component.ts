@@ -11,10 +11,10 @@ import { thresholdSturges } from 'd3-array';
   providers:[AuthService]
 })
 export class LoginComponent implements OnInit {
+  constructor(private _auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
   logged = "Signed"
 
   loginUserData = {}
-  constructor(private _auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
   
   user: SocialUser; 
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   //login with email
   emailLogIn() {
-    this._auth.loginUser(this.loginUserData)
+    this._auth.emailLoginUser(this.loginUserData)
     .subscribe((res) => {
       localStorage.setItem('token', res.token);
       this._router.navigate(['/homes/library'])
@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
   signInWithGoogle(): void { 
     this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
+
   signOut(): void { 
    this._gauth.signOut(); 
   } 
