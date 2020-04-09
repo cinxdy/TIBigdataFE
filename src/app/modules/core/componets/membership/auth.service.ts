@@ -27,7 +27,7 @@ export class EPAuthService {
   private _gRegUrl = "http://localhost:4000/api/gRegister";
   private _gChckUserUrl = "http://localhost:4000/api/gCheckUser";
 
-  private isLogIn: logStat = logStat.unsigned;
+  private isLogIn : logStat = logStat.unsigned;
   // private logged = "Signed";
   private loginUserData = {};
   private socUser: SocialUser;
@@ -40,7 +40,7 @@ export class EPAuthService {
 
   //common feature
   chckLogIn() {
-    return this.getToken() || this.isLogIn;
+    return this.isLogIn;
   }
 
   //email login
@@ -78,6 +78,7 @@ export class EPAuthService {
 
       }
       this.isLogIn = logStat.google;
+      // console.log("log stat has changed.");
       this._router.navigate(['/homes'])
     }
     );
@@ -93,5 +94,6 @@ export class EPAuthService {
   
   gSignOut(): void {
     this._gauth.signOut();
+    this.isLogIn = logStat.unsigned;
   }
 }

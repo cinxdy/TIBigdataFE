@@ -26,6 +26,15 @@ export class NavComponent implements OnInit {
       this.nowUser = user; });
   }
 
+  //check if user login status
+  chckUserLogIn():boolean{
+    if(this._auth.chckLogIn())
+      console.log("nav log in check succ!");
+    return this._auth.chckLogIn() as any;
+  }
+
+
+  //routers
   navigateSpecials(){
     this._router.navigateByUrl("/specials");
   }
