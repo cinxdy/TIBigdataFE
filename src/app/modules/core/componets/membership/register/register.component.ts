@@ -29,5 +29,8 @@ export class RegisterComponent implements OnInit {
 
       )
   }
+  toSocReg(){
+    this._router.navigateByUrl("/membership/socReg");
+  }
 
 }

@@ -56,4 +56,9 @@ export class LoginComponent implements OnInit {
     this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
+  //register page
+  toRegister(){
+    this._router.navigateByUrl("/membership/register");
+  }
+
 }
