@@ -12,20 +12,18 @@ import { thresholdSturges } from 'd3-array';
 })
 export class LoginComponent implements OnInit {
   constructor(private _auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
-  logged = "Signed"
-
-  loginUserData = {}
+  private loginUserData = {}
   
-  user: SocialUser; 
+  private user: SocialUser; 
 
   ngOnInit() {
-    // this._gauth.authState.subscribe((user) => { 
-      // this.user = user; });
+    this._gauth.authState.subscribe((user) => { 
+      this.user = user; });
   }
 
   // login with email
-  emailLogIn() {
-    this._auth.emailLoginUser(this.loginUserData)
+  eLogIn() {
+    this._auth.eLoginUser(this.loginUserData)
     .subscribe((res) => {
       localStorage.setItem('token', res.token);
       this._router.navigate(['/homes/library'])
@@ -36,18 +34,8 @@ export class LoginComponent implements OnInit {
 
 
   //login with google
-  googleLogIn(platform :string):void{
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this._gauth.signIn(platform).then((response)=>{
-      console.log(platform + "Logged In User Data is = ", response);
-      this.logged = "alpha";
-      this.user = response;
-
-      this._router.navigate(['/homes'])
-      // this._auth.gLonginUser();
-
-    }
-    );
+  gLogIn(platform :string):void{
+    this._auth.gLogIn(platform);
   }
 
 

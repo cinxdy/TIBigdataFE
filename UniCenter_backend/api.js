@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');//javscript with token lib
 var secret = 'harrypotter';//???? no use?
 const router = express.Router();
 const User = require('./models/user');
-
+const gUser = require('./models/gUser');
 // const mongoose = require('mongoose');//mongo db database communication tool
 //need to know how to connect here. seems like the db dir is on the mongodb server. not local.
 // const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
-const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
+// const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
 const db = 'mongodb://localhost:27017';
 
 //connect to db
@@ -70,6 +70,29 @@ router.post('/register', (req, res) => {
         }
     })
 
+})
+
+router.post('/gRegister',(req,res)=>{
+    let userData = req.body;
+    let user = new gUser(userData);
+    user.save((error, registeredUser)=>{
+        if(error){
+            console.log("google social user register data save error : " + error);
+        }
+    })
+})
+
+router.post('/gCheckUser',(req,res)=>{
+    let userData = req.body;
+    gUser.findOne({email : userData.email}, (error, user)=>{
+        if(error){
+            console.log("gCheckUSer error : " + error);
+        }
+        else{
+            if(!user) res.json({exist : false});
+            else res.json({exit : true});
+        }
+    })
 })
 
 // router.post('/verify',(req,res)=>)

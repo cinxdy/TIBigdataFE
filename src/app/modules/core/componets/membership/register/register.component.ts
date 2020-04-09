@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
   // when button clicked, this func init.
   registerUser(){
-    this._auth.emailRegisterUser(this.registerUserData) //_auth : register user service
+    this._auth.eRegisterUser(this.registerUserData) //_auth : register user service
     .subscribe(//perhaps return observable with response.
       res=> {
         // console.log(res)
@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
 
       )
   }
+  
   toSocReg(){
     this._router.navigateByUrl("/membership/socReg");
   }

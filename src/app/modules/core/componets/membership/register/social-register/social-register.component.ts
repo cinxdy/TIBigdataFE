@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EPAuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-social-register',
@@ -7,13 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SocialRegisterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth : EPAuthService) { }
 
   private agrEmail : boolean = false;
   private agrAcs : boolean = false;
   private agrSrcHtr : boolean = false;
 
   ngOnInit() {
+  }
+
+  gLogIn(platform :string):void{
+    this.auth.gLogIn(platform);
   }
 
 }
