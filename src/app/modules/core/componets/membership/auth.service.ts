@@ -50,13 +50,13 @@ export class EPAuthService {
     return this.http.post<any>(this._loginUrl, user);
   }
 
-  emailLogIn() {
-    this.emailLoginUser(this.loginUserData).subscribe((res) => {
-      localStorage.setItem("token", res.token);
-      this._router.navigate(["/homes/library"]);
-      this.isLogIn = logStat.email;
-    });
-  }
+  // emailLogIn() {
+  //   this.emailLoginUser(this.loginUserData).subscribe((res) => {
+  //     localStorage.setItem("token", res.token);
+  //     this._router.navigate(["/homes/library"]);
+  //     this.isLogIn = logStat.email;
+  //   });
+  // }
 
   emailLogoutUser() {
     localStorage.removeItem("token");
@@ -68,17 +68,17 @@ export class EPAuthService {
   }
 
   //login with google
-  googleLogIn(platform: string): void {
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this._gauth.signIn(platform).then((response) => {
-      this.socUser = response;
-      this.isLogIn = logStat.google;
-      this._router.navigate(["/homes"]);
-    });
-  }
-  signInWithGoogle(): void {
-    this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+  // googleLogIn(platform: string): void {
+  //   platform = GoogleLoginProvider.PROVIDER_ID;
+  //   this._gauth.signIn(platform).then((response) => {
+  //     this.socUser = response;
+  //     this.isLogIn = logStat.google;
+  //     this._router.navigate(["/homes"]);
+  //   });
+  // }
+  // signInWithGoogle(): void {
+  //   this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
 
   googleSignOut(): void {
     this._gauth.signOut();
