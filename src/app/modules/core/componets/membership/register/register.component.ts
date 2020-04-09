@@ -18,10 +18,10 @@ export class RegisterComponent implements OnInit {
 
   // when button clicked, this func init.
   registerUser(){
-    this._auth.registerUser(this.registerUserData) //_auth : register user service
+    this._auth.emailRegisterUser(this.registerUserData) //_auth : register user service
     .subscribe(//perhaps return observable with response.
       res=> {
-        console.log(res)
+        // console.log(res)
         localStorage.setItem('token', res.token)//FE user browser save the token.
         this._router.navigate(['/homes/library']);//go to lib dir.
       },

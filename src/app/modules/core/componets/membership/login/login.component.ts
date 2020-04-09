@@ -50,16 +50,10 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  // nowLog(){
-  //   return this.user;
-  // }
 
+  //where do we use this?
   signInWithGoogle(): void { 
     this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
-
-  signOut(): void { 
-   this._gauth.signOut(); 
-  } 
 
 }
