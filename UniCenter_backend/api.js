@@ -7,18 +7,18 @@ const gUser = require('./models/gUser');
 // const mongoose = require('mongoose');//mongo db database communication tool
 //need to know how to connect here. seems like the db dir is on the mongodb server. not local.
 // const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
+// const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 // const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-const db = 'mongodb://localhost:27017';
+// const db = 'mongodb://localhost:27017';
 
-//connect to db
-mongoose.connect(db, err => {
-    if (err) {
-        console.error('Error!' + err)
-    } else {
-        console.log('Connected to mongodb');
-    }
-});
+// //connect to db
+// mongoose.connect(db, err => {
+//     if (err) {
+//         console.error('Error!' + err)
+//     } else {
+//         console.log('Connected to mongodb');
+//     }
+// });
 
 function verifyToken(req, res, next) {
     console.log("verifyToken func has been inited!");
@@ -64,6 +64,7 @@ router.post('/register', (req, res) => {
         if(error) {
             console.log(error)
         } else {
+            console.log("api : email register : save ok");
             let payload = { subject : registeredUser._id};//new user id : subject => payload. create token.
             var token = jwt.sign(payload, secret, { expiresIn: '24h'});//secret harry poter usage check required. //토큰 발급.
             res.json({success: true, message: 'User registered!', token: token});//토큰 전송.
@@ -73,24 +74,35 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/gRegister',(req,res)=>{
+    console.log("api : gRegister init.");
     let userData = req.body;
     let user = new gUser(userData);
     user.save((error, registeredUser)=>{
         if(error){
             console.log("google social user register data save error : " + error);
         }
+        else{
+            console.log("api : gmail register : save ok");
+        }
     })
 })
 
-router.post('/gCheckUser',(req,res)=>{
+router.get('/gCheckUser',(req,res)=>{
+    console.log("api : gChecker init.");
     let userData = req.body;
     gUser.findOne({email : userData.email}, (error, user)=>{
         if(error){
             console.log("gCheckUSer error : " + error);
         }
         else{
-            if(!user) res.json({exist : false});
-            else res.json({exit : true});
+            if(!user) {
+                console.log("api gchecker : post false")
+                res.json({exist : false});
+            }
+            else{
+                console.log("api gchecker : post true")
+                res.json({exit : true});
+            }    
         }
     })
 })
