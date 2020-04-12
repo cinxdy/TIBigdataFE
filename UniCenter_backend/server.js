@@ -9,7 +9,16 @@ const app = express();
 const api = require('./api');//bring the backend func and feature
 
 const PORT = 4000;
+// const db = 'mongodb://localhost:27017';
 
+// //connect to db
+// mongoose.connect(db, err => {
+//     if (err) {
+//         console.error('Error!' + err)
+//     } else {
+//         console.log('Connected to mongodb');
+//     }
+// });
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);//api 경로에서 항상 require("./api") 호출한다. use : middleware 함수.
