@@ -50,8 +50,10 @@ export class EPAuthService {
 
   eLoginUser(user) {
     var result = this.http.post<any>(this._loginUrl, user);
-    if(result)
+    if(result){
       this.isLogIn = logStat.email;
+      //get user name to show on the nav soon.
+    }
     return result;
   }
 
@@ -76,25 +78,28 @@ export class EPAuthService {
       // this.gCheckUser(response).then(res=>{
         
       // });
-      // console.log(this.gCheckUser(response))
-      if(!this.gCheckUser(response)){
-        console.log("check user : this user is not our user yet!");
-        this.gRegisterUser(this.socUser.email);
-
+      this.gCheckUser(response).subscribe((res)=>{
+        
+        // console.log(res);
+        if(res.exist == false){
+          console.log("check user : this user is not our user yet!");
+          this.gRegisterUser(this.socUser.email);
+          
+        }
+        
+          this.isLogIn = logStat.google;
+          console.log("log stat has changed.");
+        
+        this._router.navigate(['/homes'])
       }
-      else{
-        this.isLogIn = logStat.google;
-        console.log("log stat has changed.");
-      }
-      this._router.navigate(['/homes'])
-    }
-    );
-    // return new Promise(()=>{} );
+      );
+      // return new Promise(()=>{} );
+    })
   }
 
   gCheckUser(user){
     console.log("ang : gCheckUser init");
-    return this.http.get<any>(this._gChckUserUrl,user);
+    return this.http.post<any>(this._gChckUserUrl,user);
   }
 
   gRegisterUser(user){

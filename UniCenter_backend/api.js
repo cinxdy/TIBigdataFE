@@ -7,18 +7,12 @@ const gUser = require('./models/gUser');
 // const mongoose = require('mongoose');//mongo db database communication tool
 //need to know how to connect here. seems like the db dir is on the mongodb server. not local.
 // const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
+// const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 // const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-const db = 'mongodb://localhost:27017/user';
+// const db = 'mongodb://localhost:27017/user';
 
 // //connect to db
-mongoose.connect(db, err => {
-    if (err) {
-        console.error('Error!' + err)
-    } else {
-        console.log('Connected to mongodb');
-    }
-});
+
 
 function verifyToken(req, res, next) {
     console.log("verifyToken func has been inited!");
@@ -87,7 +81,7 @@ router.post('/gRegister',(req,res)=>{
     })
 })
 
-router.get('/gCheckUser',(req,res)=>{
+router.post('/gCheckUser',(req,res)=>{
     console.log("api : gChecker init.");
     let userData = req.body;
     gUser.findOne({email : userData.email}, (error, user)=>{
