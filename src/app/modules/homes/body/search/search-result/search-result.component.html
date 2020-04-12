@@ -6,16 +6,16 @@
         <button class="uk-button uk-button-text">
       연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
     </button>
-        <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
+        <!-- <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
             Loading...
-        </div>
-        <ng-template #infoLoadFin>
-            <ul class="keyword-list" *ngFor="let keyword of relatedKeywords">
-                <li>
-                    <a (click)="relatedSearch(keyword)">{{ keyword }}</a>
-                </li>
-            </ul>
-        </ng-template>
+        </div> -->
+        <!-- <ng-template #infoLoadFin> -->
+            <!-- <ul class="keyword-list" *ngFor="let keyword of relatedKeywords"> -->
+                <!-- <li> -->
+                    <a (click)="relatedSearch(keyword)">북한, 핵미사일, 미국, 동해, 핵, 달러, 대북</a>
+                <!-- </li> -->
+            <!-- </ul> -->
+        <!-- </ng-template> -->
     </div>
     <form #dataForm="ngForm" (ngSubmit)="this.navToDataChart()">
         <div *ngIf="articleSources?.length > 1" class="uk-flex uk-flex-right">
@@ -40,11 +40,11 @@
         </div>
 
         <div class="search-result">
-            <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
-                Loading...
-            </div>
-            <ng-template #loadFin>
-                <div *ngFor="let articleSource of articleSources; index as i">
+            <!-- <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin"> -->
+                <!-- Loading... -->
+            <!-- </div> -->
+            <!-- <ng-template #loadFin> -->
+                <!-- <div *ngFor="let articleSource of articleSources; index as i"> -->
                     <div class="row">
                         <div class="col-xs" style="margin: auto; padding: 1em;">
                             <div class="form-group">
@@ -55,38 +55,42 @@
                         <div class="col">
                             <div class="row">
                                 <div class="container">
-                                    <app-article-details [article]="articleSource">
-                                    </app-article-details>
+                                    김정은 발바닥 분서 결과
+                                    내용 요약 : 김정은 발바닥은 엄청 크지는 않다.
+                                    저자 : 김정일
+
+                                    <!-- <app-article-details [article]="articleSource"> -->
+                                    <!-- </app-article-details> -->
                                 </div>
                             </div>
                             <div #relatedKeyWords class="row">
-                                <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
+                                <!-- <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
                                     Loading...
-                                </div>
-                                <ng-template #infoLoadFin>
-                                    <div class="col">키워드 : {{ keywords[i] }}</div>
+                                </div> -->
+                                <!-- <ng-template #infoLoadFin> -->
+                                    <div class="col">키워드 : 키워드 내용</div>
                                     <!-- <div class="col">
                     <div class="row">연관문서</div>
                     <div class="row">{{ rcmdList[i]["rcmd"] }}</div>
                   </div> -->
-                                </ng-template>
+                                <!-- </ng-template> -->
                             </div>
                             <hr>
                         </div>
                         <div #relatedDocuments>
-                            <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
+                            <!-- <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
                                 Loading...
-                            </div>
+                            </div> -->
                             <div *ngIf="isRelatedLoaded == true">
                                 <div class="col-xs" style="margin: auto; padding: 1em;">
                                     <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
                     연관문서
                   </button>
                                     <div *ngIf="relateToggle[i] == true">
-                                        <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
+                                        <!-- <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r"> -->
                                             <!-- {{ rcmdList[i]["rcmd"] }} -->
-                                            <a (click)="setThisDoc(i, r)">{{ rcmd }}</a>
-                                        </div>
+                                            <a (click)="setThisDoc(i, r)">연관문서 : 내용</a>
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -94,13 +98,13 @@
                     </div>
 
                     <!--검색 결과의 마지막 -->
-                </div>
-                <div *ngIf="articleSources?.length < 1" style="margin-top:20px">
+                <!-- </div> -->
+                <!-- <div *ngIf="articleSources?.length < 1" style="margin-top:20px">
                     <div class="uk-position-center">
                         <h3>검색결과가 없습니다</h3>
                     </div>
-                </div>
-            </ng-template>
+                </div> -->
+            <!-- </ng-template> -->
         </div>
     </div>
 </div>
