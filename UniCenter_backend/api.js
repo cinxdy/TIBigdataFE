@@ -106,6 +106,33 @@ router.post('/gCheckUser',(req,res)=>{
     })
 })
 
+router.post('/addHistory',(req,res)=>{
+    console.log("add history init");
+    let bundle = req.body;
+    let userData = bundle.user;
+    let keyword = bundle.key;
+    gUser.findOneAndUpdate({email: userData.email},{ $push : { history : keyword}},(err, doc)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc) {
+                // console.log("api gchecker : post false")
+                console.log(doc);
+                res.json({add : false});
+            }
+            else{
+                // console.log("api gchecker : post true")
+                console.log(doc);
+
+                res.json({add : true});
+            }    
+        }
+        
+    });
+    // console.log("add history done");
+})
+
 // router.post('/verify',(req,res)=>)
 
 

@@ -13,7 +13,7 @@ import { ArticleSource } from "../../../containers/shared/article.interface";
 import { Subscription } from "rxjs";
 import { Observable, of } from "rxjs";
 import { EventService } from "../../../../core/componets/membership/event.service";
-
+import { EPAuthService } from '../../../../core/componets/membership/auth.service';
 
 @Component({
   selector: "app-search-bar",
@@ -43,6 +43,7 @@ export class SearchBarComponent implements OnInit {
   // searchKeyword: string;
 
   constructor(
+    private auth : EPAuthService,
     private eventSvs : EventService,
     public _router: Router,
     // private http:HttpClient,
@@ -68,7 +69,7 @@ export class SearchBarComponent implements OnInit {
     this.es.setKeyword(this.queryText);
     this.es.fullTextSearch("post_body", this.queryText); //검색 결과 창에서 새로운 검색어 입력할 때 필요.
     this.searched.emit();
-    
+    this.auth.addSrchHst(this.queryText);
     // console.log("emitted!")
     // console.log("search bar : fulltextsearch done with " + this.queryText);
     this._router.navigateByUrl("search");

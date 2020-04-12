@@ -29,11 +29,12 @@ export class EPAuthService {
   private _gChckUserUrl = "http://localhost:4000/api/gCheckUser";
 
   private isLogIn : logStat = logStat.unsigned;
-  private isLigIn$ = new Observable<logStat>();
+  // private isLigIn$ = new Observable<logStat>();
 
   // private logged = "Signed";
   private loginUserData = {};
   private socUser: SocialUser;
+  private schHst : string;//user search history
 
   constructor(
     private http: HttpClient,
@@ -117,6 +118,16 @@ export class EPAuthService {
   gSignOut(): void {
     this._gauth.signOut();
     this.isLogIn = logStat.unsigned;
+  }
+
+  addSrchHst(keyword : string){
+    // this.schHst = keyword;
+    console.log(this.socUser);
+    let bundle = {user : this.socUser, key : keyword}
+    this.http.post<any>( "http://localhost:4000/api/addHistory",bundle).subscribe((res)=>{
+      console.log("add srch hst in angular ok")
+      console.log(res);
+    });
   }
   
 }
