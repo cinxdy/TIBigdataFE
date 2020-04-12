@@ -12,7 +12,7 @@ import { SocialUser, AuthService} from 'angular4-social-login';
 })
 export class NavComponent implements OnInit {
 
-  nowUser : SocialUser;
+  nowUser : SocialUser = null;
   
   constructor(public _router: Router, private _auth: EPAuthService, private _gauth:AuthService) {
     
@@ -21,16 +21,20 @@ export class NavComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.log(this.nowUser);
-    this._gauth.authState.subscribe((user) => { 
-      this.nowUser = user; });
   }
 
   //check if user login status
   chckUserLogIn():boolean{
-    if(this._auth.chckLogIn())
-      // console.log("nav log in check succ!");
-    return this._auth.chckLogIn() as any;
+    var isLogIn = this._auth.chckLogIn() as any;
+    if(isLogIn){
+      this._gauth.authState.subscribe((user) => { 
+      this.nowUser = user; });
+    }
+    return isLogIn;
+  }
+
+  logOut(){
+    this._auth.logOut()
   }
 
 

@@ -74,9 +74,11 @@ router.post('/gRegister',(req,res)=>{
     user.save((error, registeredUser)=>{
         if(error){
             console.log("google social user register data save error : " + error);
+            res.json({succ : "fail"})
         }
         else{
             console.log("api : gmail register : save ok");
+            res.json({succ : true});
         }
     })
 })
@@ -90,11 +92,14 @@ router.post('/gCheckUser',(req,res)=>{
         }
         else{
             if(!user) {
-                console.log("api gchecker : post false")
+                // console.log("api gchecker : post false")
+                // console.log(user);
                 res.json({exist : false});
             }
             else{
-                console.log("api gchecker : post true")
+                // console.log("api gchecker : post true")
+                // console.log(user);
+
                 res.json({exit : true});
             }    
         }

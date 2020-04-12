@@ -8,6 +8,7 @@ import {
 } from "angular4-social-login";
 
 import * as moment from "moment";
+import { Observable } from 'rxjs';
 
 enum //enumerate login status
 logStat {
@@ -28,6 +29,8 @@ export class EPAuthService {
   private _gChckUserUrl = "http://localhost:4000/api/gCheckUser";
 
   private isLogIn : logStat = logStat.unsigned;
+  private isLigIn$ = new Observable<logStat>();
+
   // private logged = "Signed";
   private loginUserData = {};
   private socUser: SocialUser;
@@ -41,6 +44,15 @@ export class EPAuthService {
   //common feature
   chckLogIn() {
     return this.isLogIn;
+  }
+
+  logOut(){
+    if (this.isLogIn == logStat.email)
+      return this.eLogoutUser()
+    else if(this.isLogIn == logStat.google)
+      return this.gSignOut();
+    return
+    
   }
 
   //email login
@@ -74,26 +86,22 @@ export class EPAuthService {
       // console.log(platform + "Logged In User Data is = ", response);
       this.socUser = response;
 
-      console.log("gCheckUser result : ")
-      // this.gCheckUser(response).then(res=>{
-        
-      // });
+      // console.log("gCheckUser result : ")
       this.gCheckUser(response).subscribe((res)=>{
         
-        // console.log(res);
         if(res.exist == false){
           console.log("check user : this user is not our user yet!");
-          this.gRegisterUser(this.socUser.email);
+          this.gRegisterUser(this.socUser).subscribe((res)=>{
+            console.log(res);
+          })
           
         }
         
-          this.isLogIn = logStat.google;
-          console.log("log stat has changed.");
+        this.isLogIn = logStat.google;
         
         this._router.navigate(['/homes'])
       }
       );
-      // return new Promise(()=>{} );
     })
   }
 
@@ -110,4 +118,5 @@ export class EPAuthService {
     this._gauth.signOut();
     this.isLogIn = logStat.unsigned;
   }
+  
 }

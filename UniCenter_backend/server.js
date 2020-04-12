@@ -20,7 +20,7 @@ const PORT = 4000;
 //     }
 // });
 
-const db = 'mongodb://localhost:27017/';
+const db = 'mongodb://localhost:27017/user';
 
 
 mongoose.connect(db, err => {
