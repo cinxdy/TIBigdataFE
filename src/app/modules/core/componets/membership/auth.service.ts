@@ -52,7 +52,7 @@ export class EPAuthService {
     var result = this.http.post<any>(this._loginUrl, user);
     if(result)
       this.isLogIn = logStat.email;
-    return 
+    return result;
   }
 
   eLogoutUser() {
@@ -66,26 +66,35 @@ export class EPAuthService {
   }
 
   //google login
-  gLogIn(platform :string):void{
+  gLogIn(platform :string) : void{
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
       // console.log(platform + "Logged In User Data is = ", response);
       this.socUser = response;
 
+      console.log("gCheckUser result : ")
+      // this.gCheckUser(response).then(res=>{
+        
+      // });
+      // console.log(this.gCheckUser(response))
       if(!this.gCheckUser(response)){
         console.log("check user : this user is not our user yet!");
         this.gRegisterUser(this.socUser.email);
 
       }
-      this.isLogIn = logStat.google;
-      // console.log("log stat has changed.");
+      else{
+        this.isLogIn = logStat.google;
+        console.log("log stat has changed.");
+      }
       this._router.navigate(['/homes'])
     }
     );
+    // return new Promise(()=>{} );
   }
 
   gCheckUser(user){
-    return this.http.post<any>(this._gChckUserUrl,user);
+    console.log("ang : gCheckUser init");
+    return this.http.get<any>(this._gChckUserUrl,user);
   }
 
   gRegisterUser(user){

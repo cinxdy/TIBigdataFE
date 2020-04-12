@@ -9,7 +9,7 @@ const gUser = require('./models/gUser');
 // const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 // const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-const db = 'mongodb://localhost:27017';
+const db = 'mongodb://localhost:27017/user';
 
 //connect to db
 mongoose.connect(db, err => {
@@ -90,7 +90,7 @@ router.post('/gCheckUser',(req,res)=>{
         }
         else{
             if(!user) res.json({exist : false});
-            else res.json({exit : true});
+            else res.json({exist : true});
         }
     })
 })

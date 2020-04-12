@@ -29,7 +29,7 @@ export class NavComponent implements OnInit {
   //check if user login status
   chckUserLogIn():boolean{
     if(this._auth.chckLogIn())
-      console.log("nav log in check succ!");
+      // console.log("nav log in check succ!");
     return this._auth.chckLogIn() as any;
   }
 
