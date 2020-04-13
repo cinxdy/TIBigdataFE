@@ -34,7 +34,7 @@ export class EPAuthService {
   // private logged = "Signed";
   private loginUserData = {};
   private socUser: SocialUser;
-  private schHst : string;//user search history
+  private schHst : [] = [];//user search history
 
   constructor(
     private http: HttpClient,
@@ -125,9 +125,28 @@ export class EPAuthService {
     console.log(this.socUser);
     let bundle = {user : this.socUser, key : keyword}
     this.http.post<any>( "http://localhost:4000/api/addHistory",bundle).subscribe((res)=>{
-      console.log("add srch hst in angular ok")
-      console.log(res);
+      // console.log("add srch hst in angular ok")
+      // console.log(res);
+      console.log("auth service history test");
+      console.log(res.history);
+      this.schHst = res.history;
     });
+  }
+
+  showSrchHst(){
+    var hst;
+    return new Promise((resolve)=>{
+        this.http.get<any>( "http://localhost:4000/api/showHistory")
+        .subscribe((res)=>{
+          // console.log("add srch hst in angular ok")
+          // console.log(res);
+            hst = res.history;
+          // console.log(hst);
+          // return hst;
+        });
+      }
+    ) 
+    
   }
   
 }

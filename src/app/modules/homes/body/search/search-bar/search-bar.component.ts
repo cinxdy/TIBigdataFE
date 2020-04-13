@@ -62,9 +62,15 @@ export class SearchBarComponent implements OnInit {
   /**
    *
    */
+    //user search history
+    // loadHistory(){
+    //   this.userHistory = this.auth.showSrchHst();
+    // }
+
+
 
   search() {
-    this.eventSvs.addSrchHst(this.queryText);
+    // this.eventSvs.addSrchHst(this.queryText);
     
     this.es.setKeyword(this.queryText);
     this.es.fullTextSearch("post_body", this.queryText); //검색 결과 창에서 새로운 검색어 입력할 때 필요.

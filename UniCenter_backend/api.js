@@ -125,7 +125,32 @@ router.post('/addHistory',(req,res)=>{
                 // console.log("api gchecker : post true")
                 console.log(doc);
 
-                res.json({add : true});
+                res.json({history : doc.history});
+            }    
+        }
+        
+    });
+    // console.log("add history done");
+})
+
+router.get('/showHistory',(req,res)=>{
+    console.log("add history init");
+    let userData = req.body;
+    gUser.findOne({email: userData.email},(err, doc)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc) {
+                // console.log("api gchecker : post false")
+                console.log(doc);
+                res.json({result : false});
+            }
+            else{
+                // console.log("api gchecker : post true")
+                console.log(doc);
+
+                res.json({history : doc.history});
             }    
         }
         

@@ -15,7 +15,7 @@ import { IdControlService } from "../service/id-control-service/id-control.servi
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
-
+import { EPAuthService } from '../../../../core/componets/membership/auth.service';
 import { EventService } from "../../../../core/componets/membership/event.service";
 
 
@@ -55,10 +55,13 @@ export class SearchResultComponent implements OnInit {
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
+  private userHistory : [] = [];
+
 
   queryText: string;
 
   constructor(
+    private auth : EPAuthService,
     private evtSvs : EventService,
     private rcmd: RecomandationService,
     private ipService: IpService,
@@ -84,6 +87,14 @@ export class SearchResultComponent implements OnInit {
     console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
+
+  // //user search history
+  // loadHistory(){
+  //   this.userHistory = this.auth.showSrchHst();
+  // }
+
+
+
 
   // getRcmd() {
   //   this.http
