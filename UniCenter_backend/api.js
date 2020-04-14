@@ -112,15 +112,6 @@ router.post('/addHistory',(req,res)=>{
     let bundle = req.body;
     let userData = bundle.user;
     let time = new Date();
-    // let nowtime = "" + .toString() + " : " + .toString() + " : " + .toString() + " : " + .toString() + " : " +.toString()
-    
-    console.log(time);
-    console.log(typeof(time.getFullYear()))
-    console.log(typeof(time.getMonth()))
-
-    console.log(typeof(time.getDate()))
-
-    // console.log(typeof(time.getFullYear()))
 
     let keyword = {keyword : bundle.key, 
         year : time.getFullYear(),
