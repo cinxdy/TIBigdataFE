@@ -4,6 +4,7 @@ var secret = 'harrypotter';//???? no use?
 const router = express.Router();
 const User = require('./models/user');
 const gUser = require('./models/gUser');
+const hst = require('./models/history');
 // const mongoose = require('mongoose');//mongo db database communication tool
 //need to know how to connect here. seems like the db dir is on the mongodb server. not local.
 // const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
@@ -110,7 +111,37 @@ router.post('/addHistory',(req,res)=>{
     console.log("add history init");
     let bundle = req.body;
     let userData = bundle.user;
-    let keyword = bundle.key;
+    let time = new Date();
+    // let nowtime = "" + .toString() + " : " + .toString() + " : " + .toString() + " : " + .toString() + " : " +.toString()
+    
+    console.log(time);
+    console.log(typeof(time.getFullYear()))
+    console.log(typeof(time.getMonth()))
+
+    console.log(typeof(time.getDate()))
+
+    // console.log(typeof(time.getFullYear()))
+
+    let keyword = {keyword : bundle.key, 
+        year : time.getFullYear(),
+        month : time.getMonth(),
+        date : time.getDate(),
+        hour : time.getHours(),
+        min :  time.getMinutes()
+    };
+    newHst = new hst(keyword);
+    /***
+     * 
+     * 
+     * 그... history을 어떻게 저장해야 하는가? 문서 1개에 다 저장해야 하나?
+     */
+    // hst.update()
+    newHst.save((err, keyword)=>{
+        if(err){
+            console.log("add history fail. error : " + err);
+        }
+    });
+
     gUser.findOneAndUpdate({email: userData.email},{ $push : { history : keyword}},(err, doc)=>{
         if(err){
             console.log(err);
@@ -118,12 +149,12 @@ router.post('/addHistory',(req,res)=>{
         else{
             if(!doc) {
                 // console.log("api gchecker : post false")
-                console.log(doc);
+                // console.log(doc);
                 res.json({add : false});
             }
             else{
                 // console.log("api gchecker : post true")
-                console.log(doc);
+                // console.log(doc);
 
                 res.json({history : doc.history});
             }    

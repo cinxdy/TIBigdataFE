@@ -127,8 +127,8 @@ export class EPAuthService {
     this.http.post<any>( "http://localhost:4000/api/addHistory",bundle).subscribe((res)=>{
       // console.log("add srch hst in angular ok")
       // console.log(res);
-      console.log("auth service history test");
-      console.log(res.history);
+      // console.log("auth service history test");
+      // console.log(res.history);
       this.schHst = res.history;
     });
   }
