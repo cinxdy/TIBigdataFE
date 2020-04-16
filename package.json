@@ -1,5 +1,5 @@
 {
-  "name": "uni-center",
+  "name": "kubic",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -31,6 +31,7 @@
     "elasticsearch-browser": "^15.1.1",
     "fuctbase64": "^1.4.0",
     "g": "^2.0.1",
+    "google-auth-library": "^5.10.1",
     "jquery": "^3.4.1",
     "minimist": "^1.2.3",
     "moment": "^2.24.0",
@@ -73,6 +74,6 @@
     "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.5.3"
+    "typescript": "^3.5.3"
   }
 }

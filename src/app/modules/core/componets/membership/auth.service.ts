@@ -7,6 +7,8 @@ import {
   GoogleLoginProvider,
 } from "angularx-social-login";
 
+// import { auth, GoogleAuth,OAuth2Client } from "google-auth-library";
+
 import * as moment from "moment";
 import { Observable } from 'rxjs';
 
@@ -35,12 +37,32 @@ export class EPAuthService {
   private loginUserData = {};
   private socUser: SocialUser;
   private schHst : [] = [];//user search history
-
+  // private client = new OAuth2Client(GoogleLoginProvider.PROVIDER_ID);
   constructor(
     private http: HttpClient,
     private _router: Router,
     private _gauth: AuthService
   ) {}
+
+
+  //verify google user id toekn
+  //with url
+  // verify(token){
+
+  // }
+
+
+  //with lib
+  // async verifyGoogleToken(token){
+  //   const ticket = await this.client.verifyIdToken({
+  //     idToken : token,
+  //     audience : GoogleLoginProvider.PROVIDER_ID,
+
+  //   });
+  //   console.log(ticket);
+  //   const payload = ticket.getPayload();
+  //   const userid = payload['sub'];
+  // }
 
   //common feature
   chckLogIn() {
@@ -84,7 +106,7 @@ export class EPAuthService {
   gLogIn(platform :string) : void{
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
-      // console.log(platform + "Logged In User Data is = ", response);
+      console.log(platform + "Logged In User Data is = ", response);
       this.socUser = response;
 
       // console.log("gCheckUser result : ")
@@ -118,6 +140,7 @@ export class EPAuthService {
   }
   
   gSignOut(): void {
+    localStorage.removeItem("token");
     this._gauth.signOut();
     this.isLogIn = logStat.unsigned;
   }
