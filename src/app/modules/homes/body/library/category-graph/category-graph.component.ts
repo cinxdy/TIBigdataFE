@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../search/service/elasticsearch-service/elasticsearch.service';

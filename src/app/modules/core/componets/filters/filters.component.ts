@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientModule, HttpClient} from '@angular/common/http';
 import { SourceMapGenerator } from '@angular/compiler/src/output/source_map';
 import { Observable} from 'rxjs'
-import { Http, Response } from '@angular/http';
 import {map, filter, switchMap} from 'rxjs/operators';
 
 interface Post{
