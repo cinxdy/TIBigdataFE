@@ -97,8 +97,10 @@ export class EPAuthService {
           })
           
         }
-        
+        localStorage.setItem('token',this.socUser.authToken);
         this.isLogIn = logStat.google;
+        console.log(localStorage.getItem('token'));
+
         
         this._router.navigate(['/homes'])
       }

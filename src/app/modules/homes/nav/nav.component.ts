@@ -21,11 +21,14 @@ export class NavComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log("nav");
+    console.log(this._auth.getToken())
   }
 
   //check if user login status
   chckUserLogIn():boolean{
-    var isLogIn = this._auth.chckLogIn() as any;
+    // var isLogIn = this._auth.chckLogIn() as any;
+    var isLogIn = this._auth.getToken() as any;
     if(isLogIn){
       this._gauth.authState.subscribe((user) => { 
       this.nowUser = user; });
