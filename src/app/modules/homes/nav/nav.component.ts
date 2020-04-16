@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core
 import { Router } from '@angular/router';
 import { EPAuthService } from '../../core/componets/membership/auth.service';
 // import { LoginComponent} from '../../core/componets/membership/login/login.component';
-import { SocialUser, AuthService} from 'angular4-social-login';
+import { SocialUser, AuthService} from 'angularx-social-login';
 
 @Component({
   selector: 'app-nav',

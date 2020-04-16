@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { FormsModule} from '@angular/forms';
-import { SocialLoginModule,AuthServiceConfig } from 'angular4-social-login';
-import { GoogleLoginProvider,FacebookLoginProvider } from 'angular4-social-login';
+import { SocialLoginModule,AuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider,FacebookLoginProvider } from 'angularx-social-login';
 
 
 //For Online video lecture

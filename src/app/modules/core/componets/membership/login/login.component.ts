@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EPAuthService } from '../auth.service';
 import { Router } from '@angular/router'
-import { AuthService, SocialUser,GoogleLoginProvider} from 'angular4-social-login';
+import { AuthService, SocialUser,GoogleLoginProvider} from 'angularx-social-login';
 import { thresholdSturges } from 'd3-array';
 
 @Component({

@@ -5,7 +5,7 @@ import {
   AuthService,
   SocialUser,
   GoogleLoginProvider,
-} from "angular4-social-login";
+} from "angularx-social-login";
 
 import * as moment from "moment";
 import { Observable } from 'rxjs';
