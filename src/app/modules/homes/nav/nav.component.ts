@@ -14,30 +14,34 @@ export class NavComponent implements OnInit {
 
   nowUser : SocialUser = null;
   
-  constructor(public _router: Router, private _auth: EPAuthService, private _gauth:AuthService) {
+  constructor(public _router: Router, private auth: EPAuthService, private _gauth:AuthService) {
     
   }
   
 
 
   ngOnInit() {
-    console.log("nav");
-    console.log(this._auth.getToken())
+    // console.log("nav");
+    // console.log(this.auth.getToken())
   }
 
   //check if user login status
   chckUserLogIn():boolean{
-    // var isLogIn = this._auth.chckLogIn() as any;
-    var isLogIn = this._auth.getToken() as any;
-    if(isLogIn){
-      this._gauth.authState.subscribe((user) => { 
-      this.nowUser = user; });
-    }
-    return isLogIn;
+    return false;
+    // return this.auth.verifySignIn()
+
+    //prior version
+    // // var isLogIn = this.auth.chckLogIn() as any;
+    // var isLogIn = this.auth.getToken() as any;
+    // if(isLogIn){
+    //   this._gauth.authState.subscribe((user) => { 
+    //   this.nowUser = user; });
+    // }
+    // return isLogIn;
   }
 
   logOut(){
-    this._auth.logOut()
+    this.auth.logOut()
   }
 
 
@@ -77,6 +81,22 @@ export class NavComponent implements OnInit {
   toEvent(){
     this._router.navigateByUrl("/membership/event");
   }
+
+  
+  /***
+   * user browser token check process
+   * 2020.4.17
+   * by Baek
+   * 
+   * nav.component is the always on display component
+   * So the user login token checking process is put here to decide 
+   * if app shows user name on the nav and enables the profile page.
+   * 
+   * reference drive : user login senario and logic design. 
+   * 
+   * 
+   * 
+   */
 
 }
 

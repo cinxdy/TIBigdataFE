@@ -5,45 +5,46 @@ const router = express.Router();
 const User = require('./models/user');
 const gUser = require('./models/gUser');
 const hst = require('./models/history');
-// const mongoose = require('mongoose');//mongo db database communication tool
-//need to know how to connect here. seems like the db dir is on the mongodb server. not local.
-// const db='mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-// const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
-// const db2 = 'mongodb+srv://Admin:Dptnsla94!@kubic-adbnl.mongodb.net/user';
-// const db = 'mongodb://localhost:27017/user';
-
-// //connect to db
-
 
 function verifyToken(req, res, next) {
     console.log("verifyToken func has been inited!");
 
+    try{
+        //if req header is not valid
+        if(!req.headers.authorization) {
+            return res.status(401).send('Unauthorized request')
+        }
 
-    //if req header is not valid
-    if(!req.headers.authorization) {
-        return res.status(401).send('Unauthorized request')
+        //parse
+        let token = req.headers.authorization.split(' ')[1]
+        
+        //parser result is null => invalid
+        if(token === 'null'){
+            return res.status(401).send('Unauthorized request')
+        }
+
+        //js with token.
+        try{
+            let payload = jwt.verify(token, 'secretKey')//'secret key' is specific syntax of jwt. decoded.
+        }
+        catch(err){
+            console.log("jwt verify error!");
+            return res.status(401).send("token unverified!");
+        }
+        //if decoded is not wrong? invalid? how invalid then?
+        if(!payload) {
+            return res.status(401).send('Unauthorized request')
+        }
+
+        
+        req.userId = payload.subject//need to know how the req is formed first....
+        //why do they again set value of req? not res?
+        next()//where does this function come from?
     }
-
-    //parse
-    let token = req.headers.authorization.split(' ')[1]
-    
-    //parser result is null => invalid
-    if(token === 'null'){
-        return res.status(401).send('Unauthorized request')
+    catch{
+        console.log("server error!");
     }
-
-    //js with token.
-    let payload = jwt.verify(token, 'secretKey')//'secret key' is specific syntax of jwt. decoded.
-
-    //if decoded is not wrong? invalid? how invalid then?
-    if(!payload) {
-        return res.status(401).send('Unauthorized request')
-    }
-
-    
-    req.userId = payload.subject//need to know how the req is formed first....
-    //why do they again set value of req? not res?
-    next()//where does this function come from?
+    return res.status(200)
 }
 
 //yet useless dir
@@ -206,6 +207,21 @@ router.post('/login', (req, res) => {
         }
     })
 })
+
+router.post('/verify',verifyToken
+// (req,res,null)
+    // (req, res)=>{
+    //     console.log("api : verify func init.");
+    //     try{
+
+    //         res.json({res : verifyToken(req,res,null)});
+    //     }
+    //     catch{
+    //         console.log("verify post error");
+    //     }
+    // }
+)
+
 
 router.get('/events', verifyToken, (req, res) => {
     let events = [{

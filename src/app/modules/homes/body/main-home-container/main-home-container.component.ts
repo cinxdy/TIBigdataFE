@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EPAuthService } from '../../../core/componets/membership/auth.service';
 
 @Component({
   selector: 'app-main-home-container',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainHomeContainerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth : EPAuthService) { }
 
   ngOnInit() {
+    // console.log(this.auth.verifySignIn())
   }
 
 }
