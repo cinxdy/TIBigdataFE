@@ -12,11 +12,6 @@ export class MainHomeContainerComponent implements OnInit {
   constructor(private auth : EPAuthService, private gAuth : AuthService ) { }
 
   ngOnInit() {
-    // console.log("main home : init verifySignIn");
-    // this.gAuth.authState.subscribe((user)=>{
-    //   var state = user;
-    //   console.log(state);
-    // })
     this.auth.verifySignIn();
   }
 

@@ -243,8 +243,17 @@ router.get('/showHistory',(req,res)=>{
     });
 })
 
+router.get('/getTotalHistory',(req,res)=>{
+    // console.log("get total history func init");
+    hst.find({},(err, hstrs)=>{
+        if(err)
+            console.log("get total history err")
+        // console.log(hstrs);
+        res.send({histories : hstrs})
+    });
+});
 
-router.post('/verify',verifyToken)
+router.post('/verify',verifyToken);
 
 
 

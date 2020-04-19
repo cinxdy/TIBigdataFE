@@ -17,6 +17,7 @@ import { LibraryModule } from './modules/homes/body/library/library.module';
 import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
 import { CoreModule} from './modules/core/core.module';
 import { EPAuthService } from './modules/core/componets/membership/auth.service';
+import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EPAuthService } from './modules/core/componets/membership/auth.service'
     NavComponent,
     MainHomeContainerComponent,
     HomeSearchBarComponent,
-    HomeGraphComponent
+    HomeGraphComponent,
+    SearchHistoryComponent
   ],
   imports: [
     BrowserModule,
