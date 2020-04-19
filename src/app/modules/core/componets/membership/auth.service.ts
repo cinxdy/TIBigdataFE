@@ -173,6 +173,7 @@ export class EPAuthService {
       bundle = {login : false, key : keyword}
     this.http.post<any>( this.ADD_SEARCH_HISTORY_URL,bundle).subscribe((res)=>{
       this.schHst = res.history;
+      console.log("personal history : ", this.schHst);
     });
   }
 
@@ -255,7 +256,12 @@ export class EPAuthService {
         
         if(res.exist == false){
           this.gRegisterUser(this.socUser).subscribe((res)=>{
-            console.log("This user is not yet our user : need sign up : ",res);
+            if(!res.exist){
+              console.log("This user is not yet our user : need sign up : ",res);
+              alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
+              this._router.navigateByUrl("/membership/register");
+
+            }
           })
           
         }

@@ -102,7 +102,7 @@
                 </div>
             </ng-template>
         </div>
-        최근 검색 결과
+        나의 최근 검색 키워드
         <!-- {{ console.log(" histroy test")}} -->
         <!-- {{ console.log( this.auth.schHst )}} -->
 
@@ -110,7 +110,7 @@
 
             <div *ngFor="let hst of auth.schHst; index as i">
                 <div class="row">
-                    <a href="">{{ hst }}</a>
+                    <a (click)="relatedSearch(hst.keyword)">{{ hst.keyword }}</a>
                 </div>
             </div>
         </div>

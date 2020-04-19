@@ -160,9 +160,9 @@ router.post('/login', (req, res) => {
  * 
  */
 router.post('/addHistory',(req,res)=>{
-    console.log("add history init");
+    // console.log("add history init");
     let bundle = req.body;
-    console.log(bundle);
+    // console.log(bundle);
    
     let time = new Date();
 
@@ -188,31 +188,34 @@ router.post('/addHistory',(req,res)=>{
     });
 
 
+    var userHst;
     //my user search history for each user
     if(bundle.login){
         let userData = bundle.user;
         
         gUser.findOneAndUpdate({email: userData.email},{ $push : { history : keyword}},(err, doc)=>{
             if(err){
-                console.log(err);
+                console.log("user personal history add failed!", err);
             }
             else{
                 if(!doc) {
-                    console.log("api gchecker : post false")
-                    console.log(doc);
-                    res.status(200).send({add : false});
+                    console.log("doc not found")
+                    // console.log(doc);
+                    res.status(401).send({add : false});
                 }
                 else{
-                    console.log("api gchecker : post true")
+                    console.log("doc found!")
                     console.log(doc);
-
-                    res.json({history : doc.history});
+                    userHst = doc.history;
+                    userHst.push(keyword);
+                    console.log(userHst);
+                    res.json({history : userHst});
                 }    
             }
             
         });
     }
-
+    
     console.log("add history done");
 })
 
