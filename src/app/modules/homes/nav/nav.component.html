@@ -1,12 +1,12 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <div *ngIf="nowUser">
-                <li>{{nowUser.name}}</li>
+            <div *ngIf="isLogin">
+                <li>{{nowUser}}</li>
             </div>
-            <li><a *ngIf="!chckUserLogIn()" (click)="toLogin()">로그인</a></li>
-            <li><a *ngIf="!chckUserLogIn()" (click)="toRegister()">회원가입</a></li>
-            <li><a *ngIf="chckUserLogIn()" (click)="logOut()">로그아웃</a></li>
+            <li><a *ngIf="!isLogin" (click)="toLogin()">로그인</a></li>
+            <li><a *ngIf="!isLogin" (click)="toRegister()">회원가입</a></li>
+            <li><a *ngIf="isLogin" (click)="logOut()">로그아웃</a></li>
             <li><a (click)="LineChart()">사이트맵</a></li>
         </ul>
     </div>

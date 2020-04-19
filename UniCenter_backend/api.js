@@ -6,6 +6,13 @@ const User = require('./models/user');
 const gUser = require('./models/gUser');
 const hst = require('./models/history');
 
+//for future. user model.
+const userModel = {
+    name : String,
+    email : String,
+    history : []
+};
+
 //google token verify code template
 const {OAuth2Client} = require('google-auth-library');
 
@@ -23,17 +30,21 @@ function verifyGoogleToken(req,res){
         });
         // console.log("get ticket : ",ticket);
         const payload = ticket.getPayload();
-        const userid = payload['sub'];
+        const userInfo = {
+            name : payload.name, 
+            email : payload.email
+        }
+        // const userid = payload['sub'];
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
         
-        return res.status(200).send({status : "OK"})
+        return res.status(200).send({status : true, user : userInfo});
     }
 
     return verify().catch((err)=>{
         console.error(err);
         console.log("error");
-        return res.status(401).send({status : "google token invalid"});
+        return res.status(200).send({status : false, err : err});
     })
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
+import { Component, AfterViewChecked,OnInit, OnChanges, Output, EventEmitter, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { EPAuthService } from '../../core/componets/membership/auth.service';
 // import { LoginComponent} from '../../core/componets/membership/login/login.component';
@@ -12,33 +12,47 @@ import { SocialUser, AuthService} from 'angularx-social-login';
 })
 export class NavComponent implements OnInit {
 
-  nowUser : SocialUser = null;
-  
+  private nowUser : String = null;
+  private isLogin : boolean = false;
   constructor(public _router: Router, private auth: EPAuthService, private _gauth:AuthService) {
     
   }
+  ngOnInit(): void {
+    //throw new Error("Method not implemented.");
+    // this.isLogin = this.chckUserLogIn();
+    // console.log(this.isLogin);
+    this.auth.isLogInObs.subscribe((res)=>{
+      this.isLogin = res as any;
+      this.nowUser = this.auth.profile.name;
+      // console.log(this.isLogin, this.nowUser);
+    });
+  }
   
 
 
-  ngOnInit() {
+  //AfterViewChecked() {
     // console.log("nav");
     // console.log(this.auth.getToken())
-  }
+  //}
 
   //check if user login status
-  chckUserLogIn():boolean{
-    return false;
-    // return this.auth.verifySignIn()
-
-    //prior version
-    // // var isLogIn = this.auth.chckLogIn() as any;
-    // var isLogIn = this.auth.getToken() as any;
-    // if(isLogIn){
-    //   this._gauth.authState.subscribe((user) => { 
-    //   this.nowUser = user; });
-    // }
-    // return isLogIn;
-  }
+  // chckUserLogIn():boolean{
+  //   // return false;
+  //   if(this.auth.chckLogIn()){
+  //     // console.log(this.auth.chckLogIn())
+  //     this.nowUser = this.auth.getNowUser();
+  //     return true;
+  //   }
+  //   return false
+  //   //prior version
+  //   // // var isLogIn = this.auth.chckLogIn() as any;
+  //   // var isLogIn = this.auth.getToken() as any;
+  //   // if(isLogIn){
+  //   //   this._gauth.authState.subscribe((user) => { 
+  //   //   this.nowUser = user; });
+  //   // }
+  //   // return isLogIn;
+  // }
 
   logOut(){
     this.auth.logOut()
@@ -82,21 +96,6 @@ export class NavComponent implements OnInit {
     this._router.navigateByUrl("/membership/event");
   }
 
-  
-  /***
-   * user browser token check process
-   * 2020.4.17
-   * by Baek
-   * 
-   * nav.component is the always on display component
-   * So the user login token checking process is put here to decide 
-   * if app shows user name on the nav and enables the profile page.
-   * 
-   * reference drive : user login senario and logic design. 
-   * 
-   * 
-   * 
-   */
 
 }
 

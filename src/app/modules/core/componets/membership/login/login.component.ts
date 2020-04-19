@@ -24,11 +24,11 @@ export class LoginComponent implements OnInit {
   // login with email
   eLogIn() {
     this._auth.eLoginUser(this.loginUserData)
-    .subscribe((res) => {
-      //nickname should be added to identify user using the applicatoin.
-      localStorage.setItem('token', res.token);
-      this._router.navigate(['/homes/library'])
-    })
+    // .subscribe((res) => {
+    //   //nickname should be added to identify user using the applicatoin.
+    //   localStorage.setItem('token', res.token);
+    //   this._router.navigate(['/homes/library'])
+    // })
   }
 
   
