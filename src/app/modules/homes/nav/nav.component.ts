@@ -18,13 +18,9 @@ export class NavComponent implements OnInit {
     
   }
   ngOnInit(): void {
-    //throw new Error("Method not implemented.");
-    // this.isLogin = this.chckUserLogIn();
-    // console.log(this.isLogin);
-    this.auth.isLogInObs.subscribe((res)=>{
+    this.auth.chckLogIn().subscribe((res)=>{
       this.isLogin = res as any;
-      this.nowUser = this.auth.profile.name;
-      // console.log(this.isLogin, this.nowUser);
+      this.nowUser = this.auth.getUserName();
     });
   }
   

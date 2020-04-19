@@ -44,15 +44,14 @@ export class EPAuthService {
   private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/api/verifyGoogleToken";
 
   private isLogIn : logStat = logStat.unsigned;
-  isLogInObs : Subject<logStat> = new Subject();
+  private isLogInObs : Subject<logStat> = new Subject();
   private loginUserData = {};
-  // private storeToken : {type : logStat, token : String};
   private socUser: SocialUser = null;
   private schHst : [] = [];//user search history
   // httpOptions = {
   //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   // };
-  profile : {
+  private profile : {
     name : String,
     email : String,
     history? : []
@@ -73,8 +72,12 @@ export class EPAuthService {
    * functinos : 
    */
   //check login state
-  chckLogIn() {
-    return this.isLogIn;
+  chckLogIn() : Observable<logStat>{
+    return this.isLogInObs;
+  }
+
+  getUserName() : String{
+    return this.profile.name;
   }
 
   //logout function for all login methods
