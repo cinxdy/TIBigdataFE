@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SocialUser, AuthService} from 'angular4-social-login';
+import { SocialUser, AuthService} from 'angularx-social-login';
 import { Router } from '@angular/router';
 import { EPAuthService } from '../auth.service';
 import { LoginComponent } from '../login/login.component';

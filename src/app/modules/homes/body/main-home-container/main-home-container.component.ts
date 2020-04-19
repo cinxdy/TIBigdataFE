@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EPAuthService } from '../../../core/componets/membership/auth.service';
+import {AuthService} from 'angularx-social-login'
 
 @Component({
   selector: 'app-main-home-container',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainHomeContainerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth : EPAuthService, private gAuth : AuthService ) { }
 
   ngOnInit() {
+    this.auth.verifySignIn();
   }
 
 }

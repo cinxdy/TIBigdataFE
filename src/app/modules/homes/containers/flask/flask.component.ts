@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Headers } from '@angular/http';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../body/search/service/elasticsearch-service/elasticsearch.service';
@@ -19,7 +18,7 @@ export class FlaskComponent implements OnInit {
   private TEST_URL: string = 'http://localhost:5000/test';
 
 
-  private headers: Headers = new Headers({'Content-Type': 'application/json'});
+  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   serverData: JSON;
   employeeData: JSON;
   searchKeyword;
