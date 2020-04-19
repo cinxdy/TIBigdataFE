@@ -11,6 +11,7 @@ import { LoginComponent } from './componets/membership/login/login.component';
 import { EventsComponent} from './componets/membership/events/events.component';
 import { AuthGuard } from './componets/membership/auth.guard';
 import { SocialRegisterComponent } from './componets/membership/register/social-register/social-register.component';
+import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 const routes: Routes = [
  
@@ -27,6 +28,9 @@ const routes: Routes = [
     { path: 'event',
       component: EventsComponent,
       canActivate: [AuthGuard]
+    },
+    { path : 'userpage',
+      component : UserpageComponent
     },
  
 ];

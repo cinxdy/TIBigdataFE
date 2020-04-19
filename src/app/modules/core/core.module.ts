@@ -29,6 +29,7 @@ import { EventService } from './componets/membership/event.service';
 import { AuthGuard } from './componets/membership/auth.guard';
 import { TokenInterceptorService} from './componets/membership/token-interceptor.service';
 import { SocialRegisterComponent } from './componets/membership/register/social-register/social-register.component';
+import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 const PROVIDER_ID : string = "287082486827-0junp0td4ajs1c5p0381topvh168o6l5.apps.googleusercontent.com"; //진범 localhost 승인
 
@@ -45,7 +46,8 @@ let config = new AuthServiceConfig([
     RegisterComponent,
     LoginComponent,
     EventsComponent,
-    SocialRegisterComponent
+    SocialRegisterComponent,
+    UserpageComponent
   ],
   imports: [
     FormsModule,

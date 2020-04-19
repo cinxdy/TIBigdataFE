@@ -1,12 +1,36 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <div *ngIf="isLogin">
+            <!-- <div *ngIf="isLogin">
                 <li><a>안녕하세요, {{nowUser}} 님</a></li>
             </div>
             <li><a *ngIf="!isLogin" (click)="toLogin()">로그인</a></li>
             <li><a *ngIf="!isLogin" (click)="toRegister()">회원가입</a></li>
-            <li><a *ngIf="isLogin" (click)="logOut()">로그아웃</a></li>
+            <li><a *ngIf="isLogin" (click)="logOut()">로그아웃</a></li> -->
+
+                <table>
+                    <th>
+                        <div *ngIf="isLogin">
+                            <td>
+                                <a href="#">안녕하세요, {{nowUser}} 님</a>
+                            </td>
+                            <td>
+                                <a (click)="toUserPage()">My Page</a>
+                                <a (click)="logOut()">로그아웃</a>
+                            </td>
+                        </div>
+                        <div *ngIf = "!isLogin">
+                            <li><a (click)="toLogin()">로그인</a></li>
+                            <li><a (click)="toRegister()">회원가입</a></li>
+                        </div>
+                    </th>
+                </table>
+           
+            <!--
+            <li><a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a></li>
+            <li><a *ngIf="!_auth.loggedIn()" (click)="toRegister()">회원가입</a></li>
+            <li><a *ngIf="_auth.loggedIn()" (click)="_auth.logoutUser()">로그아웃</a></li>
+            -->   
             <li><a (click)="LineChart()">사이트맵</a></li>
         </ul>
     </div>
