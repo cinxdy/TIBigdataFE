@@ -133,6 +133,7 @@ export class EPAuthService {
       var gTkRes$ = this.gVerifyToken(tk);
       gTkRes$.subscribe(
         res=>{
+          // console.log(res);
           this.isLogIn = logStat.google;
           return this.isLogIn;
         },
@@ -261,7 +262,7 @@ export class EPAuthService {
 
   //verify if this token is from google
   gVerifyToken(token : string){
-    return this.http.post<any>("http://localhost:4000/api/verifyGoogleToken",{token : token, client : GoogleLoginProvider.PROVIDER_ID});
+    return this.http.post<any>("http://localhost:4000/api/verifyGoogleToken",{token : token, client : "287082486827-0junp0td4ajs1c5p0381topvh168o6l5.apps.googleusercontent.com"});
     // this.http
     // // .post<any>(   "https://oauth2.googleapis.com/tokeninfo?id_token","eyJhbGciOiJSUzI1NiIsImtpZCI6ImY5ZDk3YjRjYWU5MGJjZDc2YWViMjAwMjZmNmI3NzBjYWMyMjE3ODMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjg3MDgyNDg2ODI3LTBqdW5wMHRkNGFqczFjNXAwMzgxdG9wdmgxNjhvNmw1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjg3MDgyNDg2ODI3LTBqdW5wMHRkNGFqczFjNXAwMzgxdG9wdmgxNjhvNmw1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA3NjQxNjI4NTA2MzIwODE4NzYzIiwiZW1haWwiOiJldGtuYmVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJOUVZwT1cxSkhrN0RnbXFLTHg4aU5nIiwibmFtZSI6Ikpvc2VwaCBCYWVrIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdqT3o4blVHM2p4NnRlZWo5cC1WX050S0tXRjZyUTR5NTZzTW95WFBJcz1zOTYtYyIsImdpdmVuX25hbWUiOiJKb3NlcGgiLCJmYW1pbHlfbmFtZSI6IkJhZWsiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTU4NzIwOTU5MCwiZXhwIjoxNTg3MjEzMTkwLCJqdGkiOiI0ZDM5ZjExNGJmYzQyZmI5MTlkOWI3MTFjNTRhOTBkYTE5NjdhNzMzIn0.GKpCRZwfdLAzUxiKTcny4e91LrbGn2AFYlqOtNI5njesSfq_GMIgy3OfJcXN5IripsezVDAKn01VHfNoGTb43_igDow3OzeduHGTCVPZ4sOUhvzy7OEoNyc8xMkXpYxRYQPG7FLnmcmBWN_fxKRB8bdig4Mf3K4hkM3uonNbRDAKf_koF4doo0sD5ZeV_HIuq1qqMt77Nu4NFxf-OLE98AqbKWPyjgO8_iOetBisKJMDLdwVL8AFNLVb6thwCKEuXX6cc07XlbDWRnswQyrNpbLDmSGm0sWfSTF0E0NhlyE9B0jFhJsT0gSZ4_WICtdOhjLQarPd2BnlgGNyG5EBOw"
     //   // ).subscr ibe(res=>{

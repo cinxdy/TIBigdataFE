@@ -10,28 +10,34 @@ const hst = require('./models/history');
 const {OAuth2Client} = require('google-auth-library');
 
 function verifyGoogleToken(req,res){
-    // console.log("req.body : ", req.body);
     var token = req.body.token;
     var CLIENT_ID = req.body.client;
 
     const client = new OAuth2Client(CLIENT_ID);
     async function verify() {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    // const payload = ticket.getPayload();
-    // const userid = payload['sub'];
-    // If request specified a G Suite domain:
-    //const domain = payload['hd'];
-    // console.log(userid);
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        });
+        // console.log("get ticket : ",ticket);
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        // If request specified a G Suite domain:
+        //const domain = payload['hd'];
+        
+        return res.status(200).send({status : "OK"})
     }
-    verify().catch(console.error);
-    res.status(200);
 
+    return verify().catch((err)=>{
+        console.error(err);
+        console.log("error");
+        return res.status(401).send("google token invalid");
+    })
 }
+
+
 //email verify code
 function verifyToken(req, res, next) {
     console.log("verifyToken func has been inited!");
@@ -67,11 +73,12 @@ function verifyToken(req, res, next) {
         req.userId = payload.subject//need to know how the req is formed first....
         //why do they again set value of req? not res?
         next()//where does this function come from?
+        return res.status(200).send("OK");
     }
     catch{
         console.log("server error!");
+        return res.status(500).send("server error");
     }
-    return res.status(200)
 }
 
 //yet useless dir
@@ -238,19 +245,7 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.post('/verify',verifyToken
-// (req,res,null)
-    // (req, res)=>{
-    //     console.log("api : verify func init.");
-    //     try{
-
-    //         res.json({res : verifyToken(req,res,null)});
-    //     }
-    //     catch{
-    //         console.log("verify post error");
-    //     }
-    // }
-)
+router.post('/verify',verifyToken)
 
 
 router.get('/events', verifyToken, (req, res) => {
