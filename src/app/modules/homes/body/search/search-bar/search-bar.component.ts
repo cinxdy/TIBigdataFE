@@ -59,16 +59,6 @@ export class SearchBarComponent implements OnInit {
     // console.log("bar comp : keyword accepted : " + this.queryText);
   }
 
-  /**
-   *
-   */
-    //user search history
-    // loadHistory(){
-    //   this.userHistory = this.auth.showSrchHst();
-    // }
-
-
-
   search() {
     // this.eventSvs.addSrchHst(this.queryText);
     

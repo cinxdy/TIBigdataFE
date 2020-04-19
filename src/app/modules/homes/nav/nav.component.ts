@@ -19,7 +19,9 @@ export class NavComponent implements OnInit {
   }
   ngOnInit(): void {
     this.auth.chckLogIn().subscribe((res)=>{
+      console.log("stat update! ", res);
       this.isLogin = res as any;
+      this.auth.setLogStat(res);
       this.nowUser = this.auth.getUserName();
     });
   }
@@ -51,6 +53,7 @@ export class NavComponent implements OnInit {
   // }
 
   logOut(){
+    console.log("logout func init");
     this.auth.logOut()
   }
 

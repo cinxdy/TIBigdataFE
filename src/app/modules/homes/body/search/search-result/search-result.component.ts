@@ -1,10 +1,10 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef,
-  Input,
-  Inject,
-  Output
+  // ChangeDetectorRef,
+  // Input,
+  // Inject,
+  // Output
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";

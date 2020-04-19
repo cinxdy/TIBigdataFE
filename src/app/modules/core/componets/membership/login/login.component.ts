@@ -17,8 +17,6 @@ export class LoginComponent implements OnInit {
   private user: SocialUser; 
 
   ngOnInit() {
-    this._gauth.authState.subscribe((user) => { 
-      this.user = user; });
   }
 
   // login with email

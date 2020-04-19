@@ -16,6 +16,13 @@ const userModel = {
 //google token verify code template
 const {OAuth2Client} = require('google-auth-library');
 
+
+/**
+ * @CommonFunctions
+ * 
+ * 
+ * 
+ */
 function verifyGoogleToken(req,res){
     var token = req.body.token;
     var CLIENT_ID = req.body.client;
@@ -38,7 +45,7 @@ function verifyGoogleToken(req,res){
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
         
-        return res.status(200).send({status : true, user : userInfo});
+        return res.status(200).send({status : true, user : payload});
     }
 
     return verify().catch((err)=>{
@@ -97,6 +104,11 @@ router.get('/', (req, res) => {
     res.send('From API route')
 })
 
+
+/**
+ * @EmailLoginFunctions
+ * 
+ */
 //at register dir
 router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
@@ -114,6 +126,133 @@ router.post('/register', (req, res) => {
 
 })
 
+
+// http://localhost:4000/api/login
+router.post('/login', (req, res) => {
+    let userData = req.body;
+
+    User.findOne({ email: userData.email }, (error, user) => {
+        if (error) {
+            console.log(error)
+        } else {
+            if( !user) {
+                res.json({success: false, message: 'Could not authenticate user'});
+            }else {
+                if( user.password !== userData.password){
+                    res.json({success: false, message: 'Could not authenticate password'});
+                }else {
+                    let payload = { subject : user._id};//토큰에 오고 갈 정보 : id
+                    var token = jwt.sign(payload, secret, { expiresIn: '24h'});//토큰 발급.
+                    res.json({success: true, message: 'User authenticated!', token: token});//토큰 전송
+        
+                }
+            }
+        }
+    })
+})
+
+
+
+
+/***
+ * @SearchHistoryFunctions
+ * 
+ * 
+ */
+router.post('/addHistory',(req,res)=>{
+    console.log("add history init");
+    let bundle = req.body;
+    console.log(bundle);
+   
+    let time = new Date();
+
+    let keyword = {
+        keyword : bundle.key, 
+        year : time.getFullYear(),
+        month : time.getMonth(),
+        date : time.getDate(),
+        hour : time.getHours(),
+        min :  time.getMinutes()
+    };
+
+    //total search history from all users
+    //new history keyword that is goona be added soon.
+    newHst = new hst(keyword);
+    newHst.save((err, keyword)=>{
+        if(err){
+            console.log("add history fail. error : " + err);
+        }
+        else{
+            console.log("add total history ok")
+        }
+    });
+
+
+    //my user search history for each user
+    if(bundle.login){
+        let userData = bundle.user;
+        
+        gUser.findOneAndUpdate({email: userData.email},{ $push : { history : keyword}},(err, doc)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                if(!doc) {
+                    console.log("api gchecker : post false")
+                    console.log(doc);
+                    res.status(200).send({add : false});
+                }
+                else{
+                    console.log("api gchecker : post true")
+                    console.log(doc);
+
+                    res.json({history : doc.history});
+                }    
+            }
+            
+        });
+    }
+
+    console.log("add history done");
+})
+
+router.get('/showHistory',(req,res)=>{
+    console.log("add history init");
+    let userData = req.body;
+    gUser.findOne({email: userData.email},(err, doc)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(!doc) {
+                // console.log("api gchecker : post false")
+                console.log(doc);
+                res.json({result : false});
+            }
+            else{
+                // console.log("api gchecker : post true")
+                console.log(doc);
+
+                res.json({history : doc.history});
+            }    
+        }
+        
+    });
+})
+
+
+router.post('/verify',verifyToken)
+
+
+
+
+
+
+/**
+ * @GoogleLoginFunctions
+ *  
+ * 
+ */
 router.post('/gRegister',(req,res)=>{
     console.log("api : gRegister init.");
     let userData = req.body;
@@ -147,7 +286,7 @@ router.post('/gCheckUser',(req,res)=>{
                 // console.log("api gchecker : post true")
                 // console.log(user);
 
-                res.json({exit : true});
+                res.json({exist : true});
             }    
         }
     })
@@ -155,104 +294,6 @@ router.post('/gCheckUser',(req,res)=>{
 
 
 router.post('/verifyGoogleToken',verifyGoogleToken);
-
-router.post('/addHistory',(req,res)=>{
-    console.log("add history init");
-    let bundle = req.body;
-    let userData = bundle.user;
-    let time = new Date();
-
-    let keyword = {keyword : bundle.key, 
-        year : time.getFullYear(),
-        month : time.getMonth(),
-        date : time.getDate(),
-        hour : time.getHours(),
-        min :  time.getMinutes()
-    };
-    newHst = new hst(keyword);
-    /***
-     * 
-     * 
-     * 그... history을 어떻게 저장해야 하는가? 문서 1개에 다 저장해야 하나?
-     */
-    // hst.update()
-    newHst.save((err, keyword)=>{
-        if(err){
-            console.log("add history fail. error : " + err);
-        }
-    });
-
-    gUser.findOneAndUpdate({email: userData.email},{ $push : { history : keyword}},(err, doc)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            if(!doc) {
-                // console.log("api gchecker : post false")
-                // console.log(doc);
-                res.json({add : false});
-            }
-            else{
-                // console.log("api gchecker : post true")
-                // console.log(doc);
-
-                res.json({history : doc.history});
-            }    
-        }
-        
-    });
-    // console.log("add history done");
-})
-
-router.get('/showHistory',(req,res)=>{
-    console.log("add history init");
-    let userData = req.body;
-    gUser.findOne({email: userData.email},(err, doc)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            if(!doc) {
-                // console.log("api gchecker : post false")
-                console.log(doc);
-                res.json({result : false});
-            }
-            else{
-                // console.log("api gchecker : post true")
-                console.log(doc);
-
-                res.json({history : doc.history});
-            }    
-        }
-        
-    });
-})
-
-// http://localhost:4000/api/login
-router.post('/login', (req, res) => {
-    let userData = req.body;
-
-    User.findOne({ email: userData.email }, (error, user) => {
-        if (error) {
-            console.log(error)
-        } else {
-            if( !user) {
-                res.json({success: false, message: 'Could not authenticate user'});
-            }else {
-                if( user.password !== userData.password){
-                    res.json({success: false, message: 'Could not authenticate password'});
-                }else {
-                    let payload = { subject : user._id};//토큰에 오고 갈 정보 : id
-                    var token = jwt.sign(payload, secret, { expiresIn: '24h'});//토큰 발급.
-                    res.json({success: true, message: 'User authenticated!', token: token});//토큰 전송
-        
-                }
-            }
-        }
-    })
-})
-
-router.post('/verify',verifyToken)
 
 
 router.get('/events', verifyToken, (req, res) => {

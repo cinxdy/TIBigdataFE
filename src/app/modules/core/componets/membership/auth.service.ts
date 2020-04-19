@@ -42,9 +42,10 @@ export class EPAuthService {
   private GOOGLE_CHECK_OUR_USER_URL = "http://localhost:4000/api/gCheckUser";
   private EMAIL_VERIFY_TOKEN = "http://localhost:4000/api/verify";
   private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/api/verifyGoogleToken";
+  private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/api/addHistory";
 
   private isLogIn : logStat = logStat.unsigned;
-  private isLogInObs : Subject<logStat> = new Subject();
+  private isLogInObs$ : Subject<logStat> = new Subject();
   private loginUserData = {};
   private socUser: SocialUser = null;
   private schHst : [] = [];//user search history
@@ -63,7 +64,7 @@ export class EPAuthService {
     private _router: Router,
     private _gauth: AuthService,
   ) {
-    this.isLogInObs.next(logStat.unsigned);
+    this.isLogInObs$.next(logStat.unsigned);
   }
 
   /**
@@ -73,7 +74,11 @@ export class EPAuthService {
    */
   //check login state
   chckLogIn() : Observable<logStat>{
-    return this.isLogInObs;
+    return this.isLogInObs$;
+  }
+
+  setLogStat(stat){
+    this.isLogIn = stat as logStat;
   }
 
   getUserName() : String{
@@ -82,10 +87,12 @@ export class EPAuthService {
 
   //logout function for all login methods
   logOut(){
+    this.isLogInObs$.next(logStat.unsigned)
     if (this.isLogIn == logStat.email)
       return this.eLogoutUser()
     else if(this.isLogIn == logStat.google)
       return this.gSignOut();
+
     return new Error("logStat screwed up. need to be checked.");
     
   }
@@ -117,10 +124,13 @@ export class EPAuthService {
             console.log(res);
             if(res.status){
               
-              this.profile = res.user;
+              this.socUser = res.user;
+              var n = this.socUser.name;
+              var e = this.socUser.email;
+              this.profile = {name : n,email : e};
               console.log("token verify succ");
               this.isLogIn = logStat.google;
-              this.isLogInObs.next(this.isLogIn);
+              this.isLogInObs$.next(this.isLogIn);
             }
             else{
               console.log("token verify fail");
@@ -155,9 +165,13 @@ export class EPAuthService {
   }
 
   addSrchHst(keyword : string) : void{
-    console.log(this.socUser);
-    let bundle = {user : this.socUser, key : keyword}
-    this.http.post<any>( "http://localhost:4000/api/addHistory",bundle).subscribe((res)=>{
+    // console.log(this.socUser);
+    let bundle;
+    if(this.isLogInObs$)
+      bundle = {login : true, user : this.socUser, key : keyword}
+    else
+      bundle = {login : false, key : keyword}
+    this.http.post<any>( this.ADD_SEARCH_HISTORY_URL,bundle).subscribe((res)=>{
       this.schHst = res.history;
     });
   }
@@ -206,7 +220,8 @@ export class EPAuthService {
   //email sign out function
   eLogoutUser():void {
     localStorage.removeItem("token");
-    this.isLogIn = logStat.unsigned;
+    // this.isLogIn = logStat.unsigned;
+    // this.isLogInObs$.next(logStat.unsigned)
     this._router.navigate(["/homes/library"]);
   }
 
@@ -233,6 +248,7 @@ export class EPAuthService {
     platform = GoogleLoginProvider.PROVIDER_ID;
     this._gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
       this.socUser = response;
+      console.log(this.socUser);
 
       //check if this user is our user already
       this.gCheckUser(response).subscribe((res)=>{
@@ -272,7 +288,7 @@ export class EPAuthService {
   gSignOut(): void {
     localStorage.removeItem("token");
     this._gauth.signOut();
-    this.isLogIn = logStat.unsigned;
+    // this.isLogIn = logStat.unsigned;
   }
 
   //verify if this token is from google
