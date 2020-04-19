@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import {
   AuthService,
@@ -41,14 +41,16 @@ export class EPAuthService {
   private loginUserData = {};
   private socUser: SocialUser;
   private schHst : [] = [];//user search history
-
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   // self = this;
   // private client = new OAuth2Client(GoogleLoginProvider.PROVIDER_ID);
   constructor(
     private http: HttpClient,
     private _router: Router,
-    private _gauth: AuthService
+    private _gauth: AuthService,
   ) {}
 
 
@@ -74,7 +76,12 @@ export class EPAuthService {
   //   const userid = payload['sub'];
   // }
 
-  //common login process for all login methods such as email, gmail, ... 
+
+
+
+  /**
+   * common login process for all login methods such as email, gmail, ...  
+   */
   //check login state
   chckLogIn() {
     return this.isLogIn;
@@ -86,10 +93,11 @@ export class EPAuthService {
       return this.eLogoutUser()
     else if(this.isLogIn == logStat.google)
       return this.gSignOut();
-    return
+    return new Error("logStat screwed up. need to be checked");
     
   }
 
+  //get current token in this present browser.
   getToken() {
     return localStorage.getItem("token");
   }
@@ -120,6 +128,8 @@ export class EPAuthService {
 
     //when token exists
     if(tk){
+      console.log("Token found! : ", tk);
+
       var gTkRes$ = this.gVerifyToken(tk);
       gTkRes$.subscribe(
         res=>{
@@ -127,23 +137,26 @@ export class EPAuthService {
           return this.isLogIn;
         },
         err=>{
-          console.log('error occurs! not google user : ${err}');
+          console.log('error occurs! not google user : ',err);
         },
       );
 
       var eTkRes$ = this.eVerifyToken(tk);
       eTkRes$.subscribe(
         res =>{
-          if(res.res == 200)
-           this.isLogIn = logStat.email;
-          else
-            console.log("email login error.");
+          this.isLogIn = logStat.email;
+          return isSignIn;
+        },
+        err =>{
+          console.log('error occurs! not email user : ',err);
         }
       )
+      
+    }
+    //when token does not exist.
+    else{
       return isSignIn;
     }
-    else
-      return isSignIn;
 
 
   }
@@ -222,7 +235,8 @@ export class EPAuthService {
         else
           console.log("This user is already our user!");
 
-        localStorage.setItem('token',this.socUser.authToken);
+        localStorage.setItem('token',this.socUser.idToken);
+        console.log("login user info saved : ", this.socUser);
         this.isLogIn = logStat.google;
         this._router.navigate(['/homes'])
       }
@@ -231,7 +245,6 @@ export class EPAuthService {
   }
 
   gCheckUser(user){
-    console.log("ang : gCheckUser init");
     return this.http.post<any>(this._gChckUserUrl,user);
   }
 
@@ -248,8 +261,20 @@ export class EPAuthService {
 
   //verify if this token is from google
   gVerifyToken(token : string){
-    return this.http
-            .get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token)
+    return this.http.post<any>("http://localhost:4000/api/verifyGoogleToken",{token : token, client : GoogleLoginProvider.PROVIDER_ID});
+    // this.http
+    // // .post<any>(   "https://oauth2.googleapis.com/tokeninfo?id_token","eyJhbGciOiJSUzI1NiIsImtpZCI6ImY5ZDk3YjRjYWU5MGJjZDc2YWViMjAwMjZmNmI3NzBjYWMyMjE3ODMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjg3MDgyNDg2ODI3LTBqdW5wMHRkNGFqczFjNXAwMzgxdG9wdmgxNjhvNmw1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjg3MDgyNDg2ODI3LTBqdW5wMHRkNGFqczFjNXAwMzgxdG9wdmgxNjhvNmw1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA3NjQxNjI4NTA2MzIwODE4NzYzIiwiZW1haWwiOiJldGtuYmVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJOUVZwT1cxSkhrN0RnbXFLTHg4aU5nIiwibmFtZSI6Ikpvc2VwaCBCYWVrIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdqT3o4blVHM2p4NnRlZWo5cC1WX050S0tXRjZyUTR5NTZzTW95WFBJcz1zOTYtYyIsImdpdmVuX25hbWUiOiJKb3NlcGgiLCJmYW1pbHlfbmFtZSI6IkJhZWsiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTU4NzIwOTU5MCwiZXhwIjoxNTg3MjEzMTkwLCJqdGkiOiI0ZDM5ZjExNGJmYzQyZmI5MTlkOWI3MTFjNTRhOTBkYTE5NjdhNzMzIn0.GKpCRZwfdLAzUxiKTcny4e91LrbGn2AFYlqOtNI5njesSfq_GMIgy3OfJcXN5IripsezVDAKn01VHfNoGTb43_igDow3OzeduHGTCVPZ4sOUhvzy7OEoNyc8xMkXpYxRYQPG7FLnmcmBWN_fxKRB8bdig4Mf3K4hkM3uonNbRDAKf_koF4doo0sD5ZeV_HIuq1qqMt77Nu4NFxf-OLE98AqbKWPyjgO8_iOetBisKJMDLdwVL8AFNLVb6thwCKEuXX6cc07XlbDWRnswQyrNpbLDmSGm0sWfSTF0E0NhlyE9B0jFhJsT0gSZ4_WICtdOhjLQarPd2BnlgGNyG5EBOw"
+    //   // ).subscr ibe(res=>{
+
+    //   .get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token,this.httpOptions).subscribe(res=>{
+    //     console.log(res)
+    //   },
+    //   err=>{
+    //     console.log(err)
+    //   })
+    // return this.http
+    //         .get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token)
+    //                   // "https://oauth2.googleapis.com/tokeninfo?id_token="
 
   }
   

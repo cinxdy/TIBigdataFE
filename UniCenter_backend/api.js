@@ -6,6 +6,33 @@ const User = require('./models/user');
 const gUser = require('./models/gUser');
 const hst = require('./models/history');
 
+//google token verify code template
+const {OAuth2Client} = require('google-auth-library');
+
+function verifyGoogleToken(req,res){
+    // console.log("req.body : ", req.body);
+    var token = req.body.token;
+    var CLIENT_ID = req.body.client;
+
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    // const payload = ticket.getPayload();
+    // const userid = payload['sub'];
+    // If request specified a G Suite domain:
+    //const domain = payload['hd'];
+    // console.log(userid);
+    }
+    verify().catch(console.error);
+    res.status(200);
+
+}
+//email verify code
 function verifyToken(req, res, next) {
     console.log("verifyToken func has been inited!");
 
@@ -107,6 +134,9 @@ router.post('/gCheckUser',(req,res)=>{
         }
     })
 })
+
+
+router.post('/verifyGoogleToken',verifyGoogleToken);
 
 router.post('/addHistory',(req,res)=>{
     console.log("add history init");
