@@ -33,7 +33,7 @@ function verifyGoogleToken(req,res){
     return verify().catch((err)=>{
         console.error(err);
         console.log("error");
-        return res.status(401).send("google token invalid");
+        return res.status(401).send({status : "google token invalid"});
     })
 }
 
@@ -215,11 +215,7 @@ router.get('/showHistory',(req,res)=>{
         }
         
     });
-    // console.log("add history done");
 })
-
-// router.post('/verify',(req,res)=>)
-
 
 // http://localhost:4000/api/login
 router.post('/login', (req, res) => {
