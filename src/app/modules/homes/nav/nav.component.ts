@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
     
   }
   ngOnInit(): void {
-    this.auth.chckLogIn().subscribe((res)=>{
+    this.auth.getLogInObs().subscribe((res)=>{
       console.log("stat update! ", res);
       this.isLogin = res as any;
       this.auth.setLogStat(res);

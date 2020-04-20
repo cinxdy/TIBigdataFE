@@ -14,7 +14,10 @@ import { SocialRegisterComponent } from './componets/membership/register/social-
 import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 const routes: Routes = [
- 
+    {
+      path : '',
+      component : HeaderContainerComponent
+    },
     { path: 'register',
       component: RegisterComponent,     
     },

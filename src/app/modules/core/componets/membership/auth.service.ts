@@ -44,25 +44,22 @@ export class EPAuthService {
   private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/api/verifyGoogleToken";
   private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/api/addHistory";
 
-  private isLogIn : logStat = logStat.unsigned;
-  private isLogInObs$ : Subject<logStat> = new Subject();
+  private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
+  private isLogInObs$ : Subject<logStat> = new Subject();//to stream to subscribers
   private loginUserData = {};
-  private socUser: SocialUser = null;
-  private schHst : [] = [];//user search history
-  // httpOptions = {
-  //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  // };
-  private profile : {
+  private socUser: SocialUser = null;//for social login
+  private profile : {//for user profile
     name : String,
     email : String,
     history? : []
   };
+  private schHst : [] = [];//user search history
 
   constructor(
     private injector : Injector,
     private http: HttpClient,
-    private _router: Router,
-    private _gauth: AuthService,
+    private router: Router,
+    private gauth: AuthService,
   ) {
     this.isLogInObs$.next(logStat.unsigned);
   }
@@ -70,13 +67,15 @@ export class EPAuthService {
   /**
    * @CommonUserLoginFunctions
    * @description common login process for all login methods such as email, gmail, ...  
-   * functinos : 
    */
   //check login state
-  chckLogIn() : Observable<logStat>{
+  getLogInObs() : Observable<logStat>{
     return this.isLogInObs$;
   }
 
+  getLogInStat():logStat{
+    return this.isLogIn;
+  }
   setLogStat(stat){
     this.isLogIn = stat as logStat;
   }
@@ -85,17 +84,7 @@ export class EPAuthService {
     return this.profile.name;
   }
 
-  //logout function for all login methods
-  logOut(){
-    this.isLogInObs$.next(logStat.unsigned)
-    if (this.isLogIn == logStat.email)
-      return this.eLogoutUser()
-    else if(this.isLogIn == logStat.google)
-      return this.gSignOut();
 
-    return new Error("logStat screwed up. need to be checked.");
-    
-  }
 
   //get current token in this present browser.
   getToken() {
@@ -106,12 +95,24 @@ export class EPAuthService {
     return this.socUser;
   }
 
+    //logout function for all login methods
+  logOut(){
+    this.isLogInObs$.next(logStat.unsigned)
+    if (this.isLogIn == logStat.email)
+      return this.eLogoutUser()
+    else if(this.isLogIn == logStat.google)
+      return this.gSignOut();
+
+    return new Error("logStat screwed up. need to be checked.");//in case of screwed up
+    
+  }
+
 
   verifySignIn(){
     var isSignIn : boolean = false;
     var tk_with_type = JSON.parse(this.getToken());
-    //when token exists
-    if(tk_with_type){
+    
+    if(tk_with_type){//when token exists
       var tk = tk_with_type.token;
       var type = tk_with_type.type;
       console.log("Token found! : ", tk_with_type);
@@ -157,8 +158,8 @@ export class EPAuthService {
           
       }
     }
-    //when token does not exist.
-    else{
+    
+    else{//when token does not exist.
       console.log("token is not found. Hello, newbie!");
       return isSignIn;
     }
@@ -223,7 +224,7 @@ export class EPAuthService {
     localStorage.removeItem("token");
     // this.isLogIn = logStat.unsigned;
     // this.isLogInObs$.next(logStat.unsigned)
-    this._router.navigate(["/homes/library"]);
+    this.router.navigate(["/homes/library"]);
   }
 
   //email verify token
@@ -247,7 +248,7 @@ export class EPAuthService {
     */
   gLogIn(platform :string) : void{
     platform = GoogleLoginProvider.PROVIDER_ID;
-    this._gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
+    this.gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
       this.socUser = response;
       console.log(this.socUser);
 
@@ -259,7 +260,7 @@ export class EPAuthService {
             if(!res.exist){
               console.log("This user is not yet our user : need sign up : ",res);
               alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
-              this._router.navigateByUrl("/membership/register");
+              this.router.navigateByUrl("/membership/register");
 
             }
           })
@@ -272,7 +273,7 @@ export class EPAuthService {
         // localStorage.setItem('token',this.socUser.idToken);
         console.log("login user info saved : ", this.socUser);
         this.isLogIn = logStat.google;
-        this._router.navigate(['/homes'])
+        this.router.navigate(['/homes'])
       }
       );
     })
@@ -293,7 +294,7 @@ export class EPAuthService {
   
   gSignOut(): void {
     localStorage.removeItem("token");
-    this._gauth.signOut();
+    this.gauth.signOut();
     // this.isLogIn = logStat.unsigned;
   }
 
