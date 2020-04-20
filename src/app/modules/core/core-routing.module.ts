@@ -20,13 +20,17 @@ const routes: Routes = [
     },
     { path: 'register',
       component: RegisterComponent,     
+      canLoad : [AuthGuard]
+
     },
     {
       path: 'socReg',
       component : SocialRegisterComponent,
+      canLoad : [AuthGuard]
     },
     { path: 'login',
       component: LoginComponent,
+      canLoad : [AuthGuard]
     },
     { path: 'event',
       component: EventsComponent,

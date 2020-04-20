@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
+// import {AuthGuard } from './modules/core/componets/membership/auth.guard';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
   // },
   {
     path: 'membership',
-    loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule)
+    loadChildren: () => import('./modules/core/core.module').then(m => m.CoreModule),
+    // canLoad : [AuthGuard]
   },
  
  
