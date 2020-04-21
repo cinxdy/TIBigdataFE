@@ -9,16 +9,6 @@ const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결
 
 
 const PORT = 4000;
-// const db = 'mongodb://localhost:27017';
-
-// //connect to db
-// mongoose.connect(db, err => {
-    //     if (err) {
-//         console.error('Error!' + err)
-//     } else {
-//         console.log('Connected to mongodb');
-//     }
-// });
 
 const db = 'mongodb://localhost:27017/user';
 

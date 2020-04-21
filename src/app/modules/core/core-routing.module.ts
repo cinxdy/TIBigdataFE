@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HeaderContainerComponent } from './containers/header-container/header-container.component';
 //import { NavComponent } from '../homes/nav/nav.component';
 
 // import { FiltersComponent } from './componets/filters/filters.component';
@@ -14,23 +13,23 @@ import { SocialRegisterComponent } from './componets/membership/register/social-
 import { UserpageComponent } from './componets/membership/userpage/userpage.component';
 
 const routes: Routes = [
-    {
-      path : '',
-      component : HeaderContainerComponent
-    },
+    // {
+    //   path : '',
+    //   component : HeaderContainerComponent
+    // },add : redirect to main page
     { path: 'register',
       component: RegisterComponent,     
-      canLoad : [AuthGuard]
+      canActivate : [AuthGuard]
 
     },
     {
       path: 'socReg',
       component : SocialRegisterComponent,
-      canLoad : [AuthGuard]
+      canActivate : [AuthGuard]
     },
     { path: 'login',
       component: LoginComponent,
-      canLoad : [AuthGuard]
+      canActivate : [AuthGuard]
     },
     { path: 'event',
       component: EventsComponent,

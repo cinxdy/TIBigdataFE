@@ -19,7 +19,6 @@ import {
   MatDividerModule,
   MatSnackBarModule } from '@angular/material';
 
-import { HeaderContainerComponent } from './containers/header-container/header-container.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { RegisterComponent } from './componets/membership/register/register.component';
 import { LoginComponent } from './componets/membership/login/login.component';
@@ -41,7 +40,6 @@ let config = new AuthServiceConfig([
 
 @NgModule({
   declarations: [
-    HeaderContainerComponent, 
     RegisterComponent,
     LoginComponent,
     EventsComponent,
@@ -85,6 +83,6 @@ let config = new AuthServiceConfig([
       useValue : PROVIDER_ID
     }
   ],
-  exports:[HeaderContainerComponent]
+  // exports:[HeaderContainerComponent]
 })
 export class CoreModule { }
