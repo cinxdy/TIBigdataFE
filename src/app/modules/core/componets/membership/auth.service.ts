@@ -43,6 +43,7 @@ export class EPAuthService {
   private EMAIL_VERIFY_TOKEN = "http://localhost:4000/api/verify";
   private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/api/verifyGoogleToken";
   private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/api/addHistory";
+  private SHOW_SEARCH_HISTORY_URL = "http://localhost:4000/api/showHistory"
 
   private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
   private isLogInObs$ : Subject<logStat> = new Subject();//to stream to subscribers
@@ -97,14 +98,16 @@ export class EPAuthService {
 
     //logout function for all login methods
   logOut(){
-    this.isLogInObs$.next(logStat.unsigned)
-    if (this.isLogIn == logStat.email)
-      return this.eLogoutUser()
-    else if(this.isLogIn == logStat.google)
-      return this.gSignOut();
-
-    return new Error("logStat screwed up. need to be checked.");//in case of screwed up
     
+    if (this.isLogIn == logStat.email)
+    this.eLogoutUser()
+    else if(this.isLogIn == logStat.google)
+    this.gSignOut();
+    
+    if(this.isLogIn == logStat.unsigned)
+    new Error("logStat screwed up. need to be checked.");//in case of screwed up
+    this.isLogInObs$.next(logStat.unsigned)
+    this.router.navigate(["/homes"]);
   }
 
 
@@ -168,7 +171,7 @@ export class EPAuthService {
   addSrchHst(keyword : string) : void{
     // console.log(this.socUser);
     let bundle;
-    if(this.isLogInObs$)
+    if(this.isLogIn)
       bundle = {login : true, user : this.socUser, key : keyword}
     else
       bundle = {login : false, key : keyword}
@@ -181,7 +184,7 @@ export class EPAuthService {
   showSrchHst() : Promise<any>{
     var hst;
     return new Promise((resolve)=>{
-        this.http.get<any>( "http://localhost:4000/api/showHistory")
+        this.http.get<any>( this.SHOW_SEARCH_HISTORY_URL)
         .subscribe((res)=>{
             hst = res.history;
         });
@@ -224,7 +227,7 @@ export class EPAuthService {
     localStorage.removeItem("token");
     // this.isLogIn = logStat.unsigned;
     // this.isLogInObs$.next(logStat.unsigned)
-    this.router.navigate(["/homes/library"]);
+    // this.router.navigate(["/homes/library"]);
   }
 
   //email verify token
