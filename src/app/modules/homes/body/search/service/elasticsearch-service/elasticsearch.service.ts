@@ -133,7 +133,7 @@ export class ElasticsearchService {
 
   //Elasticsearch Connection
   private _connect() {
-    let es_url = "http://203.252.103.86:8088";
+    let es_url = "http://203.252.103.86:9200";
     this.client = new elasticsearch.Client({
       host: es_url
       // log: "trace"//to log the query and response in stdout
