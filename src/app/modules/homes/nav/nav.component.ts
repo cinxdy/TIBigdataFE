@@ -23,7 +23,8 @@ export class NavComponent implements OnInit {
       console.log("stat update! ", res);
       this.isLogin = res as any;
       this.auth.setLogStat(res);
-      this.nowUser = this.auth.getUserName();
+      if(res > 0)//only when user is already login, update name
+        this.nowUser = this.auth.getUserName();
     });
   }
   
@@ -55,7 +56,7 @@ export class NavComponent implements OnInit {
 
   logOut(){
     console.log("logout func init");
-    this.auth.logOut()
+    this.auth.logOutObs()
   }
 
 

@@ -11,17 +11,26 @@ import { thresholdSturges } from 'd3-array';
   providers:[AuthService]
 })
 export class LoginComponent implements OnInit {
-  constructor(private _auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
+  constructor(private auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
   private loginUserData = {}
   
-  private user: SocialUser; 
+  // private user: SocialUser; 
+
+  // private nowUser : String;
+  // private isLogin : boolean = false;
 
   ngOnInit() {
+    // this.auth.getLogInObs().subscribe((res)=>{
+    //   // console.log("stat update! ", res);
+    //   this.isLogin = res as any;
+    //   this.auth.setLogStat(res);
+    //   this.nowUser = this.auth.getUserName();
+    // });
   }
 
   // login with email
   eLogIn() {
-    this._auth.eLoginUser(this.loginUserData)
+    this.auth.eLoginUser(this.loginUserData)
     // .subscribe((res) => {
     //   //nickname should be added to identify user using the applicatoin.
     //   localStorage.setItem('token', res.token);
@@ -35,14 +44,14 @@ export class LoginComponent implements OnInit {
   //login with google
   gLogIn(platform :string):void{
     
-    this._auth.gLogIn(platform);
+    this.auth.gLogIn(platform);
   }
 
 
   //where do we use this?
-  signInWithGoogle(): void { 
-    this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+  // signInWithGoogle(): void { 
+  //   this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
 
   //register page
   toRegister(){

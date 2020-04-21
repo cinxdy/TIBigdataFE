@@ -1,7 +1,7 @@
 import { Injectable, Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {
   AuthService,
   SocialUser,
@@ -46,7 +46,7 @@ export class EPAuthService {
   private SHOW_SEARCH_HISTORY_URL = "http://localhost:4000/api/showHistory"
 
   private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
-  private isLogInObs$ : Subject<logStat> = new Subject();//to stream to subscribers
+  private isLogInObs$ : BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers
   private loginUserData = {};
   private socUser: SocialUser = null;//for social login
   private profile : {//for user profile
@@ -62,7 +62,7 @@ export class EPAuthService {
     private router: Router,
     private gauth: AuthService,
   ) {
-    this.isLogInObs$.next(logStat.unsigned);
+    // this.isLogInObs$.next(logStat.unsigned);
   }
 
   /**
@@ -84,6 +84,33 @@ export class EPAuthService {
   getUserName() : String{
     return this.profile.name;
   }
+
+  getLogInStatObs() {//return type be logStat
+    // var stat;
+    return new Promise((resolve)=>{
+      this.isLogInObs$.subscribe((res)=>{
+        resolve(res)
+      })
+    })//그리고 나서 then((r)=>this.stat = r; if(this.stat == ... ){ ...})
+    // return this.isLogInObs$.toPromise().then((res)=>res as logStat);
+    // return
+    // console.log(stat)
+    // return this.isLogIn;
+  }
+
+  async logOutObs(){
+    var stat = await this.getLogInStatObs();
+      if (stat == logStat.email)
+      this.eLogoutUser()
+      else if(stat == logStat.google)
+      this.gSignOut();
+      
+      if(stat == logStat.unsigned)
+      new Error("logStat screwed up. need to be checked.");//in case of screwed up
+      this.isLogInObs$.next(logStat.unsigned)
+      this.router.navigate(["/homes"]);
+  }
+
 
 
 
@@ -164,6 +191,7 @@ export class EPAuthService {
     
     else{//when token does not exist.
       console.log("token is not found. Hello, newbie!");
+      console.log("check the login stat as well : ",this.isLogIn);
       return isSignIn;
     }
   }

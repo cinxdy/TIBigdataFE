@@ -13,7 +13,7 @@ export class SearchHistoryComponent implements OnInit {
   private hstFreq: any[];
   ngOnInit() {
     this.queryTotalHistory().then(() => {
-      console.log(this.hstFreq);
+      // console.log(this.hstFreq);
       let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
@@ -56,7 +56,6 @@ export class SearchHistoryComponent implements OnInit {
           },
         ],
       });
-      console.log(this.hstFreq);
       chart.render();
     });
   }
@@ -83,8 +82,6 @@ export class SearchHistoryComponent implements OnInit {
             idxUniq++;
             count = 1;
           }
-          console.log(keyArr);
-          console.log(freqTable);
           this.hstFreq = freqTable;
 
           r();
