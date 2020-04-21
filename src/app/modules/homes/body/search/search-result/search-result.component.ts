@@ -1,10 +1,10 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef,
-  Input,
-  Inject,
-  Output
+  // ChangeDetectorRef,
+  // Input,
+  // Inject,
+  // Output
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
@@ -15,6 +15,10 @@ import { IdControlService } from "../service/id-control-service/id-control.servi
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
+import { EPAuthService } from '../../../../core/componets/membership/auth.service';
+import { EventService } from "../../../../core/componets/membership/event.service";
+
+
 @Component({
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
@@ -51,10 +55,14 @@ export class SearchResultComponent implements OnInit {
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
+  private userHistory : [] = [];
+
 
   queryText: string;
 
   constructor(
+    private auth : EPAuthService,
+    private evtSvs : EventService,
     private rcmd: RecomandationService,
     private ipService: IpService,
     private idControl: IdControlService,
@@ -76,9 +84,17 @@ export class SearchResultComponent implements OnInit {
         this.queryText = "북한산";
       }
     }
-
+    console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
+
+  // //user search history
+  // loadHistory(){
+  //   this.userHistory = this.auth.showSrchHst();
+  // }
+
+
+
 
   // getRcmd() {
   //   this.http

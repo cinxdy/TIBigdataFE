@@ -1,12 +1,23 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <div *ngIf="nowUser">
-                <li>{{nowUser.name}}</li>
-            </div>
-            <li><a *ngIf="!_auth.loggedIn()" (click)="toLogin()">로그인</a></li>
-            <li><a *ngIf="!_auth.loggedIn()" (click)="toRegister()">회원가입</a></li>
-            <li><a *ngIf="_auth.loggedIn()" (click)="_auth.logoutUser()">로그아웃</a></li>
+                <table>
+                    <th>
+                        <div *ngIf="isLogin">
+                            <td>
+                                <a href="#">안녕하세요, {{nowUser}} 님</a>
+                            </td>
+                            <td>
+                                <a (click)="toUserPage()">My Page</a>
+                                <a (click)="logOut()">로그아웃</a>
+                            </td>
+                        </div>
+                        <div *ngIf = "!isLogin">
+                            <li><a (click)="toLogin()">로그인</a></li>
+                            <li><a (click)="toRegister()">회원가입</a></li>
+                        </div>
+                    </th>
+                </table>           
             <li><a (click)="LineChart()">사이트맵</a></li>
         </ul>
     </div>
@@ -23,7 +34,7 @@
 
     <div class="uk-navbar-right">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <li><a (click)="navigateLibrary()">검색&middot;분석</a>
+            <!-- <li><a (click)="navigateLibrary()">검색&middot;분석</a>
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a href="#">검색</a></li>
@@ -31,13 +42,13 @@
                         <li><a href="#">기타</a></li>
                     </ul>
                 </div>
-            </li>
+            </li> -->
             <li><a (click)="navigateQT()">자료열람</a>
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <li><a (click)="navigateLibrary()">자료열람</a></li>
-                        <li><a href="#">메뉴2</a></li>
-                        <li><a href="#">메뉴3</a></li>
+                        <li><a (click)="navigateLibrary()">주제 별 분류</a></li>
+                        <li><a href="#">사전편찬 순서 분류(개발 중)</a></li>
+                        <li><a href="#">기관 별 분류(개발 중)</a></li>
                     </ul>
                 </div>
             </li>
@@ -45,8 +56,8 @@
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a (click)="navigateSpecials()">대시보드</a></li>
-                        <li><a href="#">기획2</a></li>
-                        <li><a href="#">기획3</a></li>
+                        <!-- <li><a href="#">기획2</a></li> -->
+                        <!-- <li><a href="#">기획3</a></li> -->
                     </ul>
                 </div>
             </li>

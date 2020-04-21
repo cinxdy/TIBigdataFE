@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import { HttpModule} from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +16,8 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
 import { LibraryModule } from './modules/homes/body/library/library.module';
 import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
 import { CoreModule} from './modules/core/core.module';
+import { EPAuthService } from './modules/core/componets/membership/auth.service';
+import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CoreModule} from './modules/core/core.module';
     NavComponent,
     MainHomeContainerComponent,
     HomeSearchBarComponent,
-    HomeGraphComponent
+    HomeGraphComponent,
+    SearchHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -35,13 +37,12 @@ import { CoreModule} from './modules/core/core.module';
     SpecialsModule,
     CoreModule,
     FormsModule,
-    HttpModule,
     TagCloudModule,
     LibraryModule,
     CoreModule
 
   ],
-  providers: [WordcloudService],
+  providers: [WordcloudService, EPAuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

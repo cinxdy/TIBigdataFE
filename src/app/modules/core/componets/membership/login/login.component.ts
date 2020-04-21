@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EPAuthService } from '../auth.service';
 import { Router } from '@angular/router'
-import { AuthService, SocialUser,GoogleLoginProvider} from 'angular4-social-login';
+import { AuthService, SocialUser,GoogleLoginProvider} from 'angularx-social-login';
 import { thresholdSturges } from 'd3-array';
 
 @Component({
@@ -11,47 +11,42 @@ import { thresholdSturges } from 'd3-array';
   providers:[AuthService]
 })
 export class LoginComponent implements OnInit {
-  logged = "Signed"
-
-  loginUserData = {}
   constructor(private _auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
+  private loginUserData = {}
   
-  user: SocialUser; 
+  private user: SocialUser; 
 
   ngOnInit() {
-    this._gauth.authState.subscribe((user) => { 
-      this.user = user; });
   }
 
-  loginUser() {
-    this._auth.loginUser(this.loginUserData)
-    .subscribe((res) => {
-      console.log(res);
-      localStorage.setItem('token', res.token);
-      this._router.navigate(['/homes/library'])
-    })
+  // login with email
+  eLogIn() {
+    this._auth.eLoginUser(this.loginUserData)
+    // .subscribe((res) => {
+    //   //nickname should be added to identify user using the applicatoin.
+    //   localStorage.setItem('token', res.token);
+    //   this._router.navigate(['/homes/library'])
+    // })
   }
 
-  logIn(platform :string):void{
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this._gauth.signIn(platform).then((response)=>{
-      console.log(platform + "Logged In User Data is = ", response);
-      this.logged = "alpha";
-      this.user = response;
-      this._router.navigate(['/homes'])
-    }
-    );
+  
+
+
+  //login with google
+  gLogIn(platform :string):void{
+    
+    this._auth.gLogIn(platform);
   }
 
-  nowLog(){
-    return this.user;
-  }
 
+  //where do we use this?
   signInWithGoogle(): void { 
     this._gauth.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
-  signOut(): void { 
-   this._gauth.signOut(); 
-  } 
+
+  //register page
+  toRegister(){
+    this._router.navigateByUrl("/membership/register");
+  }
 
 }
