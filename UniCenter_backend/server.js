@@ -21,12 +21,14 @@ mongoose.connect(db, err => {
     }
 });
 
-const api = require('./api');//bring the backend func and feature
-
+const hstQry = require('./searchHistoryQuery');//bring the backend func and feature
+const gUserQry = require('./googleUserQuery');
+const eUserQry = require('./emailUserQuery');
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/api', api);//api 경로에서 항상 require("./api") 호출한다. use : middleware 함수.
-
+app.use('/hst', hstQry);//hst 경로에서 항상 require("./hst") 호출한다. use : middleware 함수.
+app.use('/gUser',gUserQry);
+app.use('/eUSer',eUserQry);
 //root dir
 app.get('/', function(req, res) {
     res.send('Hello from server');

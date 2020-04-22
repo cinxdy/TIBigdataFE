@@ -63,7 +63,7 @@ export class SearchHistoryComponent implements OnInit {
   queryTotalHistory() {
     return new Promise((r) => {
       this.http
-        .get<any>("http://localhost:4000/api/getTotalHistory")
+        .get<any>("http://localhost:4000/hst/getTotalHistory")
         .subscribe((res) => {
           var hst = res.histories;
           var keyArr = hst.map((hstrs) => hstrs.keyword);
