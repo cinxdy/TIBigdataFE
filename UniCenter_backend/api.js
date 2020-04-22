@@ -57,9 +57,10 @@ function verifyGoogleToken(req,res){
 
 
 //email verify code
-function verifyToken(req, res, next) {
+function verifyToken(req, res) {
     console.log("verifyToken func has been inited!");
-
+    // console.log(req.headers);
+    // console.log(req.body);
     try{
         //if req header is not valid
         if(!req.headers.authorization) {
@@ -67,8 +68,8 @@ function verifyToken(req, res, next) {
         }
 
         //parse
-        let token = req.headers.authorization.split(' ')[1]
-        
+        let token = JSON.parse(req.headers.authorization.split(' ')[1]).token;
+        console.log(token);
         //parser result is null => invalid
         if(token === 'null'){
             return res.status(401).send('Unauthorized request')
@@ -76,7 +77,8 @@ function verifyToken(req, res, next) {
 
         //js with token.
         try{
-            let payload = jwt.verify(token, 'secretKey')//'secret key' is specific syntax of jwt. decoded.
+            let payload = jwt.verify(token, secret)
+            console.log(payload)
         }
         catch(err){
             console.log("jwt verify error!");
@@ -91,7 +93,7 @@ function verifyToken(req, res, next) {
         req.userId = payload.subject//need to know how the req is formed first....
         //why do they again set value of req? not res?
         next()//where does this function come from?
-        return res.status(200).send("OK");
+        return res.status(200).send({message : "OK", info : userId});
     }
     catch{
         console.log("server error!");
@@ -107,12 +109,12 @@ function eCheckUser(email){
             console.log("user already exist check failed!");
         }
         else{
-            if(!user){
+            if(!user){//when this user is not our list
                 
-                res.json({succ : false, message:"could not find this user"});
+                return flase;
             }
-            else{
-                res.json({succ : true, message : "found this user! this user is one of us!"});
+            else{//when this user is already our user
+                return true;
             }
         }
     })
@@ -127,10 +129,21 @@ router.get('/', (req, res) => {
 /**
  * @EmailLoginFunctions
  * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 //at register dir
 router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
+
+    //if this user is already our user, deny re-registration
+    
+    if(eCheckUser(userData.email)){
+        res.json({success : false, message:"this user is already our user"});
+    }
     let user = new User(userData);
     user.save((error, registeredUser) => {//save new user data account
         if(error) {
@@ -149,6 +162,9 @@ router.post('/register', (req, res) => {
 // http://localhost:4000/api/login
 router.post('/login', (req, res) => {
     let userData = req.body;
+    if(!eCheckUser(userData.email)){//when this user is not on our user list, deny login, and lead to register
+        res.json({success : false, message:"this user is not our user"});
+    }
 
     User.findOne({ email: userData.email }, (error, user) => {
         if (error) {
