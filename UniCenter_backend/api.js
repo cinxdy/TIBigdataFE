@@ -99,6 +99,25 @@ function verifyToken(req, res, next) {
     }
 }
 
+//check if this email user is aleady our user?
+function eCheckUser(email){
+    // user.email
+    User.findOne({email : email},(error,user)=>{
+        if(error){
+            console.log("user already exist check failed!");
+        }
+        else{
+            if(!user){
+                
+                res.json({succ : false, message:"could not find this user"});
+            }
+            else{
+                res.json({succ : true, message : "found this user! this user is one of us!"});
+            }
+        }
+    })
+}
+
 //yet useless dir
 router.get('/', (req, res) => {
     res.send('From API route')
@@ -117,10 +136,10 @@ router.post('/register', (req, res) => {
         if(error) {
             console.log(error)
         } else {
-            console.log("api : email register : save ok");
+            console.log("api : email register : save ok, user info : ", registeredUser);
             let payload = { subject : registeredUser._id};//new user id : subject => payload. create token.
             var token = jwt.sign(payload, secret, { expiresIn: '24h'});//secret harry poter usage check required. //토큰 발급.
-            res.json({success: true, message: 'User registered!', token: token});//토큰 전송.
+            res.json({success: true, message: 'User registered!', info : registeredUser, token: token});//토큰 전송.
         }
     })
 
@@ -307,90 +326,90 @@ router.post('/gCheckUser',(req,res)=>{
 
 router.post('/verifyGoogleToken',verifyGoogleToken);
 
+// 상원이가 해두고 감. 어떤 용도인지 잘 모르겠음...
+// router.get('/events', verifyToken, (req, res) => {
+//     let events = [{
+//             "_id": "1",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "2",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "3",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "4",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "5",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "6",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         }
+//     ]
 
-router.get('/events', verifyToken, (req, res) => {
-    let events = [{
-            "_id": "1",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "2",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "3",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "4",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "5",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "6",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        }
-    ]
+//     res.json(events)
+// })
 
-    res.json(events)
-})
+// router.get('/special', (req, res) => {
+//     let events = [{
+//             "_id": "1",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "2",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "3",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "4",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "5",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         },
+//         {
+//             "_id": "6",
+//             "name": "Auto Expo",
+//             "description": "lorem ipsum",
+//             "date": "2012-04-23T18:25:43.511Z"
+//         }
+//     ]
 
-router.get('/special', (req, res) => {
-    let events = [{
-            "_id": "1",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "2",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "3",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "4",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "5",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        },
-        {
-            "_id": "6",
-            "name": "Auto Expo",
-            "description": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
-        }
-    ]
-
-    res.json(events)
-})
+//     res.json(events)
+// })
 
 
 

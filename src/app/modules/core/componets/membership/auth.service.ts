@@ -85,31 +85,31 @@ export class EPAuthService {
     return this.profile.name;
   }
 
-  getLogInStatObs() {//return type be logStat
-    // var stat;
-    return new Promise((resolve)=>{
-      this.isLogInObs$.subscribe((res)=>{
-        resolve(res)
-      })
-    })//그리고 나서 then((r)=>this.stat = r; if(this.stat == ... ){ ...})
-    // return this.isLogInObs$.toPromise().then((res)=>res as logStat);
-    // return
-    // console.log(stat)
-    // return this.isLogIn;
-  }
+  // getLogInStatObs() {//return type be logStat
+  //   // var stat;
+  //   return new Promise((resolve)=>{
+  //     this.isLogInObs$.subscribe((res)=>{
+  //       resolve(res)
+  //     })
+  //   })//그리고 나서 then((r)=>this.stat = r; if(this.stat == ... ){ ...})
+  //   // return this.isLogInObs$.toPromise().then((res)=>res as logStat);
+  //   // return
+  //   // console.log(stat)
+  //   // return this.isLogIn;
+  // }
 
-  async logOutObs(){
-    var stat = await this.getLogInStatObs();
-      if (stat == logStat.email)
-      this.eLogoutUser()
-      else if(stat == logStat.google)
-      this.gSignOut();
+  // async logOutObs(){
+  //   var stat = await this.getLogInStatObs();
+  //     if (stat == logStat.email)
+  //     this.eLogoutUser()
+  //     else if(stat == logStat.google)
+  //     this.gSignOut();
       
-      if(stat == logStat.unsigned)
-      new Error("logStat screwed up. need to be checked.");//in case of screwed up
-      this.isLogInObs$.next(logStat.unsigned)
-      this.router.navigate(["/homes"]);
-  }
+  //     if(stat == logStat.unsigned)
+  //     new Error("logStat screwed up. need to be checked.");//in case of screwed up
+  //     this.isLogInObs$.next(logStat.unsigned)
+  //     this.router.navigate(["/homes"]);
+  // }
 
 
 
@@ -175,6 +175,7 @@ export class EPAuthService {
       }
 
       else if(type == logStat.email){
+        console.log("token is from email");
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res =>{
@@ -231,8 +232,19 @@ export class EPAuthService {
    */
 
    //email registration function
-  eRegisterUser(user): Observable<any> {
-    return this.http.post<any>(this.EMAIL_REG_URL, user);
+  eRegisterUser(user): void {
+    console.log("user reg input : ", user);
+    this.http.post<any>(this.EMAIL_REG_URL, user)
+    .subscribe(//perhaps return observable with response.
+      res => {
+        console.log(res)
+        localStorage.setItem('token', JSON.stringify(new storeToken(logStat.email, res.token)));
+        alert("반갑습니다."+res.info.name+"님. 홈 화면으로 이동합니다.");
+        this.router.navigate(['/homes']);//go to lib dir.
+        //FE user browser save the token.
+      },
+      err => console.log(err)
+    )
   }
 
   //email sign in function
@@ -281,8 +293,7 @@ export class EPAuthService {
     platform = GoogleLoginProvider.PROVIDER_ID;
     this.gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
       this.socUser = response;
-      console.log(this.socUser);
-
+      
       //check if this user is our user already
       this.gCheckUser(response).subscribe((res)=>{
         
@@ -292,13 +303,14 @@ export class EPAuthService {
               console.log("This user is not yet our user : need sign up : ",res);
               alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
               this.router.navigateByUrl("/membership/register");
-
+              
             }
           })
           
         }
         else
-          console.log("This user is already our user!");
+        console.log("This user is already our user!");
+        console.log(this.socUser);
         localStorage.setItem('token',JSON.stringify(new storeToken(logStat.google,this.socUser.idToken)));
 
         // localStorage.setItem('token',this.socUser.idToken);
