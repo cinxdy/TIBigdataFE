@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class EventService {
 
-  private _eventsUrl = "http://localhost:4000/api/events";
-  private _srchHstUrl = "http://localhost:4000/api/searchHistory";
+  private _eventsUrl = "http://203.252.103.123:4000/api/events";
+  private _srchHstUrl = "http://203.252.103.123:4000/api/searchHistory";
   private srchHst : string[] = [];
 
 

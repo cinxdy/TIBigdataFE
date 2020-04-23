@@ -36,14 +36,14 @@ class storeToken{
   providedIn: "root",
 })
 export class EPAuthService {
-  private EMAIL_REG_URL = "http://localhost:4000/eUser/register"; //mongoDB
-  private EMAIL_LOGIN_URL = "http://localhost:4000/eUser/login";
-  private EMAIL_VERIFY_TOKEN = "http://localhost:4000/eUser/verify";
-  private GOOGLE_REG_URL = "http://localhost:4000/gUser/gRegister";
-  private GOOGLE_CHECK_OUR_USER_URL = "http://localhost:4000/gUser/gCheckUser";
-  private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/gUser/verifyGoogleToken";
-  private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/hst/addHistory";
-  private SHOW_SEARCH_HISTORY_URL = "http://localhost:4000/hst/showHistory"
+  private EMAIL_REG_URL = "http://203.252.103.123:4000/eUser/register"; //mongoDB
+  private EMAIL_LOGIN_URL = "http://203.252.103.123:4000/eUser/login";
+  private EMAIL_VERIFY_TOKEN = "http://203.252.103.123:4000/eUser/verify";
+  private GOOGLE_REG_URL = "http://203.252.103.123:4000/gUser/gRegister";
+  private GOOGLE_CHECK_OUR_USER_URL = "http://203.252.103.123:4000/gUser/gCheckUser";
+  private GOOGLE_VERIFY_TOKEN_URL = "http://203.252.103.123:4000/gUser/verifyGoogleToken";
+  private ADD_SEARCH_HISTORY_URL = "http://203.252.103.123:4000/hst/addHistory";
+  private SHOW_SEARCH_HISTORY_URL = "http://203.252.103.123:4000/hst/showHistory"
 
   private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
   private isLogInObs$ : BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers

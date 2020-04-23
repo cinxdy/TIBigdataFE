@@ -25,7 +25,7 @@ interface Post{
   }
 
   public fetchPosts() {
-    return this.http.get("http://localhost:9200/victolee/blog/1/_source")
+    return this.http.get("http://203.252.103.123:9200/victolee/blog/1/_source")
         .subscribe((data) => {
           this.post = data;
           console.log(this.post);

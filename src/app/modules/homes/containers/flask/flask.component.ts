@@ -15,7 +15,7 @@ import { Observable, of} from 'rxjs';
 export class FlaskComponent implements OnInit {
 
   private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/test';
+  private TEST_URL: string = 'http://203.252.103.123:5000/test';
 
 
   private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
