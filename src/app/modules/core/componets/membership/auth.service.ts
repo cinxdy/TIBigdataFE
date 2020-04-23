@@ -1,7 +1,7 @@
 import { Injectable, Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {
   AuthService,
   SocialUser,
@@ -36,16 +36,17 @@ class storeToken{
   providedIn: "root",
 })
 export class EPAuthService {
-  private EMAIL_REG_URL = "http://localhost:4000/api/register"; //mongoDB
-  private EMAIL_LOGIN_URL = "http://localhost:4000/api/login";
-  private GOOGLE_REG_URL = "http://localhost:4000/api/gRegister";
-  private GOOGLE_CHECK_OUR_USER_URL = "http://localhost:4000/api/gCheckUser";
-  private EMAIL_VERIFY_TOKEN = "http://localhost:4000/api/verify";
-  private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/api/verifyGoogleToken";
-  private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/api/addHistory";
+  private EMAIL_REG_URL = "http://localhost:4000/eUser/register"; //mongoDB
+  private EMAIL_LOGIN_URL = "http://localhost:4000/eUser/login";
+  private EMAIL_VERIFY_TOKEN = "http://localhost:4000/eUser/verify";
+  private GOOGLE_REG_URL = "http://localhost:4000/gUser/gRegister";
+  private GOOGLE_CHECK_OUR_USER_URL = "http://localhost:4000/gUser/gCheckUser";
+  private GOOGLE_VERIFY_TOKEN_URL = "http://localhost:4000/gUser/verifyGoogleToken";
+  private ADD_SEARCH_HISTORY_URL = "http://localhost:4000/hst/addHistory";
+  private SHOW_SEARCH_HISTORY_URL = "http://localhost:4000/hst/showHistory"
 
   private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
-  private isLogInObs$ : Subject<logStat> = new Subject();//to stream to subscribers
+  private isLogInObs$ : BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers
   private loginUserData = {};
   private socUser: SocialUser = null;//for social login
   private profile : {//for user profile
@@ -61,7 +62,7 @@ export class EPAuthService {
     private router: Router,
     private gauth: AuthService,
   ) {
-    this.isLogInObs$.next(logStat.unsigned);
+    // this.isLogInObs$.next(logStat.unsigned);
   }
 
   /**
@@ -84,6 +85,33 @@ export class EPAuthService {
     return this.profile.name;
   }
 
+  // getLogInStatObs() {//return type be logStat
+  //   // var stat;
+  //   return new Promise((resolve)=>{
+  //     this.isLogInObs$.subscribe((res)=>{
+  //       resolve(res)
+  //     })
+  //   })//그리고 나서 then((r)=>this.stat = r; if(this.stat == ... ){ ...})
+  //   // return this.isLogInObs$.toPromise().then((res)=>res as logStat);
+  //   // return
+  //   // console.log(stat)
+  //   // return this.isLogIn;
+  // }
+
+  // async logOutObs(){
+  //   var stat = await this.getLogInStatObs();
+  //     if (stat == logStat.email)
+  //     this.eLogoutUser()
+  //     else if(stat == logStat.google)
+  //     this.gSignOut();
+      
+  //     if(stat == logStat.unsigned)
+  //     new Error("logStat screwed up. need to be checked.");//in case of screwed up
+  //     this.isLogInObs$.next(logStat.unsigned)
+  //     this.router.navigate(["/homes"]);
+  // }
+
+
 
 
   //get current token in this present browser.
@@ -97,14 +125,16 @@ export class EPAuthService {
 
     //logout function for all login methods
   logOut(){
-    this.isLogInObs$.next(logStat.unsigned)
-    if (this.isLogIn == logStat.email)
-      return this.eLogoutUser()
-    else if(this.isLogIn == logStat.google)
-      return this.gSignOut();
-
-    return new Error("logStat screwed up. need to be checked.");//in case of screwed up
     
+    if (this.isLogIn == logStat.email)
+    this.eLogoutUser()
+    else if(this.isLogIn == logStat.google)
+    this.gSignOut();
+    
+    if(this.isLogIn == logStat.unsigned)
+    new Error("logStat screwed up. need to be checked.");//in case of screwed up
+    this.isLogInObs$.next(logStat.unsigned)
+    this.router.navigate(["/homes"]);
   }
 
 
@@ -136,7 +166,6 @@ export class EPAuthService {
             else{
               console.log("token verify fail");
             }
-            return this.isLogIn;
           },
           err=>{
             console.log('error occurs! not google user : ',err);
@@ -145,11 +174,12 @@ export class EPAuthService {
       }
 
       else if(type == logStat.email){
+        console.log("token is from email");
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res =>{
             this.isLogIn = logStat.email;
-            return isSignIn;
+            this.isLogInObs$.next(this.isLogIn);
           },
           err =>{
             console.log('error occurs! not email user : ',err);
@@ -161,6 +191,7 @@ export class EPAuthService {
     
     else{//when token does not exist.
       console.log("token is not found. Hello, newbie!");
+      console.log("check the login stat as well : ",this.isLogIn);
       return isSignIn;
     }
   }
@@ -168,7 +199,7 @@ export class EPAuthService {
   addSrchHst(keyword : string) : void{
     // console.log(this.socUser);
     let bundle;
-    if(this.isLogInObs$)
+    if(this.isLogIn)
       bundle = {login : true, user : this.socUser, key : keyword}
     else
       bundle = {login : false, key : keyword}
@@ -181,7 +212,7 @@ export class EPAuthService {
   showSrchHst() : Promise<any>{
     var hst;
     return new Promise((resolve)=>{
-        this.http.get<any>( "http://localhost:4000/api/showHistory")
+        this.http.get<any>( this.SHOW_SEARCH_HISTORY_URL)
         .subscribe((res)=>{
             hst = res.history;
         });
@@ -200,8 +231,19 @@ export class EPAuthService {
    */
 
    //email registration function
-  eRegisterUser(user): Observable<any> {
-    return this.http.post<any>(this.EMAIL_REG_URL, user);
+  eRegisterUser(user): void {
+    console.log("user reg input : ", user);
+    this.http.post<any>(this.EMAIL_REG_URL, user)
+    .subscribe(//perhaps return observable with response.
+      res => {
+        console.log(res)
+        localStorage.setItem('token', JSON.stringify(new storeToken(logStat.email, res.token)));
+        alert("반갑습니다."+res.info.name+"님. 홈 화면으로 이동합니다.");
+        this.router.navigate(['/homes']);//go to lib dir.
+        //FE user browser save the token.
+      },
+      err => console.log(err)
+    )
   }
 
   //email sign in function
@@ -224,7 +266,7 @@ export class EPAuthService {
     localStorage.removeItem("token");
     // this.isLogIn = logStat.unsigned;
     // this.isLogInObs$.next(logStat.unsigned)
-    this.router.navigate(["/homes/library"]);
+    // this.router.navigate(["/homes/library"]);
   }
 
   //email verify token
@@ -250,8 +292,7 @@ export class EPAuthService {
     platform = GoogleLoginProvider.PROVIDER_ID;
     this.gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
       this.socUser = response;
-      console.log(this.socUser);
-
+      
       //check if this user is our user already
       this.gCheckUser(response).subscribe((res)=>{
         
@@ -261,13 +302,14 @@ export class EPAuthService {
               console.log("This user is not yet our user : need sign up : ",res);
               alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
               this.router.navigateByUrl("/membership/register");
-
+              
             }
           })
           
         }
         else
-          console.log("This user is already our user!");
+        console.log("This user is already our user!");
+        console.log(this.socUser);
         localStorage.setItem('token',JSON.stringify(new storeToken(logStat.google,this.socUser.idToken)));
 
         // localStorage.setItem('token',this.socUser.idToken);
