@@ -166,7 +166,6 @@ export class EPAuthService {
             else{
               console.log("token verify fail");
             }
-            return this.isLogIn;
           },
           err=>{
             console.log('error occurs! not google user : ',err);
@@ -180,7 +179,7 @@ export class EPAuthService {
         eTkRes$.subscribe(
           res =>{
             this.isLogIn = logStat.email;
-            return isSignIn;
+            this.isLogInObs$.next(this.isLogIn);
           },
           err =>{
             console.log('error occurs! not email user : ',err);
