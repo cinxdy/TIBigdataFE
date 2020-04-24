@@ -2,6 +2,8 @@ import { Injectable, Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { IpService } from 'src/app/ip.service'
+
 import {
   AuthService,
   SocialUser,
@@ -10,7 +12,8 @@ import {
 
 //enumerate login status
 enum logStat {
-  unsigned,
+  unsigned,//0
+  SUPERUSER,//1
   email,
   google,
 }
@@ -36,15 +39,22 @@ class storeToken{
   providedIn: "root",
 })
 export class EPAuthService {
-  private EMAIL_REG_URL = "http://203.252.103.123:4000/eUser/register"; //mongoDB
-  private EMAIL_LOGIN_URL = "http://203.252.103.123:4000/eUser/login";
-  private EMAIL_VERIFY_TOKEN = "http://203.252.103.123:4000/eUser/verify";
-  private GOOGLE_REG_URL = "http://203.252.103.123:4000/gUser/gRegister";
-  private GOOGLE_CHECK_OUR_USER_URL = "http://203.252.103.123:4000/gUser/gCheckUser";
-  private GOOGLE_VERIFY_TOKEN_URL = "http://203.252.103.123:4000/gUser/verifyGoogleToken";
-  private ADD_SEARCH_HISTORY_URL = "http://203.252.103.123:4000/hst/addHistory";
-  private SHOW_SEARCH_HISTORY_URL = "http://203.252.103.123:4000/hst/showHistory"
+  private JC : string = "jcnam@handong.edu";
+  private BAEK : string = "21500850@handong.edu";
+  private SONG : string = "21500831@handong.edu";
 
+
+  private URL = this.ipService.getCommonIp();
+  private EMAIL_REG_URL = this.URL+":4000/eUser/register"; //mongoDB
+  private EMAIL_LOGIN_URL = this.URL+":4000/eUser/login";
+  private EMAIL_VERIFY_TOKEN = this.URL+":4000/eUser/verify";
+  private GOOGLE_REG_URL = this.URL+":4000/gUser/gRegister";
+  private GOOGLE_CHECK_OUR_USER_URL = this.URL+":4000/gUser/gCheckUser";
+  private GOOGLE_VERIFY_TOKEN_URL = this.URL+":4000/gUser/verifyGoogleToken";
+  private ADD_SEARCH_HISTORY_URL = this.URL+":4000/hst/addHistory";
+  private SHOW_SEARCH_HISTORY_URL = this.URL+":4000/hst/showHistory"
+
+  private isSuperUser : boolean;
   private isLogIn : logStat = logStat.unsigned;//for static, inactive, passive use
   private isLogInObs$ : BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers
   private loginUserData = {};
@@ -57,6 +67,7 @@ export class EPAuthService {
   private schHst : [] = [];//user search history
 
   constructor(
+    private ipService : IpService,
     private injector : Injector,
     private http: HttpClient,
     private router: Router,
@@ -64,6 +75,20 @@ export class EPAuthService {
   ) {
     // this.isLogInObs$.next(logStat.unsigned);
   }
+
+  /**
+   * @GetSuperUser
+   */
+  getSUstat():boolean {
+    return this.isSuperUser;
+  }
+
+  forceLogOut(){
+    alert("강제로 로그아웃 합니다.");
+    localStorage.removeItem("token");
+  }
+
+
 
   /**
    * @CommonUserLoginFunctions
@@ -130,7 +155,8 @@ export class EPAuthService {
     this.eLogoutUser()
     else if(this.isLogIn == logStat.google)
     this.gSignOut();
-    
+    localStorage.removeItem("token");
+
     if(this.isLogIn == logStat.unsigned)
     new Error("logStat screwed up. need to be checked.");//in case of screwed up
     this.isLogInObs$.next(logStat.unsigned)
@@ -159,8 +185,15 @@ export class EPAuthService {
               var n = this.socUser.name;
               var e = this.socUser.email;
               this.profile = {name : n,email : e};
+              if(this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG){
+                // this.isSuperUser = true;
+                this.isLogIn = logStat.SUPERUSER;
+              }
+              else{
+                this.isLogIn = logStat.google;
+
+              }
               console.log("token verify succ");
-              this.isLogIn = logStat.google;
               this.isLogInObs$.next(this.isLogIn);
             }
             else{
@@ -291,31 +324,34 @@ export class EPAuthService {
   gLogIn(platform :string) : void{
     platform = GoogleLoginProvider.PROVIDER_ID;
     this.gauth.signIn(platform).then((response)=>{//error branch 추가할 필요성 있음...
-      this.socUser = response;
       
       //check if this user is our user already
       this.gCheckUser(response).subscribe((res)=>{
         
         if(res.exist == false){
-          this.gRegisterUser(this.socUser).subscribe((res)=>{
-            if(!res.exist){
-              console.log("This user is not yet our user : need sign up : ",res);
-              alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
-              this.router.navigateByUrl("/membership/register");
-              
-            }
-          })
+          if(!res.exist){
+            console.log("This user is not yet our user : need sign up : ",res);
+            alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
+            this.router.navigateByUrl("/membership/register");
+            
+          }
+          // this.gRegisterUser(this.socUser).subscribe((res)=>{
+
+          // })
           
         }
-        else
-        console.log("This user is already our user!");
-        console.log(this.socUser);
-        localStorage.setItem('token',JSON.stringify(new storeToken(logStat.google,this.socUser.idToken)));
+        else{
+          
+          console.log("This user is already our user!");
+          this.socUser = response;
+          console.log(this.socUser);
+          localStorage.setItem('token',JSON.stringify(new storeToken(logStat.google,this.socUser.idToken)));
 
-        // localStorage.setItem('token',this.socUser.idToken);
-        console.log("login user info saved : ", this.socUser);
-        this.isLogIn = logStat.google;
-        this.router.navigate(['/homes'])
+          // localStorage.setItem('token',this.socUser.idToken);
+          console.log("login user info saved : ", this.socUser);
+          this.isLogIn = logStat.google;
+          this.router.navigate(['/homes'])
+        }
       }
       );
     })

@@ -42,13 +42,13 @@ export class AuthGuard implements CanActivate {
     return p.toString()
   }
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    if (this.getPath(route) === "login" ||this.getPath(route) ==="register") {//user access to login page
+    if (this.getPath(route) === "login" ||this.getPath(route) ==="register"||this.getPath(route) ==="socReg") {//user access to login page
       //when login stat is not login, access ok. when already login, access no.
       console.log("curr login stat :",this.authService.getLogInStat());
       return !this.authService.getLogInStat()? true : false;
     }
     
-    if(this.getPath(route) === "userpage" ||this.getPath(route) ==="socReg"){
+    if(this.getPath(route) === "userpage" ){
       //when login stat is login, access ok. when user not login, access no.
       console.log("curr login stat :",this.authService.getLogInStat());
       return this.authService.getLogInStat()? true : false;

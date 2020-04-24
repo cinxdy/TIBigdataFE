@@ -11,6 +11,7 @@ import { EventsComponent} from './componets/membership/events/events.component';
 import { AuthGuard } from './componets/membership/auth.guard';
 import { SocialRegisterComponent } from './componets/membership/register/social-register/social-register.component';
 import { UserpageComponent } from './componets/membership/userpage/userpage.component';
+import { ControlComponent } from './componets/membership/control/control.component';
 
 const routes: Routes = [
     // {
@@ -38,6 +39,10 @@ const routes: Routes = [
     { path : 'userpage',
       component : UserpageComponent
     },
+    {
+      path : 'control',
+      component : ControlComponent
+    }
  
 ];
 

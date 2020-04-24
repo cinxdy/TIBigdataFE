@@ -5,6 +5,7 @@ import { ArticleSource } from '../../body/search/article/article.interface';
 import { Subscription } from 'rxjs';
 import { Observable, of} from 'rxjs';
 import { Client } from 'elasticsearch';
+import { IpService } from 'src/app/ip.service'
 
 @Component({
   selector: 'app-querytest',
@@ -13,9 +14,9 @@ import { Client } from 'elasticsearch';
 })
 export class QuerytestComponent implements OnInit {
 
-
+  private URL = this.ipService.getCommonIp()
   //Flask data
-  private BASE_URL: string = 'http://203.252.103.123:5000/queryTest';
+  private BASE_URL: string = URL+':5000/queryTest';
   // private headers: Headers = new Headers({'Content-Type': 'application/json'});
   // serverData: JSON;
 
@@ -34,6 +35,7 @@ export class QuerytestComponent implements OnInit {
 
   constructor(
     private http:HttpClient,
+    private ipService : IpService
     // private es: ElasticsearchService
     )// , 
     // private cd: ChangeDetectorRef) 

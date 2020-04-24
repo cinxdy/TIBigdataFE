@@ -52,11 +52,11 @@ router.post('/gRegister', (req, res) => {
     user.save((error, registeredUser) => {
         if (error) {
             console.log("google social user register data save error : " + error);
-            res.json({ succ: "fail" })
+            res.json({ succ: false })
         }
         else {
             console.log("api : gmail register : save ok");
-            res.json({ succ: true });
+            res.json({ succ: true, user : user.email });
         }
     })
 })
