@@ -60,8 +60,7 @@ function eCheckUser(email){
         }
         else{
             if(!user){//when this user is not our list
-                
-                return flase;
+                return false;
             }
             else{//when this user is already our user
                 return true;
@@ -85,10 +84,13 @@ router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
 
     //if this user is already our user, deny re-registration
-    
     if(eCheckUser(userData.email)){
         res.json({success : false, message:"this user is already our user"});
     }
+
+    //if this user is new, allow to register.
+    var pw = jwt.sign(registeredUser.password);
+    // userData.password = pw;//hide password
     let user = new User(userData);
     user.save((error, registeredUser) => {//save new user data account
         if(error) {

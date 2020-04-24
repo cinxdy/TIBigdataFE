@@ -8,16 +8,21 @@
       <div class="card-body">
         <form action="" class="form">
           <div class="form-group">
+            <label for="">ID</label>
+            <!-- register use email input -->
+            <input [(ngModel)]="registerUserData.id" name="id" type="text" class="form-control rounded-0" required>
+          </div>
+          <div class="form-group">
             <label for="">Name</label>
             <!-- register use email input -->
             <input [(ngModel)]="registerUserData.name" name="name" type="text" class="form-control rounded-0" required>
           </div>
           <div class="form-group">
-            <label for="">Job(Undergraduate, graduated, researcher in univ(MD, Phd?, poDoc?), resercher institute</label>
+            <label for="">institution(Undergraduate, graduated, researcher in univ(MD, Phd?, poDoc?), resercher institute</label>
             <!-- register use email input -->
             <!-- 각각의 경우에 따라 어느 학교인지, 연구 기관이 어디인지 추가로 물어보기. 
             기관 리스트 나열해서 선택하게 하거나 직접 입력 -->
-            <input [(ngModel)]="registerUserData.job" name="job" type="text" class="form-control rounded-0" required>
+            <input [(ngModel)]="registerUserData.isnt" name="isnt" type="text" class="form-control rounded-0" required>
           </div>
           <div class="form-group">
             <label for="">Email</label>
