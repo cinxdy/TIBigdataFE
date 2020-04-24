@@ -1,0 +1,17 @@
+<h1>전체 사용자 검색 기록</h1>
+<h2>
+    <div class="row">
+        <div class="col">검색어</div>
+        <div class="col">검색 시간</div>
+    </div>
+</h2>
+<div *ngFor="let h of hst">
+    <div class="row">
+        <div class="col">
+            {{h.key}}
+        </div>
+        <div class="col">
+            {{h.time}}
+        </div>
+    </div>
+</div>

@@ -43,6 +43,11 @@ export class IpService {
   private DEV_IP = "http://localhost";
   private curIP = "";
 
+  private BE_SERVER_IP = "http://203.252.103.86";
+
+  USER_BE_PORT = "4000";
+  FLASK_PORT = "5000";
+  ES_PORT = "9200";
 
   constructor() { }
 
