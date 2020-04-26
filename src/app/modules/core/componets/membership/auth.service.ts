@@ -48,6 +48,7 @@ export class EPAuthService {
   private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
   private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
   private EMAIL_VERIFY_TOKEN = this.URL + ":4000/eUser/verify";
+  private EMAIL_CHECK_OUR_USER_URL = this.URL + ":4000/eUser/eCheckUser";
   private GOOGLE_REG_URL = this.URL + ":4000/gUser/gRegister";
   private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
@@ -77,7 +78,7 @@ export class EPAuthService {
 
 
   forceLogOut() {
-    alert("강제로 로그아웃 합니다.");
+    alert("강제로 로그아웃 합니다. 새로고침 해야 적용 됨.");
     localStorage.removeItem("token");
   }
 
@@ -258,40 +259,72 @@ export class EPAuthService {
    *  functions:
    */
 
+  //email user : check if this user is already our user
+  async eCheckUser(user: {}): Promise<any> {
+    let isOurUser = await this.http.post<any>(this.EMAIL_CHECK_OUR_USER_URL, user).toPromise();
+
+    return isOurUser;
+  }
+
+
   //email registration function
-  eRegisterUser(user): void {
+  async eRegisterUser(user): Promise<any> {
     console.log("user reg input : ", user);
-    this.http.post<any>(this.EMAIL_REG_URL, user)
-      .subscribe(//perhaps return observable with response.
-        res => {
-          // console.log(res)
-          this.eAdmitUser(logStat.email,res);
-          alert("반갑습니다." + res.info.name + "님. 홈 화면으로 이동합니다.");
-        },
-        err => console.log(err)
-      )
+
+    // let isOurUser$ = this.eCheckUser(user);
+    // let res = await isOurUser$.toPromise();
+    let isOurUser = await this.eCheckUser(user);
+    console.log(isOurUser);
+    if (isOurUser) {//if this user is one of us, deny registration.
+      alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
+      //비밀번호 찾기 페이지도 만들어야 한다. 
+    }
+    else {
+      this.http.post<any>(this.EMAIL_REG_URL, user)
+        .subscribe(//perhaps return observable with response.
+          res => {
+            // console.log(res)
+            this.eAdmitUser(logStat.email, res);
+            alert("반갑습니다." + res.info.name + "님. 홈 화면으로 이동합니다.");
+          },
+          err => console.log(err)
+        )
+    }
+
   }
 
   //email sign in function
-  eLoginUser(user): void {
-    var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
-    result$.subscribe(
-      res => {
-        this.eAdmitUser(logStat.email,res);
-      },
-      err => {
-        console.log(err)
-      }
-    )
+  async eLoginUser(user): Promise<any> {
+    console.log("login req user : ", user);
+
+    let isOurUser = await this.eCheckUser(user);
+    console.log(isOurUser);
+    if (!isOurUser) {//if this user is one of us, deny registration.
+      alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
+      //비밀번호 찾기 페이지도 만들어야 한다. 
+    }
+    else {
+      var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
+      result$.subscribe(
+        res => {
+          // login succ
+          this.eAdmitUser(logStat.email, res);
+          //login fail. maybe wrong password or id?
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
   }
 
-  eAdmitUser(stat : logStat, res) : void {
+  eAdmitUser(stat: logStat, res): void {
+    console.log(res);
     this.isLogIn = stat;
-    localStorage.setItem('token', JSON.stringify(new storeToken(stat, res.token)));
-    if(stat === logStat.email)
-      this.profile = { name: res.info.name, email: res.info.email };          
-    else
-      {}
+    localStorage.setItem('token', JSON.stringify(new storeToken(stat, res.payload.token)));
+    if (stat === logStat.email)
+      this.profile = { name: res.payload.name, email: res.payload.email };
+    else { }//user for google. coupling for flexibility.
     this.router.navigate(['/homes']);
   }
 
