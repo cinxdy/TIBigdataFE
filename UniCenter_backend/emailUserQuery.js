@@ -102,11 +102,11 @@ router.post('/eCheckUser', (req, res) => {
         else {
             if (!user) {//when this user is not our list
                 console.log("user is not one of us");
-                res.json({ exist: false });
+                res.json(new Res(false));
             }
             else {//when this user is already our user
                 console.log("user one of us");
-                res.json({ exist: true });
+                res.json(new Res(true));
             }
         }
     })
@@ -125,11 +125,6 @@ router.post('/eCheckUser', (req, res) => {
 //at register dir
 router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
-
-    //if this user is already our user, deny re-registration
-    if (eCheckUser(userData.email)) {
-        res.json(new Res(false, "this user is already our user"));
-    }
 
     //if this user is new, allow to register.
     var pw = jwt.sign(registeredUser.password);
@@ -153,11 +148,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     let userData = req.body;
     console.log(userData);
-    // if (!eCheckUser(userData.email)) {//when this user is not on our user list, deny login, and lead to register
-    //     console.log("hello?");
-    //     res.json({ success: false, message: "this user is not our user" });
-    // }
-    // else {
+
     console.log("login process init")
     User.findOne({ email: userData.email }, (error, user) => {
         if (error) {
@@ -165,11 +156,11 @@ router.post('/login', (req, res) => {
         }
         else {
             if (!user) {//no user -> serious error since we have already check this user is one of us in FE.
-                res.json(new Res (false,'Could not authenticate user'));
+                res.json(new Res (false,'danger'));
             }
             else {
                 if (user.password !== userData.password) {
-                    res.json(new Res (false,'Could not authenticate password'));
+                    res.json(new Res (false,'pw'));
                 } else {
                     let payload = { subject: user._id };//토큰에 오고 갈 정보 : id
                     var token = jwt.sign(payload, secret, { expiresIn: '24h' });//토큰 발급.

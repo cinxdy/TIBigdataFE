@@ -284,7 +284,7 @@ export class EPAuthService {
     // let res = await isOurUser$.toPromise();
     let isOurUser = await this.eCheckUser(user);
     console.log(isOurUser);
-    if (isOurUser) {//if this user is one of us, deny registration.
+    if (isOurUser.succ) {//if this user is one of us, deny registration.
       alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
       //비밀번호 찾기 페이지도 만들어야 한다. 
     }
@@ -308,7 +308,7 @@ export class EPAuthService {
 
     let isOurUser = await this.eCheckUser(user);
     console.log(isOurUser);
-    if (!isOurUser) {//if this user is one of us, deny registration.
+    if (!isOurUser.succ) {//if this user is one of us, deny registration.
       alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
       //비밀번호 찾기 페이지도 만들어야 한다. 
     }
