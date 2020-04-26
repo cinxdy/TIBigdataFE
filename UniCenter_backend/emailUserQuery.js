@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');//javscript with token lib
 var secret = 'harrypotter';//???? no use?
-
 const User = require('./models/user');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class Res{
     //there is no type restriction in typescript.
@@ -127,18 +129,27 @@ router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
 
     //if this user is new, allow to register.
-    var pw = jwt.sign(userData.password,secret);
-    userData.password = pw;//hide password
-    let user = new User(userData);
-    user.save((error, userData) => {//save new user data account
-        if (error) {
-            console.log(error)
-        } else {
-            console.log("api : email register : save ok, user info : ", userData);
-            let payload = { subject: userData._id };//new user id : subject => payload. create token.
-            var token = jwt.sign(payload, secret, { expiresIn: '24h' });//secret harry poter usage check required. //토큰 발급.
-            res.json(new Res(true, 'User registered!', {token: token, name : user.name, email : user.email}));//토큰 전송.
-        }
+    // var pw = jwt.sign(userData.password,secret);
+    // userData.password = pw;//hide password
+    // userData.password
+    bcrypt.genSalt(saltRounds, (err,salt)=>{
+        bcrypt.hash(userData.password, salt,(err,hash)=>{
+            userData.password = hash;
+            // console.log(userData);
+            let user = new User(userData);
+            user.save((error, userData) => {//save new user data account
+                if (error) {
+                    console.log(error)
+                } else {
+                    console.log("api : email register : save ok, user info : ", userData);
+                    let payload = { subject: userData._id };//new user id : subject => payload. create token.
+                    var token = jwt.sign(payload, secret, { expiresIn: '24h' });//secret harry poter usage check required. //토큰 발급.
+                    res.json(new Res(true, 'User registered!', {token: token, name : user.name, email : user.email}));//토큰 전송.
+                }
+            })
+
+
+        })
     })
 
 })
@@ -163,13 +174,16 @@ router.post('/login', (req, res) => {
                 res.json(new Res (false,'danger'));
             }
             else {
-                if (user.password !== userData.password) {
-                    res.json(new Res (false,'pw'));
-                } else {
-                    let payload = { subject: user._id };//토큰에 오고 갈 정보 : id
-                    var token = jwt.sign(payload, secret, { expiresIn: '24h' });//토큰 발급.
-                    res.json(new Res(true, 'User authenticated!', {token: token, name : user.name, email : user.email}));//토큰 전송
-                }
+                bcrypt.compare(userData.password, user.password, function(err, result) {
+                    if(result == false){//hash value incorrect
+                        res.json(new Res (false,'pw'));
+                    }
+                    else{
+                        let payload = { subject: user._id };//토큰에 오고 갈 정보 : id
+                        var token = jwt.sign(payload, secret, { expiresIn: '24h' });//토큰 발급.
+                        res.json(new Res(true, 'User authenticated!', {token: token, name : user.name, email : user.email}));//토큰 전송
+                    }
+                });
             }
         }
     })
