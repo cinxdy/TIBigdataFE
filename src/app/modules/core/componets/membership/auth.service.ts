@@ -206,9 +206,18 @@ export class EPAuthService {
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res => {
-            this.isLogIn = logStat.email;
+            // console.log(res);
+            // else {
+              //   this.isLogIn = logStat.google;//update token status 
+              // }
+              this.isLogIn = logStat.email;
+              this.profile = { name: res.payload.name, email: res.payload.email };
+                      if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
+                        this.isLogIn = logStat.SUPERUSER;
+                      }
+            // console.log(this.profile);
+            
             this.isLogInObs$.next(this.isLogIn);
-            this.profile = { name: res.info, email: undefined };
           },
           err => {
             console.log('error occurs! not email user : ', err);
@@ -284,7 +293,7 @@ export class EPAuthService {
         .subscribe(//perhaps return observable with response.
           res => {
             // console.log(res)
-            this.eAdmitUser(logStat.email, res);
+            this.confirmUser(logStat.email, res);
             alert("반갑습니다." + res.info.name + "님. 홈 화면으로 이동합니다.");
           },
           err => console.log(err)
@@ -308,7 +317,7 @@ export class EPAuthService {
       result$.subscribe(
         res => {
           // login succ
-          this.eAdmitUser(logStat.email, res);
+          this.confirmUser(logStat.email, res);
           //login fail. maybe wrong password or id?
         },
         err => {
@@ -318,7 +327,7 @@ export class EPAuthService {
     }
   }
 
-  eAdmitUser(stat: logStat, res): void {
+  confirmUser(stat: logStat, res): void {
     console.log(res);
     this.isLogIn = stat;
     localStorage.setItem('token', JSON.stringify(new storeToken(stat, res.payload.token)));

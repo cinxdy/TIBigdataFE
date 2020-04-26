@@ -19,7 +19,7 @@ class Res{
  * Request : Response : info
  * User login : success. fail(wrong password or eamil) : user info(name, token) or why fail
  * User register : success.
- * Token verification : valid or invalid
+ * Token verification : valid or invalid : name, email
  * User check : already our user or not our user
  * 
  * succ : true or false. 
@@ -35,7 +35,7 @@ class Res{
 
 
 //email verify code
-function verifyToken(req, res) {
+async function verifyToken(req, res) {
     console.log("verifyToken func has been inited!");
     // console.log(req.headers);
     // console.log(req.body);
@@ -68,10 +68,20 @@ function verifyToken(req, res) {
         }
 
         console.log(payload.subject);
-        var userId = payload.subject//need to know how the req is formed first....
+        var user_id = payload.subject//need to know how the req is formed first....
         //why do they again set value of req? not res?
         // next()//where does this function come from?
-        return res.status(200).send(new Res(true, "OK", userId));
+        console.log(user_id);
+        let name,email;
+        await User.findOne({ _id: user_id }, (error, user) => {
+            // console.log(user.name);
+            name = user.name;
+            email = user.email
+        })
+
+
+        return res.status(200).send(new Res(true, "OK", {name : name, email : email}));
+        // name : user.name, email : user.email
     }
     catch (err) {
         console.log("server error! : ", err);
@@ -163,8 +173,7 @@ router.post('/login', (req, res) => {
                 } else {
                     let payload = { subject: user._id };//토큰에 오고 갈 정보 : id
                     var token = jwt.sign(payload, secret, { expiresIn: '24h' });//토큰 발급.
-                    res.json(new Res(true, 'User authenticated!', {token: token, name : user.name}));//토큰 전송
-
+                    res.json(new Res(true, 'User authenticated!', {token: token, name : user.name, email : user.email}));//토큰 전송
                 }
             }
         }
