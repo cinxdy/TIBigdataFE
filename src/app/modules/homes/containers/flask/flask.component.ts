@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../body/search/service/elasticsearch-service/elasticsearch.service';
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
+import { IpService } from 'src/app/ip.service'
 
 import { Observable, of} from 'rxjs';
 
@@ -13,9 +14,9 @@ import { Observable, of} from 'rxjs';
   styleUrls: ['./flask.component.less']
 })
 export class FlaskComponent implements OnInit {
-
-  private BASE_URL: string = 'http://203.252.103.123:5000/wordrank';
-  private TEST_URL: string = 'http://localhost:5000/test';
+  private URL = this.ipService.getCommonIp();
+  private BASE_URL: string = this.URL+':5000/wordrank';
+  private TEST_URL: string = this.URL+':5000/test';
 
 
   private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
@@ -23,7 +24,7 @@ export class FlaskComponent implements OnInit {
   employeeData: JSON;
   searchKeyword;
 
-  constructor(private http:HttpClient, private es: ElasticsearchService) { }
+  constructor(private ipService : IpService,private http:HttpClient, private es: ElasticsearchService) { }
 
 
   options: CloudOptions = {

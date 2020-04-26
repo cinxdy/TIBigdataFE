@@ -1,6 +1,7 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
+            <a (click)="this.auth.forceLogOut()">강제 로그아웃(개발용)</a>
                 <table>
                     <th>
                         <div *ngIf="isLogin">
@@ -10,6 +11,7 @@
                             <td>
                                 <a (click)="toUserPage()">My Page</a>
                                 <a (click)="logOut()">로그아웃</a>
+                                <a *ngIf="isLogin==1" (click)="toControl()">SUPERUSER PAGE</a>
                             </td>
                         </div>
                         <div *ngIf = "!isLogin">

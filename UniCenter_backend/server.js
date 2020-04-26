@@ -28,7 +28,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/hst', hstQry);//hst 경로에서 항상 require("./hst") 호출한다. use : middleware 함수.
 app.use('/gUser',gUserQry);
-app.use('/eUSer',eUserQry);
+app.use('/eUser',eUserQry);
 //root dir
 app.get('/', function(req, res) {
     res.send('Hello from server');

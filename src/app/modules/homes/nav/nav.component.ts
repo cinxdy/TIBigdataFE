@@ -21,12 +21,13 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     //그냥 static 변수를 그대로 가지고 올 수 없는 이유 : afterviewinit error 발생.
     //service에서 observable으로 가지고 오는 것이 가장 편하다.
-    this.auth.getLogInObs().subscribe((res)=>{
-      console.log("stat update! ", res);
-      this.isLogin = res as any;
-      this.auth.setLogStat(res);
-      if(res > 0)//only when user is already login, update name
+    this.auth.getLogInObs().subscribe((logInStat)=>{
+      console.log("stat update! ", logInStat);
+      this.isLogin = logInStat as any;
+      this.auth.setLogStat(logInStat);
+      if(logInStat > 0)//only when user is already login, update name
         this.nowUser = this.auth.getUserName();
+      
     });
   }
   
@@ -102,6 +103,10 @@ export class NavComponent implements OnInit {
 
   toUserPage(){
     this._router.navigateByUrl("/membership/userpage");
+  }
+
+  toControl(){
+    this._router.navigateByUrl("/membership/control");
   }
 }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 // import { map } from 'rxjs/operators';
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
+import { IpService } from 'src/app/ip.service'
 
 @Component({
   selector: "app-search-history",
@@ -9,7 +10,9 @@ import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
   styleUrls: ["./search-history.component.less"],
 })
 export class SearchHistoryComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+        
+  constructor(private http: HttpClient,private ipService : IpService) {}
+  private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
   private hstFreq: any[];
   ngOnInit() {
     this.queryTotalHistory().then(() => {
@@ -30,29 +33,6 @@ export class SearchHistoryComponent implements OnInit {
           {
             dataPoints: 
             this.hstFreq
-            // [
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 3},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            //   {x: 1, y: 1},
-            // ]
-            // { x: new Date(2012, 1), y: 450 },
-            // { x: new Date(2012, 1), y: 414 },
-            // { x: new Date(2012, 1), y: 520 },
-            // { x: new Date(2012, 1), y: 460 },
-            // { x: new Date(2012, 1), y: 450 },
-            // { x: new Date(2012, 1), y: 500 },
-            // { x: new Date(2012, 1), y: 480 },
-            // { x: new Date(2012, 1), y: 480 },
-            // { x: new Date(2012, 1), y: 410 },
-            // { x: new Date(2012, 1), y: 500 },
-            // { x: new Date(2012, 1), y: 480 },
-            // { x: new Date(2012, 1), y: 510 }
           },
         ],
       });
@@ -63,7 +43,7 @@ export class SearchHistoryComponent implements OnInit {
   queryTotalHistory() {
     return new Promise((r) => {
       this.http
-        .get<any>("http://localhost:4000/hst/getTotalHistory")
+        .get<any>(this.hstReqUrl)
         .subscribe((res) => {
           var hst = res.histories;
           var keyArr = hst.map((hstrs) => hstrs.keyword);

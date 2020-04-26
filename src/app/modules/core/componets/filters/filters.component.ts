@@ -3,6 +3,7 @@ import { HttpClientModule, HttpClient} from '@angular/common/http';
 import { SourceMapGenerator } from '@angular/compiler/src/output/source_map';
 import { Observable} from 'rxjs'
 import {map, filter, switchMap} from 'rxjs/operators';
+import { IpService } from 'src/app/ip.service'
 
 interface Post{
   "postName" : string;
@@ -17,15 +18,17 @@ interface Post{
 /*export*/ class FiltersComponent implements OnInit {
 
   public post;
+  private URL = this.ipService.getCommonIp() + ":9200/victolee/blog/1/_source"
 
-  constructor(public http:HttpClient) { }
+  constructor(public http:HttpClient,private ipService : IpService
+    ) { }
 
   ngOnInit() {
     this.fetchPosts();
   }
 
   public fetchPosts() {
-    return this.http.get("http://localhost:9200/victolee/blog/1/_source")
+    return this.http.get(this.URL)
         .subscribe((data) => {
           this.post = data;
           console.log(this.post);
