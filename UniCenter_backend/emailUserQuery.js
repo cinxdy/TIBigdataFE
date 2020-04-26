@@ -127,8 +127,8 @@ router.post('/register', (req, res) => {
     let userData = req.body;//req.body. what is req form?
 
     //if this user is new, allow to register.
-    var pw = jwt.sign(userData.password);
-    // userData.password = pw;//hide password
+    var pw = jwt.sign(userData.password,secret);
+    userData.password = pw;//hide password
     let user = new User(userData);
     user.save((error, userData) => {//save new user data account
         if (error) {
@@ -137,7 +137,7 @@ router.post('/register', (req, res) => {
             console.log("api : email register : save ok, user info : ", userData);
             let payload = { subject: userData._id };//new user id : subject => payload. create token.
             var token = jwt.sign(payload, secret, { expiresIn: '24h' });//secret harry poter usage check required. //토큰 발급.
-            res.json(new Res(true, 'User registered!', {user: userData, token: token }));//토큰 전송.
+            res.json(new Res(true, 'User registered!', {token: token, name : user.name, email : user.email}));//토큰 전송.
         }
     })
 

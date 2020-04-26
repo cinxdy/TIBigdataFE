@@ -294,7 +294,7 @@ export class EPAuthService {
           res => {
             // console.log(res)
             this.confirmUser(logStat.email, res);
-            alert("반갑습니다." + res.info.name + "님. 홈 화면으로 이동합니다.");
+            alert("반갑습니다." + res.payload.name + "님. 홈 화면으로 이동합니다.");
           },
           err => console.log(err)
         )
@@ -317,8 +317,11 @@ export class EPAuthService {
       result$.subscribe(
         res => {
           // login succ
-          this.confirmUser(logStat.email, res);
+          if(res.succ)
+            this.confirmUser(logStat.email, res);
           //login fail. maybe wrong password or id?
+          if(res.succ)
+            alert("이메일 혹은 비밀번호가 잘못되었어요.");
         },
         err => {
           console.log(err)
