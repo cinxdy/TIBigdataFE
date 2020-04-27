@@ -33,6 +33,15 @@ class Res{
  * 
  * 
  */
+// router.get()
+// router.get('/getEuserList')
+router.get('/getEuserList',(req, res)=>{
+    console.log("get all user list init");
+    User.find((err, allUser)=>{
+        console.log(allUser);
+       res.status(200).send(new Res(true, "all user list",allUser));
+    });
+});
 
 
 

@@ -14,8 +14,8 @@ import {
 enum logStat {
   unsigned,//0
   SUPERUSER,//1
-  email,
-  google,
+  email,//2
+  google,//3
 }
 
 
@@ -208,15 +208,15 @@ export class EPAuthService {
           res => {
             // console.log(res);
             // else {
-              //   this.isLogIn = logStat.google;//update token status 
-              // }
-              this.isLogIn = logStat.email;
-              this.profile = { name: res.payload.name, email: res.payload.email };
-                      if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
-                        this.isLogIn = logStat.SUPERUSER;
-                      }
+            //   this.isLogIn = logStat.google;//update token status 
+            // }
+            this.isLogIn = logStat.email;
+            this.profile = { name: res.payload.name, email: res.payload.email };
+            if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
+              this.isLogIn = logStat.SUPERUSER;
+            }
             // console.log(this.profile);
-            
+
             this.isLogInObs$.next(this.isLogIn);
           },
           err => {
@@ -236,11 +236,13 @@ export class EPAuthService {
 
   addSrchHst(keyword: string): void {
     // console.log(this.socUser);
+    let userEmail = undefined;
+
+
     let bundle;
     if (this.isLogIn)
-      bundle = { login: true, user: this.socUser, key: keyword }
-    else
-      bundle = { login: false, key: keyword }
+      userEmail = this.profile.email;
+    bundle = { login: this.isLogIn, user: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
       this.schHst = res.history;
       console.log("personal history : ", this.schHst);
@@ -318,10 +320,10 @@ export class EPAuthService {
         res => {
           console.log(res)
           // login succ
-          if(res.succ)
+          if (res.succ)
             this.confirmUser(logStat.email, res);
           //login fail. maybe wrong password or id?
-          if(!res.succ)
+          if (!res.succ)
             alert("이메일 혹은 비밀번호가 잘못되었어요.");
         },
         err => {

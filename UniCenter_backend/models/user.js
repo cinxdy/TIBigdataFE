@@ -8,7 +8,8 @@ const userSchema = new Schema({
     name : String,
     inst : String,//institution
     email:String,
-    password: String
+    password: String,
+    history : []
     // severity: String
 })
 

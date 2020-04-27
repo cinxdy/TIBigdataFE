@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
+// const path = require('path');
 
 const app = express();
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
