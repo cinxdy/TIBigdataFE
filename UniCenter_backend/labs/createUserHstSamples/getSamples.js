@@ -1,8 +1,14 @@
 var spawn = require('child_process').spawn;
+const ipMdodule = require('ip');
+const ip = ipMdodule.address()
+console.log(ip);
+var cmd = "python"
+const SERVER_IP = "203.252.103.123"
+if(ip == SERVER_IP)
+    cmd += "3"
 const pyDir = "../../../../TIBigdataMiddleware/Labs/sample user history"
-var py = spawn('python', ['history.py'], { cwd: pyDir });
+var py = spawn(cmd, ['history.py'], { cwd: pyDir });
 const fs = require('fs');
-
 const hst = require('../../models/history');
 
 const express = require('express');
