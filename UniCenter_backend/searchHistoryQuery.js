@@ -130,9 +130,23 @@ router.get('/showHistory', (req, res) => {
     });
 })
 
-router.get('/getTotalHistory', (req, res) => {
+router.get('/getHistoryCount',(req,res)=>{
+    if(err)
+        console.log("get history count error");
+    else{
+        hst.count(null,(err,count)=>{
+            res.send(count);
+        })
+    }
+})
+
+router.post('/getTotalHistory', (req, res) => {
+    var payload = req.body;
+    var idx = payload.startIdx;
+    var n = payload.num;
+
     // console.log("get total history func init");
-    hst.find({}, (err, hstrs) => {
+    hst.find({skip:idx, limit : n}, (err, hstrs) => {
         if (err)
             console.log("get total history err")
         // console.log(hstrs);

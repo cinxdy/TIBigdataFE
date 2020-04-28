@@ -70,8 +70,14 @@ async function verifyToken(req, res) {
             console.log("payload : ", payload);
         }
         catch (err) {
-            console.log("jwt verify error!");
-            return res.status(401).send(new Res(false,"token unverified!"));
+            if(err.message==="jwt expired"){
+                return res.status(200).send(new Res(false,"expired"));
+            }
+
+            else{
+                console.log("jwt verify error!", err);
+                return res.status(401).send(new Res(false,"token unverified!"));
+            }
         }
         //if decoded is not wrong? invalid? how invalid then?
         if (!payload) {
