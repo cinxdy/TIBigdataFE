@@ -25,4 +25,8 @@ export class UserpageComponent implements OnInit {
         this.nowUser = user; });
     }
 
+    gSignOut(){
+      this._gauth.signOut();
+    }
+
 }

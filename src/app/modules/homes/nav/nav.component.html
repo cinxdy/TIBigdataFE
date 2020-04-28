@@ -1,9 +1,30 @@
 <div class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-right ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <a (click)="this.auth.forceLogOut()">강제 로그아웃(개발용)</a>
+            <div *ngIf="isLogin">
+                <ul class="uk-navbar-nav uk-visible@m">
+                    <li><a href="#">안녕하세요 {{nowUser}} 님</a></li> 
+                    <li><a (click)="toUserPage()">My Page</a></li>                    
+                    <li><a (click)="logOut()">로그아웃</a></li>    
+                    <li><a *ngIf="isLogin==1" (click)="toControl()">SUPERUSER</a></li>
+                </ul>
+            </div>
+            <div *ngIf = "!isLogin">
+                <ul class="uk-navbar-nav uk-visible@m">
+                    <li><a (click)="toLogin()">로그인</a> </li>
+                    <li><a (click)="toRegister()">회원가입</a></li>
+                </ul>
+            </div>
+                <li><a (click)="ready()">사이트맵</a></li>
+                <li><a (click)="this.auth.forceLogOut()" >강제 로그아웃(개발용)</a></li>
+        </ul>
+    </div>
+</div>
+<!--
+
+
                 <table>
-                    <th>
+                    <th>                        
                         <div *ngIf="isLogin">
                             <td>
                                 <a href="#">안녕하세요, {{nowUser}} 님</a>
@@ -14,16 +35,19 @@
                                 <a *ngIf="isLogin==1" (click)="toControl()">SUPERUSER PAGE</a>
                             </td>
                         </div>
+
                         <div *ngIf = "!isLogin">
-                            <li><a (click)="toLogin()">로그인</a></li>
-                            <li><a (click)="toRegister()">회원가입</a></li>
+                            <td>
+                                <li><a (click)="toLogin()">로그인</a></li>
+                            </td>
+
+                            <td>
+                                <li><a (click)="toRegister()">회원가입</a></li>
+                            </td>
                         </div>
                     </th>
-                </table>           
-            <li><a (click)="LineChart()">사이트맵</a></li>
-        </ul>
-    </div>
-</div>
+                </table>      
+ -->                              
 
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left uk-flex-nowrap">
