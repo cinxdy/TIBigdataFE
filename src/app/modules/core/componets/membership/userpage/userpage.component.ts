@@ -28,5 +28,13 @@ export class UserpageComponent implements OnInit {
     gSignOut(){
       this._gauth.signOut();
     }
-
+    showCookie(){
+      alert(document.cookie);
+    }
+  
+    changeCookie(){
+      document.cookie = 'same-site-cookie=foo; SameSite=Lax';
+      document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
+      alert(document.cookie);
+    }
 }
