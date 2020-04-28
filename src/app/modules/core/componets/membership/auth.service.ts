@@ -317,11 +317,12 @@ export class EPAuthService {
       var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
       result$.subscribe(
         res => {
+          console.log(res)
           // login succ
           if(res.succ)
             this.confirmUser(logStat.email, res);
           //login fail. maybe wrong password or id?
-          if(res.succ)
+          if(!res.succ)
             alert("이메일 혹은 비밀번호가 잘못되었어요.");
         },
         err => {
