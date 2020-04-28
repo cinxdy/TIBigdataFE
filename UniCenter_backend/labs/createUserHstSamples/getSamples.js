@@ -24,26 +24,26 @@ const PORT = 4000;
 const db = 'mongodb://localhost:27017/user';
 
 
-// mongoose.connect(db, err => {
-//     if (err) {
-//         console.error('Error!' + err)
-//     } else {
-//         console.log('Connected to mongodb');
-//     }
-// });
+mongoose.connect(db, err => {
+    if (err) {
+        console.error('Error!' + err)
+    } else {
+        console.log('Connected to mongodb');
+    }
+});
 
-// app.use(cors());
-// app.use(bodyParser.json());
+app.use(cors());
+app.use(bodyParser.json());
 
-// //root dir
-// app.get('/', function (req, res) {
-//     res.send('Hello from server');
-// })
+//root dir
+app.get('/', function (req, res) {
+    res.send('Hello from server');
+})
 
-// //server listen with no time interval?
-// app.listen(PORT, function () {
-//     console.log('Express server running on port ' + PORT)
-// });
+//server listen with no time interval?
+app.listen(PORT, function () {
+    console.log('Express server running on port ' + PORT)
+});
 
 py.stdout.on('data', (d) => {
     console.log("startd...");
