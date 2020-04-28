@@ -40,6 +40,7 @@ const db = 'mongodb://localhost:27017/user';
 // });
 
 py.stdout.on('data', (d) => {
+    console.log("startd...");
     var rawdata = fs.readFileSync(pyDir + '/tokened_history.json');
     let data = JSON.parse(rawdata);
     console.log(data.length);
