@@ -14,6 +14,7 @@ export class SearchHistoryComponent implements OnInit {
   constructor(private http: HttpClient,private ipService : IpService) {}
   private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
   private hstFreq: any[];
+  private isChartReady : boolean = false;
   ngOnInit() {
     this.queryTotalHistory().then(() => {
       // console.log(this.hstFreq);
@@ -37,6 +38,7 @@ export class SearchHistoryComponent implements OnInit {
         ],
       });
       chart.render();
+      this.isChartReady = true;
     });
   }
 
