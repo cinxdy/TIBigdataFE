@@ -78,7 +78,7 @@ router.post('/addHistory', (req, res) => {
         else {//email or super user
             anyUser = eUser;
         }
-        
+
         let userData = bundle.user;
         anyUser.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
             if (err) {
@@ -130,14 +130,15 @@ router.get('/showHistory', (req, res) => {
     });
 })
 
-router.get('/getHistoryCount',(req,res)=>{
-    if(err)
-        console.log("get history count error");
-    else{
-        hst.count(null,(err,count)=>{
-            res.send(count);
-        })
-    }
+router.get('/getHistoryCount', (req, res) => {
+    hst.count(null, (err, count) => {
+        if (err) {
+            console.log("get history count error");
+            res.status(401);
+        }
+        else
+            res.json({ count: count });
+    })
 })
 
 router.post('/getTotalHistory', (req, res) => {
@@ -146,9 +147,27 @@ router.post('/getTotalHistory', (req, res) => {
     var n = payload.num;
 
     // console.log("get total history func init");
-    hst.find({skip:idx, limit : n}, (err, hstrs) => {
+    // var query = 
+    hst.find({})
+        .skip(idx)
+        .limit(n)
+        .exec(
+            (err, hstrs) => {
+                if (err)
+                    console.log("post : get total history err")
+                // console.log(hstrs);
+                console.log("post total history ok")
+                res.send({ histories: hstrs })
+            });
+});
+
+router.get('/getTotalHistory', (req, res) => {
+    // var result = hst.find({});
+    // console.log(result);
+
+    hst.find({}, (err, hstrs) => {
         if (err)
-            console.log("get total history err")
+            console.log("post : get total history err")
         // console.log(hstrs);
         res.send({ histories: hstrs })
     });
