@@ -8,7 +8,18 @@
     <img src="{{nowUser.photoUrl}}">
     <h4>{{nowUser.name}} 님 안녕하세요</h4>
     <p>{{nowUser.email}}</p>
+
+    <button type="submit" (click)="gSignOut()" class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글 로그아웃</a></button>
 </div>
+
+<div class="text-center social-btn">
+    <a (click)="showCookie()" class="btn btn-primary btn-block"><i class="fa fa-cogs"></i>쿠키체크</a>
+</div>
+
+<div class="text-center social-btn">
+    <a (click)="changeCookie()" class="btn btn-success btn-block"><i class="fa fa-cog"></i>쿠키변경</a>
+</div>
+
 <div>
     관심있는 문서
 </div>
