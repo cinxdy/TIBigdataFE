@@ -17,6 +17,7 @@ export class SearchHistoryComponent implements OnInit {
   private isChartReady : boolean = false;
   ngOnInit() {
     this.queryTotalHistory().then(() => {
+      console.log("start hist")
       // console.log(this.hstFreq);
       let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -39,6 +40,8 @@ export class SearchHistoryComponent implements OnInit {
       });
       chart.render();
       this.isChartReady = true;
+      console.log(this.isChartReady)
+      console.log("show me if you ve done really truely")
     });
   }
 
