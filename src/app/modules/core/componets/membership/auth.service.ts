@@ -206,18 +206,27 @@ export class EPAuthService {
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res => {
-            // console.log(res);
-            // else {
-            //   this.isLogIn = logStat.google;//update token status 
-            // }
-            this.isLogIn = logStat.email;
-            this.profile = { name: res.payload.name, email: res.payload.email };
-            if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
-              this.isLogIn = logStat.SUPERUSER;
+            if(res.succ){//token verify success
+              // console.log(res);
+              // else {
+              //   this.isLogIn = logStat.google;//update token status 
+              // }
+              this.isLogIn = logStat.email;
+              this.profile = { name: res.payload.name, email: res.payload.email };
+              if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
+                this.isLogIn = logStat.SUPERUSER;
+              }
+              // console.log(this.profile);
+  
+              this.isLogInObs$.next(this.isLogIn);
             }
-            // console.log(this.profile);
-
-            this.isLogInObs$.next(this.isLogIn);
+            else{//toekn verify failed
+              if(res.msg == "expired"){
+                alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+                this.eLogoutUser();
+                this.router.navigate(['/homes']);
+              }
+            }
           },
           err => {
             console.log('error occurs! not email user : ', err);

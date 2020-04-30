@@ -14,8 +14,10 @@ export class SearchHistoryComponent implements OnInit {
   constructor(private http: HttpClient,private ipService : IpService) {}
   private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
   private hstFreq: any[];
+  private isChartReady : boolean = false;
   ngOnInit() {
     this.queryTotalHistory().then(() => {
+      console.log("start hist")
       // console.log(this.hstFreq);
       let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -36,7 +38,9 @@ export class SearchHistoryComponent implements OnInit {
           },
         ],
       });
+      this.isChartReady = true;
       chart.render();
+      console.log(this.isChartReady)
     });
   }
 
@@ -45,6 +49,7 @@ export class SearchHistoryComponent implements OnInit {
       this.http
         .get<any>(this.hstReqUrl)
         .subscribe((res) => {
+          console.log(res);
           var hst = res.histories;
           var keyArr = hst.map((hstrs) => hstrs.keyword);
           keyArr = keyArr.sort();
