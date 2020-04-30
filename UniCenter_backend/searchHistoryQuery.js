@@ -12,6 +12,8 @@ const userModel = {
     history: []
 };
 
+sortAndCount();
+
 /**
  * @CommonFunctions
  * 
@@ -168,16 +170,105 @@ router.get('/getTotalHistory', (req, res) => {
         .limit(30)
     // console.log(hstResult);
     hstResult.exec(
-            (err, hstrs) => {
-                if (err)
-                    console.log("post : get total history err")
-                console.log(hstrs);
-                res.send({ histories: hstrs })
-            }
+        (err, hstrs) => {
+            if (err)
+                console.log("post : get total history err")
+            console.log(hstrs);
+            res.send({ histories: hstrs })
+        }
 
-        )
+    )
 
 });
+
+
+router.get('/distintTest', sortAndCount)
+//sort search history data
+function sortAndCount() {
+
+    let lim = 1500;
+
+    hst.distinct("keyword", (err, key) => {
+        console.log(key.length,"unique words");
+        var keyFreq = [];
+        //top 5 frequent keyword container
+        var topKey = [];
+        //find the top 5 frequent
+        var limDone = false;
+        new Promise((resolve) => {
+
+
+            for (var i = 0; i < lim; i++) {
+                //asyncronous
+                let k = key[i];//must be let. let use independent object var.
+                // useful for asyncronous method.
+                let idx = i;
+                hst.countDocuments({ keyword: k })
+                    .exec((err, count) => {
+                        // console.log(k, " : ");
+                        // console.log(count);
+                        keyFreq.push([k, count]);
+
+                        if (idx >= lim-1) {
+                            resolve()
+                        }
+                    })
+
+                //hybrid
+                // should maintain until the value is passed...
+                // new Promise((resolve) => {
+                //     hst.count({ keyword: key[i] }, (err, count) => {
+                //         let k = key[i];
+                //         resolve();
+                //         console.log(k, " : ");
+                //         console.log(count);
+                //     })
+                // })
+
+
+
+                //syncronous
+                // new Promise((resolve)=>{
+                //     var k = key[i];
+                //     var v = hst.count({keyword : k})
+                //      v.exec( (err, count) => {
+                //         console.log(k, " : ", );
+                //         console.log(count);
+                //         resolve();
+                //     })
+                // })
+            }//for
+        }).then(() => {
+            console.log("sort?")
+            for (var i = 0; i < lim; i++) {
+                // console.log(keyFreq[i])
+                if (i > lim) break;
+            }//for
+            let s = Date.now()
+            keyFreq = keyFreq.sort((a, b) => b[1] - a[1]);
+            let e = Date.now()
+            let elapse = e - s;
+            var tmp;
+            var sec = Math.floor(elapse % 60);
+            tmp = elapse / 60;
+            var min = Math.floor(tmp % 60);
+            tmp = tmp / 60;
+            var hour = Math.floor(tmp % 60);
+            console.log("sort!")
+            console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+            for (var i = 0;i < lim; i++) {
+                // console.log(keyFreq[i])
+                if (i > lim) break;
+            }//for
+
+            for (var i = 0; i < 5; i++) {
+                topKey.push(keyFreq[i]);
+            }
+            console.log("top key 5")
+            console.log(topKey);
+        })//then
+    })//distinct
+}
 
 const User = require('./models/user');
 
