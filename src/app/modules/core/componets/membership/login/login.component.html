@@ -22,37 +22,44 @@
         </div>
         <!-- email login button -->
         <div class="form-group">
-            <button type="submit" (click)="eLogIn()" class="btn btn-success btn-block login-btn">로그인</button>
+            <button type="submit" (click)="eLogIn()" class="btn btn-primary btn-block login-btn">로그인</button>
         </div>
 
 
         <!-- additinonal feature -->
         <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox"> 로그인 유지</label>
-            <a href="#" class="pull-right text-success">비밀번호를 잊어버리셨나요?</a>
+            <label class="pull-left checkbox-inline"><input type="checkbox"> 로그인 유지</label> 
+            <div style="text-align: center;">
+                <a (click)="toRegister()" class="text-success">회원가입</a>
+                <a href="#" class="pull-right text-success">비밀번호 찾기 </a>
+            </div>
         </div>
 
-        <div class="or-seperator"><i>or</i></div>
-        <h2>Social Login</h2>
 
-        <!-- google social login -->
+        <div class="or-seperator"><i>소셜 네트워크 로그인</i></div>
+
+        <!-- 구글 로그인
         <div class="text-center social-btn">
             <a (click)="gLogIn()" class="btn btn-danger btn-block"><i class="fa fa-google"></i><b>Google 계정</b>으로 로그인</a>
+        </div>
+        -->
+
+        <div class="text-center social-btn" style="color: white;">
+            <a (click)="gLogIn()">
+                <img src="../../../../../../assets/google_Login.png" alt="google">
+            </a>
         </div>
 
     </form>
 
-    <!-- 회원가입 -->
-    <div class="hint-text small">계정이 없으신가요? <a (click)="toRegister()" class="text-success">회원가입!</a></div>
 
-    <div class="form-group">
-        <button type="submit" (click)="signOut()" class="btn btn-success btn-block login-btn">로그아웃</button>
-    </div>
+
+<!--
     <div *ngIf="user;">
         <img src="{{user.photoUrl}} 안녕하세요">
         <h4>{{user.name}}</h4>
         <p>{{user.email}}</p>
     </div>
-
+-->
 
 </div>

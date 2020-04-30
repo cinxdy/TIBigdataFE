@@ -63,7 +63,9 @@ export class NavComponent implements OnInit {
     this.auth.logOut();
   }
 
-
+  ready(){
+    alert("준비중입니다");
+  }
   //routers
   navigateSpecials(){
     this._router.navigateByUrl("/specials");

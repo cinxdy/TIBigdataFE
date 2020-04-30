@@ -289,6 +289,7 @@ export class EPAuthService {
     if (isOurUser.succ) {//if this user is one of us, deny registration.
       alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
       //비밀번호 찾기 페이지도 만들어야 한다. 
+      this.router.navigateByUrl("/membership/login");
     }
     else {
       this.http.post<any>(this.EMAIL_REG_URL, user)
