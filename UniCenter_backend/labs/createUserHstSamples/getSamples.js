@@ -79,10 +79,7 @@ py.stdout.on('data', (d) => {
                     // console.log("add " + count + "th new history");
                 }
             });
-            // console.log(t);
-            // if(j > 10) break
         }
-        // break;
 
     }
 })
