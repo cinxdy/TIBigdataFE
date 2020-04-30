@@ -38,10 +38,9 @@ export class SearchHistoryComponent implements OnInit {
           },
         ],
       });
-      chart.render();
       this.isChartReady = true;
+      chart.render();
       console.log(this.isChartReady)
-      console.log("show me if you ve done really truely")
     });
   }
 
@@ -50,6 +49,7 @@ export class SearchHistoryComponent implements OnInit {
       this.http
         .get<any>(this.hstReqUrl)
         .subscribe((res) => {
+          console.log(res);
           var hst = res.histories;
           var keyArr = hst.map((hstrs) => hstrs.keyword);
           keyArr = keyArr.sort();

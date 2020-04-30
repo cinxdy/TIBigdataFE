@@ -164,13 +164,19 @@ router.post('/getTotalHistory', (req, res) => {
 router.get('/getTotalHistory', (req, res) => {
     // var result = hst.find({});
     // console.log(result);
+    var hstResult = hst.find({})
+        .limit(30)
+    // console.log(hstResult);
+    hstResult.exec(
+            (err, hstrs) => {
+                if (err)
+                    console.log("post : get total history err")
+                console.log(hstrs);
+                res.send({ histories: hstrs })
+            }
 
-    hst.find({}, (err, hstrs) => {
-        if (err)
-            console.log("post : get total history err")
-        // console.log(hstrs);
-        res.send({ histories: hstrs })
-    });
+        )
+
 });
 
 const User = require('./models/user');
