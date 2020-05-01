@@ -10,13 +10,15 @@ import { IpService } from 'src/app/ip.service'
   styleUrls: ["./search-history.component.less"],
 })
 export class SearchHistoryComponent implements OnInit {
-        
-  constructor(private http: HttpClient,private ipService : IpService) {}
-  private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
+
+  constructor(private http: HttpClient, private ipService: IpService) { }
+  private allHstReqUrl = this.ipService.getCommonIp() + ":4000/hst/getTotalHistory";
+  private sortHstFreqReqUrl = this.ipService.getCommonIp() + ":4000/hst/getSortFreqHistory";
   private hstFreq: any[];
-  private isChartReady : boolean = false;
+  private isChartReady: boolean = false;
   ngOnInit() {
-    this.queryTotalHistory().then(() => {
+    this.getSortHistory().then(() => {
+    // this.queryTotalHistory().then(() => {
       console.log("start hist")
       // console.log(this.hstFreq);
       let chart = new CanvasJS.Chart("chartContainer", {
@@ -33,8 +35,8 @@ export class SearchHistoryComponent implements OnInit {
         },
         data: [
           {
-            dataPoints: 
-            this.hstFreq
+            dataPoints:
+              this.hstFreq
           },
         ],
       });
@@ -44,10 +46,11 @@ export class SearchHistoryComponent implements OnInit {
     });
   }
 
+  //get total history and how by ABC order
   queryTotalHistory() {
     return new Promise((r) => {
       this.http
-        .get<any>(this.hstReqUrl)
+        .get<any>(this.allHstReqUrl)
         .subscribe((res) => {
           console.log(res);
           var hst = res.histories;
@@ -63,7 +66,7 @@ export class SearchHistoryComponent implements OnInit {
               continue;
             }
             // freqTable.push(keyArr[i],count);
-            freqTable.push({ x: idxUniq, y: count, label : keyArr[i] });
+            freqTable.push({ x: idxUniq, y: count, label: keyArr[i] });
             idxUniq++;
             count = 1;
           }
@@ -74,5 +77,43 @@ export class SearchHistoryComponent implements OnInit {
     });
 
     // getTotalHistory
+  }
+
+  //get sorted history by frequency
+  getSortHistory() {
+    return new Promise((r) => {
+      this.http
+        .get<any>(this.sortHstFreqReqUrl)
+        .subscribe((res) => {
+          console.log(res);
+          
+          var freqTable = [];
+          for (var i = 0; i < res.length; i++) {
+            // res[i][0] //key
+            // res[i][1] //freq
+            freqTable.push({ x: i, y: res[i][1], label: res[i][0] });
+          }
+
+          // var hst = res.histories;
+          // var keyArr = hst.map((hstrs) => hstrs.keyword);
+          // keyArr = keyArr.sort();
+          // var lenArr = keyArr.length;
+          // var count = 1;
+          // var idxUniq = 0;
+          // for (var i = 0; i < lenArr - 1; i++) {
+          //   if (keyArr[i] == keyArr[i + 1]) {
+          //     count++;
+          //     continue;
+          //   }
+          //   // freqTable.push(keyArr[i],count);
+          //   freqTable.push({ x: idxUniq, y: count, label: keyArr[i] });
+          //   idxUniq++;
+          //   count = 1;
+          // }
+          this.hstFreq = freqTable;
+
+          r();
+        });
+    });
   }
 }

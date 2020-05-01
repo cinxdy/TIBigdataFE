@@ -12,7 +12,7 @@ const userModel = {
     history: []
 };
 
-sortAndCount();
+
 
 /**
  * @CommonFunctions
@@ -181,24 +181,109 @@ router.get('/getTotalHistory', (req, res) => {
 
 });
 
+//debug
+countByMonth()
 
-router.get('/distintTest', sortAndCount)
+function countByMonth() {
+    /**
+     * each month
+     * each time
+     * 
+     * found if people search specific words.
+     * 
+     * top 3 keywords by each month
+     */
+
+    hst.distinct("month", (err, months) => {
+        console.log(months);
+        let keyInMth = [];
+        len = months.length;
+        new Promise((resolve) => {
+            for (var i = 0; i < len; i++) {
+                //asyncronous
+                let m = months[i];//must be let. let use independent object var.
+                // useful for asyncronous method.
+                let idx = i;
+                let keyFreq = [];
+                hst.find({ month: m })
+                    .exec((err, keys) => {
+                        // console.log(keys);
+                        for(var j = 0 ; j < keys.length; j++){
+                            // console.log(keys[j]);
+                            keyFreq.push(keys[j].keyword);
+                            
+                            if(j > 10)
+                            break;
+                        }
+                        keyInMth.push([m,keyFreq]);
+                        // console.log(m, " : ");
+                        // console.log(keyFreq)
+
+                        //guarantee all months data stored fin.
+                        idx++
+                        console.log(m,"th month : ", keyFreq);
+                        if (idx >= len - 1) {
+                            console.log("\n\n\n\n----------- len : ", len, ", idx check : ", idx,"-----------\n\n\n\n");
+                            resolve()
+                        }
+                    })
+            }//for
+        }).then(() => {
+            console.log("\n\n\n\n-----------sort?-----------\n\n\n\n")
+            for (var i = 0; i < len; i++) {
+                // console.log(keyInMth[i])
+                // if (i > len) break;
+            }//for
+            // let s = Date.now()
+            // keyFreq = keyFreq.sort((a, b) => b[1] - a[1]);
+            // let e = Date.now()
+            // let elapse = e - s;
+            // var tmp;
+            // var sec = Math.floor(elapse % 60);
+            // tmp = elapse / 60;
+            // var min = Math.floor(tmp % 60);
+            // tmp = tmp / 60;
+            // var hour = Math.floor(tmp % 60);
+            // console.log("sort!")
+            // console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+            // for (var i = 0; i < len; i++) {
+            //     // console.log(keyFreq[i])
+            //     if (i > len) break;
+            // }//for
+
+            // for (var i = 0; i < topX; i++) {
+            //     topKey.push(keyFreq[i]);
+            // }
+            // console.log("top key ", topX)
+            // console.log(topKey);
+            // return res.status(200).json(topKey)
+        })//then
+    })
+}
+
+router.get('/getSortFreqHistory', countByFreq);
+
+
+//debug
+//run node server.js
+// sortAndCountFreq();
+
 //sort search history data
-function sortAndCount() {
+function countByFreq(req, res) {
 
-    let lim = 1500;
+    let LIM = 1500;
+    let topX = 20;
 
     hst.distinct("keyword", (err, key) => {
-        console.log(key.length,"unique words");
+        console.log(key.length, "unique words");
         var keyFreq = [];
-        //top 5 frequent keyword container
+        //top topX frequent keyword container
         var topKey = [];
-        //find the top 5 frequent
-        var limDone = false;
+        //find the top topX frequent
         new Promise((resolve) => {
 
 
-            for (var i = 0; i < lim; i++) {
+            for (var i = 0; i < LIM; i++) {
                 //asyncronous
                 let k = key[i];//must be let. let use independent object var.
                 // useful for asyncronous method.
@@ -209,7 +294,8 @@ function sortAndCount() {
                         // console.log(count);
                         keyFreq.push([k, count]);
 
-                        if (idx >= lim-1) {
+                        //must guarantee all keywords freq is stored fin.
+                        if (idx >= LIM - 1) {
                             resolve()
                         }
                     })
@@ -240,9 +326,9 @@ function sortAndCount() {
             }//for
         }).then(() => {
             console.log("sort?")
-            for (var i = 0; i < lim; i++) {
+            for (var i = 0; i < LIM; i++) {
                 // console.log(keyFreq[i])
-                if (i > lim) break;
+                if (i > LIM) break;
             }//for
             let s = Date.now()
             keyFreq = keyFreq.sort((a, b) => b[1] - a[1]);
@@ -256,16 +342,17 @@ function sortAndCount() {
             var hour = Math.floor(tmp % 60);
             console.log("sort!")
             console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
-            for (var i = 0;i < lim; i++) {
+            for (var i = 0; i < LIM; i++) {
                 // console.log(keyFreq[i])
-                if (i > lim) break;
+                if (i > LIM) break;
             }//for
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < topX; i++) {
                 topKey.push(keyFreq[i]);
             }
-            console.log("top key 5")
+            console.log("top key ", topX)
             console.log(topKey);
+            return res.status(200).json(topKey)
         })//then
     })//distinct
 }
