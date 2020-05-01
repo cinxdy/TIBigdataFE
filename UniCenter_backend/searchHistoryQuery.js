@@ -199,11 +199,11 @@ function countByMonth() {
         let keyInMth = [];
         len = months.length;
         new Promise((resolve) => {
+            let idx = 0;
             for (var i = 0; i < len; i++) {
                 //asyncronous
                 let m = months[i];//must be let. let use independent object var.
                 // useful for asyncronous method.
-                let idx = i;
                 let keyFreq = [];
                 hst.find({ month: m })
                     .exec((err, keys) => {
@@ -212,40 +212,45 @@ function countByMonth() {
                             // console.log(keys[j]);
                             keyFreq.push(keys[j].keyword);
                             
-                            if(j > 10)
-                            break;
+                            // if(j > 10)
+                            // break;
                         }
                         keyInMth.push([m,keyFreq]);
-                        // console.log(m, " : ");
-                        // console.log(keyFreq)
 
                         //guarantee all months data stored fin.
+                        // console.log(m,"th month : ", keyFreq);
                         idx++
-                        console.log(m,"th month : ", keyFreq);
-                        if (idx >= len - 1) {
-                            console.log("\n\n\n\n----------- len : ", len, ", idx check : ", idx,"-----------\n\n\n\n");
+                        if (idx >= len) {
+                            console.log("\n----------- len : ", len, ", idx check : ", idx,"-----------\n");
                             resolve()
                         }
                     })
             }//for
         }).then(() => {
-            console.log("\n\n\n\n-----------sort?-----------\n\n\n\n")
+            console.log("\n-----------sort?-----------\n")
             for (var i = 0; i < len; i++) {
-                // console.log(keyInMth[i])
-                // if (i > len) break;
+                // console.log(keyInMth[i][1])
+                let s = Date.now()
+                keyInMth[i][1] = keyInMth[i][1].sort();
+                let e = Date.now()
+                let elapse = e - s;
+                var tmp;
+                var sec = Math.floor(elapse % 60);
+                tmp = elapse / 60;
+                var min = Math.floor(tmp % 60);
+                tmp = tmp / 60;
+                var hour = Math.floor(tmp % 60);
+                // console.log(keyInMth[i][1])
+                console.log(i+1, "th month sort fin!");
+                console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec\n\n");
             }//for
-            // let s = Date.now()
-            // keyFreq = keyFreq.sort((a, b) => b[1] - a[1]);
-            // let e = Date.now()
-            // let elapse = e - s;
-            // var tmp;
-            // var sec = Math.floor(elapse % 60);
-            // tmp = elapse / 60;
-            // var min = Math.floor(tmp % 60);
-            // tmp = tmp / 60;
-            // var hour = Math.floor(tmp % 60);
-            // console.log("sort!")
-            // console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+            
+            //check if sort work for each month
+            // console.log(keyInMth[11]);
+
+
+
+
             // for (var i = 0; i < len; i++) {
             //     // console.log(keyFreq[i])
             //     if (i > len) break;
