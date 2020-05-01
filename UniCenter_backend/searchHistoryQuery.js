@@ -182,13 +182,15 @@ router.get('/getTotalHistory', (req, res) => {
 });
 
 //debug
-countByMonth()
+// countByMonth()
 
-router.get('/getMonthFreqHistory',(req,res)=>{
-    result = countByMonth();
+router.get('/getMonthFreqHistory', async (req, res) => {
+    result = await countByMonth();
+    console.log("month func load fin")
+    console.log(result)
     res.status(200).json(result);
 });
-function countByMonth() {
+async function countByMonth() {
     /**
      * each month
      * each time
@@ -204,30 +206,36 @@ function countByMonth() {
      * then get top X frequent keywords.
      */
 
-    
-     
-    
-    hst.distinct("month").exec( (err, mth) => {
-        let keyInMth = [];
-        let idx = 0; 
-        let numMonth = mth.length;
-        for (var i = 0; i < mth.length; i++) {
-            var m = hst.find({ month: mth[i] });
 
-            let numKey = m.length;
-            let result = countByFreq(numKey, 3, m);
-            keyInMth.push([m,result]);
-            idx ++;//use asyncronous for performance
 
-            // console.log("\n----------", mth[i], "th month result : ");
-            // console.log(result);
-            // console.log("----------\n")
-        }
-        if(idx >=numMonth )
-            return keyInMth;
-    })
+    return new Promise((r) => {//
 
-    
+        hst.distinct("month").exec( async (err, mth) => {//
+            let keyInMth = [];
+            let idx = 0;
+            let numMonth = mth.length;
+            for (var i = 0; i < mth.length; i++) {
+                var m = hst.find({ month: mth[i] });
+
+                let numKey = m.length;
+                let result = await countByFreq(numKey, 3, m);
+                console.log("\n\n----------debugging : ");
+                console.log(result);
+                console.log("----------\n\n")
+                keyInMth.push([mth[i], result]);
+                idx++;//use asyncronous for performance
+
+                // console.log("\n----------", mth[i], "th month result : ");
+                // console.log(result);
+                // console.log("----------\n")
+            }
+            if (idx >= numMonth)
+                r(keyInMth);
+                // return keyInMth;
+        })
+    })//
+
+
 
     // hst.distinct("month", (err, months) => {
     //     console.log(months);
