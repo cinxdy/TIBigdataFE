@@ -184,6 +184,10 @@ router.get('/getTotalHistory', (req, res) => {
 //debug
 countByMonth()
 
+router.get('/getMonthFreqHistory',(req,res)=>{
+    result = countByMonth();
+    res.status(200).json(result);
+});
 function countByMonth() {
     /**
      * each month
@@ -199,18 +203,31 @@ function countByMonth() {
      * then sort by frequency.
      * then get top X frequent keywords.
      */
-    hst.distinct("month").exec(async (err, mth) => {
+
+    
+     
+    
+    hst.distinct("month").exec( (err, mth) => {
+        let keyInMth = [];
+        let idx = 0; 
+        let numMonth = mth.length;
         for (var i = 0; i < mth.length; i++) {
             var m = hst.find({ month: mth[i] });
 
-            var numKey = m.length;
+            let numKey = m.length;
+            let result = countByFreq(numKey, 3, m);
+            keyInMth.push([m,result]);
+            idx ++;//use asyncronous for performance
 
-            var result = await countByFreq(numKey, 3, m);
-            console.log("\n----------", mth[i], "th month result : ");
-            console.log(result);
-            console.log("----------\n")
+            // console.log("\n----------", mth[i], "th month result : ");
+            // console.log(result);
+            // console.log("----------\n")
         }
+        if(idx >=numMonth )
+            return keyInMth;
     })
+
+    
 
     // hst.distinct("month", (err, months) => {
     //     console.log(months);
