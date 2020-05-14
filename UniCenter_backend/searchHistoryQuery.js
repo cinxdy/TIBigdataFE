@@ -143,6 +143,13 @@ router.get('/getHistoryCount', (req, res) => {
     })
 })
 
+
+//Strongly recommand to use post function since it can control the history data in BacnEnd Side.
+/**
+ * post("/getTotalHistory",{idx : number, num : number});
+ * @param idx : start index of history among total history
+ * @param num : how many history data you request to backend server.
+ */
 router.post('/getTotalHistory', (req, res) => {
 
     var payload = req.body;
