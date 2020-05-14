@@ -33,7 +33,7 @@
     "fuctbase64": "^1.4.0",
     "g": "^2.0.1",
     "google-auth-library": "^5.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "minimist": "^1.2.3",
     "moment": "^2.24.0",
     "ng2-charts": "^2.3.0",
