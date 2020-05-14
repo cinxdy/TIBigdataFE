@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
  * 
  * 
  */
-router.post('/addHistory', (req, res) => {
+router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16:24 바꾸고 server.js새로 켜줘야함
     // console.log("add history init");
     let bundle = req.body;
     // console.log(bundle);
@@ -143,12 +143,14 @@ router.get('/getHistoryCount', (req, res) => {
     })
 })
 
-router.post('/getTotalHistory', (req, res) => {
+router.get('/getTotalHistory', (req, res) => {
+
     var payload = req.body;
     var idx = payload.idx;
     var n = payload.num;
 
     // console.log("get total history func init");
+
     // var query = 
     hst.find({})
         .skip(idx)
