@@ -143,7 +143,7 @@ router.get('/getHistoryCount', (req, res) => {
     })
 })
 
-router.get('/getTotalHistory', (req, res) => {
+router.post('/getTotalHistory', (req, res) => {
 
     var payload = req.body;
     var idx = payload.idx;
