@@ -185,11 +185,23 @@ router.get('/getTotalHistory', (req, res) => {
 // countByMonth()
 
 router.get('/getMonthFreqHistory', async (req, res) => {
+    let s_t = Date.now()
     result = await countByMonth();
+    let e_t = Date.now()
+    console.log(e_t, s_t);
+    let elapse_t = (e_t - s_t) / 1000;
+    var tmp_t;
+    var sec_t = Math.floor(elapse_t % 60);
+    tmp_t = elapse_t / 60;
+    var min_t = Math.floor(tmp_t % 60);
+    tmp_t = tmp_t / 60;
+    var hour_t = Math.floor(tmp_t % 60);
+    console.log("total time taken : ", hour_t, "hour ", min_t, " min ", sec_t, " sec");
     console.log("month func load fin")
     console.log(result)
     res.status(200).json(result);
 });
+
 async function countByMonth() {
     /**
      * each month
@@ -205,12 +217,8 @@ async function countByMonth() {
      * then sort by frequency.
      * then get top X frequent keywords.
      */
-
-
-
     return new Promise((r) => {//
-
-        hst.distinct("month").exec( async (err, mth) => {//
+        hst.distinct("month").exec(async (err, mth) => {//
             let keyInMth = [];
             let idx = 0;
             let numMonth = mth.length;
@@ -229,86 +237,56 @@ async function countByMonth() {
                 // console.log(result);
                 // console.log("----------\n")
             }
-            if (idx >= numMonth)
+            if (idx >= numMonth) {
+                //total taken time evaluate
+
                 r(keyInMth);
-                // return keyInMth;
+
+            }
+            // return keyInMth;
         })
     })//
-
-
-
-    // hst.distinct("month", (err, months) => {
-    //     console.log(months);
-    //     let keyInMth = [];
-    //     len = months.length;
-    //     new Promise((resolve) => {
-    //         let idx = 0;
-    //         for (var i = 0; i < len; i++) {
-    //             //asyncronous
-    //             let m = months[i];//must be let. let use independent object var.
-    //             // useful for asyncronous method.
-    //             let keyFreq = [];
-    //             hst.find({ month: m }).distinct("keyword")
-    //                 .exec((err, keys) => {
-
-    //                     // console.log(keys);
-    //                     // for(var j = 0 ; j < keys.length; j++){
-    //                     //     // console.log(keys[j]);
-    //                     //     keyFreq.push(keys[j].keyword);
-
-    //                     //     // if(j > 10)
-    //                     //     // break;
-    //                     // }
-    //                     // keyInMth.push([m,keyFreq]);
-
-    //                     //guarantee all months data stored fin.
-    //                     // console.log(m,"th month : ", keyFreq);
-    //                     idx++
-    //                     if (idx >= len) {
-    //                         console.log("\n----------- len : ", len, ", idx check : ", idx,"-----------\n");
-    //                         resolve()
-    //                     }
-    //                 })
-    //         }//for
-    //     }).then(() => {
-    //         console.log("\n-----------sort?-----------\n")
-    //         for (var i = 0; i < len; i++) {
-    //             // console.log(keyInMth[i][1])
-    //             let s = Date.now()
-    //             keyInMth[i][1] = keyInMth[i][1].sort();
-    //             let e = Date.now()
-    //             let elapse = e - s;
-    //             var tmp;
-    //             var sec = Math.floor(elapse % 60);
-    //             tmp = elapse / 60;
-    //             var min = Math.floor(tmp % 60);
-    //             tmp = tmp / 60;
-    //             var hour = Math.floor(tmp % 60);
-    //             // console.log(keyInMth[i][1])
-    //             console.log(i+1, "th month sort fin!");
-    //             console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec\n\n");
-    //         }//for
-
-    //check if sort work for each month
-    // console.log(keyInMth[11]);
-
-
-
-
-    // for (var i = 0; i < len; i++) {
-    //     // console.log(keyFreq[i])
-    //     if (i > len) break;
-    // }//for
-
-    // for (var i = 0; i < topX; i++) {
-    //     topKey.push(keyFreq[i]);
-    // }
-    // console.log("top key ", topX)
-    // console.log(topKey);
-    // return res.status(200).json(topKey)
-    // })//then
-    // })
 }
+
+//aggMonth
+aggMonth()
+function aggMonth() {
+    hst.aggregate(
+        
+        [
+            {
+                // "$match" : {},
+                "$group": {
+                    _id: "$month",
+                    // count: { "$sum": 1 },
+                    key : {$push :{ k : "$keyword"}}
+                }
+            },
+            {
+                "$group" : {
+                    _id : "$(_id.key.k)",
+                    count : {"$sum" : 1}
+
+                }
+            },
+            {
+                "$sort": { count: -1 }
+            },
+            {
+                "$limit": 10
+            }
+        ]
+        
+
+    , (err, res) => {
+        console.log("work...")
+        // res.forEach((err,doc)=>{
+        //     console.log(doc);
+        // })
+        console.log(res);
+    })
+}
+
 
 router.get('/getSortFreqHistory', async (req, res) => {
     var r = await countByFreq();
@@ -322,12 +300,11 @@ router.get('/getSortFreqHistory', async (req, res) => {
 
 //sort search history data
 //LIM : number of distinct and unique keywords stored and get counted freq.
-async function countByFreq(LIM = 1500, topX = 20, pipe_collection = hst) {
+async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
 
     // let LIM = 1500;
     // let topX = 20;
     return new Promise((resolve) => {
-
 
         pipe_collection.distinct("keyword", (err, key) => {
             console.log(key.length, "unique words");
@@ -354,41 +331,17 @@ async function countByFreq(LIM = 1500, topX = 20, pipe_collection = hst) {
                                 resolve()
                             }
                         })
-
-                    //hybrid
-                    // should maintain until the value is passed...
-                    // new Promise((resolve) => {
-                    //     hst.count({ keyword: key[i] }, (err, count) => {
-                    //         let k = key[i];
-                    //         resolve();
-                    //         console.log(k, " : ");
-                    //         console.log(count);
-                    //     })
-                    // })
-
-
-
-                    //syncronous
-                    // new Promise((resolve)=>{
-                    //     var k = key[i];
-                    //     var v = hst.count({keyword : k})
-                    //      v.exec( (err, count) => {
-                    //         console.log(k, " : ", );
-                    //         console.log(count);
-                    //         resolve();
-                    //     })
-                    // })
                 }//for
             }).then(() => {
                 console.log("sort?")
                 for (var i = 0; i < LIM; i++) {
                     // console.log(keyFreq[i])
-                    if (i > LIM) break;
+                    if (i > LIM) break;//handle among only LIM number of documents.
                 }//for
                 let s = Date.now()
                 keyFreq = keyFreq.sort((a, b) => b[1] - a[1]);
                 let e = Date.now()
-                let elapse = e - s;
+                let elapse = (e - s) / 1000;
                 var tmp;
                 var sec = Math.floor(elapse % 60);
                 tmp = elapse / 60;
@@ -407,11 +360,59 @@ async function countByFreq(LIM = 1500, topX = 20, pipe_collection = hst) {
                 }
                 console.log("top key ", topX)
                 console.log(topKey);
+
+
                 resolve(topKey);
             })//then
         })//distinct
+
     })
 }
+
+
+//use aggregate functino
+//debug
+// aggregate();
+
+async function aggregate() {
+    //unique words
+    //top freq 5?
+    //unique, frequency, top5
+    let s = Date.now()
+
+    const agg = hst.aggregate(
+        [
+            {
+                "$group": {
+                    _id: "$keyword"
+                    , count: { "$sum": 1 }
+                }
+            },
+            {
+                "$sort": { count: -1 }
+            },
+            {
+                "$limit": 50
+            }
+        ]
+    )
+    agg.exec((err, result) => {
+        // console.log(result);
+        let e = Date.now()
+        let elapse = (e - s) / 1000;
+        var tmp;
+        var sec = Math.floor(elapse % 60);
+        tmp = elapse / 60;
+        var min = Math.floor(tmp % 60);
+        tmp = tmp / 60;
+        var hour = Math.floor(tmp % 60);
+        console.log("sort!")
+        console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+        return result;
+    })
+}
+
+
 
 const User = require('./models/user');
 
