@@ -38,15 +38,7 @@ export class LoginComponent implements OnInit {
     // })
   }
 
-  a1(){
-    alert(document.cookie);
-  }
 
-  b1(){
-    document.cookie = 'same-site-cookie=foo; SameSite=Lax';
-    document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
-    alert(document.cookie);
-  }
 
   //login with google
   gLogIn(platform :string):void{ 

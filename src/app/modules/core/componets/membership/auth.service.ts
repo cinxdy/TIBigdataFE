@@ -45,13 +45,16 @@ export class EPAuthService {
 
 
   private URL = this.ipService.getCommonIp();
+  
   private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
   private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
   private EMAIL_VERIFY_TOKEN = this.URL + ":4000/eUser/verify";
   private EMAIL_CHECK_OUR_USER_URL = this.URL + ":4000/eUser/eCheckUser";
+
   private GOOGLE_REG_URL = this.URL + ":4000/gUser/gRegister";
   private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
+
   private ADD_SEARCH_HISTORY_URL = this.URL + ":4000/hst/addHistory";
   private SHOW_SEARCH_HISTORY_URL = this.URL + ":4000/hst/showHistory"
 
@@ -233,7 +236,7 @@ export class EPAuthService {
       return isSignIn;
     }
   }
-
+//검색내역 history 추가 
   addSrchHst(keyword: string): void {
     // console.log(this.socUser);
     let userEmail = undefined;

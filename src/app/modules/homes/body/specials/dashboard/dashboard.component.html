@@ -1,35 +1,89 @@
 <p>UserDashBoard Page</p>
 
-<div class = "row">
-    <div class = "column" style="display: block; width : 30%; height : 500px; margin: 20px;">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType">
-      </canvas>
-    </div>
 
-    <div class = "column" style="display: block; width : 30%; height : 500px">
-        <canvas baseChart 
-        [data]="doughnutChartData"
-        [labels]="doughnutChartLabels"
-        [chartType]="doughnutChartType">
-      </canvas>
-    </div>
 
-    <div class = "column" style="display: block; width : 30%; height : 500px">
-        <canvas baseChart 
-            [datasets]="lineChartData" 
-            [labels]="lineChartLabels" 
-            [options]="lineChartOptions"
-            [colors]="lineChartColors" 
-            [legend]="lineChartLegend" 
-            [chartType]="lineChartType" 
-            [plugins]="lineChartPlugins">
-        </canvas>
-    </div>
 
-   
+<div class = "block" style= "width : 100%; display: table; border: 1px black solid;">
+
+  <div class = "keyword-block" style="display:table-cell; border: 1px red solid; width: 20%;">
+        사용자 검색 내역 
+      <ul>
+        <div *ngFor = "let hst of this.search_history; index as i">
+             <li>
+              <a>{{ search_history[i]}}</a>
+             </li>
+        </div>
+      </ul> 
+  </div>
+
+  <div class = "choose-block" style="display:table-cell; border:1px green solid; width : 30%;">
+    <div class="analysis-choose" style="border : 1px gold solid;">
+      무슨 분석을 하시겠습니까?
+         <div *ngFor="let word of this.analysisList; index as i">
+            <input type="radio" formContronName="sis"  name = "i" [value] = "analysisList[i]" [(ngModel)] = "userAnalysisChoice"> 
+            {{analysisList[i]}}
+          </div>  
+      </div>
+
+
+
+ 
+
+    <div class="graph-choose" style="border : 1px cyan solid;">
+      무슨 그래프를 선택하시겠습니까?
+
+      <div *ngFor="let word of this.graphList; index as k">
+        <input type="radio" formContronName="gra"  name = "k" [value] = "graphList[k]" [(ngModel)] = "userGraphChoice"> 
+        {{graphList[k]}}
+      </div>
+
+    </div>
+    <button (click)="showResult()">Choice Complete</button>
+    <div *ngIf="choiceComplete">Your Choice :  <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph</b></div>
+  </div>
+
+  <div class = "graph-block" style="display:table-cell; border:1px blue solid;">
+    그래프
+      <div *ngIf="choiceComplete">
+
+            <div *ngIf="userGraphChoice == 'Bar'" class = "column" style="display: block; width : 90%; height : 500px; margin: 20px;">
+              <canvas baseChart
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [options]="barChartOptions"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType"
+                      [options]="barChartOptions">
+              </canvas>
+            </div>
+
+            <div *ngIf="userGraphChoice == 'Dounut'" class = "column" style="display: block; width : 90%; height : 500px">
+                <canvas baseChart 
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [chartType]="doughnutChartType"
+                [colors]="doughnutChartColors"
+                >
+              </canvas>
+            </div>
+
+            <div *ngIf="userGraphChoice == 'Line'" class = "column" style="display: block; width : 90%; height : 500px">
+                <canvas baseChart 
+                    [datasets]="lineChartData" 
+                    [labels]="lineChartLabels" 
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors" 
+                    [legend]="lineChartLegend" 
+                    [chartType]="lineChartType" 
+                    [plugins]="lineChartPlugins">
+                </canvas>
+            </div>
+
+        
+        </div>
+  </div>
+
 </div>
+
+
+
