@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SpecialsRoutingModule } from './specials-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SpecialsRootComponent } from './specials-root/specials-root.component';
-import {ChartsModule } from "ng2-charts";
+import { ChartsModule } from "ng2-charts";
+import { FormsModule } from "@angular/forms";
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -12,7 +13,8 @@ import {ChartsModule } from "ng2-charts";
   imports: [
     SpecialsRoutingModule,
     CommonModule,
-    ChartsModule
+    ChartsModule,
+    FormsModule
   ],
   // exports: [DashboardComponent]
 })
