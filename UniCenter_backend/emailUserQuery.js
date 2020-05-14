@@ -70,12 +70,12 @@ async function verifyToken(req, res) {
             console.log("payload : ", payload);
         }
         catch (err) {
-            if(err.message==="jwt expired"){
+            // console.log(err);
+            if(err.message == "jwt expired"){
                 return res.status(200).send(new Res(false,"expired"));
             }
-
             else{
-                console.log("jwt verify error!", err);
+                console.log("jwt verify error!");
                 return res.status(401).send(new Res(false,"token unverified!"));
             }
         }
