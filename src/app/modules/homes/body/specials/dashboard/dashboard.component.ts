@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   analysisList : string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
   graphList : string[] = ["Dounut", "Word-Cloud" ,"Bar" , "Line"];
 
-  private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
+  private hstReqUrl = this.ipService.getUserServerIp() +":4000/hst/getTotalHistory";
   private hstFreq : any[];
   
   private barXData = [];

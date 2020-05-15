@@ -38,7 +38,7 @@ export class SearchResultComponent implements OnInit {
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = [];
-  private RCMD_URL: string = this.ipService.getCommonIp() + ":5000/rcmd";
+  private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
@@ -78,7 +78,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.getCommonIp() == this.ipService.getDevIp()) {
+    if (this.ipService.getUserServerIp() == this.ipService.getDevIp()) {
       if (this.es.getKeyword() == undefined) {
         this.es.setKeyword("북한산");
         this.queryText = "북한산";

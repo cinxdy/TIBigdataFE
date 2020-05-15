@@ -44,7 +44,7 @@ export class EPAuthService {
   private SONG: string = "21500831@handong.edu";
 
 
-  private URL = this.ipService.getCommonIp();
+  private URL = this.ipService.getUserServerIp();
   
   private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
   private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
