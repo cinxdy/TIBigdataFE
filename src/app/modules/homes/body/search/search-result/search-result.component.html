@@ -4,8 +4,8 @@
     </form>
     <div class="uk-flex-inline">
         <button class="uk-button uk-button-text">
-      연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
-    </button>
+            연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
+        </button>
         <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
             Loading...
         </div>
@@ -29,8 +29,13 @@
         <div class="uk-width-small">
             <div class="row">
                 <button (click)="freqAnalysis()" class="uk-button uk-button-primary">
-          키워드 분석
-        </button>
+                    키워드 분석
+                </button>
+            </div>
+            <div class="row">
+                <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
+                    관심 문서에 담기
+                </button>
             </div>
             <div class="row">
                 <div class="search-filter" style="width : 50px;">
@@ -80,8 +85,8 @@
                             <div *ngIf="isRelatedLoaded == true">
                                 <div class="col-xs" style="margin: auto; padding: 1em;">
                                     <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
-                    연관문서
-                  </button>
+                                        연관문서
+                                    </button>
                                     <div *ngIf="relateToggle[i] == true">
                                         <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
                                             <!-- {{ rcmdList[i]["rcmd"] }} -->
@@ -114,4 +119,4 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>

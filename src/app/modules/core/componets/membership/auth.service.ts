@@ -43,8 +43,9 @@ export class EPAuthService {
   private BAEK: string = "21500850@handong.edu";
   private SONG: string = "21500831@handong.edu";
 
-
+  
   private URL = this.ipService.getUserServerIp();
+
   
   private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
   private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
@@ -54,6 +55,8 @@ export class EPAuthService {
   private GOOGLE_REG_URL = this.URL + ":4000/gUser/gRegister";
   private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
+
+  private KEEP_MY_DOC_URL = this.URL + ":4000/eUser/keepMyDoc";
 
   private ADD_SEARCH_HISTORY_URL = this.URL + ":4000/hst/addHistory";
   private SHOW_SEARCH_HISTORY_URL = this.URL + ":4000/hst/showHistory"
@@ -272,6 +275,10 @@ export class EPAuthService {
     )
 
   }
+
+  // keepMyDoc(){
+  //   this.htp.post<any>()
+  // }
 
 
 

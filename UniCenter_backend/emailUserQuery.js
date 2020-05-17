@@ -151,6 +151,7 @@ router.post('/register', (req, res) => {
         bcrypt.hash(userData.password, salt,(err,hash)=>{
             userData.password = hash;
             // console.log(userData);
+            userData.auth = "email";
             let user = new User(userData);
             user.save((error, userData) => {//save new user data account
                 if (error) {

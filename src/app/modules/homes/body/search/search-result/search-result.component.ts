@@ -88,38 +88,19 @@ export class SearchResultComponent implements OnInit {
     this.loadResultPage();
   }
 
-  // //user search history
-  // loadHistory(){
-  //   this.userHistory = this.auth.showSrchHst();
-  // }
-
-
-
-
-  // getRcmd() {
-  //   this.http
-  //     .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-  //     .subscribe(data => {
-  //       this.rcmdList = data;
-  //       // console.log(data);
-  //       this.isKeyLoaded = true;
-  //       // console.log("isKeyLoaded is true");
-
-  //       // console.log("isSearchLoaded is true");
-
-  //       // console.log("getRcmd() done. loading done!");
-  //     });
-  // }
-
   //Get result from flask
   freqAnalysis() {
     this.searchKeyword = this.es.getKeyword();
     this._router.navigateByUrl("search/freqAnalysis");
   }
 
-  // addList(i) {
-  //   this.idControl.setIdList( this.idList[i] );
-  //   // console.log("new id added to list! : " +     this.idList[i]  );
+  addList(i) {
+    this.idControl.setIdList( this.idList[i] );
+    // console.log("new id added to list! : " +     this.idList[i]  );
+  }
+
+  // keepMyDoc(){
+  //   this.http.post("")
   // }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
