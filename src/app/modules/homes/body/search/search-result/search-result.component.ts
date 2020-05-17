@@ -84,6 +84,7 @@ export class SearchResultComponent implements OnInit {
         this.queryText = "북한산";
       }
     }
+    this.idControl.clearAll();
     console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
@@ -99,9 +100,12 @@ export class SearchResultComponent implements OnInit {
     // console.log("new id added to list! : " +     this.idList[i]  );
   }
 
-  // keepMyDoc(){
-  //   this.http.post("")
-  // }
+  keepMyDoc(){
+    console.log("id lists: ",this.idList);
+    this.auth.addMyDoc(this.idList);
+    this.idControl.clearAll();
+
+  }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   // navToDataChart() {

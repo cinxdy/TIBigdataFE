@@ -112,7 +112,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 router.get('/showHistory', (req, res) => {
     console.log("add history init");
     let userData = req.body;
-    gUser.findOne({ email: userData.email }, (err, doc) => {
+    User.findOne({ email: userData.email }, (err, doc) => {
         if (err) {
             console.log(err);
         }

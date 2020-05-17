@@ -56,7 +56,7 @@ export class EPAuthService {
   private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
 
-  private KEEP_MY_DOC_URL = this.URL + ":4000/eUser/keepMyDoc";
+  private KEEP_MY_DOC_URL = this.URL + ":4000/myDoc/keepMyDoc";
 
   private ADD_SEARCH_HISTORY_URL = this.URL + ":4000/hst/addHistory";
   private SHOW_SEARCH_HISTORY_URL = this.URL + ":4000/hst/showHistory"
@@ -275,6 +275,14 @@ export class EPAuthService {
     }
     )
 
+  }
+
+  addMyDoc(docIDs){
+    let payload = { userEmail : this.profile.email, docs : docIDs};
+    console.log("keep doc sending data : ", payload);
+    this.http.post<any>(this.KEEP_MY_DOC_URL,payload).subscribe((res)=>{
+      console.log(res);
+    })
   }
 
   // keepMyDoc(){
