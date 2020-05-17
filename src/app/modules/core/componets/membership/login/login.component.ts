@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginUserData = {};
-    console.log("origin pw : ",this.loginUserData.password);
   }
 
   // login with email
@@ -37,8 +36,8 @@ export class LoginComponent implements OnInit {
 
 
   //login with google
-  gLogIn(platform :string):void{ 
-    this.auth.gLogIn(platform);
+  gLogIn():void{ 
+    this.auth.gLogIn();
   }
 
 

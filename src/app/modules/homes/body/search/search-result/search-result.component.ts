@@ -221,6 +221,7 @@ export class SearchResultComponent implements OnInit {
   relatedSearch(keyword: string) {
     this.es.setKeyword(keyword);
     this.queryText = keyword;
+    this.auth.addSrchHst(this.queryText);
 
     this.loadResultPage();
   }

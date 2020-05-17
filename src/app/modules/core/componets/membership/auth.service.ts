@@ -259,6 +259,7 @@ export class EPAuthService {
       userEmail = this.profile.email;
     bundle = { login: this.isLogIn, user: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
+      console.log("history added raw result : ", res);
       this.schHst = res.history;
       console.log("personal history : ", this.schHst);
     });
@@ -389,10 +390,8 @@ export class EPAuthService {
    * @param platform 
    * @description user login with google social login
    */
-  gLogIn(platform: string): void {
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this.gauth.signIn(platform).then((response) => {//error branch 추가할 필요성 있음...
-
+  async gLogIn() {
+      let response = await this.verifyGoogleUser();
       //check if this user is our user already
       this.gCheckUser(response).subscribe((res) => {
 
@@ -406,7 +405,7 @@ export class EPAuthService {
         }
         else {
           console.log("This user is already our user!");
-          this.socUser = response;
+          this.socUser = response as SocialUser;
           console.log(this.socUser);
           localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
 
@@ -417,7 +416,16 @@ export class EPAuthService {
         }
       }
       );
+  }
+
+  verifyGoogleUser(){
+    let platform = GoogleLoginProvider.PROVIDER_ID;
+    return new Promise((resolve)=>{
+      this.gauth.signIn(platform).then((response) => {//error branch 추가할 필요성 있음...
+        resolve(response);
+      })
     })
+
   }
 
   /**
