@@ -335,10 +335,11 @@ export class EPAuthService {
       //비밀번호 찾기 페이지도 만들어야 한다. 
     }
     else {
+      console.log("user input check : ", user);
       var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
       result$.subscribe(
         res => {
-          console.log(res)
+          console.log("login process result : ", res);
           // login succ
           if (res.succ)
             this.confirmUser(logStat.email, res);

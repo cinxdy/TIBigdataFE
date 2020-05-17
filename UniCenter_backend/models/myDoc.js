@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const srchHstSchema = new Schema({
-    keyword : String,
+    docID : String,
+    //date that user keep this document as myDoc
     year : Number,
     month : Number,
     date : Number,

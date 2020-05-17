@@ -12,7 +12,7 @@ import { thresholdSturges } from 'd3-array';
 })
 export class LoginComponent implements OnInit {
   constructor(private auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
-  private loginUserData = {}
+  private loginUserData = undefined;
   
   // private user: SocialUser; 
 
@@ -20,12 +20,8 @@ export class LoginComponent implements OnInit {
   // private isLogin : boolean = false;
 
   ngOnInit() {
-    // this.auth.getLogInObs().subscribe((res)=>{
-    //   // console.log("stat update! ", res);
-    //   this.isLogin = res as any;
-    //   this.auth.setLogStat(res);
-    //   this.nowUser = this.auth.getUserName();
-    // });
+    this.loginUserData = {};
+    console.log("origin pw : ",this.loginUserData.password);
   }
 
   // login with email

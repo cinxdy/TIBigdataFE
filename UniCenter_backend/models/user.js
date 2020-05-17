@@ -10,7 +10,8 @@ const userSchema = new Schema({
     inst : String,//institution
     email:String,
     password: String,//use only with email
-    history : []
+    history : [],
+    myDoc : []
     // severity: String
 })
 
