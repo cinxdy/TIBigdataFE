@@ -133,6 +133,26 @@ export class ElasticsearchService {
     });
   }
 
+  searchByManyId(ids: string[]) {
+    return this.client.search({
+      filterPath: ["hits.hits"],
+      body: {
+        query: {
+          terms: {
+            _id: ids
+          }
+        }
+      },
+      _source: [
+        "post_title",
+        "post_date",
+        "published_institution_url",
+        "post_writer",
+        "post_body"
+      ]
+    });
+  }
+
   //Elasticsearch Connection
   private _connect() {
     let es_url = this.ipSvc.getBackEndServerIp();

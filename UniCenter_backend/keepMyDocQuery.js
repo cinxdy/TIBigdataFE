@@ -4,6 +4,18 @@ const User = require('./models/user');
 const KeepDoc = require('./models/myDoc');
 const Res = require('./models/Res');
 
+router.post('/getMyDoc',(req,res)=>{
+    // console.log("req : ", req);
+    let user = req.body.payload;
+    console.log("getMyDoc response func : ",user);
+    User.findOne({email : user},(err,data)=>{
+        if(err)
+            console.log(err);
+        console.log(data);
+        res.json({docs : data.myDoc});
+    })
+})
+
 router.post('/keepMyDoc',(req,res)=>{
     console.log("keep Doc init");
     let data = req.body;
