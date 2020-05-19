@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 // const User = require('./models/user');
-const gUser = require('./models/gUser');
-const eUser = require('./models/user');
+// const gUser = require('./models/gUser');
+// const User = require('./models/user');
 const hst = require('./models/history');
 const Res = require('./models/Res');
 //for future. user model.
@@ -74,12 +74,13 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                 google,//3
             }
          */
-        if (isLogin >= 3) {//social user
-            anyUser = gUser;
+        //2 : email, 3 : google
+        if (isLogin >= 2) {
+            anyUser = User;
         }
-        else {//email or super user
-            anyUser = eUser;
-        }
+        // else {//email or super user
+        //     anyUser = User;
+        // }
 
         let userData = bundle.user;
         anyUser.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
@@ -111,7 +112,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 router.get('/showHistory', (req, res) => {
     console.log("add history init");
     let userData = req.body;
-    gUser.findOne({ email: userData.email }, (err, doc) => {
+    User.findOne({ email: userData.email }, (err, doc) => {
         if (err) {
             console.log(err);
         }
@@ -257,8 +258,8 @@ async function countByMonth() {
     })//
 }
 
-//aggMonth
-aggMonth()
+//aggMonth deggung
+// aggMonth()
 function aggMonth() {
     hst.aggregate(
         

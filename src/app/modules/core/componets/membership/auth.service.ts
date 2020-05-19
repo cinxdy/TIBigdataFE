@@ -44,8 +44,9 @@ export class EPAuthService {
   private SONG: string = "21500831@handong.edu";
 
 
-  private URL = this.ipService.getCommonIp();
-  
+  private URL = this.ipService.getUserServerIp();
+
+
   private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
   private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
   private EMAIL_VERIFY_TOKEN = this.URL + ":4000/eUser/verify";
@@ -54,6 +55,9 @@ export class EPAuthService {
   private GOOGLE_REG_URL = this.URL + ":4000/gUser/gRegister";
   private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
+
+  private KEEP_MY_DOC_URL = this.URL + ":4000/myDoc/keepMyDoc";
+  private GET_MY_DOC_URL = this.URL + ":4000/myDoc/getMyDoc";
 
   private ADD_SEARCH_HISTORY_URL = this.URL + ":4000/hst/addHistory";
   private SHOW_SEARCH_HISTORY_URL = this.URL + ":4000/hst/showHistory"
@@ -68,7 +72,7 @@ export class EPAuthService {
     history?: []
   };
   private schHst: [] = [];//user search history
-
+  private myDocs: [] = [];
   constructor(
     private ipService: IpService,
     private injector: Injector,
@@ -209,7 +213,7 @@ export class EPAuthService {
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res => {
-            if(res.succ){//token verify success
+            if (res.succ) {//token verify success
               // console.log(res);
               // else {
               //   this.isLogIn = logStat.google;//update token status 
@@ -220,11 +224,11 @@ export class EPAuthService {
                 this.isLogIn = logStat.SUPERUSER;
               }
               // console.log(this.profile);
-  
+
               this.isLogInObs$.next(this.isLogIn);
             }
-            else{//toekn verify failed
-              if(res.msg == "expired"){
+            else {//toekn verify failed
+              if (res.msg == "expired") {
                 alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
                 this.eLogoutUser();
                 this.router.navigate(['/homes']);
@@ -245,7 +249,7 @@ export class EPAuthService {
       return isSignIn;
     }
   }
-//검색내역 history 추가 
+  //검색내역 history 추가 
   addSrchHst(keyword: string): void {
     // console.log(this.socUser);
     let userEmail = undefined;
@@ -256,6 +260,7 @@ export class EPAuthService {
       userEmail = this.profile.email;
     bundle = { login: this.isLogIn, user: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
+      console.log("history added raw result : ", res);
       this.schHst = res.history;
       console.log("personal history : ", this.schHst);
     });
@@ -272,6 +277,29 @@ export class EPAuthService {
     )
 
   }
+
+  addMyDoc(docIDs) {
+    let payload = { userEmail: this.profile.email, docs: docIDs };
+    console.log("keep doc sending data : ", payload);
+    this.http.post<any>(this.KEEP_MY_DOC_URL, payload).subscribe((res) => {
+      console.log(res);
+      this.myDocs = res.myDoc;
+    })
+  }
+
+  getMyDocs() {
+    console.log("this.profile.email",this.profile.email);
+    return new Promise((r) => {
+      this.http.post<any>(this.GET_MY_DOC_URL, {payload : this.profile.email}).subscribe((res) => {
+        console.log("angular get mydocs result : ",res);
+        r(res.docs);
+      });
+    })
+  }
+
+  // keepMyDoc(){
+  //   this.htp.post<any>()
+  // }
 
 
 
@@ -328,10 +356,11 @@ export class EPAuthService {
       //비밀번호 찾기 페이지도 만들어야 한다. 
     }
     else {
+      console.log("user input check : ", user);
       var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
       result$.subscribe(
         res => {
-          console.log(res)
+          console.log("login process result : ", res);
           // login succ
           if (res.succ)
             this.confirmUser(logStat.email, res);
@@ -381,35 +410,42 @@ export class EPAuthService {
    * @param platform 
    * @description user login with google social login
    */
-  gLogIn(platform: string): void {
-    platform = GoogleLoginProvider.PROVIDER_ID;
-    this.gauth.signIn(platform).then((response) => {//error branch 추가할 필요성 있음...
+  async gLogIn() {
+    let response = await this.verifyGoogleUser();
+    //check if this user is our user already
+    this.gCheckUser(response).subscribe((res) => {
 
-      //check if this user is our user already
-      this.gCheckUser(response).subscribe((res) => {
-
-        if (res.exist == false) {
-          if (!res.exist) {
-            console.log("This user is not yet our user : need sign up : ", res);
-            alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
-            this.router.navigateByUrl("/membership/register");
-          }
-
+      if (res.exist == false) {
+        if (!res.exist) {
+          console.log("This user is not yet our user : need sign up : ", res);
+          alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
+          this.router.navigateByUrl("/membership/register");
         }
-        else {
-          console.log("This user is already our user!");
-          this.socUser = response;
-          console.log(this.socUser);
-          localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
 
-          // localStorage.setItem('token',this.socUser.idToken);
-          console.log("login user info saved : ", this.socUser);
-          this.isLogIn = logStat.google;
-          this.router.navigate(['/homes'])
-        }
       }
-      );
+      else {
+        console.log("This user is already our user!");
+        this.socUser = response as SocialUser;
+        console.log(this.socUser);
+        localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
+
+        // localStorage.setItem('token',this.socUser.idToken);
+        console.log("login user info saved : ", this.socUser);
+        this.isLogIn = logStat.google;
+        this.router.navigate(['/homes'])
+      }
+    }
+    );
+  }
+
+  verifyGoogleUser() {
+    let platform = GoogleLoginProvider.PROVIDER_ID;
+    return new Promise((resolve) => {
+      this.gauth.signIn(platform).then((response) => {//error branch 추가할 필요성 있음...
+        resolve(response);
+      })
     })
+
   }
 
   /**
