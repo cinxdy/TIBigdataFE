@@ -27,10 +27,44 @@ export class DashboardComponent implements OnInit {
 
   analysisList : string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
   graphList : string[] = ["Dounut", "Word-Cloud" ,"Bar" , "Line"];
+  docIdList : string[] = [
+    "5de110274b79a29a5f987f1d",
+    "5de1107f4b79a29a5f988202",
+    "5de1109d582a23c9693cbec9",
+    "5de110946669d72bad076d51",
+    "5de113f4b53863d63aa55369"
+  ]
+
+  docTitleList = [];
+
+  private tfidfDir : string = "../../../../../../assets/entire_tfidf/data.json";
+
+  findDocName(){
+    var docNum = this.docIdList.length;
+     this.http.get(this.tfidfDir).subscribe(docData => {
+        var temp;
+        var sampleID;
+        var sampleTitle;
+        
+        for (var j = 0; j<docNum;j++){
+          sampleID = this.docIdList[j];
+
+          for(var i = 0; i<545;i++){
+            temp = docData[i]["docID"];
+
+            if(temp==sampleID){
+              sampleTitle = docData[i]["docTitle"];
+              this.docTitleList[j]=sampleTitle;
+            }
+          }
+        }
+        console.log(this.docTitleList);
+     })
+  }
+
 
   private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
   private hstFreq : any[];
-  
   private barXData = [];
   private barYData = [];
   private barData  = [];
@@ -58,6 +92,7 @@ export class DashboardComponent implements OnInit {
       this.findCountData(this.barYData);
       this.findTextData(this.search_history);
       console.log(this.search_history);
+      this.findDocName();
     });
   }
 
