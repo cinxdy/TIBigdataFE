@@ -9,6 +9,9 @@ import { ElasticsearchService } from "../../search/service/elasticsearch-service
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
 
+
+import { CloudData, CloudOptions } from "angular-tag-cloud-module";
+
 import { thresholdSturges } from 'd3-array';
 import { map } from "rxjs/operators";
 import { ReturnStatement } from '@angular/compiler';
@@ -36,13 +39,50 @@ export class DashboardComponent implements OnInit {
 
   analysisList: string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
+  docIdList : string[] = [
+    "5de110274b79a29a5f987f1d",
+    "5de1107f4b79a29a5f988202",
+    "5de1109d582a23c9693cbec9",
+    "5de110946669d72bad076d51",
+    "5de113f4b53863d63aa55369"
+  ]
+
+  docTitleList = [];
+
+  private tfidfDir : string = "../../../../../../assets/entire_tfidf/data.json";
+
+  findDocName(){
+    var docNum = this.docIdList.length;
+     this.http.get(this.tfidfDir).subscribe(docData => {
+        var temp;
+        var sampleID;
+        var sampleTitle;
+        
+        for (var j = 0; j<docNum;j++){
+          sampleID = this.docIdList[j];
+
+          for(var i = 0; i<545;i++){
+            temp = docData[i]["docID"];
+
+            if(temp==sampleID){
+              sampleTitle = docData[i]["docTitle"];
+              this.docTitleList[j]=sampleTitle;
+            }
+          }
+        }
+        console.log(this.docTitleList);
+     })
+  }
 
   private hstReqUrl = this.ipService.getUserServerIp() + ":4000/hst/getTotalHistory";
   private hstFreq: any[];
 
-  private barXData = [];
-  private barYData = [];
-  private barData = [];
+  // private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
+  // private hstFreq : any[];
+  
+  private graphXData = [];
+  private graphYData = [];
+  private graphData = [];
 
   private ES_URL = "localhost:9200/nkdb";
   private myDocsTitles: string[] = [];
@@ -52,32 +92,33 @@ export class DashboardComponent implements OnInit {
 
   private choiceComplete = false;
   private userDataChoice = [];
+  private userDocChoice = [];
   private userAnalysisChoice: string;
   private userGraphChoice: string;
 
   ngOnInit() {
     if (!this.auth.getLogInStat())
-      alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+    alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
       this.idSvs.clearAll();
       console.log("dash board - page");
       this.convertID2Title().then(() => {
         console.log(this.myDocsTitles)
-        // this.queryHistory().then(() => {
-          // this.search_history.forEach(word => {
-          //   this.barData.push(word);
-          // });
+        this.queryHistory().then(() => {
+          this.search_history.forEach(word => {
+            this.graphData.push(word);
+          });
 
-          // this.barData.sort((a, b) => {
-          //   return b.count - a.count;
-          // }); //count를 기준으로 정렬
+          this.graphData.sort((a, b) => {
+            return b.count - a.count;
+          }); //count를 기준으로 정렬
 
-          // this.findTextData(this.barXData);
-          // this.findCountData(this.barYData);
-          // this.findTextData(this.search_history);
-          // console.log(this.search_history);
-        // });
+          this.findTextData(this.graphXData);
+          this.findCountData(this.graphYData);
+          this.findTextData(this.search_history);
+          console.log(this.search_history);
+        });
       })
     }
   }
@@ -142,14 +183,14 @@ export class DashboardComponent implements OnInit {
 
   ///// bar chart /////
   findTextData(textArr) {
-    for (var i = 0; i < this.barData.length; i++) {
-      textArr[i] = this.barData[i].text;
+    for (var i = 0; i < this.graphData.length; i++) {
+      textArr[i] = this.graphData[i].text;
     }
   }
 
   findCountData(countArr) {
-    for (var i = 0; i < this.barData.length; i++) {
-      countArr[i] = this.barData[i].count;
+    for (var i = 0; i < this.graphData.length; i++) {
+      countArr[i] = this.graphData[i].count;
     }
   }
 
@@ -181,14 +222,14 @@ export class DashboardComponent implements OnInit {
     }
   };
 
-  barChartLabels: Label[] = this.barXData;
+  barChartLabels: Label[] = this.graphXData;
 
   barChartType: ChartType = 'bar';
   barChartLegend = true;
   barChartPlugins = [];
 
   barChartData: ChartDataSets[] = [
-    { data: this.barYData, label: 'User Search History' }
+    { data: this.graphYData, label: 'User Search History' }
   ];
   /////////////
 
@@ -197,10 +238,10 @@ export class DashboardComponent implements OnInit {
   ///////// line chart /// 
 
   lineChartData: ChartDataSets[] = [
-    { data: this.barYData, label: '검색 추이' },
+    { data: this.graphYData, label: '검색 추이' },
   ];
 
-  lineChartLabels: Label[] = this.barXData;
+  lineChartLabels: Label[] = this.graphXData;
 
   lineChartOptions = {
     responsive: true,
@@ -223,9 +264,9 @@ export class DashboardComponent implements OnInit {
     responsive: true
   };
   public doughnutChartPlugins = [];
-  doughnutChartLabels: Label[] = this.barXData;
+  doughnutChartLabels: Label[] = this.graphXData;
   doughnutChartData: MultiDataSet = [
-    this.barYData
+    this.graphYData
   ];
   doughnutChartType: ChartType = 'doughnut';
   public doughnutChartColors = [
@@ -240,7 +281,44 @@ export class DashboardComponent implements OnInit {
 
 
 
-  //////////
+  //////////word
+  options: CloudOptions = {
+    // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
+    width: 1000,
+    height: 250,
+    overflow: true
+  };
+
+  cData: CloudData[] = []; 
+  
+ 
+
+  makeWordCloud(){
+    var sample = this.graphData;
+
+
+    for (let i in sample) {
+      if (Number(i) >= 30) break;
+      else if (Number(i) <= 4) {
+        this.cData.push({
+          text: sample[i][0],
+          weight: sample[i][1],
+          color: "blue"
+        });
+        // console.log(sample[i][
+      } else
+        this.cData.push({
+          text: sample[i][0],
+          weight: sample[i][1],
+          color: "gray"
+        });
+    }
+
+
+  }
+
+
+  
 
 
 
