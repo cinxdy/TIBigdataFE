@@ -91,6 +91,10 @@ export class NavComponent implements OnInit {
     this._router.navigateByUrl("/homes/flask");
   }
 
+  toHomes(){
+    this._router.navigateByUrl("/homes");
+  }
+
   toLogin(){
     this._router.navigateByUrl("/membership/login");
   }

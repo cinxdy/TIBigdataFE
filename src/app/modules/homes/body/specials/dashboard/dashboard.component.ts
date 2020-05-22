@@ -18,6 +18,8 @@ import { ReturnStatement } from '@angular/compiler';
 import { doc } from '../../library/category-graph/nodes';
 import { inject } from '@angular/core/testing';
 import { FormControl, FormGroup } from "@angular/forms";
+import { CloseScrollStrategy } from '@angular/cdk/overlay';
+import { keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,7 +41,7 @@ export class DashboardComponent implements OnInit {
 
   analysisList: string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
-  docIdList : string[] = [
+  idList1 : string[] = [
     "5de110274b79a29a5f987f1d",
     "5de1107f4b79a29a5f988202",
     "5de1109d582a23c9693cbec9",
@@ -51,29 +53,7 @@ export class DashboardComponent implements OnInit {
 
   private tfidfDir : string = "../../../../../../assets/entire_tfidf/data.json";
 
-  findDocName(){
-    var docNum = this.docIdList.length;
-     this.http.get(this.tfidfDir).subscribe(docData => {
-        var temp;
-        var sampleID;
-        var sampleTitle;
-        
-        for (var j = 0; j<docNum;j++){
-          sampleID = this.docIdList[j];
-
-          for(var i = 0; i<545;i++){
-            temp = docData[i]["docID"];
-
-            if(temp==sampleID){
-              sampleTitle = docData[i]["docTitle"];
-              this.docTitleList[j]=sampleTitle;
-            }
-          }
-        }
-        console.log(this.docTitleList);
-     })
-  }
-
+  
   private hstReqUrl = this.ipService.getUserServerIp() + ":4000/hst/getTotalHistory";
   private hstFreq: any[];
 
@@ -98,7 +78,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     if (!this.auth.getLogInStat())
-    alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+    console.log("wow");
+    
+    //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
       this.idSvs.clearAll();
@@ -117,12 +99,12 @@ export class DashboardComponent implements OnInit {
           this.findTextData(this.graphXData);
           this.findCountData(this.graphYData);
           this.findTextData(this.search_history);
+          this.findDocName();
           console.log(this.search_history);
         });
       })
     }
   }
-
 
   async convertID2Title() {
     this.idList = await this.auth.getMyDocs() as string[];
@@ -148,7 +130,16 @@ export class DashboardComponent implements OnInit {
     this.idSvs.popIdList();
     this.chosenCount --;
   }
+  private filter = [];
+  private checkArr = [];
 
+  boxChange(i){
+   if(this.filter[i]){
+    this.addList(i);
+   }else{
+    this.removeList(i);
+   }
+  }
 
   queryHistory() {
     return new Promise((r) => {
@@ -156,7 +147,6 @@ export class DashboardComponent implements OnInit {
         .subscribe((res) => {
           var hst = res.histories;
           var keyArr = hst.map((hstrs) => hstrs.keyword);
-          var dateArr = hst.map((hstrs) => { hstrs.year, hstrs.month, hstrs.date });
           keyArr = keyArr.sort();
           //console.log("날짜 : " + dateArr);
           var lenArr = keyArr.length;
@@ -180,17 +170,99 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private TfTable = [];
+  
+
+  makeTf(){
+    var docNum = this.idList1.length;
+
+    this.http.get(this.tfidfDir).subscribe(docData1 => {
+      var temp;
+      var sampleID;
+      var sampleTitle;
+      const tempArr = [] as any;
+
+      var docData = docData1 as [];
+      for (var j = 0; j<docNum;j++){
+        sampleID = this.idList1[j];
+
+        for(var i = 0; i<docData.length;i++){
+          temp = docData[i]["docID"];
+
+          if(temp==sampleID){
+            sampleTitle = docData[i]["docTitle"];
+            this.docTitleList[j]=sampleTitle;
+            console.log(this.docTitleList[j]);
+            
+            let tfVal = docData[i]["TFIDF"];
+
+            
+            let tWord, tVal;
+            var tJson = new Object();
+
+            for(var t = 0;t<5;t++){
+              var tData = tfVal[t];
+                if(tData)  {
+                  tWord = tData[0];
+                  tVal = tData[1];
+                  tJson = {word: tWord, value : tVal};
+                  tempArr.push(tJson);
+              }
+            }
+            //console.log(JSON.stringify(tempArr));
+
+            this.TfTable.push({No : j, title : this.docTitleList[j], tfidf : tempArr});
+          }
+        }
+      }
+      console.log(tempArr);
+      tempArr.sort(function (a,b){
+        return b["value"] - a["value"];
+      });
+      console.log(tempArr);
+
+    this.findTextData(tempArr);
+    this.findCountData(tempArr);
+   })
+
+  }
+
+  findDocName(){
+    var docNum = this.idList.length;
+
+    this.http.get(this.tfidfDir).subscribe(docData1 => {
+       var temp;
+       var sampleID;
+       var sampleTitle;
+       var docData = docData1 as []
+       for (var j = 0; j<docNum;j++){
+         sampleID = this.idList[j];
+
+         for(var i = 0; i<docData.length;i++){
+           temp = docData[i]["docID"];
+
+           if(temp==sampleID){
+             sampleTitle = docData[i]["docTitle"];
+             this.docTitleList[j]=sampleTitle;
+           }
+         }
+       }
+       
+       console.log("야호"+this.docTitleList);
+    })
+ }
+
 
   ///// bar chart /////
   findTextData(textArr) {
-    for (var i = 0; i < this.graphData.length; i++) {
-      textArr[i] = this.graphData[i].text;
+    for (var i = 0; i < textArr.length; i++) {
+      this.graphXData[i] = textArr[i]["word"];
     }
   }
 
   findCountData(countArr) {
-    for (var i = 0; i < this.graphData.length; i++) {
-      countArr[i] = this.graphData[i].count;
+    for (var i = 0; i < countArr.length; i++) {
+      this.graphYData[i]= countArr[i]["value"];
     }
   }
 
@@ -203,10 +275,25 @@ export class DashboardComponent implements OnInit {
   showResult() {
     this.getUserChoice();
     this.choiceComplete = true;
-    console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-    this.rcmd.getRcmd(this.idList).then(data => {
-      console.log(data);
-    });
+    // this.rcmd.getRcmd(this.idList).then(data => {
+    //   console.log(data);
+    // });
+    if(this.userAnalysisChoice=="TFIDF") {
+      console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+      this.makeTf();
+    }
+    else if(this.userAnalysisChoice=="LDA"){
+      console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+
+    }
+    else if(this.userAnalysisChoice=="Related Doc"){
+      console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+
+    }
+    else if(this.userAnalysisChoice=="RNN"){
+      console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+    }
+    
   }
 
 
@@ -215,7 +302,7 @@ export class DashboardComponent implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          max: 10,
+          max: 1,
           min: 0
         }
       }]
@@ -229,7 +316,7 @@ export class DashboardComponent implements OnInit {
   barChartPlugins = [];
 
   barChartData: ChartDataSets[] = [
-    { data: this.graphYData, label: 'User Search History' }
+    { data: this.graphYData, label: this.userAnalysisChoice + " Analysis" }
   ];
   /////////////
 

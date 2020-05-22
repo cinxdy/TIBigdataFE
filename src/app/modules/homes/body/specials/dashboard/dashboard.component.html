@@ -3,45 +3,63 @@
 
 <div class="entire-Board" style= "width : 100%; display: table; border: 1px black solid;">
 
-  <div class="docList" style= "width : 100%; display: table-cell; border: 1px red solid;">
+  <div class="uk-card uk-card-default uk-card-body" style= "width : 100%; display: table-cell;">
+    <dl class="uk-description-list">
+      <h3>도움말</h3>
+
+      <dt>1단계</dt>
+      <dd>문서 선택 한다</dd>
+      
+      <dt>2단계</dt>
+      <dd>분석 선택 한다</dd>
+      
+      <dt>3단계</dt>
+      <dd>그래프 선택 한다</dd>
+  </dl>
+  </div>
+    <!--
       <ul>
         <div *ngFor = "let doc of this.docTitleList; index as d">
           <li>
-           <a>{{ docTitleList[d]}} </a>
+           문서 : <a>{{ docTitleList[d]}} </a>
           </li>
-     </div>
-      </ul>
+        </div>
+      </ul> 
 
-  </div>
-  
+
+       <div *ngFor="let doc of myDocsTitles, index as i">
+          <div class="form-group">
+            <input type="checkbox" name = "i" (change)="this.boxChange(this)">
+          </div>
+      </div>
+    -->
 </div>
 
 
 
 <div class="block" style="width : 100%; display: table; border: 1px black solid;">
 
-  <div class="keyword-block" style="display:table-cell; border: 1px red solid; width: 20%;">
-    사용자 검색 내역
+  <div class="keyword-block" style="display:table-cell; border: 1px red solid; width: 30%;">
+    문서 보유 목록
     <ul>
-      <div *ngFor="let doc of myDocsTitles, index as i">
-        <li>
+      <div *ngFor="let doc of this.docTitleList, index as t">
           <div class="form-group">
-            <input type="checkbox" (click)="this.addList(i)" />
+            <input type="checkbox" formContronName="docs"  name = "t" (change)="this.boxChange(t)" [value] = "checkArr[t]" [(ngModel)]="filter[t]" >
+             {{doc}}
           </div>
-          <a>{{ doc }}</a>
-
-        </li>
       </div>
+
+
     </ul>
   </div>
 
-  <div class="choose-block" style="display:table-cell; border:1px green solid; width : 30%;">
+  <div class="choose-block" style="display:table-cell; border:1px green solid; width : 20%;">
     <div class="analysis-choose" style="border : 1px gold solid;">
       무슨 분석을 하시겠습니까?
       <div *ngIf="chosenCount > 1 || chosenCount == 0">
         <div *ngFor="let word of this.analysisList; index as i">
           <input type="radio" formContronName="sis" name="i" [value]="analysisList[i]" [(ngModel)]="userAnalysisChoice">
-          {{analysisList[i]}}
+               {{analysisList[i]}}
         </div>
       </div>
     </div>

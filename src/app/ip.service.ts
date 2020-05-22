@@ -33,6 +33,7 @@
  */
 
 import { Injectable } from '@angular/core';
+//import { currentId } from 'async_hooks';
 
 @Injectable({
   providedIn: 'root'
@@ -60,11 +61,11 @@ export class IpService {
     let currIp = this.getCurrIp()
     if (currIp != this.USER_SERVER_IP){
       return this.DEV_IP;
+      //console.log(currIp);
     }
     else{
       return whichServerIp;
     }
-
   }
 
   getUserServerIp(){
@@ -72,7 +73,8 @@ export class IpService {
   }
 
   getBackEndServerIp(){
-    return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + "/nkdb";
+    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+    //return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + "/nkdb";
   }
 
   getDevIp(){

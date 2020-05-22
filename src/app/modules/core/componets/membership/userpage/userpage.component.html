@@ -1,17 +1,18 @@
 
 
-<h1>
+<h4>
     USER-PAGE
-</h1>
+</h4>
 
 <div *ngIf="nowUser;" style="margin: 50px;">
     <img src="{{nowUser.photoUrl}}">
     <h4>{{nowUser.name}} 님 안녕하세요</h4>
     <p>{{nowUser.email}}</p>
 
-    <button type="submit" (click)="gSignOut()" class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글 로그아웃</a></button>
+    <button type="submit" style = "width: 150px;" (click)="gSignOut()" class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글 로그아웃</a></button>
 </div>
 
+<!--
 <div class="text-center social-btn">
     <a (click)="showCookie()" class="btn btn-primary btn-block"><i class="fa fa-cogs"></i>쿠키체크</a>
 </div>
@@ -23,3 +24,6 @@
 <div>
     관심있는 문서
 </div>
+
+-->
+
