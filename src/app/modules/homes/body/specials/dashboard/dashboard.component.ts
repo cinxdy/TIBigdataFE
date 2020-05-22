@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { MultiDataSet } from 'ng2-charts';
 import { HttpClient } from '@angular/common/http';
 import { IpService } from 'src/app/ip.service';
@@ -14,7 +14,7 @@ import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 
 import { thresholdSturges } from 'd3-array';
 import { map } from "rxjs/operators";
-import { ReturnStatement } from '@angular/compiler';
+import { ReturnStatement, viewClassName } from '@angular/compiler';
 import { doc } from '../../library/category-graph/nodes';
 import { inject } from '@angular/core/testing';
 import { FormControl, FormGroup } from "@angular/forms";
@@ -28,7 +28,8 @@ import { keyframes } from '@angular/animations';
 })
 
 export class DashboardComponent implements OnInit {
-
+  
+ @ViewChild(BaseChartDirective , {static : false}) charts: QueryList<BaseChartDirective>;;
 
   constructor(
     private auth: EPAuthService,
@@ -48,6 +49,8 @@ export class DashboardComponent implements OnInit {
     "5de110946669d72bad076d51",
     "5de113f4b53863d63aa55369"
   ]
+
+
 
   docTitleList = [];
 
@@ -75,18 +78,18 @@ export class DashboardComponent implements OnInit {
   private userDocChoice = [];
   private userAnalysisChoice: string;
   private userGraphChoice: string;
+  private userNumChoice = 0;
 
   ngOnInit() {
     if (!this.auth.getLogInStat())
-    console.log("wow");
-    
-    //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+      console.log("wow");
+      //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
       this.idSvs.clearAll();
       console.log("dash board - page");
       this.convertID2Title().then(() => {
-        console.log(this.myDocsTitles)
+        //console.log(this.myDocsTitles)
         this.queryHistory().then(() => {
           this.search_history.forEach(word => {
             this.graphData.push(word);
@@ -100,7 +103,7 @@ export class DashboardComponent implements OnInit {
           this.findCountData(this.graphYData);
           this.findTextData(this.search_history);
           this.findDocName();
-          console.log(this.search_history);
+          //console.log(this.search_history);
         });
       })
     }
@@ -136,8 +139,10 @@ export class DashboardComponent implements OnInit {
   boxChange(i){
    if(this.filter[i]){
     this.addList(i);
+    console.log(i+"넣음");
    }else{
     this.removeList(i);
+    console.log(i+"빠짐");
    }
   }
 
@@ -174,7 +179,7 @@ export class DashboardComponent implements OnInit {
   
 
   makeTf(){
-    var docNum = this.idList1.length;
+    var docNum = this.idList.length;
 
     this.http.get(this.tfidfDir).subscribe(docData1 => {
       var temp;
@@ -184,7 +189,7 @@ export class DashboardComponent implements OnInit {
 
       var docData = docData1 as [];
       for (var j = 0; j<docNum;j++){
-        sampleID = this.idList1[j];
+        sampleID = this.idList[j];
 
         for(var i = 0; i<docData.length;i++){
           temp = docData[i]["docID"];
@@ -192,7 +197,7 @@ export class DashboardComponent implements OnInit {
           if(temp==sampleID){
             sampleTitle = docData[i]["docTitle"];
             this.docTitleList[j]=sampleTitle;
-            console.log(this.docTitleList[j]);
+            //console.log(this.docTitleList[j]);
             
             let tfVal = docData[i]["TFIDF"];
 
@@ -209,17 +214,14 @@ export class DashboardComponent implements OnInit {
                   tempArr.push(tJson);
               }
             }
-            //console.log(JSON.stringify(tempArr));
-
             this.TfTable.push({No : j, title : this.docTitleList[j], tfidf : tempArr});
           }
         }
       }
-      console.log(tempArr);
+     
       tempArr.sort(function (a,b){
         return b["value"] - a["value"];
       });
-      console.log(tempArr);
 
     this.findTextData(tempArr);
     this.findCountData(tempArr);
@@ -228,7 +230,10 @@ export class DashboardComponent implements OnInit {
   }
 
   findDocName(){
-    var docNum = this.idList.length;
+    //var docNum = this.idList.length;
+    var docNum = this.chosenCount;
+
+   // console.log(this.idList);
 
     this.http.get(this.tfidfDir).subscribe(docData1 => {
        var temp;
@@ -248,22 +253,36 @@ export class DashboardComponent implements OnInit {
          }
        }
        
-       console.log("야호"+this.docTitleList);
+       //console.log("야호"+this.docTitleList);
     })
  }
 
 
-  ///// bar chart /////
+  ///// put datas into GraphData /////
   findTextData(textArr) {
-    for (var i = 0; i < textArr.length; i++) {
+    var nums = textArr.length;
+    //nums = this.userNumChoice;
+    //this.graphXData = [];
+    if(nums> this.userNumChoice){
+      nums = this.userNumChoice;
+    }
+    for (var i = 0; i < nums; i++) {
       this.graphXData[i] = textArr[i]["word"];
     }
+    console.log("X : " + this.graphXData);
   }
 
   findCountData(countArr) {
-    for (var i = 0; i < countArr.length; i++) {
+    var nums = countArr.length;
+   // nums = this.userNumChoice;
+   //this.graphYData = [];
+    if(nums> this.userNumChoice){
+      nums = this.userNumChoice;
+    }
+    for (var i = 0; i < nums; i++) {
       this.graphYData[i]= countArr[i]["value"];
     }
+    console.log("Y : " + this.graphYData);
   }
 
   getUserChoice() {
@@ -272,12 +291,41 @@ export class DashboardComponent implements OnInit {
     //this.userGraphChoice  = document.getElementById("g1");
   }
 
+
+  onChange(value) {
+     this.userNumChoice = value;
+  }
+
+  clearResult(){
+    this.barChartData = [];
+    this.barChartLabels = [];
+
+    this.lineChartData = [];
+    this.lineChartLabels = [];
+    
+    this.doughnutChartData = [];
+    this.doughnutChartLabels = [];
+    
+    this.userAnalysisChoice = "";
+    this.userGraphChoice = '';
+    this.userNumChoice = 0;
+    console.log("CLEAR");
+  }
+
+
   showResult() {
+    console.clear();
     this.getUserChoice();
     this.choiceComplete = true;
+    // this.charts.forEach((child) => {
+    //   child.chart.update()
+    // });
+
     // this.rcmd.getRcmd(this.idList).then(data => {
     //   console.log(data);
     // });
+ 
+
     if(this.userAnalysisChoice=="TFIDF") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
       this.makeTf();
@@ -293,7 +341,7 @@ export class DashboardComponent implements OnInit {
     else if(this.userAnalysisChoice=="RNN"){
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
     }
-    
+    console.log(this.userNumChoice);
   }
 
 
@@ -315,6 +363,12 @@ export class DashboardComponent implements OnInit {
   barChartLegend = true;
   barChartPlugins = [];
 
+
+  barChartColors: Color[] = [
+    { backgroundColor: 'rgba(000,153,255,0.5)' },
+  ]
+
+
   barChartData: ChartDataSets[] = [
     { data: this.graphYData, label: this.userAnalysisChoice + " Analysis" }
   ];
@@ -325,26 +379,21 @@ export class DashboardComponent implements OnInit {
   ///////// line chart /// 
 
   lineChartData: ChartDataSets[] = [
-    { data: this.graphYData, label: '검색 추이' },
+    { data: this.graphYData, label: this.userAnalysisChoice + " Analysis" },
   ];
-
   lineChartLabels: Label[] = this.graphXData;
-
   lineChartOptions = {
     responsive: true,
   };
-
   lineChartColors: Color[] = [
     {
       borderColor: 'black',
-      backgroundColor: 'rgba(255,255,0,0.28)',
+      backgroundColor: 'rgba(000,153,255,0.5)',
     },
   ];
-
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
-
 
   //////dounet chart ///
   doughnutChartOptions: ChartOptions = {
@@ -360,8 +409,11 @@ export class DashboardComponent implements OnInit {
     {
       backgroundColor: [
         'rgba(255,0,0,0.3)',
+        'rgba(255,153,0,0.3)',
+        'rgba(255,255,0,0.3)',
         'rgba(0,255,0,0.3)',
-        'rgba(0,0,255,0.3)'
+        'rgba(0,0,255,0.3)',
+
       ]
     }
   ];

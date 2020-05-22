@@ -44,7 +44,7 @@
     <ul>
       <div *ngFor="let doc of this.docTitleList, index as t">
           <div class="form-group">
-            <input type="checkbox" formContronName="docs"  name = "t" (change)="this.boxChange(t)" [value] = "checkArr[t]" [(ngModel)]="filter[t]" >
+            <input  class="uk-checkbox" type="checkbox" formContronName="docs"  name = "t" (change)="this.boxChange(t)" [value] = "checkArr[t]" [(ngModel)]="filter[t]" >
              {{doc}}
           </div>
       </div>
@@ -58,13 +58,13 @@
       무슨 분석을 하시겠습니까?
       <div *ngIf="chosenCount > 1 || chosenCount == 0">
         <div *ngFor="let word of this.analysisList; index as i">
-          <input type="radio" formContronName="sis" name="i" [value]="analysisList[i]" [(ngModel)]="userAnalysisChoice">
+          <input class="uk-radio" type="radio" formContronName="sis" name="i" [value]="analysisList[i]" [(ngModel)]="userAnalysisChoice">
                {{analysisList[i]}}
         </div>
       </div>
     </div>
     <div class="form-group">
-      <input type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
+      <input  class="uk-radio" type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
     </div>
 
 
@@ -75,24 +75,40 @@
       무슨 그래프를 선택하시겠습니까?
 
       <div *ngFor="let word of this.graphList; index as k">
-        <input type="radio" formContronName="gra" name="k" [value]="graphList[k]" [(ngModel)]="userGraphChoice">
+        <input class="uk-radio"  type="radio" formContronName="gra" name="k" [value]="graphList[k]" [(ngModel)]="userGraphChoice">
         {{graphList[k]}}
       </div>
-
     </div>
-    <button (click)="showResult()">Choice Complete</button>
-    <div *ngIf="choiceComplete">Your Choice : <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}}
-        Graph</b></div>
-  </div>
+
+    
+    <div class="uk-margin">
+      출력할 데이터의 숫자
+      <select class="uk-select" [(ngModel)]= "userNumChoice" (change)="onChange($event.target.value)">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+      </select>
+    </div>
+
+
+    <button  class="btn btn-primary btn-block login-btn"(click)="showResult()">Choice Complete</button>
+    <button class="btn btn-primary btn-block login-btn" (click)="clearResult()">Clear Result</button>
+      
+    </div>
 
   <div class="graph-block" style="display:table-cell; border:1px blue solid;">
     그래프
+  
+    
+    
     <div *ngIf="choiceComplete">
-
+      <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph </b> and  <b> {{userNumChoice}} Data </b>
+      
       <div *ngIf="userGraphChoice == 'Bar'" class="column"
         style="display: block; width : 90%; height : 500px; margin: 20px;">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-          [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptions">
+          [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptions"
+          [colors] = "barChartColors">
         </canvas>
       </div>
 
