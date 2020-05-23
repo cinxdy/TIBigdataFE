@@ -8,6 +8,8 @@ import { EPAuthService } from '../../../../core/componets/membership/auth.servic
 import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
+import { DatabaseService } from "../../../../core/componets/database/database.service";
+
 
 
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
@@ -32,6 +34,7 @@ export class DashboardComponent implements OnInit {
  @ViewChild(BaseChartDirective , {static : false}) charts: QueryList<BaseChartDirective>;;
 
   constructor(
+    private db : DatabaseService,
     private auth: EPAuthService,
     private http: HttpClient,
     private ipService: IpService,
@@ -70,6 +73,7 @@ export class DashboardComponent implements OnInit {
   private ES_URL = "localhost:9200/nkdb";
   private myDocsTitles: string[] = [];
   private idList : string[] = [];
+  private chosenList : string[] = [];
   private search_history = [];
   private chosenCount : number = 0;
 
@@ -86,47 +90,27 @@ export class DashboardComponent implements OnInit {
       //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
-      this.idSvs.clearAll();
+      // this.idSvs.clearAll();
       console.log("dash board - page");
-      this.convertID2Title().then(() => {
-        //console.log(this.myDocsTitles)
-        this.queryHistory().then(() => {
-          this.search_history.forEach(word => {
-            this.graphData.push(word);
-          });
-
-          this.graphData.sort((a, b) => {
-            return b.count - a.count;
-          }); //count를 기준으로 정렬
-
-          this.findTextData(this.graphXData);
-          this.findCountData(this.graphYData);
-          this.findTextData(this.search_history);
-          this.findDocName();
-          //console.log(this.search_history);
-        });
-      })
+      this.getMyKeepDoc();
     }
   }
 
-  async convertID2Title() {
-    this.idList = await this.auth.getMyDocs() as string[];
-    return new Promise((resolve) => {
-      this.es.searchByManyId(this.idList).then(res=>{
-        console.log(res);
-        let articles = res["hits"]["hits"];
-        for(let i = 0 ; i < articles.length; i++){
-          this.myDocsTitles[i]=articles[i]["_source"]["post_title"][0]
-        }
-      })
-      resolve();
-      // this.http.post<any>()
+  getKeywords(ids){
+    this.db.getTfidfValue(ids);
+  }
+
+  getMyKeepDoc(){
+    this.idSvs.convertID2Title().then(titles=>{
+      this.myDocsTitles= titles as [];
+      this.idList = this.idSvs.getIdList();
     })
   }
 
   addList(i){
-    this.idSvs.setIdList(this.idList[i]);
+    this.chosenList.push(this.idList[i])
     this.chosenCount ++;
+    console.log(this.chosenList)
   }
 
   removeList(i){
@@ -146,34 +130,35 @@ export class DashboardComponent implements OnInit {
    }
   }
 
-  queryHistory() {
-    return new Promise((r) => {
-      this.http.get<any>(this.hstReqUrl)
-        .subscribe((res) => {
-          var hst = res.histories;
-          var keyArr = hst.map((hstrs) => hstrs.keyword);
-          keyArr = keyArr.sort();
-          //console.log("날짜 : " + dateArr);
-          var lenArr = keyArr.length;
-          var count = 1;
-          var freqTable = [];
-          var idxUniq = 0;
-          for (var i = 0; i < lenArr - 1; i++) {
-            if (keyArr[i] == keyArr[i + 1]) {
-              count++; //빈도수 증가
-              continue;
-            }
+  // queryHistory() {
+  //   return new Promise((r) => {
+  //     this.http.get<any>(this.hstReqUrl)
+  //       .subscribe((res) => {
+  //         var hst = res.histories;
+  //         var keyArr = hst.map((hstrs) => hstrs.keyword);
+  //         var dateArr = hst.map((hstrs) => { hstrs.year, hstrs.month, hstrs.date });
+  //         keyArr = keyArr.sort();
+  //         //console.log("날짜 : " + dateArr);
+  //         var lenArr = keyArr.length;
+  //         var count = 1;
+  //         var freqTable = [];
+  //         var idxUniq = 0;
+  //         for (var i = 0; i < lenArr - 1; i++) {
+  //           if (keyArr[i] == keyArr[i + 1]) {
+  //             count++; //빈도수 증가
+  //             continue;
+  //           }
 
-            freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
-            idxUniq++;
-            count = 1;
-          }
-          this.hstFreq = freqTable;
+  //           freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
+  //           idxUniq++;
+  //           count = 1;
+  //         }
+  //         this.hstFreq = freqTable;
 
-          r();
-        });
-    });
-  }
+  //         r();
+  //       });
+  //   });
+  // }
 
   private TfTable = [];
   

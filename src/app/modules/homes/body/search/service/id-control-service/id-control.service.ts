@@ -1,61 +1,87 @@
 import { ArticleSource } from '../../article/article.interface';
 import { Injectable } from '@angular/core';
+import { EPAuthService } from '../../../../../core/componets/membership/auth.service';
+import { ElasticsearchService } from "../../../search/service/elasticsearch-service/elasticsearch.service";
+
 // import { HomesModule } from '../../../homes.module'
 
 @Injectable()
 export class IdControlService {
-  private idChosen : string = "";
-  private idList : string[] = new Array<string>();
-  private article : ArticleSource;
-  constructor() { }
+  private idChosen: string = "";
+  private idList: string[] = [];
+  private article: ArticleSource;
+  private myDocsTitles: string[] = [];
 
-  clearAll(){
+  constructor(private auth: EPAuthService, private es: ElasticsearchService,
+  ) { }
+
+  clearAll() {
     this.idChosen = "";
     this.idList = [];
     this.idChosen = "";
   }
 
-  setIdList(id:string){
+  setIdList(id: string) {
     this.idList.push(id);
   }
 
-  popIdList(){
+  popIdList() {
     this.idList.pop();
   }
 
-  clearIdList(){
+  clearIdList() {
     this.idList = [];
   }
 
-  getIdList(){
+  getIdList() {
     return this.idList;
   }
 
-  clearIds(){
+  clearIds() {
     this.idList = [];
   }
 
-  setIdChosen(id : string){
+  setIdChosen(id: string) {
     this.idChosen = id;
     // console.log(this.idChosen);
   }
 
-  getIdChosen(){
+  getIdChosen() {
     return this.idChosen;
   }
 
-  clearIdChosen(){
+  clearIdChosen() {
     this.idChosen = "";
   }
 
-  getArticle(){
+  getArticle() {
     return this.article;
   }
 
-  setArticle(art:ArticleSource){
+  setArticle(art: ArticleSource) {
     this.article = art;
   }
 
-  
+  //user page ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침. 
+  async convertID2Title() {
+    this.myDocsTitles = [];
+    this.idList = await this.auth.getMyDocs() as string[];
+    console.log(this.idList);
+    return new Promise((resolve) => {
+      this.es.searchByManyId(this.idList).then(res => {
+        let articles = res["hits"]["hits"];
+        console.log(articles)
+        console.log("article len" + articles.length);
+        for (let i = 0; i < articles.length; i++) {
+          this.myDocsTitles[i] = articles[i]["_source"]["post_title"][0]
+        }
+        console.log("id control service get id done");
+        resolve(this.myDocsTitles);
+      })
+      // this.http.post<any>()
+    })
+  }
+
+
 
 }
