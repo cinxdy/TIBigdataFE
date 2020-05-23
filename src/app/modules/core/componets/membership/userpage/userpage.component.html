@@ -21,5 +21,13 @@
 </div>
 
 <div>
-    관심있는 문서
+    KEEP 한 문서 : {{ myDocsNum }}
+    <div *ngFor="let d of myDocs">
+        <div class="row">
+            <div class="col">
+                {{d}}
+            </div>
+
+        </div>
+    </div>
 </div>

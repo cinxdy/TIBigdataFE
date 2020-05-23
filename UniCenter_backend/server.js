@@ -25,12 +25,14 @@ const hstQry = require('./searchHistoryQuery');//bring the backend func and feat
 const gUserQry = require('./googleUserQuery');
 const eUserQry = require('./emailUserQuery');
 const keepDoc = require('./keepMyDocQuery');
+const keywords = require('./tfidfQuery');
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/hst', hstQry);//hst 경로에서 항상 require("./hst") 호출한다. use : middleware 함수.
 app.use('/gUser',gUserQry);
 app.use('/eUser',eUserQry);
 app.use('/myDoc',keepDoc);
+app.use('/keyword',keywords);
 
 //root dir
 app.get('/', function(req, res) {

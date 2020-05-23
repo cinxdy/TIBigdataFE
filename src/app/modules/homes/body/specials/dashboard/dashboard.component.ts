@@ -8,6 +8,8 @@ import { EPAuthService } from '../../../../core/componets/membership/auth.servic
 import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
+import { DatabaseService } from "../../../../core/componets/database/database.service";
+
 
 import { thresholdSturges } from 'd3-array';
 import { map } from "rxjs/operators";
@@ -26,6 +28,7 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(
+    private db : DatabaseService,
     private auth: EPAuthService,
     private http: HttpClient,
     private ipService: IpService,
@@ -47,6 +50,7 @@ export class DashboardComponent implements OnInit {
   private ES_URL = "localhost:9200/nkdb";
   private myDocsTitles: string[] = [];
   private idList : string[] = [];
+  private chosenList : string[] = [];
   private search_history = [];
   private chosenCount : number = 0;
 
@@ -60,47 +64,28 @@ export class DashboardComponent implements OnInit {
       alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
-      this.idSvs.clearAll();
+      // this.idSvs.clearAll();
       console.log("dash board - page");
-      this.convertID2Title().then(() => {
+      this.getMyKeepDoc().then(() => {
+        this.idList = this.idSvs.getIdList();
+        console.log(this.idList);
         console.log(this.myDocsTitles)
-        // this.queryHistory().then(() => {
-          // this.search_history.forEach(word => {
-          //   this.barData.push(word);
-          // });
-
-          // this.barData.sort((a, b) => {
-          //   return b.count - a.count;
-          // }); //count를 기준으로 정렬
-
-          // this.findTextData(this.barXData);
-          // this.findCountData(this.barYData);
-          // this.findTextData(this.search_history);
-          // console.log(this.search_history);
-        // });
       })
     }
   }
 
+  getKeywords(ids){
+    this.db.getTfidfValue(ids);
+  }
 
-  async convertID2Title() {
-    this.idList = await this.auth.getMyDocs() as string[];
-    return new Promise((resolve) => {
-      this.es.searchByManyId(this.idList).then(res=>{
-        console.log(res);
-        let articles = res["hits"]["hits"];
-        for(let i = 0 ; i < articles.length; i++){
-          this.myDocsTitles[i]=articles[i]["_source"]["post_title"][0]
-        }
-      })
-      resolve();
-      // this.http.post<any>()
-    })
+  async getMyKeepDoc(){
+    this.myDocsTitles= await this.idSvs.convertID2Title() as [];
   }
 
   addList(i){
-    this.idSvs.setIdList(this.idList[i]);
+    this.chosenList.push(this.idList[i])
     this.chosenCount ++;
+    console.log(this.chosenList)
   }
 
   removeList(i){
@@ -163,8 +148,10 @@ export class DashboardComponent implements OnInit {
     this.getUserChoice();
     this.choiceComplete = true;
     console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+
     this.rcmd.getRcmd(this.idList).then(data => {
-      console.log(data);
+      this.getKeywords(this.chosenList)
+
     });
   }
 
