@@ -63,6 +63,8 @@ export class ElasticsearchService {
   fullTextSearch(_field, _queryText) {
     this.client
       .search({
+        from:0,
+        size: 50,
         filterPath: [
           "hits.hits._source",
           "hits.hits._id",
@@ -118,7 +120,7 @@ export class ElasticsearchService {
       filterPath: ["hits.hits"],
       body: {
         query: {
-          terms: {
+          term: {
             _id: [id]
           }
         }
@@ -134,8 +136,12 @@ export class ElasticsearchService {
   }
 
   searchByManyId(ids: string[]) {
+    console.log("the num of ids : "+ids.length);
     return this.client.search({
-      filterPath: ["hits.hits"],
+      // filterPath: ["hits.hits"],
+      index: "nkdb",
+      from:0,//not work. github KUBiC issue # 34
+      size: 50,//not work.
       body: {
         query: {
           terms: {
