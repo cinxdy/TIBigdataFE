@@ -326,7 +326,13 @@ export class DashboardComponent implements OnInit {
     else if(this.userAnalysisChoice=="RNN"){
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
     }
-    console.log(this.userNumChoice);
+    // console.log(this.userNumChoice);
+    // console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+
+    this.rcmd.getRcmd(this.idList).then(data => {
+      this.getKeywords(this.chosenList)
+
+    });
   }
 
 
