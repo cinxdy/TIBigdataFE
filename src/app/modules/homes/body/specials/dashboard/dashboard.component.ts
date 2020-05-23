@@ -66,11 +66,7 @@ export class DashboardComponent implements OnInit {
       this.chosenCount = 0;
       // this.idSvs.clearAll();
       console.log("dash board - page");
-      this.getMyKeepDoc().then(() => {
-        this.idList = this.idSvs.getIdList();
-        console.log(this.idList);
-        console.log(this.myDocsTitles)
-      })
+      this.getMyKeepDoc();
     }
   }
 
@@ -78,8 +74,11 @@ export class DashboardComponent implements OnInit {
     this.db.getTfidfValue(ids);
   }
 
-  async getMyKeepDoc(){
-    this.myDocsTitles= await this.idSvs.convertID2Title() as [];
+  getMyKeepDoc(){
+    this.idSvs.convertID2Title().then(titles=>{
+      this.myDocsTitles= titles as [];
+      this.idList = this.idSvs.getIdList();
+    })
   }
 
   addList(i){
@@ -94,35 +93,35 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  queryHistory() {
-    return new Promise((r) => {
-      this.http.get<any>(this.hstReqUrl)
-        .subscribe((res) => {
-          var hst = res.histories;
-          var keyArr = hst.map((hstrs) => hstrs.keyword);
-          var dateArr = hst.map((hstrs) => { hstrs.year, hstrs.month, hstrs.date });
-          keyArr = keyArr.sort();
-          //console.log("날짜 : " + dateArr);
-          var lenArr = keyArr.length;
-          var count = 1;
-          var freqTable = [];
-          var idxUniq = 0;
-          for (var i = 0; i < lenArr - 1; i++) {
-            if (keyArr[i] == keyArr[i + 1]) {
-              count++; //빈도수 증가
-              continue;
-            }
+  // queryHistory() {
+  //   return new Promise((r) => {
+  //     this.http.get<any>(this.hstReqUrl)
+  //       .subscribe((res) => {
+  //         var hst = res.histories;
+  //         var keyArr = hst.map((hstrs) => hstrs.keyword);
+  //         var dateArr = hst.map((hstrs) => { hstrs.year, hstrs.month, hstrs.date });
+  //         keyArr = keyArr.sort();
+  //         //console.log("날짜 : " + dateArr);
+  //         var lenArr = keyArr.length;
+  //         var count = 1;
+  //         var freqTable = [];
+  //         var idxUniq = 0;
+  //         for (var i = 0; i < lenArr - 1; i++) {
+  //           if (keyArr[i] == keyArr[i + 1]) {
+  //             count++; //빈도수 증가
+  //             continue;
+  //           }
 
-            freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
-            idxUniq++;
-            count = 1;
-          }
-          this.hstFreq = freqTable;
+  //           freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
+  //           idxUniq++;
+  //           count = 1;
+  //         }
+  //         this.hstFreq = freqTable;
 
-          r();
-        });
-    });
-  }
+  //         r();
+  //       });
+  //   });
+  // }
 
 
   ///// bar chart /////
