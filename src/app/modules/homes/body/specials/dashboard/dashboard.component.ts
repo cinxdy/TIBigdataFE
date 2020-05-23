@@ -86,25 +86,25 @@ export class DashboardComponent implements OnInit {
       //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
-      this.idSvs.clearAll();
+      // this.idSvs.clearAll();
       console.log("dash board - page");
       this.convertID2Title().then(() => {
         //console.log(this.myDocsTitles)
-        this.queryHistory().then(() => {
-          this.search_history.forEach(word => {
-            this.graphData.push(word);
-          });
+        // this.queryHistory().then(() => {
+          // this.search_history.forEach(word => {
+          //   this.graphData.push(word);
+          // });
 
-          this.graphData.sort((a, b) => {
-            return b.count - a.count;
-          }); //count를 기준으로 정렬
+          // this.graphData.sort((a, b) => {
+          //   return b.count - a.count;
+          // }); //count를 기준으로 정렬
 
-          this.findTextData(this.graphXData);
-          this.findCountData(this.graphYData);
-          this.findTextData(this.search_history);
-          this.findDocName();
+          // this.findTextData(this.graphXData);
+          // this.findCountData(this.graphYData);
+          // this.findTextData(this.search_history);
+          // this.findDocName();
           //console.log(this.search_history);
-        });
+        // });
       })
     }
   }
@@ -146,34 +146,34 @@ export class DashboardComponent implements OnInit {
    }
   }
 
-  queryHistory() {
-    return new Promise((r) => {
-      this.http.get<any>(this.hstReqUrl)
-        .subscribe((res) => {
-          var hst = res.histories;
-          var keyArr = hst.map((hstrs) => hstrs.keyword);
-          keyArr = keyArr.sort();
-          //console.log("날짜 : " + dateArr);
-          var lenArr = keyArr.length;
-          var count = 1;
-          var freqTable = [];
-          var idxUniq = 0;
-          for (var i = 0; i < lenArr - 1; i++) {
-            if (keyArr[i] == keyArr[i + 1]) {
-              count++; //빈도수 증가
-              continue;
-            }
+  // queryHistory() {
+  //   return new Promise((r) => {
+  //     this.http.get<any>(this.hstReqUrl)
+  //       .subscribe((res) => {
+  //         var hst = res.histories;
+  //         var keyArr = hst.map((hstrs) => hstrs.keyword);
+  //         keyArr = keyArr.sort();
+  //         //console.log("날짜 : " + dateArr);
+  //         var lenArr = keyArr.length;
+  //         var count = 1;
+  //         var freqTable = [];
+  //         var idxUniq = 0;
+  //         for (var i = 0; i < lenArr - 1; i++) {
+  //           if (keyArr[i] == keyArr[i + 1]) {
+  //             count++; //빈도수 증가
+  //             continue;
+  //           }
 
-            freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
-            idxUniq++;
-            count = 1;
-          }
-          this.hstFreq = freqTable;
+  //           freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
+  //           idxUniq++;
+  //           count = 1;
+  //         }
+  //         this.hstFreq = freqTable;
 
-          r();
-        });
-    });
-  }
+  //         r();
+  //       });
+  //   });
+  // }
 
   private TfTable = [];
   
