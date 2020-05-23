@@ -30,22 +30,22 @@ import { keyframes } from '@angular/animations';
 })
 
 export class DashboardComponent implements OnInit {
-  
- @ViewChild(BaseChartDirective , {static : false}) charts: QueryList<BaseChartDirective>;;
+
+  @ViewChild(BaseChartDirective, { static: false }) charts: QueryList<BaseChartDirective>;;
 
   constructor(
-    private db : DatabaseService,
+    private db: DatabaseService,
     private auth: EPAuthService,
     private http: HttpClient,
     private ipService: IpService,
     private es: ElasticsearchService,
-    private idSvs : IdControlService,
-    private rcmd : RecomandationService
+    private idSvs: IdControlService,
+    private rcmd: RecomandationService
   ) { }
 
   analysisList: string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
-  idList1 : string[] = [
+  idList1: string[] = [
     "5de110274b79a29a5f987f1d",
     "5de1107f4b79a29a5f988202",
     "5de1109d582a23c9693cbec9",
@@ -57,25 +57,25 @@ export class DashboardComponent implements OnInit {
 
   docTitleList = [];
 
-  private tfidfDir : string = "../../../../../../assets/entire_tfidf/data.json";
+  private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
-  
+
   private hstReqUrl = this.ipService.getUserServerIp() + ":4000/hst/getTotalHistory";
   private hstFreq: any[];
 
   // private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
   // private hstFreq : any[];
-  
+
   private graphXData = [];
   private graphYData = [];
   private graphData = [];
 
   private ES_URL = "localhost:9200/nkdb";
   private myDocsTitles: string[] = [];
-  private idList : string[] = [];
-  private chosenList : string[] = [];
+  private idList: string[] = [];
+  private chosenList: string[] = [];
   private search_history = [];
-  private chosenCount : number = 0;
+  private chosenCount: number = 0;
 
   private choiceComplete = false;
   private userDataChoice = [];
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     if (!this.auth.getLogInStat())
       console.log("wow");
-      //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+    //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
       // this.idSvs.clearAll();
@@ -96,159 +96,147 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getKeywords(ids){
-    this.db.getTfidfValue(ids);
+  async getKeywords(ids) {
+    return await this.db.getTfidfValue(ids);
   }
 
-  getMyKeepDoc(){
-    this.idSvs.convertID2Title().then(titles=>{
-      this.myDocsTitles= titles as [];
+  getMyKeepDoc() {
+    this.idSvs.convertID2Title().then(titles => {
+      this.docTitleList = titles as [];
       this.idList = this.idSvs.getIdList();
     })
   }
 
-  addList(i){
+  addList(i) {
     this.chosenList.push(this.idList[i])
-    this.chosenCount ++;
+    this.chosenCount++;
     console.log(this.chosenList)
   }
 
-  removeList(i){
+  removeList(i) {
     this.idSvs.popIdList();
-    this.chosenCount --;
+    this.chosenCount--;
   }
   private filter = [];
   private checkArr = [];
 
-  boxChange(i){
-   if(this.filter[i]){
-    this.addList(i);
-    console.log(i+"넣음");
-   }else{
-    this.removeList(i);
-    console.log(i+"빠짐");
-   }
+  boxChange(i) {
+    if (this.filter[i]) {
+      this.addList(i);
+      console.log(i + "넣음");
+    } else {
+      this.removeList(i);
+      console.log(i + "빠짐");
+    }
   }
 
-  // queryHistory() {
-  //   return new Promise((r) => {
-  //     this.http.get<any>(this.hstReqUrl)
-  //       .subscribe((res) => {
-  //         var hst = res.histories;
-  //         var keyArr = hst.map((hstrs) => hstrs.keyword);
-  //         var dateArr = hst.map((hstrs) => { hstrs.year, hstrs.month, hstrs.date });
-  //         keyArr = keyArr.sort();
-  //         //console.log("날짜 : " + dateArr);
-  //         var lenArr = keyArr.length;
-  //         var count = 1;
-  //         var freqTable = [];
-  //         var idxUniq = 0;
-  //         for (var i = 0; i < lenArr - 1; i++) {
-  //           if (keyArr[i] == keyArr[i + 1]) {
-  //             count++; //빈도수 증가
-  //             continue;
-  //           }
-
-  //           freqTable.push({ No: idxUniq, count: count, text: keyArr[i] });
-  //           idxUniq++;
-  //           count = 1;
-  //         }
-  //         this.hstFreq = freqTable;
-
-  //         r();
-  //       });
-  //   });
-  // }
-
   private TfTable = [];
-  
 
-  makeTf(){
-    var docNum = this.idList.length;
 
-    this.http.get(this.tfidfDir).subscribe(docData1 => {
+  makeTf() {
+    // var docNum = this.idList.length;
+    this.getKeywords(this.chosenList).then(tfidf_table => {
+      // this.http.get(this.tfidfDir).subscribe(docData1 => {
+      let oneDoc = tfidf_table as []
+      console.log(oneDoc)
       var temp;
       var sampleID;
       var sampleTitle;
+
       const tempArr = [] as any;
+      let tWord, tVal;
+      var tJson = new Object();
 
-      var docData = docData1 as [];
-      for (var j = 0; j<docNum;j++){
-        sampleID = this.idList[j];
-
-        for(var i = 0; i<docData.length;i++){
-          temp = docData[i]["docID"];
-
-          if(temp==sampleID){
-            sampleTitle = docData[i]["docTitle"];
-            this.docTitleList[j]=sampleTitle;
-            //console.log(this.docTitleList[j]);
-            
-            let tfVal = docData[i]["TFIDF"];
-
-            
-            let tWord, tVal;
-            var tJson = new Object();
-
-            for(var t = 0;t<5;t++){
-              var tData = tfVal[t];
-                if(tData)  {
-                  tWord = tData[0];
-                  tVal = tData[1];
-                  tJson = {word: tWord, value : tVal};
-                  tempArr.push(tJson);
-              }
-            }
-            this.TfTable.push({No : j, title : this.docTitleList[j], tfidf : tempArr});
+      for (var i = 0; i < oneDoc.length; i++) {
+        var docData = oneDoc[i]["tfidf"];
+        for (var t = 0; t < this.userNumChoice; t++) {
+          var tData = docData[t];
+          if (tData) {
+            tWord = tData[0];
+            tVal = tData[1];
+            tJson = { word: tWord, value: tVal };
+            tempArr.push(tJson);
           }
         }
       }
-     
-      tempArr.sort(function (a,b){
+      // // var docData = docData1 as [];
+      // for (var j = 0; j<docNum;j++){
+      //   sampleID = this.idList[j];
+
+      //   for(var i = 0; i<docData.length;i++){
+      //     temp = docData[i]["docID"];
+
+      //     if(temp==sampleID){
+      //       sampleTitle = docData[i]["docTitle"];
+      //       this.docTitleList[j]=sampleTitle;
+      //       //console.log(this.docTitleList[j]);
+
+      //       let tfVal = docData[i]["TFIDF"];
+
+
+      //       let tWord, tVal;
+      //       var tJson = new Object();
+
+      //       for(var t = 0;t<5;t++){
+      //         var tData = tfVal[t];
+      //           if(tData)  {
+      //             tWord = tData[0];
+      //             tVal = tData[1];
+      //             tJson = {word: tWord, value : tVal};
+      //             tempArr.push(tJson);
+      //         }
+      //       }
+      //       this.TfTable.push({No : j, title : this.docTitleList[j], tfidf : tempArr});
+      //     }
+      //   }
+      // }
+
+      tempArr.sort(function (a, b) {
         return b["value"] - a["value"];
       });
 
-    this.findTextData(tempArr);
-    this.findCountData(tempArr);
-   })
+      this.findTextData(tempArr);
+      this.findCountData(tempArr);
+    })
 
   }
 
-  findDocName(){
-    //var docNum = this.idList.length;
-    var docNum = this.chosenCount;
+  //   findDocName(){
+  //     //var docNum = this.idList.length;
+  //     var docNum = this.chosenCount;
 
-   // console.log(this.idList);
+  //    // console.log(this.idList);
 
-    this.http.get(this.tfidfDir).subscribe(docData1 => {
-       var temp;
-       var sampleID;
-       var sampleTitle;
-       var docData = docData1 as []
-       for (var j = 0; j<docNum;j++){
-         sampleID = this.idList[j];
+  //     this.http.get(this.tfidfDir).subscribe(docData1 => {
+  //        var temp;
+  //        var sampleID;
+  //        var sampleTitle;
+  //        var docData = docData1 as []
+  //        for (var j = 0; j<docNum;j++){
+  //          sampleID = this.idList[j];
 
-         for(var i = 0; i<docData.length;i++){
-           temp = docData[i]["docID"];
+  //          for(var i = 0; i<docData.length;i++){
+  //            temp = docData[i]["docID"];
 
-           if(temp==sampleID){
-             sampleTitle = docData[i]["docTitle"];
-             this.docTitleList[j]=sampleTitle;
-           }
-         }
-       }
-       
-       //console.log("야호"+this.docTitleList);
-    })
- }
+  //            if(temp==sampleID){
+  //              sampleTitle = docData[i]["docTitle"];
+  //              this.docTitleList[j]=sampleTitle;
+  //            }
+  //          }
+  //        }
+
+  //        //console.log("야호"+this.docTitleList);
+  //     })
+  //  }
 
 
   ///// put datas into GraphData /////
   findTextData(textArr) {
+    // console.log(textArr)
     var nums = textArr.length;
     //nums = this.userNumChoice;
     //this.graphXData = [];
-    if(nums> this.userNumChoice){
+    if (nums > this.userNumChoice) {
       nums = this.userNumChoice;
     }
     for (var i = 0; i < nums; i++) {
@@ -259,13 +247,13 @@ export class DashboardComponent implements OnInit {
 
   findCountData(countArr) {
     var nums = countArr.length;
-   // nums = this.userNumChoice;
-   //this.graphYData = [];
-    if(nums> this.userNumChoice){
+    // nums = this.userNumChoice;
+    //this.graphYData = [];
+    if (nums > this.userNumChoice) {
       nums = this.userNumChoice;
     }
     for (var i = 0; i < nums; i++) {
-      this.graphYData[i]= countArr[i]["value"];
+      this.graphYData[i] = countArr[i]["value"];
     }
     console.log("Y : " + this.graphYData);
   }
@@ -278,19 +266,19 @@ export class DashboardComponent implements OnInit {
 
 
   onChange(value) {
-     this.userNumChoice = value;
+    this.userNumChoice = value;
   }
 
-  clearResult(){
+  clearResult() {
     this.barChartData = [];
     this.barChartLabels = [];
 
     this.lineChartData = [];
     this.lineChartLabels = [];
-    
+
     this.doughnutChartData = [];
     this.doughnutChartLabels = [];
-    
+
     this.userAnalysisChoice = "";
     this.userGraphChoice = '';
     this.userNumChoice = 0;
@@ -309,21 +297,21 @@ export class DashboardComponent implements OnInit {
     // this.rcmd.getRcmd(this.idList).then(data => {
     //   console.log(data);
     // });
- 
 
-    if(this.userAnalysisChoice=="TFIDF") {
+
+    if (this.userAnalysisChoice == "TFIDF") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
       this.makeTf();
     }
-    else if(this.userAnalysisChoice=="LDA"){
+    else if (this.userAnalysisChoice == "LDA") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
 
     }
-    else if(this.userAnalysisChoice=="Related Doc"){
+    else if (this.userAnalysisChoice == "Related Doc") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
 
     }
-    else if(this.userAnalysisChoice=="RNN"){
+    else if (this.userAnalysisChoice == "RNN") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
     }
     // console.log(this.userNumChoice);
@@ -419,11 +407,11 @@ export class DashboardComponent implements OnInit {
     overflow: true
   };
 
-  cData: CloudData[] = []; 
-  
- 
+  cData: CloudData[] = [];
 
-  makeWordCloud(){
+
+
+  makeWordCloud() {
     var sample = this.graphData;
 
 
@@ -448,7 +436,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  
+
 
 
 

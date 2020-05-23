@@ -1,23 +1,23 @@
 <p>UserDashBoard Page</p>
 
 
-<div class="entire-Board" style= "width : 100%; display: table; border: 1px black solid;">
+<div class="entire-Board" style="width : 100%; display: table; border: 1px black solid;">
 
-  <div class="uk-card uk-card-default uk-card-body" style= "width : 100%; display: table-cell;">
+  <div class="uk-card uk-card-default uk-card-body" style="width : 100%; display: table-cell;">
     <dl class="uk-description-list">
       <h3>도움말</h3>
 
       <dt>1단계</dt>
       <dd>문서 선택 한다</dd>
-      
+
       <dt>2단계</dt>
       <dd>분석 선택 한다</dd>
-      
+
       <dt>3단계</dt>
       <dd>그래프 선택 한다</dd>
-  </dl>
+    </dl>
   </div>
-    <!--
+  <!--
       <ul>
         <div *ngFor = "let doc of this.docTitleList; index as d">
           <li>
@@ -43,10 +43,11 @@
     문서 보유 목록
     <ul>
       <div *ngFor="let doc of this.docTitleList, index as t">
-          <div class="form-group">
-            <input  class="uk-checkbox" type="checkbox" formContronName="docs"  name = "t" (change)="this.boxChange(t)" [value] = "checkArr[t]" [(ngModel)]="filter[t]" >
-             {{doc}}
-          </div>
+        <div class="form-group">
+          <input class="uk-checkbox" type="checkbox" formContronName="docs" name="t" (change)="this.boxChange(t)"
+            [value]="checkArr[t]" [(ngModel)]="filter[t]">
+          {{doc}}
+        </div>
       </div>
 
 
@@ -58,13 +59,14 @@
       무슨 분석을 하시겠습니까?
       <div *ngIf="chosenCount > 1 || chosenCount == 0">
         <div *ngFor="let word of this.analysisList; index as i">
-          <input class="uk-radio" type="radio" formContronName="sis" name="i" [value]="analysisList[i]" [(ngModel)]="userAnalysisChoice">
-               {{analysisList[i]}}
+          <input class="uk-radio" type="radio" formContronName="sis" name="i" [value]="analysisList[i]"
+            [(ngModel)]="userAnalysisChoice">
+          {{analysisList[i]}}
         </div>
       </div>
     </div>
     <div class="form-group">
-      <input  class="uk-radio" type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
+      <input class="uk-radio" type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
     </div>
 
 
@@ -75,40 +77,40 @@
       무슨 그래프를 선택하시겠습니까?
 
       <div *ngFor="let word of this.graphList; index as k">
-        <input class="uk-radio"  type="radio" formContronName="gra" name="k" [value]="graphList[k]" [(ngModel)]="userGraphChoice">
+        <input class="uk-radio" type="radio" formContronName="gra" name="k" [value]="graphList[k]"
+          [(ngModel)]="userGraphChoice">
         {{graphList[k]}}
       </div>
     </div>
 
-    
+
     <div class="uk-margin">
       출력할 데이터의 숫자
-      <select class="uk-select" [(ngModel)]= "userNumChoice" (change)="onChange($event.target.value)">
-          <option>5</option>
-          <option>10</option>
-          <option>20</option>
+      <select class="uk-select" [(ngModel)]="userNumChoice" (change)="onChange($event.target.value)">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
       </select>
     </div>
 
 
-    <button  class="btn btn-primary btn-block login-btn"(click)="showResult()">Choice Complete</button>
+    <button class="btn btn-primary btn-block login-btn" (click)="showResult()">Choice Complete</button>
     <button class="btn btn-primary btn-block login-btn" (click)="clearResult()">Clear Result</button>
-      
-    </div>
+
+  </div>
 
   <div class="graph-block" style="display:table-cell; border:1px blue solid;">
     그래프
-  
-    
-    
+
+
+
     <div *ngIf="choiceComplete">
-      <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph </b> and  <b> {{userNumChoice}} Data </b>
-      
+      <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph </b> and <b> {{userNumChoice}} Data </b>
+
       <div *ngIf="userGraphChoice == 'Bar'" class="column"
         style="display: block; width : 90%; height : 500px; margin: 20px;">
         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-          [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptions"
-          [colors] = "barChartColors">
+          [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptions" [colors]="barChartColors">
         </canvas>
       </div>
 

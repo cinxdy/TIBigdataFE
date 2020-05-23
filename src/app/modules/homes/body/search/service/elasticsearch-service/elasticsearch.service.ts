@@ -136,10 +136,10 @@ export class ElasticsearchService {
   }
 
   searchByManyId(ids: string[]) {
-    console.log("the num of ids : "+ids.length);
+    console.log("es ts: the num of ids : "+ids.length);
     return this.client.search({
       // filterPath: ["hits.hits"],
-      index: "nkdb",
+      // index: "nkdb",
       from:0,//not work. github KUBiC issue # 34
       size: 50,//not work.
       body: {

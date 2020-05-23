@@ -23,8 +23,8 @@ router.post('/getKeyVal',(req,res)=>{
     console.log("get req")
     console.log(ids);
     // let id = ids[0]
-    let id = "5de1134ab53863d63aa55309"
-    Keywords.findOne({ docID : id }, (error, doc) => {
+    // let id = "5de1134ab53863d63aa55309"
+    Keywords.find({ docID : {$in :ids} }, (error, doc) => {
         if(error){
             console.log(error)
         }

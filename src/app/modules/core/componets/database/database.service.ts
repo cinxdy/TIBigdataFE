@@ -12,16 +12,18 @@ export class DatabaseService {
 
 
   constructor(private ipService: IpService,
-              private http: HttpClient,
+    private http: HttpClient,
   ) { }
 
 
-  getTfidfValue(ids:string[]){
-    console.log(ids);
-    this.http.post<any>(this.GET_KEYWORDS_URL,ids).subscribe(res=>{
-      console.log("tfidf val result : ");
-      console.log(res);
-    });
+  async getTfidfValue(ids: string[]) {
+    // console.log(ids);
+    return new Promise(resolve => this.http.post<any>(this.GET_KEYWORDS_URL, ids).subscribe(tfidf_table => {
+      // console.log("tfidf val result : ");
+      // console.log(res);
+      resolve (tfidf_table);
+    })
+    )
   }
 
 }
