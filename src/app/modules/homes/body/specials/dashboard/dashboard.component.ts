@@ -107,51 +107,11 @@ export class DashboardComponent implements OnInit {
       // this.idSvs.clearAll();
       console.log("dash board - page");
       this.getMyKeepDoc();
-      for (let i = 0; i < 5; i++) {
-        this.cData.push({
-          text: "A",
-          weight: 2 * (i + 1),
-          color: "blue"
-        });
-      }
-      // this.db.getRcmdTable(this.chosenList[0]).then(data => {
-        
-        
-      //   for (let i = 0; i < 5; i++) {
-      //     this.cData.push({
-      //       text: "B",
-      //       weight: 2 * (i + 1),
-      //       color: "red"
-      //     });
-      //   }
-      //   console.log("cdata:",this.cData)
-      // })
     }
 
   }
 
-  light(){
-    console.log("cdata:",this.cData)
-    let tempArr = []
-    for (let i = 0; i < 5; i++) {
-      tempArr.push({
-        text: "C",
-        weight: 2 * (i + 1),
-        color: "gray"
-      });
-    }
-    const changedData$: Observable<CloudData[]> = of(
-      tempArr
-      
-      // { text: 'Weight-3', weight: 3 },
-      // ...
-    );
-    changedData$.subscribe(res => this.cData = res);
-  }
 
-  printOut(str){
-    console.log(str);
-  }
 
   async getKeywords(ids) {
     return await this.db.getTfidfValue(ids);
@@ -316,78 +276,47 @@ export class DashboardComponent implements OnInit {
       //   });
       // }
       this.db.getRcmdTable(this.chosenList[0]).then(data => {
-        for (let i = 0; i < 5; i++) {
-          this.cData.push({
-            text: "B",
-            weight: 2 * (i + 1),
-            color: "red"
-          });
+
+        let graphData = data[0]["rcmd"] as [];
+  
+
+        let idsArr = []
+        for (let k = 0; k < 30; k++) {
+          idsArr.push(graphData[k][1])
         }
-        //   let graphData = data[0]["rcmd"] as [];
-        //   // console.log(data)
-        //   // const changedData$: Observable<CloudData[]> = of([]);
-        //   // changedData$.subscribe(res => (this.cData = res));
+        this.idSvs.convertID2Title(idsArr).then(t => {
+          let titles = t as [];
 
-        //   // let idsArr = []
-        //   // for (let k = 0; k < 30; k++) {
-        //   //   idsArr.push(graphData[k][1])
-        //   // }
-        //   for (let i in graphData) {
-        //     if (Number(i) >= 5) break;
-        //     else if (Number(i) <= 4) {
-        //       console.log(graphData[i][0])
-        //       console.log(graphData[i][1])
-        //       this.cData.push({
-        //         text: "A",
-        //         // text: graphData[i][0],
-        //         weight: 10,
-        //         // weight: graphData[i][1],
-        //         color: "blue"
-        //       });
-        //       // console.log(graphData[i][
-        //     } else
-        //       this.cData.push({
-        //         text: "B",
-        //         // text: graphData[i][0],
-        //         weight: 8,
-        //         // weight: graphData[i][1],
-        //         color: "gray"
-        //       });
-        //   }
-        //   // this.idSvs.convertID2Title(idsArr).then(t => {
-        //   //   let titles = t as [];
-        //   // for (var j = 0; j < titles.length; j++) {
-        //   //   // console.log(titles[j]);
-        //   //   // graphData[j][0] = titles[j]
 
-        //   // }
-        //   // console.log("console.log(graphData:")
-        //   // console.log(graphData)
-        //   // console.log(graphData)
-        //   // this.es.searchByManyId(idsArr);
+          // text: "A",
+          // weight: 2 * (i + 1),
+          // color: "blue"
+          let temp_cData = []
+          for (var j = 0; j < titles.length; j++) {
+            if (j > 30) break
+            else if (j < 5) {
+              temp_cData.push(
+                {
+                  text: titles[j],
+                  weight: graphData[j][1],
+                  color: "blue"
+                }
+              )
+            }
+            else {
+              temp_cData.push(
+                {
+                  text: titles[j],
+                  weight: graphData[j][1],
+                  color: "gray"
+                }
+              )
+            }
 
-        //   // for (let i in graphData) {
-        //   //   if (Number(i) >= 5) break;
-        //   //   else if (Number(i) <= 4) {
-        //   //     console.log(graphData[i][0])
-        //   //     console.log(graphData[i][1])
-        //   //     this.cData.push({
-        //   //       // text : "A",
-        //   //       text: graphData[i][0],
-        //   //       // weight : 10,
-        //   //       weight: graphData[i][1],
-        //   //       color: "blue"
-        //   //     });
-        //   //     // console.log(graphData[i][
-        //   //   } else
-        //   //     this.cData.push({
-        //   //       text: graphData[i][0],
-        //   //       // weight : 8,
-        //   //       weight: graphData[i][1],
-        //   //       color: "gray"
-        //   //     });
-        //   // }
-        //   // })
+          }
+          const changedData$: Observable<CloudData[]> = of(temp_cData);
+          changedData$.subscribe(res => (this.cData = res));
+        })
       });
 
     }
