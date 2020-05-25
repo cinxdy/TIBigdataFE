@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');//javscript with token lib
 var secret = 'harrypotter';//???? no use?
+// const User = require('./models/user');
+// const conn = require('./connection/userConn')
 const User = require('./models/user');
 
 const bcrypt = require('bcrypt');

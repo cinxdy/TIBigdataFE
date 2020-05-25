@@ -9,4 +9,5 @@ const tfidfSchema = new Schema({
     lastUpdate : Date
 })  
 
-module.exports = mongoose.model('tfidf',tfidfSchema);
+// module.exports = mongoose.model('tfidf',tfidfSchema);
+module.exports = tfidfSchema;

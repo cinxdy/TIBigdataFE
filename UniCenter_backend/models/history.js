@@ -11,4 +11,5 @@ const srchHstSchema = new Schema({
     min : Number
 })  
 
-module.exports = mongoose.model('history',srchHstSchema);
+// module.exports = mongoose.model('history',srchHstSchema);
+module.exports = srchHstSchema;

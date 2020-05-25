@@ -12,4 +12,5 @@ const keepDocSchema = new Schema({
     min : Number
 })  
 
-module.exports = mongoose.model('keepDoc',keepDocSchema);
+// module.exports = mongoose.model('keepDoc',keepDocSchema);
+module.exports = keepDocSchema;

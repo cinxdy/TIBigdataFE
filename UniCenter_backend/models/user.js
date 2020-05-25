@@ -15,6 +15,7 @@ const userSchema = new Schema({
     // severity: String
 })
 
-
-
-module.exports = mongoose.model('user', userSchema, 'users');
+const conn = require('../connection/userConn');
+const User = conn.model('user',userSchema)
+// module.exports = mongoose.model('user', userSchema, 'users');
+module.exports = User;

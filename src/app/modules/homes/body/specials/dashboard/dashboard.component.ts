@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit {
   }
 
   removeList(i) {
-    this.idSvs.popIdList();
+    this.chosenList.pop()
     this.chosenCount--;
   }
   private filter = [];

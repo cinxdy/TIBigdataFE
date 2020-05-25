@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
-
+// const conn = require('./connection/userConn')
+// const User = conn.model('user',require('./models/User'))
 //google token verify code template
 const { OAuth2Client } = require('google-auth-library');
 

@@ -7,4 +7,5 @@ const rcmdSchema = new Schema({
     rcmd : [],
 })  
 
-module.exports = mongoose.model('rcmd',rcmdSchema);
+// module.exports = mongoose.model('rcmd',rcmdSchema);
+module.exports = rcmdSchema;
