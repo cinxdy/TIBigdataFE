@@ -8,4 +8,6 @@ const rcmdSchema = new Schema({
 })  
 
 // module.exports = mongoose.model('rcmd',rcmdSchema);
-module.exports = rcmdSchema;
+// module.exports = rcmdSchema;
+const conn = require('../connection/userConn');
+module.exports = conn.model('rcmd',rcmdSchema)

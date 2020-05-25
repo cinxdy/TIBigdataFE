@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-// const User = require('./models/user');
+const User = require('./models/user');
 // const gUser = require('./models/gUser');
 // const User = require('./models/user');
+// const User = require('./models/user');
+
 const hst = require('./models/history');
 const Res = require('./models/Res');
 //for future. user model.
@@ -424,7 +426,7 @@ async function aggregate() {
 
 
 
-const User = require('./models/user');
+// const User = require('./models/user');
 
 
 

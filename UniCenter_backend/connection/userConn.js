@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const userCollection = 'mongodb://localhost:27017/user';
+const db = require('./config')
+const dataCollection = db+ 'user';
 
-const conn = mongoose.createConnection(userCollection);
+const conn = mongoose.createConnection(dataCollection);
 
 module.exports = conn;

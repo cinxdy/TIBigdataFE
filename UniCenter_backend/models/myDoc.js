@@ -13,4 +13,6 @@ const keepDocSchema = new Schema({
 })  
 
 // module.exports = mongoose.model('keepDoc',keepDocSchema);
-module.exports = keepDocSchema;
+// module.exports = keepDocSchema;
+const conn = require('../connection/userConn');
+module.exports = conn.model('myDoc',keepDocSchema)

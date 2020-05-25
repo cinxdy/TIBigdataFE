@@ -10,4 +10,6 @@ const tfidfSchema = new Schema({
 })  
 
 // module.exports = mongoose.model('tfidf',tfidfSchema);
-module.exports = tfidfSchema;
+// module.exports = tfidfSchema;
+const conn = require('../connection/userConn');
+module.exports = conn.model('tfidf',tfidfSchema)
