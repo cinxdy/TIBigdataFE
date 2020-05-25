@@ -116,12 +116,13 @@ export class ElasticsearchService {
    * @param id : 검색할 id string
    */
   searchById(id: string) {
+
     return this.client.search({
       filterPath: ["hits.hits"],
       body: {
         query: {
           term: {
-            _id: [id]
+            _id: id
           }
         }
       },

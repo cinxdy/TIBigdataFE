@@ -11,7 +11,6 @@ import { RecomandationService } from "../../search/service/recommandation-servic
 import { DatabaseService } from "../../../../core/componets/database/database.service";
 
 
-
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 
 import { thresholdSturges } from 'd3-array';
@@ -22,6 +21,7 @@ import { inject } from '@angular/core/testing';
 import { FormControl, FormGroup } from "@angular/forms";
 import { CloseScrollStrategy } from '@angular/cdk/overlay';
 import { keyframes } from '@angular/animations';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -43,7 +43,8 @@ export class DashboardComponent implements OnInit {
     private rcmd: RecomandationService
   ) { }
 
-  analysisList: string[] = ["TFIDF", "LDA", "Related Doc", "RNN"];
+  RELATED: string = "RelatedDoc";
+  analysisList: string[] = ["TFIDF", "LDA", "RNN"];//"Related Doc",
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
   idList1: string[] = [
     "5de110274b79a29a5f987f1d",
@@ -57,7 +58,7 @@ export class DashboardComponent implements OnInit {
 
   docTitleList = [];
 
-  private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
+  // private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
 
   private hstReqUrl = this.ipService.getUserServerIp() + ":4000/hst/getTotalHistory";
@@ -84,16 +85,72 @@ export class DashboardComponent implements OnInit {
   private userGraphChoice: string;
   private userNumChoice = 0;
 
+
+  //////////word
+  options: CloudOptions = {
+    // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
+    width: 800,
+    height: 250,
+  };
+
+  cData: CloudData[] = [];
+
+
+
+
   ngOnInit() {
     if (!this.auth.getLogInStat())
-      console.log("wow");
-    //alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+      // console.log("wow");
+      alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
       // this.idSvs.clearAll();
       console.log("dash board - page");
       this.getMyKeepDoc();
+      for (let i = 0; i < 5; i++) {
+        this.cData.push({
+          text: "A",
+          weight: 2 * (i + 1),
+          color: "blue"
+        });
+      }
+      // this.db.getRcmdTable(this.chosenList[0]).then(data => {
+        
+        
+      //   for (let i = 0; i < 5; i++) {
+      //     this.cData.push({
+      //       text: "B",
+      //       weight: 2 * (i + 1),
+      //       color: "red"
+      //     });
+      //   }
+      //   console.log("cdata:",this.cData)
+      // })
     }
+
+  }
+
+  light(){
+    console.log("cdata:",this.cData)
+    let tempArr = []
+    for (let i = 0; i < 5; i++) {
+      tempArr.push({
+        text: "C",
+        weight: 2 * (i + 1),
+        color: "gray"
+      });
+    }
+    const changedData$: Observable<CloudData[]> = of(
+      tempArr
+      
+      // { text: 'Weight-3', weight: 3 },
+      // ...
+    );
+    changedData$.subscribe(res => this.cData = res);
+  }
+
+  printOut(str){
+    console.log(str);
   }
 
   async getKeywords(ids) {
@@ -149,7 +206,7 @@ export class DashboardComponent implements OnInit {
 
       for (var i = 0; i < oneDoc.length; i++) {
         var docData = oneDoc[i]["tfidf"];
-        for (var t = 0; t < this.userNumChoice; t++) {
+        for (var t = 0; t < 5; t++) {
           var tData = docData[t];
           if (tData) {
             tWord = tData[0];
@@ -159,37 +216,7 @@ export class DashboardComponent implements OnInit {
           }
         }
       }
-      // // var docData = docData1 as [];
-      // for (var j = 0; j<docNum;j++){
-      //   sampleID = this.idList[j];
 
-      //   for(var i = 0; i<docData.length;i++){
-      //     temp = docData[i]["docID"];
-
-      //     if(temp==sampleID){
-      //       sampleTitle = docData[i]["docTitle"];
-      //       this.docTitleList[j]=sampleTitle;
-      //       //console.log(this.docTitleList[j]);
-
-      //       let tfVal = docData[i]["TFIDF"];
-
-
-      //       let tWord, tVal;
-      //       var tJson = new Object();
-
-      //       for(var t = 0;t<5;t++){
-      //         var tData = tfVal[t];
-      //           if(tData)  {
-      //             tWord = tData[0];
-      //             tVal = tData[1];
-      //             tJson = {word: tWord, value : tVal};
-      //             tempArr.push(tJson);
-      //         }
-      //       }
-      //       this.TfTable.push({No : j, title : this.docTitleList[j], tfidf : tempArr});
-      //     }
-      //   }
-      // }
 
       tempArr.sort(function (a, b) {
         return b["value"] - a["value"];
@@ -201,33 +228,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  //   findDocName(){
-  //     //var docNum = this.idList.length;
-  //     var docNum = this.chosenCount;
-
-  //    // console.log(this.idList);
-
-  //     this.http.get(this.tfidfDir).subscribe(docData1 => {
-  //        var temp;
-  //        var sampleID;
-  //        var sampleTitle;
-  //        var docData = docData1 as []
-  //        for (var j = 0; j<docNum;j++){
-  //          sampleID = this.idList[j];
-
-  //          for(var i = 0; i<docData.length;i++){
-  //            temp = docData[i]["docID"];
-
-  //            if(temp==sampleID){
-  //              sampleTitle = docData[i]["docTitle"];
-  //              this.docTitleList[j]=sampleTitle;
-  //            }
-  //          }
-  //        }
-
-  //        //console.log("야호"+this.docTitleList);
-  //     })
-  //  }
 
 
   ///// put datas into GraphData /////
@@ -290,13 +290,9 @@ export class DashboardComponent implements OnInit {
     console.clear();
     this.getUserChoice();
     this.choiceComplete = true;
-    // this.charts.forEach((child) => {
-    //   child.chart.update()
-    // });
 
-    // this.rcmd.getRcmd(this.idList).then(data => {
-    //   console.log(data);
-    // });
+    console.log(this.userAnalysisChoice)
+    console.log(this.userGraphChoice)
 
 
     if (this.userAnalysisChoice == "TFIDF") {
@@ -307,20 +303,97 @@ export class DashboardComponent implements OnInit {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
 
     }
-    else if (this.userAnalysisChoice == "Related Doc") {
+    else if (this.userAnalysisChoice == "RELATED") {
+      // const changedData$: Observable<CloudData[]> = of([]);
+      // changedData$.subscribe(res => (this.cData = res));
+
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
+      // for (let i = 0; i < 5; i++) {
+      //   this.cData.push({
+      //     text: "A",
+      //     weight: 2*(i+1),
+      //     color: "blue"
+      //   });
+      // }
+      this.db.getRcmdTable(this.chosenList[0]).then(data => {
+        for (let i = 0; i < 5; i++) {
+          this.cData.push({
+            text: "B",
+            weight: 2 * (i + 1),
+            color: "red"
+          });
+        }
+        //   let graphData = data[0]["rcmd"] as [];
+        //   // console.log(data)
+        //   // const changedData$: Observable<CloudData[]> = of([]);
+        //   // changedData$.subscribe(res => (this.cData = res));
+
+        //   // let idsArr = []
+        //   // for (let k = 0; k < 30; k++) {
+        //   //   idsArr.push(graphData[k][1])
+        //   // }
+        //   for (let i in graphData) {
+        //     if (Number(i) >= 5) break;
+        //     else if (Number(i) <= 4) {
+        //       console.log(graphData[i][0])
+        //       console.log(graphData[i][1])
+        //       this.cData.push({
+        //         text: "A",
+        //         // text: graphData[i][0],
+        //         weight: 10,
+        //         // weight: graphData[i][1],
+        //         color: "blue"
+        //       });
+        //       // console.log(graphData[i][
+        //     } else
+        //       this.cData.push({
+        //         text: "B",
+        //         // text: graphData[i][0],
+        //         weight: 8,
+        //         // weight: graphData[i][1],
+        //         color: "gray"
+        //       });
+        //   }
+        //   // this.idSvs.convertID2Title(idsArr).then(t => {
+        //   //   let titles = t as [];
+        //   // for (var j = 0; j < titles.length; j++) {
+        //   //   // console.log(titles[j]);
+        //   //   // graphData[j][0] = titles[j]
+
+        //   // }
+        //   // console.log("console.log(graphData:")
+        //   // console.log(graphData)
+        //   // console.log(graphData)
+        //   // this.es.searchByManyId(idsArr);
+
+        //   // for (let i in graphData) {
+        //   //   if (Number(i) >= 5) break;
+        //   //   else if (Number(i) <= 4) {
+        //   //     console.log(graphData[i][0])
+        //   //     console.log(graphData[i][1])
+        //   //     this.cData.push({
+        //   //       // text : "A",
+        //   //       text: graphData[i][0],
+        //   //       // weight : 10,
+        //   //       weight: graphData[i][1],
+        //   //       color: "blue"
+        //   //     });
+        //   //     // console.log(graphData[i][
+        //   //   } else
+        //   //     this.cData.push({
+        //   //       text: graphData[i][0],
+        //   //       // weight : 8,
+        //   //       weight: graphData[i][1],
+        //   //       color: "gray"
+        //   //     });
+        //   // }
+        //   // })
+      });
 
     }
     else if (this.userAnalysisChoice == "RNN") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
     }
-    // console.log(this.userNumChoice);
-    // console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-
-    this.rcmd.getRcmd(this.idList).then(data => {
-      this.getKeywords(this.chosenList)
-
-    });
   }
 
 
@@ -399,35 +472,30 @@ export class DashboardComponent implements OnInit {
 
 
 
-  //////////word
-  options: CloudOptions = {
-    // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
-    width: 1000,
-    height: 250,
-    overflow: true
-  };
-
-  cData: CloudData[] = [];
 
 
 
-  makeWordCloud() {
-    var sample = this.graphData;
+  makeWordCloud(graphData?) {
+    const changedData$: Observable<CloudData[]> = of([]);
+    changedData$.subscribe(res => (this.cData = res));
 
-
-    for (let i in sample) {
+    for (let i in graphData) {
       if (Number(i) >= 30) break;
       else if (Number(i) <= 4) {
         this.cData.push({
-          text: sample[i][0],
-          weight: sample[i][1],
+          text: "A",
+          weight: 10,
+          // text: graphData[i][0],
+          // weight: graphData[i][1],
           color: "blue"
         });
-        // console.log(sample[i][
+        // console.log(graphData[i][
       } else
         this.cData.push({
-          text: sample[i][0],
-          weight: sample[i][1],
+          text: "B",
+          weight: 8,
+          // text: graphData[i][0],
+          // weight: graphData[i][1],
           color: "gray"
         });
     }

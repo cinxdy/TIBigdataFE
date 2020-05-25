@@ -9,12 +9,22 @@ export class DatabaseService {
   private URL = this.ipService.getUserServerIp();
 
   private GET_KEYWORDS_URL = this.URL + ":4000/keyword/getKeyVal";
+  private GET_RCMD_URL = this.URL + ":4000/rcmd/getRcmdTbl";
 
 
   constructor(private ipService: IpService,
     private http: HttpClient,
   ) { }
 
+  async getRcmdTable(id) {
+    console.log("in db rcmd : ",id);
+    return new Promise(resolve => this.http.post<any>(this.GET_RCMD_URL, {"id":id}).subscribe(rcmd_table => {
+      // console.log("tfidf val result : ");
+      console.log(rcmd_table);
+      resolve (rcmd_table);
+    })
+    )
+  }
 
   async getTfidfValue(ids: string[]) {
     // console.log(ids);

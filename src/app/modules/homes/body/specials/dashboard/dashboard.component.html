@@ -2,6 +2,10 @@
 
 
 <div class="entire-Board" style="width : 100%; display: table; border: 1px black solid;">
+  <button (click)="light()">Re-draw</button>
+  <angular-tag-cloud [data]="cData" [width]="options.width" [height]="options.height" (clicked)="logClicked($event)">
+  <!-- {{ printOut(cData) }} -->
+  </angular-tag-cloud>
 
   <div class="uk-card uk-card-default uk-card-body" style="width : 100%; display: table-cell;">
     <dl class="uk-description-list">
@@ -64,10 +68,15 @@
           {{analysisList[i]}}
         </div>
       </div>
+      <div *ngIf="2 > chosenCount  ">
+        <input class="uk-radio" type="radio" formContronName="sis" name="r" value="RELATED"
+          [(ngModel)]="userAnalysisChoice">
+        Related Doc
+      </div>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
       <input class="uk-radio" type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
-    </div>
+    </div> -->
 
 
 
@@ -125,6 +134,15 @@
           [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
           [plugins]="lineChartPlugins">
         </canvas>
+      </div>
+
+      <div *ngIf="userGraphChoice == 'Word-Cloud'" class="column" 
+      >
+      <!-- style="display: block; width : 90%; height : 500px" -->
+      <angular-tag-cloud [data]="cData" [width]="options.width" [height]="options.height"
+        (clicked)="logClicked($event)">
+      </angular-tag-cloud>
+      <!-- {{ userGraphChoice }} -->
       </div>
 
 

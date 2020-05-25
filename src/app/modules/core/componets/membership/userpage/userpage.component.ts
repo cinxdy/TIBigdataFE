@@ -53,11 +53,13 @@ export class UserpageComponent implements OnInit {
 
   async getKeepDocs() {
     this.myDocs = await this.idSvs.convertID2Title() as string[];
-    console.log(typeof(this.myDocs))
-    console.log(this.myDocs.length)
-    this.myDocsNum = this.myDocs.length;
+    // console.log(typeof(this.myDocs))
+    // console.log(this.myDocs.length)
+    // this.myDocsNum = this.myDocs.length;
   }
 
+
+  
   // //dashboard ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침. 
   // async convertID2Title() {
   //   this.idList = await this.auth.getMyDocs() as string[];

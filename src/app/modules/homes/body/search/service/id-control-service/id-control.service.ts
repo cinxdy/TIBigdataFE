@@ -63,12 +63,20 @@ export class IdControlService {
   }
 
   //user page ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침. 
-  async convertID2Title() {
-    this.myDocsTitles = [];
-    this.idList = await this.auth.getMyDocs() as string[];
-    console.log(this.idList);
+  async convertID2Title(ids? : string[]) {
+    let payload;
+    if(ids == undefined){
+      this.myDocsTitles = [];
+      this.idList = await this.auth.getMyDocs() as string[];
+      payload = this.idList// unsure if remove just this.idListn now...
+      console.log(this.idList);
+    }
+    else{
+      console.log("method overloading with ids params")
+      payload = ids;
+    }
     return new Promise((resolve) => {
-      this.es.searchByManyId(this.idList).then(res => {
+      this.es.searchByManyId(payload).then(res => {
         let articles = res["hits"]["hits"];
         console.log(articles)
         console.log("article len" + articles.length);
@@ -81,6 +89,8 @@ export class IdControlService {
       // this.http.post<any>()
     })
   }
+
+  
 
 
 

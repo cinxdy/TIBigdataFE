@@ -5,6 +5,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SpecialsRootComponent } from './specials-root/specials-root.component';
 import { ChartsModule } from "ng2-charts";
 import { FormsModule } from "@angular/forms";
+import { TagCloudModule } from 'angular-tag-cloud-module';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -14,7 +16,8 @@ import { FormsModule } from "@angular/forms";
     SpecialsRoutingModule,
     CommonModule,
     ChartsModule,
-    FormsModule
+    FormsModule,
+    TagCloudModule
   ],
   // exports: [DashboardComponent]
 })
