@@ -10,7 +10,7 @@ const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결
 
 const PORT = 4000;
 
-const db = 'mongodb://localhost:27017/user';
+const db = 'mongodb://localhost:27017/analysis';
 let rawData = fs.readFileSync('./data.json')
 app.use(cors());
 app.use(bodyParser.json());
@@ -34,13 +34,13 @@ mongoose.connect(db, {
 
 
 //root dir
-// app.get('/', function (req, res) {
-//     res.send('Hello from server');
-//     send();
+app.get('/', function (req, res) {
+    res.send('Hello from server');
+    send();
 
-// })
+})
 
-send()
+// send()
 
 function send() {
     // console.log(typeof(data[0]["docID"]))

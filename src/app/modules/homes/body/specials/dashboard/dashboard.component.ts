@@ -133,6 +133,8 @@ export class DashboardComponent implements OnInit {
   removeList(i) {
     this.chosenList.pop()
     this.chosenCount--;
+    console.log(this.chosenList)
+
   }
   private filter = [];
   private checkArr = [];
@@ -264,19 +266,10 @@ export class DashboardComponent implements OnInit {
 
     }
     else if (this.userAnalysisChoice == "RELATED") {
-      // const changedData$: Observable<CloudData[]> = of([]);
-      // changedData$.subscribe(res => (this.cData = res));
 
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-      // for (let i = 0; i < 5; i++) {
-      //   this.cData.push({
-      //     text: "A",
-      //     weight: 2*(i+1),
-      //     color: "blue"
-      //   });
-      // }
       this.db.getRcmdTable(this.chosenList[0]).then(data => {
-
+        // console.log(data);
         let graphData = data[0]["rcmd"] as [];
   
 
@@ -285,12 +278,10 @@ export class DashboardComponent implements OnInit {
           idsArr.push(graphData[k][1])
         }
         this.idSvs.convertID2Title(idsArr).then(t => {
+          console.log("ad arr :", idsArr);
+          console.log("titles : ", t);
           let titles = t as [];
 
-
-          // text: "A",
-          // weight: 2 * (i + 1),
-          // color: "blue"
           let temp_cData = []
           for (var j = 0; j < titles.length; j++) {
             if (j > 30) break

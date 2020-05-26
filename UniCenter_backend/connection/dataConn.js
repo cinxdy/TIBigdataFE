@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const db = require('./config')
-const userCollection = db+ 'analysis';
+const dataCollection = db+ 'analysis';
 
-const conn = mongoose.createConnection(userCollection);
+
+const conn = mongoose.createConnection(dataCollection);
 
 module.exports = conn;

@@ -23,45 +23,6 @@ export class RecomandationService {
   });
 
   getRcmd(idList:Array<string>) {
-    // if(idList instanceof String) 
-    // original code
-    // this.http.post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-    //   .subscribe(data => {
-    //     this.rcmdList = data;
-    //     // console.log(data);
-    //     // this.isInfoLoaded = true;
-    //     // console.log("isInfoLoaded is true");
-    //     // console.log("getRcmd() done. loading done!");
-    //   });
-
-    // using observable
-    // this.http.post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-    //   .subscribe(data => {
-    //     this.rcmdList = data;
-    //   });
-
-    // using promise
-    return this.http.post(this.RCMD_URL, { idList: idList }, { headers: this.headers }).toPromise()
-
-    // using promise directly with fs readFile.. but this is not a file system work...
-    // this.http.post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-    //   .subscribe(data => {
-    //     this.rcmdList = data;
-    //   });
+    return this.http.post(this.RCMD_URL, { idList: idList }, { headers: this.headers }).toPromise()   
   }
-
-  // goToDoc(r : number){
-  //   // this.rcmdList[i]["id"][r]
-  //   // console.log(this.rcmdList[0]["id"][r]);
-  //   this.idControl.setIdChosen(this.rcmdList[0]["id"][r]);
-  //   this.navToDocDetail();
-
-  //   // this.docId = this.article["_id"];
-  //   // console.log(this.docId);
-    
-  // }
-
-  // navToDocDetail() {
-  //   this._router.navigateByUrl("search/DocDetail");
-  // }
 }
