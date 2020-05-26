@@ -28,7 +28,7 @@ mongoose.connect(db, {
             await sendTFIDF();
 
             let flag = 0;
-            var checkData = setInterval(()=>{
+            var checkData = setInterval(async ()=>{
                 for(let i = 0 ; i < numDataArr.length; i++){
                     await modelArr[i].count({},(err,count)=>{
                         if(count < numDataArr[i]){
