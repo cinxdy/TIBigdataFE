@@ -63,7 +63,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 
 
     var userHst;
-    var anyUser;
+    // var anyUser;
     //record user own history for each user
     var isLogin = bundle.login;
     if (isLogin) {
@@ -77,15 +77,15 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
             }
          */
         //2 : email, 3 : google
-        if (isLogin >= 2) {
-            anyUser = User;
-        }
+        // if (isLogin >= 2) {
+        //     anyUser = User;
+        // }
         // else {//email or super user
         //     anyUser = User;
         // }
 
         let userData = bundle.user;
-        anyUser.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
+        User.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
             if (err) {
                 console.log("user personal history add failed!", err);
             }
