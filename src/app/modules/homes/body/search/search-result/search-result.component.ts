@@ -17,6 +17,7 @@ import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 import { EPAuthService } from '../../../../core/componets/membership/auth.service';
 import { EventService } from "../../../../core/componets/membership/event.service";
+import { DatabaseService } from "../../../../core/componets/database/database.service";
 
 
 @Component({
@@ -68,7 +69,8 @@ export class SearchResultComponent implements OnInit {
     private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
-    private es: ElasticsearchService //private cd: ChangeDetectorRef
+    private es: ElasticsearchService, //private cd: ChangeDetectorRef.
+    private db : DatabaseService
   ) {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
@@ -211,7 +213,8 @@ export class SearchResultComponent implements OnInit {
     // console.log("loadRelatedDocs");
 
     // console.log(this.idList);
-    this.rcmd.getRcmd(this.idList).then(data => {
+    this.db.getRcmdTable(this.idList).then(data=>{
+    // this.rcmd.getRcmd(this.idList).then(data => {
       // console.log("getRcmd");
 
       // console.log(data);
