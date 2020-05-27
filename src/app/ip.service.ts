@@ -40,11 +40,11 @@ import { Injectable } from '@angular/core';
 })
 export class IpService {
 
-  private USER_SERVER_IP = "http://203.252.103.123";
+  private USER_SERVER_IP = "http://203.252.112.15";
   private DEV_IP = "http://localhost";
   private curIP = "";
 
-  private BackEnd_SERVER_IP = "http://203.252.103.86";
+  private BackEnd_SERVER_IP = "http://203.252.112.14";
 
   USER_BE_PORT = "4000";
   FLASK_PORT = "5000";
