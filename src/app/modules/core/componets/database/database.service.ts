@@ -16,7 +16,7 @@ export class DatabaseService {
     private http: HttpClient,
   ) { }
 
-  async getRcmdTable(id) {
+  async getRcmdTable(id:string | string[]) {
     console.log("in db rcmd : ",id);
     return new Promise(resolve => this.http.post<any>(this.GET_RCMD_URL, {"id":id}).subscribe(rcmd_table => {
       // console.log("tfidf val result : ");
