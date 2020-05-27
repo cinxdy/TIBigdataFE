@@ -73,8 +73,8 @@ export class IpService {
   }
 
   getBackEndServerIp(){
-    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
-    // return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + "/nkdb";
+    // return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+    return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + "/nkdb";
   }
 
   getDevIp(){

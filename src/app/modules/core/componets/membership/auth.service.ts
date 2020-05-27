@@ -214,7 +214,7 @@ export class EPAuthService {
         eTkRes$.subscribe(
           res => {
             if (res.succ) {//token verify success
-              // console.log(res);
+              console.log(res);
               // else {
               //   this.isLogIn = logStat.google;//update token status 
               // }
@@ -256,8 +256,11 @@ export class EPAuthService {
 
 
     let bundle;
-    if (this.isLogIn)
+    if (this.isLogIn){
+      console.log("add serach history : user is login.", this.profile)
+
       userEmail = this.profile.email;
+    }
     bundle = { login: this.isLogIn, user: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
       console.log("history added raw result : ", res);
