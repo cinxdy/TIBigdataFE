@@ -257,11 +257,10 @@ export class EPAuthService {
 
     let bundle;
     if (this.isLogIn){
-      console.log("add serach history : user is login.", this.profile)
-
+      // console.log("add serach history : user is login.", this.profile)
       userEmail = this.profile.email;
     }
-    bundle = { login: this.isLogIn, user: userEmail, key: keyword }
+    bundle = { login: this.isLogIn, email: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
       console.log("history added raw result : ", res);
       this.schHst = res.history;
