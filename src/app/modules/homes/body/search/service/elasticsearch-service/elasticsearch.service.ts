@@ -164,7 +164,10 @@ export class ElasticsearchService {
   private _connect() {
     let es_url = this.ipSvc.getBackEndServerIp();
     this.client = new elasticsearch.Client({
-      host: es_url
+      host: es_url,
+      headers: {
+        'Access-Control-Allow-Origin': "http://203.252.112.15:4200"
+      }
       // log: "trace"//to log the query and response in stdout
     });
   }
