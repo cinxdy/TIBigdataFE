@@ -84,15 +84,15 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
         //     anyUser = User;
         // }
 
-        let userData = bundle.user;
-        User.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
+        let userEmail = bundle.email;
+        User.findOneAndUpdate({ email: userEmail }, { $push: { history: keyword } }, (err, doc) => {
             if (err) {
                 console.log("user personal history add failed!", err);
             }
             else {
                 if (!doc) {
                     console.log("user not found")
-                    console.log("requested user : ", userData.email)
+                    console.log("requested user : ", userEmail)
                     // console.log(doc);
                     res.status(401).send({ add: false });
                 }
