@@ -11,3 +11,20 @@ Then in labs/createUserHstSamples, run getSamples.js.
 ```
 node getSamples.js
 ```
+
+## use mongo terminal
+* type
+```
+mongo
+```
+
+
+
+## how to create index
+```
+db.histories.createIndex({keyword: -1})
+db.users.createIndex({email : -1 })
+db.rcmds.createIndex({docID : -1})
+db.tfidfs.createIndex({docID : -1})
+
+```

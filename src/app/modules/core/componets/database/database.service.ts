@@ -20,17 +20,18 @@ export class DatabaseService {
     console.log("in db rcmd : ",id);
     return new Promise(resolve => this.http.post<any>(this.GET_RCMD_URL, {"id":id}).subscribe(rcmd_table => {
       // console.log("tfidf val result : ");
-      console.log(rcmd_table);
+      // console.log(rcmd_table);
       resolve (rcmd_table);
     })
     )
   }
 
-  async getTfidfValue(ids: string[]) {
+  async getTfidfValue(ids: string[], num? : number) {
     // console.log(ids);
-    return new Promise(resolve => this.http.post<any>(this.GET_KEYWORDS_URL, ids).subscribe(tfidf_table => {
-      // console.log("tfidf val result : ");
-      // console.log(res);
+
+    return new Promise(resolve => this.http.post<any>(this.GET_KEYWORDS_URL, {"id" : ids, "num" : num}).subscribe(tfidf_table => {
+      console.log("tfidf val result : ");
+      console.log(tfidf_table);
       resolve (tfidf_table);
     })
     )

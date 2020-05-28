@@ -43,7 +43,7 @@ export class SearchResultComponent implements OnInit {
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
-  private isRelatedLoaded : boolean = false;
+  private isRelatedLoaded: boolean = false;
   private isKeyLoaded: boolean = false;
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
@@ -56,21 +56,21 @@ export class SearchResultComponent implements OnInit {
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
-  private userHistory : [] = [];
+  private userHistory: [] = [];
 
 
   queryText: string;
 
   constructor(
-    private auth : EPAuthService,
-    private evtSvs : EventService,
+    private auth: EPAuthService,
+    private evtSvs: EventService,
     private rcmd: RecomandationService,
     private ipService: IpService,
     private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
     private es: ElasticsearchService, //private cd: ChangeDetectorRef.
-    private db : DatabaseService
+    private db: DatabaseService
   ) {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
@@ -98,12 +98,12 @@ export class SearchResultComponent implements OnInit {
   }
 
   addList(i) {
-    this.idControl.setIdList( this.idList[i] );
+    this.idControl.setIdList(this.idList[i]);
     // console.log("new id added to list! : " +     this.idList[i]  );
   }
 
-  keepMyDoc(){
-    console.log("id lists: ",this.idList);
+  keepMyDoc() {
+    console.log("id lists: ", this.idList);
     this.auth.addMyDoc(this.idList);
     this.idControl.clearAll();
 
@@ -146,7 +146,7 @@ export class SearchResultComponent implements OnInit {
     // this.navToDocDetail();
   }
 
-  private keywords: any[];
+  private keywords: any[] = [];
   //aync가 의미하듯이, 비공기의 범위는 해당 함수까지만 이다.
   //toPromise도 비동기이다. toPromise 혹은 subscribe을 만나면, 비동기는 비동기대로 하고, 나머지는 건너뛴다.
   /***
@@ -162,57 +162,54 @@ export class SearchResultComponent implements OnInit {
    * 멀티프로세싱 혹은 시리즈 프로세싱...
    */
   loadKeywords() {
-    return new Promise(async resolve => {
-      let tfidfData = (await this.http.get(this.fileDir).toPromise()) as [];
-      // tfidfData
-      this.keywords = [];
+    this.db.getTfidfValue(this.idList).then(res => {
+      let data = res as []
+      // console.log(data)
+      for (let n = 0; n < data.length; n++) {
+        let tfVal = data[n]["tfidf"] as [];
+          // console.log(tfVal)
 
-      for (var j = 0; j < this.idList.length; j++) {
-        let needData = {};
-        needData = tfidfData.find(d => d["docID"] === this.idList[j]);
+        let kwd = [] as any;
+        let word;
 
-        try {
-          let tfVal = needData["TFIDF"];
-
-          const kwd = [] as any;
-          let word;
-          for (var k = 0; k < 3; k++) {
-            word = tfVal[k][0];
-            kwd.push(word);
-          }
-          this.keywords.push(kwd);
-        } catch {
-          // console.log("error at index " + j);
-          // console.log("obejct detail : " + needData);
-          // console.log("looking for : ", tfData[j]["docID"]);
+        for (var k = 0; k < tfVal.length; k++) {
+          word = tfVal[k][0];
+          // console.log("word:",word)
+          this.relatedKeywords.push(tfVal[k][0]);
+          kwd.push(word)
+          // this.relatedKeywords.push(word);
         }
+        this.keywords.push(kwd);
+
       }
-      resolve();
-      // console.log("loadKeywords");
-    });
+    })
+    // console.log("keywords : ",this.keywords)
+    this.isKeyLoaded = true;
   }
   makeRelatedKey() {
-    this.relatedKeywords = [];
 
-    let keys = this.keywords;
-    let count = 0;
-    for (let i = 0; i < keys.length; i++) {
-      // console.log(this.keywords[i])
-      for (let j = 0; j < keys[i].length; j++) {
-        this.relatedKeywords.push(keys[i][j]);
-        count++;
-        if (count > 5) break;
+    this.db.getTfidfValue(this.idList).then(res => {
+      let data = res as []
+      // console.log(data)
+      for (let n = 0; n < data.length; n++) {
+        let tfVal = data[n]["tfidf"];
+
+        for (var k = 0; k < 3; k++) {
+          // this.keywords.push(word);
+
+        }
+
       }
-      if (count > 5) break;
-    }
-    this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
+      this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
+    })
+
     this.isKeyLoaded = true;
   }
 
   loadRelatedDocs() {
-    this.db.getRcmdTable(this.idList).then(data=>{
+    this.db.getRcmdTable(this.idList).then(data => {
       this.rcmdList = data;
-      console.log(data);
+      // console.log(data);
       this.isRelatedLoaded = true;
     });
   }
@@ -264,15 +261,15 @@ export class SearchResultComponent implements OnInit {
     //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.loadSearchResult();
     this.createIdTable();
-
+    this.loadKeywords();
     //ready each independently after id table  => multi process
-    this.loadKeywords().then(() => {//load from tfidf table
-      this.makeRelatedKey();//ready only after loadKeyworkds
-      console.log("비동기 테스트 1");
-      
-    });
-    console.log("비동기 테스트 2");
-    
+    // this.loadKeywords().then(() => {//load from tfidf table
+    //   this.makeRelatedKey();//ready only after loadKeyworkds
+    //   console.log("비동기 테스트 1");
+
+    // });
+    // console.log("비동기 테스트 2");
+
     //연관문서 속도는 미들웨어에서 프로그램 실행할 때
     //load한 상태로 데이터를 로드한 상태를 유지하는 것으로 해결
     this.loadRelatedDocs(); //load from flask

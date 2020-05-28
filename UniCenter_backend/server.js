@@ -8,7 +8,7 @@ const app = express();
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 
 
-const PORT = 5000;
+const PORT = 4000;
 
 const hstQry = require('./searchHistoryQuery');//bring the backend func and feature
 const gUserQry = require('./googleUserQuery');
