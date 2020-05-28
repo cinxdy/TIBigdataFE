@@ -1,17 +1,42 @@
 
+<div uk-grid>
 
-<h1>
-    USER-PAGE
-</h1>
+    <!-- <div class="row"> -->
+    <!-- <div class="col"> -->
 
-<div *ngIf="nowUser;" style="margin: 50px;">
-    <img src="{{nowUser.photoUrl}}">
-    <h4>{{nowUser.name}} 님 안녕하세요</h4>
-    <p>{{nowUser.email}}</p>
+    <div class="uk-width-auto">
+        <div *ngIf="nowUser;" style="margin: 50px;">
+            <img src="{{nowUser.photoUrl}}">
+            <h4>{{nowUser.name}} 님 안녕하세요</h4>
+            <p>{{nowUser.email}}</p>
 
-    <button type="submit" (click)="gSignOut()" class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글 로그아웃</a></button>
+            <button type="submit" style="width: 150px;" (click)="gSignOut()"
+                class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글
+                    로그아웃</a></button>
+        </div>
+
+        <!-- </div> -->
+    </div>
+    <!-- <div class="col"> -->
+    <div class="uk-width-expand">
+        <div class="uk-card uk-card-body uk-card-default">
+            <h3>내가 찜한 문서</h3>
+
+            <div *ngFor="let doc of myDocs; index as d">
+                <a>{{ doc }} </a>
+            </div>
+        </div>
+
+        <div class="row">
+            최근 검색 기록
+        </div>
+    </div>
+
+    <!-- </div> -->
+    <!-- </div> -->
 </div>
 
+<!--
 <div class="text-center social-btn">
     <a (click)="showCookie()" class="btn btn-primary btn-block"><i class="fa fa-cogs"></i>쿠키체크</a>
 </div>
@@ -21,5 +46,15 @@
 </div>
 
 <div>
-    관심있는 문서
+    KEEP 한 문서 : {{ myDocsNum }}
+    <div *ngFor="let d of myDocs">
+        <div class="row">
+            <div class="col">
+                {{d}}
+            </div>
+
+        </div>
+    </div>
 </div>
+
+-->

@@ -9,4 +9,5 @@ const gUserSchema = new Schema({
     history : []
 })
 
-module.exports = mongoose.model('gUser', gUserSchema, 'gUsers');
+// module.exports = mongoose.model('gUser', gUserSchema, 'gUsers');
+module.exports = gUserSchema;

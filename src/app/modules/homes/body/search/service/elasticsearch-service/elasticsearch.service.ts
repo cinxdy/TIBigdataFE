@@ -4,6 +4,8 @@ import * as elasticsearch from "elasticsearch-browser";
 //import { InheritDefinitionFeature } from '@angular/core/src/render3';
 import { ArticleSource } from "../../article/article.interface";
 import { Subject, Observable } from "rxjs";
+import { IpService } from 'src/app/ip.service'
+
 
 @Injectable({
   providedIn: "root"
@@ -15,7 +17,7 @@ export class ElasticsearchService {
   articleInfo$ = this.articleSource.asObservable();
   private searchKeyword: string = undefined;
 
-  constructor() {
+  constructor(private ipSvc : IpService) {
     if (!this.client) {
       this._connect();
     }
@@ -61,6 +63,8 @@ export class ElasticsearchService {
   fullTextSearch(_field, _queryText) {
     this.client
       .search({
+        from:0,
+        size: 50,
         filterPath: [
           "hits.hits._source",
           "hits.hits._id",
@@ -112,12 +116,37 @@ export class ElasticsearchService {
    * @param id : 검색할 id string
    */
   searchById(id: string) {
+
     return this.client.search({
       filterPath: ["hits.hits"],
       body: {
         query: {
+          term: {
+            _id: id
+          }
+        }
+      },
+      _source: [
+        "post_title",
+        "post_date",
+        "published_institution_url",
+        "post_writer",
+        "post_body"
+      ]
+    });
+  }
+
+  searchByManyId(ids: string[]) {
+    console.log("es ts: the num of ids : "+ids.length);
+    return this.client.search({
+      // filterPath: ["hits.hits"],
+      // index: "nkdb",
+      from:0,//not work. github KUBiC issue # 34
+      size: 50,//not work.
+      body: {
+        query: {
           terms: {
-            _id: [id]
+            _id: ids
           }
         }
       },
@@ -133,9 +162,12 @@ export class ElasticsearchService {
 
   //Elasticsearch Connection
   private _connect() {
-    let es_url = "http://203.252.103.86:9200";
+    let es_url = this.ipSvc.getBackEndServerIp();
     this.client = new elasticsearch.Client({
-      host: es_url
+      host: es_url,
+      headers: {
+        'Access-Control-Allow-Origin': "http://203.252.112.15:4200"
+      }
       // log: "trace"//to log the query and response in stdout
     });
   }

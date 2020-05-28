@@ -38,24 +38,6 @@
         </ul>
       </div>
       <div class="col">
-        <h3>목차</h3>
-        <ul>
-          1.2.3.4.
-        </ul>
-      </div>
-    </div>
-
-    <div class="row">
-      <!-- <div class="uk-container"> -->
-      <div class="col">
-        <h3>초록보기</h3>
-        <p>
-          내가 그린 기린 그림은 잘 그린 기린 그림이고, 네가 그린 기린 그림도 잘
-          생겼다 :)
-        </p>
-        <!-- {{ article.post_body }}</div> -->
-      </div>
-      <div class="col">
         <h3>연관 문서</h3>
         <div *ngIf="relateToggle == true">
           <div *ngFor="let rcmd of rcmdList[0]['rcmd']; index as r">
@@ -63,6 +45,33 @@
             <a (click)="goToDoc(r)">{{ rcmd }}</a>
           </div>
         </div>
+        
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- <div class="uk-container"> -->
+      <div class="col">
+        <h3>워드클라우드 : 이 문서의 키워드</h3>
+        <div class="uk-container">
+          <div class="card card-body mb-2">
+            <div>
+              <angular-tag-cloud [data]="cData" [width]="options.width" [height]="options.height"
+                [overflow]="options.overflow">
+              </angular-tag-cloud>
+            </div>
+          </div>
+        </div>
+ 
+
+        <!-- {{ article.post_body }}</div> -->
+      </div>
+      <div class="col">
+        <h3>초록보기</h3>
+        <p>
+          내가 그린 기린 그림은 잘 그린 기린 그림이고, 네가 그린 기린 그림도 잘
+          생겼다 :)
+        </p>
       </div>
     </div>
 
@@ -71,24 +80,15 @@
         <h3>추가 자료 보기 (그림, 표 등...)</h3>
       </div>
       <div class="col">
-        <h3>워드클라우드 : 이 문서의 키워드</h3>
-        <div class="uk-container">
-          <div class="card card-body mb-2">
-            <div>
-              <angular-tag-cloud
-                [data]="cData"
-                [width]="options.width"
-                [height]="options.height"
-                [overflow]="options.overflow"
-              >
-              </angular-tag-cloud>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
   <div class="row">
-    <h3>키워드 바로가기</h3>
+    <!-- <h3>키워드 바로가기</h3> -->
+    <h3>목차</h3>
+        <ul>
+          1.2.3.4.
+        </ul>
   </div>
 </div>

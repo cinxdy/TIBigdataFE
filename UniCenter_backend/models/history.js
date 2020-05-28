@@ -9,7 +9,9 @@ const srchHstSchema = new Schema({
     date : Number,
     hour : Number,
     min : Number
-
 })  
 
-module.exports = mongoose.model('history',srchHstSchema);
+// module.exports = mongoose.model('history',srchHstSchema);
+// module.exports = srchHstSchema;
+const conn = require('../connection/userConn');
+module.exports = conn.model('history',srchHstSchema)

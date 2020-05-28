@@ -17,6 +17,7 @@ import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 import { EPAuthService } from '../../../../core/componets/membership/auth.service';
 import { EventService } from "../../../../core/componets/membership/event.service";
+import { DatabaseService } from "../../../../core/componets/database/database.service";
 
 
 @Component({
@@ -38,7 +39,7 @@ export class SearchResultComponent implements OnInit {
   private fileDir: string =
     "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = [];
-  private RCMD_URL: string = this.ipService.getCommonIp() + ":5000/rcmd";
+  private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
   private idList: string[] = [];
   private rcmdList: {};
   private isSearchLoaded: boolean = false;
@@ -68,7 +69,8 @@ export class SearchResultComponent implements OnInit {
     private idControl: IdControlService,
     public _router: Router,
     private http: HttpClient,
-    private es: ElasticsearchService //private cd: ChangeDetectorRef
+    private es: ElasticsearchService, //private cd: ChangeDetectorRef.
+    private db : DatabaseService
   ) {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
@@ -78,38 +80,16 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.getCommonIp() == this.ipService.getDevIp()) {
+    if (this.ipService.getUserServerIp() == this.ipService.getDevIp()) {
       if (this.es.getKeyword() == undefined) {
         this.es.setKeyword("북한산");
         this.queryText = "북한산";
       }
     }
+    this.idControl.clearAll();
     console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
-
-  // //user search history
-  // loadHistory(){
-  //   this.userHistory = this.auth.showSrchHst();
-  // }
-
-
-
-
-  // getRcmd() {
-  //   this.http
-  //     .post(this.RCMD_URL, { idList: this.idList }, { headers: this.headers })
-  //     .subscribe(data => {
-  //       this.rcmdList = data;
-  //       // console.log(data);
-  //       this.isKeyLoaded = true;
-  //       // console.log("isKeyLoaded is true");
-
-  //       // console.log("isSearchLoaded is true");
-
-  //       // console.log("getRcmd() done. loading done!");
-  //     });
-  // }
 
   //Get result from flask
   freqAnalysis() {
@@ -117,10 +97,17 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("search/freqAnalysis");
   }
 
-  // addList(i) {
-  //   this.idControl.setIdList( this.idList[i] );
-  //   // console.log("new id added to list! : " +     this.idList[i]  );
-  // }
+  addList(i) {
+    this.idControl.setIdList( this.idList[i] );
+    // console.log("new id added to list! : " +     this.idList[i]  );
+  }
+
+  keepMyDoc(){
+    console.log("id lists: ",this.idList);
+    this.auth.addMyDoc(this.idList);
+    this.idControl.clearAll();
+
+  }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   // navToDataChart() {
@@ -223,14 +210,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadRelatedDocs() {
-    // console.log("loadRelatedDocs");
-
-    // console.log(this.idList);
-    this.rcmd.getRcmd(this.idList).then(data => {
-      // console.log("getRcmd");
-
-      // console.log(data);
-      // console.log(typeof data);
+    this.db.getRcmdTable(this.idList).then(data=>{
       this.rcmdList = data;
       console.log(data);
       this.isRelatedLoaded = true;
@@ -240,6 +220,7 @@ export class SearchResultComponent implements OnInit {
   relatedSearch(keyword: string) {
     this.es.setKeyword(keyword);
     this.queryText = keyword;
+    this.auth.addSrchHst(this.queryText);
 
     this.loadResultPage();
   }

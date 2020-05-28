@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const User = require('./models/user');
+// const gUser = require('./models/gUser');
 // const User = require('./models/user');
-const gUser = require('./models/gUser');
-const eUser = require('./models/user');
+// const User = require('./models/user');
+
 const hst = require('./models/history');
 const Res = require('./models/Res');
 //for future. user model.
@@ -61,7 +63,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 
 
     var userHst;
-    var anyUser;
+    // var anyUser;
     //record user own history for each user
     var isLogin = bundle.login;
     if (isLogin) {
@@ -74,21 +76,23 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                 google,//3
             }
          */
-        if (isLogin >= 3) {//social user
-            anyUser = gUser;
-        }
-        else {//email or super user
-            anyUser = eUser;
-        }
+        //2 : email, 3 : google
+        // if (isLogin >= 2) {
+        //     anyUser = User;
+        // }
+        // else {//email or super user
+        //     anyUser = User;
+        // }
 
-        let userData = bundle.user;
-        anyUser.findOneAndUpdate({ email: userData.email }, { $push: { history: keyword } }, (err, doc) => {
+        let userEmail = bundle.email;
+        User.findOneAndUpdate({ email: userEmail }, { $push: { history: keyword } }, (err, doc) => {
             if (err) {
                 console.log("user personal history add failed!", err);
             }
             else {
                 if (!doc) {
-                    console.log("doc not found")
+                    console.log("user not found")
+                    console.log("requested user : ", userEmail)
                     // console.log(doc);
                     res.status(401).send({ add: false });
                 }
@@ -111,7 +115,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 router.get('/showHistory', (req, res) => {
     console.log("add history init");
     let userData = req.body;
-    gUser.findOne({ email: userData.email }, (err, doc) => {
+    User.findOne({ email: userData.email }, (err, doc) => {
         if (err) {
             console.log(err);
         }
@@ -257,8 +261,8 @@ async function countByMonth() {
     })//
 }
 
-//aggMonth
-aggMonth()
+//aggMonth deggung
+// aggMonth()
 function aggMonth() {
     hst.aggregate(
         
@@ -423,7 +427,7 @@ async function aggregate() {
 
 
 
-const User = require('./models/user');
+// const User = require('./models/user');
 
 
 
