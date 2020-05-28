@@ -98,10 +98,10 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                 }
                 else {
                     console.log("doc found!")
-                    console.log(doc);
+                    // console.log(doc);
                     userHst = doc.history;
                     userHst.push(keyword);
-                    console.log(userHst);
+                    // console.log(userHst);
                     res.json({ history: userHst });
                 }
             }
@@ -122,12 +122,12 @@ router.get('/showHistory', (req, res) => {
         else {
             if (!doc) {
                 // console.log("api gchecker : post false")
-                console.log(doc);
+                // console.log(doc);
                 res.json({ result: false });
             }
             else {
                 // console.log("api gchecker : post true")
-                console.log(doc);
+                // console.log(doc);
 
                 res.json({ history: doc.history });
             }
@@ -186,7 +186,7 @@ router.get('/getTotalHistory', (req, res) => {
         (err, hstrs) => {
             if (err)
                 console.log("post : get total history err")
-            console.log(hstrs);
+            // console.log(hstrs);
             res.send({ histories: hstrs })
         }
 
@@ -211,7 +211,7 @@ router.get('/getMonthFreqHistory', async (req, res) => {
     var hour_t = Math.floor(tmp_t % 60);
     console.log("total time taken : ", hour_t, "hour ", min_t, " min ", sec_t, " sec");
     console.log("month func load fin")
-    console.log(result)
+    // console.log(result)
     res.status(200).json(result);
 });
 
@@ -296,7 +296,7 @@ function aggMonth() {
         // res.forEach((err,doc)=>{
         //     console.log(doc);
         // })
-        console.log(res);
+        // console.log(res);
     })
 }
 
@@ -372,7 +372,7 @@ async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
                     topKey.push(keyFreq[i]);
                 }
                 console.log("top key ", topX)
-                console.log(topKey);
+                // console.log(topKey);
 
 
                 resolve(topKey);

@@ -164,22 +164,24 @@ export class SearchResultComponent implements OnInit {
   loadKeywords() {
     this.db.getTfidfValue(this.idList).then(res => {
       let data = res as []
-      // console.log(data)
+      console.log("loadkeywords : ",data)
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"] as [];
-          // console.log(tfVal)
+        console.log(tfVal)
+        this.keywords.push(tfVal)
+        this.relatedKeywords = this.relatedKeywords.concat(tfVal)
+        console.log(this.relatedKeywords)
+        // let kwd = [] as any;
+        // let word;
 
-        let kwd = [] as any;
-        let word;
-
-        for (var k = 0; k < tfVal.length; k++) {
-          word = tfVal[k][0];
-          // console.log("word:",word)
-          this.relatedKeywords.push(tfVal[k][0]);
-          kwd.push(word)
-          // this.relatedKeywords.push(word);
-        }
-        this.keywords.push(kwd);
+        // for (var k = 0; k < tfVal.length; k++) {
+        //   word = tfVal[k][0];
+        //   // console.log("word:",word)
+        //   this.relatedKeywords.push(tfVal[k][0]);
+        //   kwd.push(word)
+        //   // this.relatedKeywords.push(word);
+        // }
+        // this.keywords.push(kwd);
 
       }
     })
