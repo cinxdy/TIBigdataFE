@@ -19,12 +19,12 @@ router.get('/', (req, res) => {
 // })
 
 router.post('/getRcmdTbl',(req,res)=>{
-    let id = req.body["id"];
+    let ids = req.body["id"];
     Keywords.find({ docID : {$in :ids} }, (error, doc) => {
         if(error){
             console.log(error)
         }
-        console.log(doc)
+        // console.log(doc)
         res.json(doc)
     })    
 })

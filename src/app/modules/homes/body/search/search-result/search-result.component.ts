@@ -210,15 +210,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadRelatedDocs() {
-    // console.log("loadRelatedDocs");
-
-    // console.log(this.idList);
     this.db.getRcmdTable(this.idList).then(data=>{
-    // this.rcmd.getRcmd(this.idList).then(data => {
-      // console.log("getRcmd");
-
-      // console.log(data);
-      // console.log(typeof data);
       this.rcmdList = data;
       console.log(data);
       this.isRelatedLoaded = true;
