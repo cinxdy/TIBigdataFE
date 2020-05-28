@@ -61,11 +61,8 @@ export class DashboardComponent implements OnInit {
   // private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
 
-  private hstReqUrl = this.ipService.getUserServerIp() + ":4000/hst/getTotalHistory";
+  private hstReqUrl = this.ipService.getUserServerIp() +"/hst/getTotalHistory";
   private hstFreq: any[];
-
-  // private hstReqUrl = this.ipService.getCommonIp() +":4000/hst/getTotalHistory";
-  // private hstFreq : any[];
 
   private graphXData = [];
   private graphYData = [];

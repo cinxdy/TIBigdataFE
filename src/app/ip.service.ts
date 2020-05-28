@@ -46,8 +46,12 @@ export class IpService {
 
   private BackEnd_SERVER_IP = "http://203.252.112.14";
 
-  USER_BE_PORT = "4000";
-  FLASK_PORT = "5000";
+  // USER_BE_PORT = "4000";
+  // FLASK_PORT = "5000";
+
+  USER_BE_PORT = "5000";
+  FLASK_PORT = "4000";
+
   ES_PORT = "9200";
 
   constructor() { }
@@ -69,7 +73,7 @@ export class IpService {
   }
 
   getUserServerIp(){
-    return this.adaptIp(this.USER_SERVER_IP);
+    return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
   }
 
   getBackEndServerIp(){

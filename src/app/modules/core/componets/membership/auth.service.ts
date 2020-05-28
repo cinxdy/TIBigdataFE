@@ -47,20 +47,20 @@ export class EPAuthService {
   private URL = this.ipService.getUserServerIp();
 
 
-  private EMAIL_REG_URL = this.URL + ":4000/eUser/register"; //mongoDB
-  private EMAIL_LOGIN_URL = this.URL + ":4000/eUser/login";
-  private EMAIL_VERIFY_TOKEN = this.URL + ":4000/eUser/verify";
-  private EMAIL_CHECK_OUR_USER_URL = this.URL + ":4000/eUser/eCheckUser";
+  private EMAIL_REG_URL = this.URL + "/eUser/register"; //mongoDB
+  private EMAIL_LOGIN_URL = this.URL + "/eUser/login";
+  private EMAIL_VERIFY_TOKEN = this.URL + "/eUser/verify";
+  private EMAIL_CHECK_OUR_USER_URL = this.URL + "/eUser/eCheckUser";
 
-  private GOOGLE_REG_URL = this.URL + ":4000/gUser/gRegister";
-  private GOOGLE_CHECK_OUR_USER_URL = this.URL + ":4000/gUser/gCheckUser";
-  private GOOGLE_VERIFY_TOKEN_URL = this.URL + ":4000/gUser/verifyGoogleToken";
+  private GOOGLE_REG_URL = this.URL + "/gUser/gRegister";
+  private GOOGLE_CHECK_OUR_USER_URL = this.URL + "/gUser/gCheckUser";
+  private GOOGLE_VERIFY_TOKEN_URL = this.URL + "/gUser/verifyGoogleToken";
 
-  private KEEP_MY_DOC_URL = this.URL + ":4000/myDoc/keepMyDoc";
-  private GET_MY_DOC_URL = this.URL + ":4000/myDoc/getMyDoc";
+  private KEEP_MY_DOC_URL = this.URL + "/myDoc/keepMyDoc";
+  private GET_MY_DOC_URL = this.URL + "/myDoc/getMyDoc";
 
-  private ADD_SEARCH_HISTORY_URL = this.URL + ":4000/hst/addHistory";
-  private SHOW_SEARCH_HISTORY_URL = this.URL + ":4000/hst/showHistory"
+  private ADD_SEARCH_HISTORY_URL = this.URL + "/hst/addHistory";
+  private SHOW_SEARCH_HISTORY_URL = this.URL + "/hst/showHistory"
 
   private isLogIn: logStat = logStat.unsigned;//for static, inactive, passive use
   private isLogInObs$: BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers

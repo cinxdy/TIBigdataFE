@@ -8,8 +8,8 @@ import { IpService } from 'src/app/ip.service'
 export class DatabaseService {
   private URL = this.ipService.getUserServerIp();
 
-  private GET_KEYWORDS_URL = this.URL + ":4000/keyword/getKeyVal";
-  private GET_RCMD_URL = this.URL + ":4000/rcmd/getRcmdTbl";
+  private GET_KEYWORDS_URL = this.URL + "/keyword/getKeyVal";
+  private GET_RCMD_URL = this.URL + "/rcmd/getRcmdTbl";
 
 
   constructor(private ipService: IpService,

@@ -19,8 +19,6 @@ export class UserpageComponent implements OnInit {
   private myDocs: string[] = [];
   private myDocsNum : Number;
 
-  private URL = this.ipService.getUserServerIp();
-  // private EMAIL_CHECK_OUR_USER_URL = this.URL + ":4000/eUser/eCheckUser";
 
   constructor(
     private http: HttpClient, private ipService: IpService,    private idSvs : IdControlService,
