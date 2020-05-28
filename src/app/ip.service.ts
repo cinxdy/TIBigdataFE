@@ -48,11 +48,12 @@ export class IpService {
 
   // USER_BE_PORT = "4000";
   // FLASK_PORT = "5000";
-
+  // ES_PORT = "9200";
+  // ES_INDEX = "/nkdb";
   USER_BE_PORT = "5000";
   FLASK_PORT = "4000";
-
   ES_PORT = "4200";
+  ES_INDEX = "/capstone";
 
   constructor() { }
 
@@ -78,7 +79,7 @@ export class IpService {
 
   getBackEndServerIp(){
     // return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
-    return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + "/nkdb";
+    return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + this.ES_INDEX;
   }
 
   getDevIp(){
