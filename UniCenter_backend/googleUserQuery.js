@@ -26,10 +26,10 @@ function verifyGoogleToken(req, res) {
         });
         // console.log("get ticket : ",ticket);
         const payload = ticket.getPayload();
-        const userInfo = {
-            name: payload.name,
-            email: payload.email
-        }
+        // const userInfo = {
+        //     name: payload.name,
+        //     email: payload.email
+        // }
         // const userid = payload['sub'];
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
@@ -61,7 +61,7 @@ router.post('/gRegister', (req, res) => {
     })
 })
 
-router.post('/gCheckUser', (req, res) => {
+router.post('/check_is_our_g_user', (req, res) => {
     console.log("api : gChecker init.");
     let userData = req.body;
     User.findOne({ email: userData.email }, (error, user) => {

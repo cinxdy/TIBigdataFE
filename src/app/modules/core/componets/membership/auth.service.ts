@@ -53,7 +53,7 @@ export class EPAuthService {
   private EMAIL_CHECK_OUR_USER_URL = this.URL + "/eUser/eCheckUser";
 
   private GOOGLE_REG_URL = this.URL + "/gUser/gRegister";
-  private GOOGLE_CHECK_OUR_USER_URL = this.URL + "/gUser/gCheckUser";
+  private GOOGLE_CHECK_OUR_USER_URL = this.URL + "/gUser/check_is_our_g_user";
   private GOOGLE_VERIFY_TOKEN_URL = this.URL + "/gUser/verifyGoogleToken";
 
   private KEEP_MY_DOC_URL = this.URL + "/myDoc/keepMyDoc";
@@ -199,11 +199,11 @@ export class EPAuthService {
               this.isLogInObs$.next(this.isLogIn);//send the news that token status is updated to other components
             }
             else {
-              //console.log("token verify fail");
+              console.error("token verify fail");
             }
           },
           err => {
-            //console.log('error occurs! not google user : ', err);
+            console.error('error occurs! not google user : ', err);
           },
         );
       }
@@ -256,7 +256,7 @@ export class EPAuthService {
 
 
     let bundle;
-    if (this.isLogIn){
+    if (this.isLogIn) {
       // //console.log("add serach history : user is login.", this.profile)
       userEmail = this.profile.email;
     }
@@ -292,7 +292,7 @@ export class EPAuthService {
   getMyDocs() {
     //console.log("this.profile.email",this.profile.email);
     return new Promise((r) => {
-      this.http.post<any>(this.GET_MY_DOC_URL, {payload : this.profile.email}).subscribe((res) => {
+      this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).subscribe((res) => {
         //console.log("angular get mydocs result : ",res);
         r(res.docs);
       });
@@ -413,17 +413,28 @@ export class EPAuthService {
    * @description user login with google social login
    */
   async gLogIn() {
-    let response = await this.verifyGoogleUser();
+    let response = await this.googleSignIn();
+
+    console.log(response)
+    this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + response.authToken).subscribe(
+      (res) => {
+      
+      console.log("resresres")
+      console.log("GOOGLE AUTH DEBUG: ", res)
+    },err=>{
+      if(err)
+      console.error(err)
+    })
+
     //check if this user is our user already
-    this.gCheckUser(response).subscribe((res) => {
-
+    let res$ = this.check_is_our_g_user(response)
+    res$.subscribe((res) => {
       if (res.exist == false) {
-        if (!res.exist) {
-          //console.log("This user is not yet our user : need sign up : ", res);
-          alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
-          this.router.navigateByUrl("/membership/register");
-        }
-
+        // if (!res.exist) {
+        //console.log("This user is not yet our user : need sign up : ", res);
+        alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
+        this.router.navigateByUrl("/membership/register");
+        // }
       }
       else {
         //console.log("This user is already our user!");
@@ -440,22 +451,24 @@ export class EPAuthService {
     );
   }
 
-  verifyGoogleUser() {
+  async googleSignIn() {
     let platform = GoogleLoginProvider.PROVIDER_ID;
-    return new Promise((resolve) => {
-      this.gauth.signIn(platform).then((response) => {//error branch 추가할 필요성 있음...
-        resolve(response);
-      })
-    })
+    return await this.gauth.signIn(platform);
+
+    // return new Promise((resolve) => {
+    //   .then((response) => {//error branch 추가할 필요성 있음...
+    //     resolve(response);
+    //   })
+    // })
 
   }
 
   /**
-   * @function gCheckUser 
+   * @function check_is_our_g_user 
    * @param user
    * @description check if this user is already our user. check out from the DB. 
    */
-  gCheckUser(user: {}): Observable<any> {
+  check_is_our_g_user(user: {}): Observable<any> {
     return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user);
   }
 
@@ -471,6 +484,9 @@ export class EPAuthService {
 
   //verify if this token is from google
   gVerifyToken(token: string): Observable<any> {
+    this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token).subscribe(res => {
+      console.log("GOOGLE AUTH DEBUG: ", res)
+    })
     var client = this.injector.get("GOOGLE PROVIDER ID");//get google api client id from angular injector
     // console.log(client);
     return this.http.post<any>(this.GOOGLE_VERIFY_TOKEN_URL, { token: token, client: client });

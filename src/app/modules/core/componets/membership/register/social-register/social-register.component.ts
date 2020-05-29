@@ -19,7 +19,7 @@ export class SocialRegisterComponent implements OnInit {
 
   gRegister(platform: string): void {
 
-    this.auth.verifyGoogleUser().then((user) => {
+    this.auth.googleSignIn().then((user) => {
 
       // gauth.signIn(platform).then((response) => {
 
