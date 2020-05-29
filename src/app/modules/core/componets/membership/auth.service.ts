@@ -176,14 +176,14 @@ export class EPAuthService {
     if (tk_with_type) {//when token exists
       var tk = tk_with_type.token;
       var type = tk_with_type.type;
-      console.log("Token found! : ", tk_with_type);
+      // console.log("Token found! : ", tk_with_type);
 
       if (type == logStat.google) {
-        console.log("token is from google");
+        //console.log("token is from google");
         var gTkRes$ = this.gVerifyToken(tk);//verify it this token is valid or expired.
         gTkRes$.subscribe(
           tkStat => {
-            console.log(tkStat);
+            //console.log(tkStat);
             if (tkStat.status) {//if token is valid
               this.socUser = tkStat.user;
               var n = this.socUser.name;
@@ -195,26 +195,26 @@ export class EPAuthService {
               else {
                 this.isLogIn = logStat.google;//update token status 
               }
-              console.log("token verify succ");
+              //console.log("token verify succ");
               this.isLogInObs$.next(this.isLogIn);//send the news that token status is updated to other components
             }
             else {
-              console.log("token verify fail");
+              //console.log("token verify fail");
             }
           },
           err => {
-            console.log('error occurs! not google user : ', err);
+            //console.log('error occurs! not google user : ', err);
           },
         );
       }
 
       else if (type == logStat.email) {
-        console.log("token is from email");
+        //console.log("token is from email");
         var eTkRes$ = this.eVerifyToken(tk);
         eTkRes$.subscribe(
           res => {
             if (res.succ) {//token verify success
-              console.log(res);
+              //console.log(res);
               // else {
               //   this.isLogIn = logStat.google;//update token status 
               // }
@@ -223,7 +223,7 @@ export class EPAuthService {
               if (this.profile.email === this.JC || this.profile.email === this.BAEK || this.profile.email === this.SONG) {
                 this.isLogIn = logStat.SUPERUSER;
               }
-              // console.log(this.profile);
+              // //console.log(this.profile);
 
               this.isLogInObs$.next(this.isLogIn);
             }
@@ -236,7 +236,7 @@ export class EPAuthService {
             }
           },
           err => {
-            console.log('error occurs! not email user : ', err);
+            //console.log('error occurs! not email user : ', err);
           }
         )
 
@@ -244,27 +244,27 @@ export class EPAuthService {
     }
 
     else {//when token does not exist.
-      console.log("token is not found. Hello, newbie!");
-      console.log("check the login stat as well : ", this.isLogIn);
+      //console.log("token is not found. Hello, newbie!");
+      //console.log("check the login stat as well : ", this.isLogIn);
       return isSignIn;
     }
   }
   //검색내역 history 추가 
   addSrchHst(keyword: string): void {
-    // console.log(this.socUser);
+    // //console.log(this.socUser);
     let userEmail = undefined;
 
 
     let bundle;
     if (this.isLogIn){
-      // console.log("add serach history : user is login.", this.profile)
+      // //console.log("add serach history : user is login.", this.profile)
       userEmail = this.profile.email;
     }
     bundle = { login: this.isLogIn, email: userEmail, key: keyword }
     this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
-      console.log("history added raw result : ", res);
+      //console.log("history added raw result : ", res);
       this.schHst = res.history;
-      console.log("personal history : ", this.schHst);
+      //console.log("personal history : ", this.schHst);
     });
   }
 
@@ -282,18 +282,18 @@ export class EPAuthService {
 
   addMyDoc(docIDs) {
     let payload = { userEmail: this.profile.email, docs: docIDs };
-    console.log("keep doc sending data : ", payload);
+    //console.log("keep doc sending data : ", payload);
     this.http.post<any>(this.KEEP_MY_DOC_URL, payload).subscribe((res) => {
-      console.log(res);
+      //console.log(res);
       this.myDocs = res.myDoc;
     })
   }
 
   getMyDocs() {
-    console.log("this.profile.email",this.profile.email);
+    //console.log("this.profile.email",this.profile.email);
     return new Promise((r) => {
       this.http.post<any>(this.GET_MY_DOC_URL, {payload : this.profile.email}).subscribe((res) => {
-        console.log("angular get mydocs result : ",res);
+        //console.log("angular get mydocs result : ",res);
         r(res.docs);
       });
     })
@@ -322,12 +322,12 @@ export class EPAuthService {
 
   //email registration function
   async eRegisterUser(user): Promise<any> {
-    console.log("user reg input : ", user);
+    //console.log("user reg input : ", user);
 
     // let isOurUser$ = this.eCheckUser(user);
     // let res = await isOurUser$.toPromise();
     let isOurUser = await this.eCheckUser(user);
-    console.log(isOurUser);
+    //console.log(isOurUser);
     if (isOurUser.succ) {//if this user is one of us, deny registration.
       alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
       //비밀번호 찾기 페이지도 만들어야 한다. 
@@ -337,7 +337,7 @@ export class EPAuthService {
       this.http.post<any>(this.EMAIL_REG_URL, user)
         .subscribe(//perhaps return observable with response.
           res => {
-            // console.log(res)
+            // //console.log(res)
             this.confirmUser(logStat.email, res);
             alert("반갑습니다." + res.payload.name + "님. 홈 화면으로 이동합니다.");
           },
@@ -349,20 +349,20 @@ export class EPAuthService {
 
   //email sign in function
   async eLoginUser(user): Promise<any> {
-    console.log("login req user : ", user);
+    //console.log("login req user : ", user);
 
     let isOurUser = await this.eCheckUser(user);
-    console.log(isOurUser);
+    //console.log(isOurUser);
     if (!isOurUser.succ) {//if this user is one of us, deny registration.
       alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
       //비밀번호 찾기 페이지도 만들어야 한다. 
     }
     else {
-      console.log("user input check : ", user);
+      //console.log("user input check : ", user);
       var result$ = this.http.post<any>(this.EMAIL_LOGIN_URL, user);
       result$.subscribe(
         res => {
-          console.log("login process result : ", res);
+          //console.log("login process result : ", res);
           // login succ
           if (res.succ)
             this.confirmUser(logStat.email, res);
@@ -378,7 +378,7 @@ export class EPAuthService {
   }
 
   confirmUser(stat: logStat, res): void {
-    console.log(res);
+    //console.log(res);
     this.isLogIn = stat;
     localStorage.setItem('token', JSON.stringify(new storeToken(stat, res.payload.token)));
     if (stat === logStat.email)
@@ -419,20 +419,20 @@ export class EPAuthService {
 
       if (res.exist == false) {
         if (!res.exist) {
-          console.log("This user is not yet our user : need sign up : ", res);
+          //console.log("This user is not yet our user : need sign up : ", res);
           alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
           this.router.navigateByUrl("/membership/register");
         }
 
       }
       else {
-        console.log("This user is already our user!");
+        //console.log("This user is already our user!");
         this.socUser = response as SocialUser;
-        console.log(this.socUser);
+        //console.log(this.socUser);
         localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
 
         // localStorage.setItem('token',this.socUser.idToken);
-        console.log("login user info saved : ", this.socUser);
+        //console.log("login user info saved : ", this.socUser);
         this.isLogIn = logStat.google;
         this.router.navigate(['/homes'])
       }

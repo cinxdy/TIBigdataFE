@@ -41,9 +41,9 @@ export class SearchResultComponent implements OnInit {
   public relatedKeywords = [];
   private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
   private idList: string[] = [];
-  private rcmdList: {};
+  private relatedDocs: {}[] = [];
   private isSearchLoaded: boolean = false;
-  private isRelatedLoaded: boolean = false;
+  private isRelatedLoaded: boolean = true;//going to be removed
   private isKeyLoaded: boolean = false;
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
@@ -75,7 +75,7 @@ export class SearchResultComponent implements OnInit {
     this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
-      // console.log(info)
+      // //console.log(info)
     });
   }
 
@@ -87,7 +87,7 @@ export class SearchResultComponent implements OnInit {
       }
     }
     this.idControl.clearAll();
-    console.log(this.evtSvs.getSrchHst());
+    //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
   }
 
@@ -99,11 +99,11 @@ export class SearchResultComponent implements OnInit {
 
   addList(i) {
     this.idControl.setIdList(this.idList[i]);
-    // console.log("new id added to list! : " +     this.idList[i]  );
+    // ////console.log("new id added to list! : " +     this.idList[i]  );
   }
 
   keepMyDoc() {
-    console.log("id lists: ", this.idList);
+    ////console.log("id lists: ", this.idList);
     this.auth.addMyDoc(this.idList);
     this.idControl.clearAll();
 
@@ -111,9 +111,9 @@ export class SearchResultComponent implements OnInit {
   //검색되어 나온 글들의 id 값을 array에 넣어줌
 
   // navToDataChart() {
-  //   // console.log("cumulative id list so far : ");
+  //   // ////console.log("cumulative id list so far : ");
   //   let v = this.idControl.getIdList();
-  //   // console.log(v);
+  //   // //console.log(v);
   //   this._router.navigateByUrl("search/ChosenDocAnalysis");
   // }
 
@@ -127,23 +127,43 @@ export class SearchResultComponent implements OnInit {
   //   this.idControl.setIdChosen(this.articleSources[i]["_id"]);
   //   this.navToDocDetail();
   // }
-  setThisDoc(i: number, r: number) {
-    // this.rcmdList[i]["id"][r];
-    // console.log(this.rcmdList[i]["id"][r]);
-    this.idControl.setIdChosen(this.rcmdList[i]["id"][r]);
+  setThisDoc(idx: number) {
+    // this.relatedDocs[i]["id"][r];
+    // //console.log(this.relatedDocs[i]["id"][r]);
+    // console.log(this.relatedDocs[idx]["id"])
+    this.idControl.setIdChosen(this.relatedDocs[idx]["id"]);
     this.navToDocDetail();
 
     // this.docId = this.article["_id"];
-    // console.log(this.docId);
+    // //console.log(this.docId);
   }
   tgglRelated(i: number) {
-    // console.log("tgglRelated")
+    // //console.log("tgglRelated")
+    this.loadRelatedDocs(i); //load from flask
     this.relateToggle[i] = !this.relateToggle[i];
+  }
 
-    // this.idControl.clearIdChosen();
-    // this.idControl.setArticle(this.articleSources[i]);
-    // this.idControl.setIdChosen(this.articleSources[i]["_id"]);
-    // this.navToDocDetail();
+
+  loadRelatedDocs(idx: number) {
+    this.db.getRcmdTable(this.idList[idx]).then(_rcmdIdsRes => {
+      console.log("rcmdRes:",_rcmdIdsRes)
+      let rcmdIds = _rcmdIdsRes[0]["rcmd"];
+      this.idControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
+        console.log("rcmdRes:",rcmdIds)
+
+        let titles = _titlesRes as []
+        
+        let i = 0;
+        this.relatedDocs = titles.map(t => {
+          i++;
+          return { "id": rcmdIds[i], "title": t };
+        })
+
+
+        console.log("relatedDocs:",this.relatedDocs);
+      })
+      // }
+    });
   }
 
   private keywords: any[] = [];
@@ -164,57 +184,19 @@ export class SearchResultComponent implements OnInit {
   loadKeywords() {
     this.db.getTfidfValue(this.idList).then(res => {
       let data = res as []
-      console.log("loadkeywords : ",data)
+      //console.log("loadkeywords : ", data)
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"] as [];
-        console.log(tfVal)
+        // //console.log(tfVal)
         this.keywords.push(tfVal)
         this.relatedKeywords = this.relatedKeywords.concat(tfVal)
-        console.log(this.relatedKeywords)
-        // let kwd = [] as any;
-        // let word;
-
-        // for (var k = 0; k < tfVal.length; k++) {
-        //   word = tfVal[k][0];
-        //   // console.log("word:",word)
-        //   this.relatedKeywords.push(tfVal[k][0]);
-        //   kwd.push(word)
-        //   // this.relatedKeywords.push(word);
-        // }
-        // this.keywords.push(kwd);
-
       }
     })
-    // console.log("keywords : ",this.keywords)
-    this.isKeyLoaded = true;
-  }
-  makeRelatedKey() {
-
-    this.db.getTfidfValue(this.idList).then(res => {
-      let data = res as []
-      // console.log(data)
-      for (let n = 0; n < data.length; n++) {
-        let tfVal = data[n]["tfidf"];
-
-        for (var k = 0; k < 3; k++) {
-          // this.keywords.push(word);
-
-        }
-
-      }
-      this.relatedKeywords = Array.from(new Set(this.relatedKeywords));
-    })
-
+    // //console.log("keywords : ",this.keywords)
     this.isKeyLoaded = true;
   }
 
-  loadRelatedDocs() {
-    this.db.getRcmdTable(this.idList).then(data => {
-      this.rcmdList = data;
-      // console.log(data);
-      this.isRelatedLoaded = true;
-    });
-  }
+
 
   relatedSearch(keyword: string) {
     this.es.setKeyword(keyword);
@@ -225,7 +207,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   loadSearchResult() {
-    // console.log("loadSearchResult");
+    // //console.log("loadSearchResult");
 
     return new Promise(resolve => {
       this.es.articleInfo$.subscribe(articles => {
@@ -243,15 +225,15 @@ export class SearchResultComponent implements OnInit {
       this.idList[i] = temp[i]["_id"];
       this.relateToggle.push(false);
     }
-    // console.log("createTable");
+    // //console.log("createTable");
 
-    // console.log(this.idList);
+    // //console.log(this.idList);
   }
 
   async loadResultPage() {
     this.isSearchLoaded = false;
     this.isKeyLoaded = false;
-    this.isRelatedLoaded = false;
+    this.isRelatedLoaded = true;//plan to be removed
 
     this.idControl.clearIdList();
     this.idList = [];
@@ -267,13 +249,13 @@ export class SearchResultComponent implements OnInit {
     //ready each independently after id table  => multi process
     // this.loadKeywords().then(() => {//load from tfidf table
     //   this.makeRelatedKey();//ready only after loadKeyworkds
-    //   console.log("비동기 테스트 1");
+    //   //console.log("비동기 테스트 1");
 
     // });
-    // console.log("비동기 테스트 2");
+    // //console.log("비동기 테스트 2");
 
     //연관문서 속도는 미들웨어에서 프로그램 실행할 때
     //load한 상태로 데이터를 로드한 상태를 유지하는 것으로 해결
-    this.loadRelatedDocs(); //load from flask
+
   }
 }

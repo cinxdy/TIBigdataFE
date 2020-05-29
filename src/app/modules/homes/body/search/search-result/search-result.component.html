@@ -73,7 +73,7 @@
                                         <div class="col">키워드 : {{ keywords[i] }}</div>
                                         <!-- <div class="col">
                     <div class="row">연관문서</div>
-                    <div class="row">{{ rcmdList[i]["rcmd"] }}</div>
+                    <div class="row">{{ relatedDocs[i]["rcmd"] }}</div>
                   </div> -->
                                     </ng-template>
                                 </div>
@@ -89,9 +89,9 @@
                                             연관문서
                                         </button>
                                         <div *ngIf="relateToggle[i] == true">
-                                            <div *ngFor="let rcmd of rcmdList[i]['rcmd']; index as r">
-                                                <!-- {{ rcmdList[i]["rcmd"] }} -->
-                                                <a (click)="setThisDoc(i, r)">{{ rcmd }}</a>
+                                            <div *ngFor="let rcmd of relatedDocs; index as r">
+                                                <!-- {{ relatedDocs[i]["rcmd"] }} -->
+                                                <a (click)="setThisDoc(r)">{{ rcmd["title"] }}</a>
                                             </div>
                                         </div>
                                     </div>

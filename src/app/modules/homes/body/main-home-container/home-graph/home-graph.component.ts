@@ -116,7 +116,7 @@ export class HomeGraphComponent implements OnInit {
 
   logClicked(clicked: CloudData){
     let keyword = clicked["text"];
-    console.log(keyword);
+    // console.log(keyword);
     this.es.setKeyword(keyword);
     // this.queryText = keyword;
     this._router.navigateByUrl("search");

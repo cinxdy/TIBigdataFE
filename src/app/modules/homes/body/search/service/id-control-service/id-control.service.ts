@@ -62,8 +62,13 @@ export class IdControlService {
     this.article = art;
   }
 
-  //user page ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침. 
+  //user page ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침.
+  /**
+   * @description id string array을 받아서 해당 id을 문서 제목에 매핑하는 함수
+   * @param ids 가 없으면 현재 유저의 myDoc을 받아온다. ids가 있으면 param으로 받은 문서 가져옴
+   */ 
   async convertID2Title(ids? : string[]) {
+    console.log(ids)
     let payload;
     if(ids == undefined){
       this.myDocsTitles = [];
@@ -89,6 +94,8 @@ export class IdControlService {
       // this.http.post<any>()
     })
   }
+
+  
 
   
 

@@ -63,7 +63,7 @@ export class SearchHistoryComponent implements OnInit {
       this.http
         .get<any>(this.SORT_HST_FREQ_REQ_URL)
         .subscribe((res) => {
-          console.log(res);
+          // console.log(res);
           
           var freqTable = [];
           for (var i = 0; i < res.length; i++) {
@@ -83,7 +83,7 @@ export class SearchHistoryComponent implements OnInit {
       this.http
         .get<any>(this.MONTH_HST_FREQ_REQ_URL)
         .subscribe((res) => {
-          console.log(res);
+          // console.log(res);
           /**
            * [
   [ 1, [ [keyword, freq], [keyword, freq], [keyword, freq] ] ],
@@ -115,7 +115,7 @@ export class SearchHistoryComponent implements OnInit {
             for(var j = 0 ; j < numKey; j++){
               let k = res[i][1][j][0];
               let f = res[i][1][j][1];
-              console.log(i,"th month, key: ", k , ", freq : ", f);
+              // console.log(i,"th month, key: ", k , ", freq : ", f);
               freqTable.push({ x: idx, y: f, label: i+1+"월 " +k });
               idx++;
             }
@@ -141,7 +141,7 @@ export class SearchHistoryComponent implements OnInit {
   visualize(method){
     method.then(() => {
       // this.queryTotalHistory().then(() => {
-        console.log("start hist")
+        // console.log("start hist")
         // console.log(this.hstFreq);
         let chart = new CanvasJS.Chart("chartContainer", {
           animationEnabled: true,
@@ -164,7 +164,7 @@ export class SearchHistoryComponent implements OnInit {
         });
         this.isChartReady = true;
         chart.render();
-        console.log(this.isChartReady)
+        // console.log(this.isChartReady)
       });
   }
 

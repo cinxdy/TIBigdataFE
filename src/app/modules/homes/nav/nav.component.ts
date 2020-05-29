@@ -23,7 +23,7 @@ export class NavComponent implements OnInit {
     //service에서 observable으로 가지고 오는 것이 가장 편하다.
     this.auth.verifySignIn();
     this.auth.getLogInObs().subscribe((logInStat)=>{
-      console.log("stat update! ", logInStat);
+      // console.log("stat update! ", logInStat);
       this.isLogin = logInStat as any;
       this.auth.setLogStat(logInStat);
       if(logInStat > 0)//only when user is already login, update name
