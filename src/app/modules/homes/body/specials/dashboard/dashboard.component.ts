@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getMyKeepDoc() {
-    this.idSvs.convertID2Title().then(titles => {
+    this.auth.getMyDocs().then(titles => {
       this.docTitleList = titles as [];
       this.idList = this.idSvs.getIdList();
     })

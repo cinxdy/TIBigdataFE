@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { IpService } from 'src/app/ip.service'
+import { IdControlService } from "../../../homes/body/search/service/id-control-service/id-control.service"
 
 import {
   AuthService,
@@ -58,6 +59,8 @@ export class EPAuthService {
 
   private KEEP_MY_DOC_URL = this.URL + "/myDoc/keepMyDoc";
   private GET_MY_DOC_URL = this.URL + "/myDoc/getMyDoc";
+  private ERASE_ALL_MY_DOC = this.URL + "/myDoc/eraseAllDoc";
+
 
   private ADD_SEARCH_HISTORY_URL = this.URL + "/hst/addHistory";
   private SHOW_SEARCH_HISTORY_URL = this.URL + "/hst/showHistory"
@@ -79,6 +82,7 @@ export class EPAuthService {
     private http: HttpClient,
     private router: Router,
     private gauth: AuthService,
+    private idSvc:IdControlService
   ) {
     // this.isLogInObs$.next(logStat.unsigned);
   }
@@ -252,31 +256,53 @@ export class EPAuthService {
   //검색내역 history 추가 
   addSrchHst(keyword: string): void {
     // //console.log(this.socUser);
-    let userEmail = undefined;
 
 
-    let bundle;
     if (this.isLogIn) {
       // //console.log("add serach history : user is login.", this.profile)
-      userEmail = this.profile.email;
+      let userEmail = this.profile.email;
+      let bundle = { login: this.isLogIn, email: userEmail, key: keyword }
+      this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
+        //console.log("history added raw result : ", res);
+        this.schHst = res.history;
+        //console.log("personal history : ", this.schHst);
+      });
     }
-    bundle = { login: this.isLogIn, email: userEmail, key: keyword }
-    this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
-      //console.log("history added raw result : ", res);
-      this.schHst = res.history;
-      //console.log("personal history : ", this.schHst);
-    });
+    else
+      console.error("로그인 에러. 문서 저장 실패")
+
   }
 
-  showSrchHst(): Promise<any> {
-    var hst;
-    return new Promise((resolve) => {
-      this.http.get<any>(this.SHOW_SEARCH_HISTORY_URL)
-        .subscribe((res) => {
-          hst = res.history;
-        });
+  async showSrchHst() {
+    // var hst;
+    if (this.isLogIn) {
+      // //console.log("add serach history : user is login.", this.profile)
+      let userEmail = this.profile.email;
+      let bundle = { login: this.isLogIn, email: userEmail }
+
+      let res = await this.http.post<any>(this.SHOW_SEARCH_HISTORY_URL, bundle).toPromise()
+      console.log("show search hist : ", res);
+      return res.history.map(h => h.keyword);
+      // this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
+      //   //console.log("history added raw result : ", res);
+      //   this.schHst = res.history;
+      //   //console.log("personal history : ", this.schHst);
+      // });
     }
-    )
+    else{
+      console.error("로그인 에러. 문서 기록 요청 실패")
+      return Error;
+    }
+
+
+    // return new Promise((resolve) => {
+
+    //     .subscribe((res) => {
+    //       hst = res.history;
+    //       resolve();
+    //     });
+    // }
+    // )
 
   }
 
@@ -289,20 +315,35 @@ export class EPAuthService {
     })
   }
 
-  getMyDocs() {
+  async getMyDocs() {
     //console.log("this.profile.email",this.profile.email);
-    return new Promise((r) => {
-      this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).subscribe((res) => {
-        //console.log("angular get mydocs result : ",res);
-        r(res.docs);
-      });
-    })
+    // this.myDocsTitles = [];
+    // this.idList = await this.auth.getMyDocs() as string[];
+    // payload = this.idList// unsure if remove just this.idListn now...
+    // console.log(this.idList);
+    let res = await this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).toPromise();
+    if(res)
+      return await this.idSvc.convertID2Title(res.docs)
+    else//when null. 
+      return ["저장한 문서가 없어요."]  
+    
+    // return 
+      // Error("getMyDocs error in auth service")
+    // return new Promise((r) => {
+    //   this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).subscribe((res) => {
+    //     //console.log("angular get mydocs result : ",res);
+    //     r(res.docs);
+    //   });
+    // })
   }
 
-  // keepMyDoc(){
-  //   this.htp.post<any>()
-  // }
-
+  async eraseAllMyDoc() {
+    let res = await this.http.post<any>(this.ERASE_ALL_MY_DOC, { payload: this.profile.email }).toPromise()
+    if (res.succ)
+      alert("나의 문서를 모두 지웠어요.");
+    else
+      alert("문서 지우기에 실패했습니다. 관리자에게 문의해주세요.")
+  }
 
 
 
@@ -415,26 +456,24 @@ export class EPAuthService {
   async gLogIn() {
     let response = await this.googleSignIn();
 
-    console.log(response)
-    this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + response.authToken).subscribe(
-      (res) => {
-      
-      console.log("resresres")
-      console.log("GOOGLE AUTH DEBUG: ", res)
-    },err=>{
-      if(err)
-      console.error(err)
-    })
+    // console.log(response)
+    // this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + response.authToken).subscribe(
+    //   (res) => {
+
+    //   console.log("resresres")
+    //   console.log("GOOGLE AUTH DEBUG: ", res)
+    // },err=>{
+    //   if(err)
+    //   console.error(err)
+    // })
 
     //check if this user is our user already
     let res$ = this.check_is_our_g_user(response)
     res$.subscribe((res) => {
       if (res.exist == false) {
-        // if (!res.exist) {
         //console.log("This user is not yet our user : need sign up : ", res);
         alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
         this.router.navigateByUrl("/membership/register");
-        // }
       }
       else {
         //console.log("This user is already our user!");
@@ -484,9 +523,9 @@ export class EPAuthService {
 
   //verify if this token is from google
   gVerifyToken(token: string): Observable<any> {
-    this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token).subscribe(res => {
-      console.log("GOOGLE AUTH DEBUG: ", res)
-    })
+    // this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + token).subscribe(res => {
+    //   console.log("GOOGLE AUTH DEBUG: ", res)
+    // })
     var client = this.injector.get("GOOGLE PROVIDER ID");//get google api client id from angular injector
     // console.log(client);
     return this.http.post<any>(this.GOOGLE_VERIFY_TOKEN_URL, { token: token, client: client });

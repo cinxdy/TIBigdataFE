@@ -19,11 +19,11 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/getKeyVal", (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     let ids = req.body["id"];
     let num = req.body["num"]; //could be undefined.
-    // console.log("get req");
-    // console.log(ids);
+    console.log("get req");
+    console.log(ids);
     if(num == undefined)
         num = 3;
     // let id = ids[0]
@@ -76,6 +76,7 @@ router.post("/getKeyVal", (req, res) => {
             console.log("aggragation result: ")
             if (err)
                 console.log(err)
+            console.log(docs)
             res.json(docs);
         }
     )

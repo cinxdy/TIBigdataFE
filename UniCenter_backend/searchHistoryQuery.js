@@ -76,13 +76,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                 google,//3
             }
          */
-        //2 : email, 3 : google
-        // if (isLogin >= 2) {
-        //     anyUser = User;
-        // }
-        // else {//email or super user
-        //     anyUser = User;
-        // }
+     
 
         let userEmail = bundle.email;
         User.findOneAndUpdate({ email: userEmail }, { $push: { history: keyword } }, (err, doc) => {
@@ -112,7 +106,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
     console.log("add history done");
 })
 
-router.get('/showHistory', (req, res) => {
+router.post('/showHistory', (req, res) => {
     console.log("add history init");
     let userData = req.body;
     User.findOne({ email: userData.email }, (err, doc) => {

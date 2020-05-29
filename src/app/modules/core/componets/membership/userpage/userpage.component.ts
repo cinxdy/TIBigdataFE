@@ -17,7 +17,8 @@ export class UserpageComponent implements OnInit {
 
   private nowUser: SocialUser;
   private myDocs: string[] = [];
-  private myDocsNum : Number;
+  // private myDocsNum : Number;
+  private myHst: string[] = [];
 
 
   constructor(
@@ -33,6 +34,7 @@ export class UserpageComponent implements OnInit {
     this._gauth.authState.subscribe((user) => {
       this.nowUser = user;
       this.getKeepDocs();
+      this.getMyHst()
     });
   }
 
@@ -50,10 +52,20 @@ export class UserpageComponent implements OnInit {
   }
 
   async getKeepDocs() {
-    this.myDocs = await this.idSvs.convertID2Title() as string[];
+    this.myDocs = await this._auth.getMyDocs() as string[];
     // console.log(typeof(this.myDocs))
     // console.log(this.myDocs.length)
     // this.myDocsNum = this.myDocs.length;
+  }
+
+  deleteAllMyDocs(){
+    console.log("문서 지우기")
+    this._auth.eraseAllMyDoc()
+  }
+
+  async getMyHst(){
+    this.myHst = await this._auth.showSrchHst();
+    // console.log("my hist: ",this.myHst);
   }
 
 

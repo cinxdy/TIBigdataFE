@@ -107,6 +107,7 @@ export class SearchResultComponent implements OnInit {
     ////console.log("id lists: ", this.idList);
     this.auth.addMyDoc(this.idList);
     this.idControl.clearAll();
+    alert("문서가 나의 문서함에 저장되었어요.")
 
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
@@ -139,7 +140,7 @@ export class SearchResultComponent implements OnInit {
     // //console.log(this.docId);
   }
   tgglRelated(i: number) {
-    // //console.log("tgglRelated")
+    //console.log("tgglRelated")
     this.loadRelatedDocs(i); //load from flask
     this.relateToggle[i] = !this.relateToggle[i];
   }
@@ -183,12 +184,14 @@ export class SearchResultComponent implements OnInit {
    * 멀티프로세싱 혹은 시리즈 프로세싱...
    */
   loadKeywords() {
+    // console.log("loadKeywords : " ,this.idList)
     this.db.getTfidfValue(this.idList).then(res => {
+      // console.log(res)
       let data = res as []
-      //console.log("loadkeywords : ", data)
+      // console.log("loadkeywords : ", data)
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"] as [];
-        // //console.log(tfVal)
+        // console.log(tfVal)
         this.keywords.push(tfVal)
         this.relatedKeywords = this.relatedKeywords.concat(tfVal)
       }

@@ -25,10 +25,16 @@
             <div *ngFor="let doc of myDocs; index as d">
                 <a>{{ doc }} </a>
             </div>
+            <button (click)="deleteAllMyDocs()">나의 문서 모두 지우기</button>
         </div>
 
-        <div class="row">
-            최근 검색 기록
+        <div class="uk-card uk-card-body uk-card-default">
+            <h3>나의 검색 기록</h3>
+
+            <div *ngFor="let doc of myHst; index as d">
+                <a>{{ doc }} </a>
+            </div>
+            <!-- <button (click)="deleteAllMyDocs()">나의 검색 기록 지우기</button> -->
         </div>
     </div>
 

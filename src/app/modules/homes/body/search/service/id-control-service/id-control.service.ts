@@ -67,21 +67,11 @@ export class IdControlService {
    * @description id string array을 받아서 해당 id을 문서 제목에 매핑하는 함수
    * @param ids 가 없으면 현재 유저의 myDoc을 받아온다. ids가 있으면 param으로 받은 문서 가져옴
    */ 
-  async convertID2Title(ids? : string[]) {
+  async convertID2Title(ids : string[]) {
     console.log(ids)
-    let payload;
-    if(ids == undefined){
-      this.myDocsTitles = [];
-      this.idList = await this.auth.getMyDocs() as string[];
-      payload = this.idList// unsure if remove just this.idListn now...
-      console.log(this.idList);
-    }
-    else{
-      console.log("method overloading with ids params")
-      payload = ids;
-    }
+
     return new Promise((resolve) => {
-      this.es.searchByManyId(payload).then(res => {
+      this.es.searchByManyId(ids).then(res => {
         let articles = res["hits"]["hits"];
         console.log(articles)
         console.log("article len" + articles.length);

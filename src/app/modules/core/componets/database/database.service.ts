@@ -23,39 +23,27 @@ export class DatabaseService {
     * @Param num : how many related documetns per each document? defualt = 5 if undefined.
   */
   async getRcmdTable(ids: string | string[], num?: number) {
-    console.log("in db rcmd : ", ids);
-    return new Promise(resolve => this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num }).subscribe(rcmd_table => {
-      // console.log("tfidf val result : ");
-      console.log(rcmd_table);
-      resolve(rcmd_table);
-    })
-    )
+    // console.log("in db rcmd : ", ids);
+    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num }).toPromise()
   }
 
   /**
     * @Param ids : id string array
     * @Param num : how many related documetns per each document? defualt = 5 if undefined.
   */
+
   async getTfidfValue(ids: string[], num?: number) {
-    // console.log(ids);
+    console.log("getTFIDF val:", ids);
 
-
-    return new Promise(resolve => this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num }).subscribe(tfidf_table => {
-      // console.log("tfidf val result : ");
-      // console.log(tfidf_table);
-      resolve(tfidf_table);
-    })
-    )
+    return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num }).toPromise()
   }
 
   async getRelatedDocs(id: string) {
     let _rcmdIdsRes = await this.getRcmdTable(id)
-    // .then(_rcmdIdsRes => {
-    console.log("rcmdRes:", _rcmdIdsRes)
+    // console.log("rcmdRes:", _rcmdIdsRes)
     let rcmdIds = _rcmdIdsRes[0]["rcmd"];
     let _titlesRes = await this.idControl.convertID2Title(rcmdIds as string[])
-    // .then( => {
-    console.log("rcmdRes:", rcmdIds)
+    // console.log("rcmdRes:", rcmdIds)
 
     let titles = _titlesRes as []
 
@@ -65,13 +53,8 @@ export class DatabaseService {
       return { "id": rcmdIds[i], "title": t };
     })
 
-
-
-    console.log("relatedDocs:", relatedDocs);
+    // console.log("relatedDocs:", relatedDocs);
     return relatedDocs;
-  // })
-  // }
-// });
 }
 
 }
