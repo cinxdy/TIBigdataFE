@@ -36,8 +36,8 @@ export class SearchResultComponent implements OnInit {
   // private lastKeypress = 0;
   // private thisURL: string = "http://localhost:4200/homes/searchResult";
 
-  private fileDir: string =
-    "assets//homes_search_result_wordcloud/tfidfData.json";
+  // private fileDir: string =
+  //   "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = [];
   private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
   private idList: string[] = [];
@@ -49,15 +49,15 @@ export class SearchResultComponent implements OnInit {
     "Content-Type": "application/json"
   });
   private articleSources: ArticleSource[];
-  private docId: string;
+  // private docId: string;
   private isConnected = false;
-  private status: string;
+  // private status: string;
   private subscription: Subscription;
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
   private userHistory: [] = [];
-
+  private isLogStat: Number = 0;
 
   queryText: string;
 
@@ -89,6 +89,7 @@ export class SearchResultComponent implements OnInit {
     this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
+    this.isLogStat = this.auth.getLogInStat()
   }
 
   //Get result from flask

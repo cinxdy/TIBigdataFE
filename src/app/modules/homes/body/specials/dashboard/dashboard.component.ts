@@ -44,15 +44,11 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   RELATED: string = "RelatedDoc";
-  analysisList: string[] = ["TFIDF", "LDA", "RNN"];//"Related Doc",
+  analysisList: string[] = ["키워드분석(TFIDF)"];//"Related Doc",
+
+  // analysisList: string[] = ["TFIDF", "LDA", "RNN"];//"Related Doc",
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
-  idList1: string[] = [
-    "5de110274b79a29a5f987f1d",
-    "5de1107f4b79a29a5f988202",
-    "5de1109d582a23c9693cbec9",
-    "5de110946669d72bad076d51",
-    "5de113f4b53863d63aa55369"
-  ]
+ 
 
 
 
@@ -254,7 +250,7 @@ export class DashboardComponent implements OnInit {
     console.log(this.userGraphChoice)
 
 
-    if (this.userAnalysisChoice == "TFIDF") {
+    if (this.userAnalysisChoice == "키워드분석(TFIDF)") {
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
       this.makeTf();
     }

@@ -110,15 +110,17 @@
             </div>
         </div>
         <div class="uk-width-small">
-            <!-- {{ console.log(" histroy test")}} -->
-            <!-- {{ console.log( this.auth.schHst )}} -->
+            <div *ngIf="isLogStat">
+                <!-- {{ console.log(" histroy test")}} -->
+                <!-- {{ console.log( this.auth.schHst )}} -->
 
-            검색 기록
-            <div class="uk-card uk-card-body uk-card-default">
+                검색 기록
+                <div class="uk-card uk-card-body uk-card-default">
 
-                <div *ngFor="let hst of auth.schHst; index as i">
-                    <div class="row">
-                        <a (click)="relatedSearch(hst.keyword)">{{ hst.keyword }}</a>
+                    <div *ngFor="let hst of auth.schHst; index as i">
+                        <div class="row">
+                            <a (click)="relatedSearch(hst.keyword)">{{ hst.keyword }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
