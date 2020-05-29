@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/test", (req, res) => {
-    console.log("work!");
+    // console.log("work!");
     let id = "5de1134ab53863d63aa55309";
     Keywords.findOne({ docID: id }, (error, val) => {
         if (error) {
@@ -76,7 +76,7 @@ router.post("/getKeyVal", (req, res) => {
             console.log("aggragation result: ")
             if (err)
                 console.log(err)
-            console.log(docs)
+            // console.log(docs)
             res.json(docs);
         }
     )

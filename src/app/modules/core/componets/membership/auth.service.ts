@@ -325,12 +325,12 @@ export class EPAuthService {
     // payload = this.idList// unsure if remove just this.idListn now...
     // console.log(this.idList);
     let res = await this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).toPromise();
-    res = res.doc;
-    // console.log("get my doc : ",res);
+    res = res.docs;
+    console.log("get my doc : ",res);
     if(res)
       return await this.docSvc.convertID2Title(res)
     else if(res == null)//when null => when no keep doc. 
-      return ["저장한 문서가 없어요. 검색 후 문서를 저장해보세요."]  
+      return null
     
     // return 
       // Error("getMyDocs error in auth service")

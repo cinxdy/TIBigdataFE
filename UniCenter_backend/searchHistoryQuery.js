@@ -107,23 +107,26 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 })
 
 router.post('/showHistory', (req, res) => {
-    console.log("add history init");
+    // console.log("show history init");
     let userData = req.body;
     User.findOne({ email: userData.email }, { history: 1 }, (err, doc) => {
         if (err) {
             console.log(err);
         }
         else {
-            console.log(doc)
+            // console.log(doc)
             if (!doc) {
                 console.error(Error("Error in show history"))
             }
-            // console.log(doc.history)
+            else{
+                console.log(doc.history)
 
-            if (doc.history.length == 0)//when no history records
-                res.json(new Res(false, "no history records"))
-            else
-                res.json(new Res(true, null, doc.history));
+                if (doc.history.length == 0)//when no history records
+                    res.json(new Res(false, "no history records"))
+                else
+                    res.json(new Res(true, null, doc.history));
+            }
+            
 
             // else {
             //     if (doc.histories != undefined)
