@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { IpService } from 'src/app/ip.service'
-import { IdControlService } from "../../../homes/body/search/service/id-control-service/id-control.service"
+import { DocumentService } from "../../../homes/body/search/service/document/document.service"
 
 import {
   AuthService,
@@ -82,7 +82,7 @@ export class EPAuthService {
     private http: HttpClient,
     private router: Router,
     private gauth: AuthService,
-    private idSvc:IdControlService
+    private docSvc:DocumentService
   ) {
     // this.isLogInObs$.next(logStat.unsigned);
   }
@@ -282,7 +282,11 @@ export class EPAuthService {
 
       let res = await this.http.post<any>(this.SHOW_SEARCH_HISTORY_URL, bundle).toPromise()
       console.log("show search hist : ", res);
-      return res.history.map(h => h.keyword);
+      if(res.succ)
+        return res.payload.map(h => h.keyword);
+      else
+        return ["아직 검색 기록이 없어요. 검색창에 키워드를 입력해보세요."]
+      // return 
       // this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
       //   //console.log("history added raw result : ", res);
       //   this.schHst = res.history;
@@ -306,13 +310,12 @@ export class EPAuthService {
 
   }
 
-  addMyDoc(docIDs) {
+  async addMyDoc(docIDs) {
     let payload = { userEmail: this.profile.email, docs: docIDs };
     //console.log("keep doc sending data : ", payload);
-    this.http.post<any>(this.KEEP_MY_DOC_URL, payload).subscribe((res) => {
-      //console.log(res);
-      this.myDocs = res.myDoc;
-    })
+    let res = await this.http.post<any>(this.KEEP_MY_DOC_URL, payload).toPromise()
+    this.myDocs = res.myDoc;
+
   }
 
   async getMyDocs() {
@@ -322,10 +325,12 @@ export class EPAuthService {
     // payload = this.idList// unsure if remove just this.idListn now...
     // console.log(this.idList);
     let res = await this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).toPromise();
+    res = res.doc;
+    // console.log("get my doc : ",res);
     if(res)
-      return await this.idSvc.convertID2Title(res.docs)
-    else//when null. 
-      return ["저장한 문서가 없어요."]  
+      return await this.docSvc.convertID2Title(res)
+    else if(res == null)//when null => when no keep doc. 
+      return ["저장한 문서가 없어요. 검색 후 문서를 저장해보세요."]  
     
     // return 
       // Error("getMyDocs error in auth service")

@@ -58,7 +58,9 @@
                                 <div *ngIf="isLogStat">
 
                                     <div class="form-group">
-                                        <input type="checkbox" (click)="this.addList(i)" />
+                                        <!-- <input type="checkbox" (click)="this.addList(i)" /> -->
+                                        <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(i)"/>
+
                                     </div>
                                 </div>
                             </div>

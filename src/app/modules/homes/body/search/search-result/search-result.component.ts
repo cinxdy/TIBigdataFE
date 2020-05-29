@@ -13,6 +13,8 @@ import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../service/id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { DocumentService } from "../service/document/document.service";
+
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 import { EPAuthService } from '../../../../core/componets/membership/auth.service';
@@ -40,7 +42,8 @@ export class SearchResultComponent implements OnInit {
   //   "assets//homes_search_result_wordcloud/tfidfData.json";
   public relatedKeywords = [];
   private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
-  private idList: string[] = [];
+  private searchResultIdList: string[] = [];
+  private keepIdList : string [] = [];
   private relatedDocs: {}[] = [];
   private isSearchLoaded: boolean = false;
   private isRelatedLoaded: boolean = true;//going to be removed
@@ -50,13 +53,13 @@ export class SearchResultComponent implements OnInit {
   });
   private articleSources: ArticleSource[];
   // private docId: string;
-  private isConnected = false;
+  // private isConnected = false;
   // private status: string;
   private subscription: Subscription;
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
-  private userHistory: [] = [];
+  // private userHistory: [] = [];
   private isLogStat: Number = 0;
 
   queryText: string;
@@ -70,9 +73,10 @@ export class SearchResultComponent implements OnInit {
     public _router: Router,
     private http: HttpClient,
     private es: ElasticsearchService, //private cd: ChangeDetectorRef.
-    private db: DatabaseService
+    private db: DatabaseService,
+    private docControl : DocumentService
   ) {
-    this.isConnected = false;
+    // this.isConnected = false;
     this.subscription = this.es.articleInfo$.subscribe(info => {
       this.articleSources = info;
       // //console.log(info)
@@ -86,7 +90,7 @@ export class SearchResultComponent implements OnInit {
         this.queryText = "북한산";
       }
     }
-    this.idControl.clearAll();
+    // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
     this.isLogStat = this.auth.getLogInStat()
@@ -98,16 +102,20 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("search/freqAnalysis");
   }
 
-  addList(i) {
-    this.idControl.setIdList(this.idList[i]);
-    // ////console.log("new id added to list! : " +     this.idList[i]  );
+  // private flags = []
+  boxChange(i){
+    let idx = this.keepIdList.indexOf(this.searchResultIdList[i]);
+    idx != undefined ? 
+      this.keepIdList.push(this.searchResultIdList[i]) : 
+      this.keepIdList.splice(idx,1);
   }
 
   keepMyDoc() {
-    ////console.log("id lists: ", this.idList);
-    this.auth.addMyDoc(this.idList);
-    this.idControl.clearAll();
-    alert("문서가 나의 문서함에 저장되었어요.")
+    ////console.log("id lists: ", this.searchResultIdList);
+    this.auth.addMyDoc(this.keepIdList).then(()=>{
+      alert("문서가 나의 문서함에 저장되었어요.")
+    });
+    // this.idControl.clearAll();
 
   }
   //검색되어 나온 글들의 id 값을 array에 넣어줌
@@ -147,10 +155,10 @@ export class SearchResultComponent implements OnInit {
 
 
   loadRelatedDocs(idx: number) {
-    this.db.getRcmdTable(this.idList[idx]).then(_rcmdIdsRes => {
+    this.db.getRcmdTable(this.searchResultIdList[idx]).then(_rcmdIdsRes => {
       console.log("rcmdRes:",_rcmdIdsRes)
       let rcmdIds = _rcmdIdsRes[0]["rcmd"];
-      this.idControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
+      this.docControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
         console.log("rcmdRes:",rcmdIds)
 
         let titles = _titlesRes as []
@@ -184,8 +192,8 @@ export class SearchResultComponent implements OnInit {
    * 멀티프로세싱 혹은 시리즈 프로세싱...
    */
   loadKeywords() {
-    // console.log("loadKeywords : " ,this.idList)
-    this.db.getTfidfValue(this.idList).then(res => {
+    // console.log("loadKeywords : " ,this.searchResultIdList)
+    this.db.getTfidfValue(this.searchResultIdList).then(res => {
       // console.log(res)
       let data = res as []
       // console.log("loadkeywords : ", data)
@@ -226,12 +234,12 @@ export class SearchResultComponent implements OnInit {
     let temp = this.articleSources as []; //검색된 데이터들을 받음
     this.relateToggle = []; //연관 문서 여닫는 버튼 토글 초기화
     for (var i in temp) {
-      this.idList[i] = temp[i]["_id"];
+      this.searchResultIdList[i] = temp[i]["_id"];
       this.relateToggle.push(false);
     }
     // //console.log("createTable");
 
-    // //console.log(this.idList);
+    // //console.log(this.searchResultIdList);
   }
 
   async loadResultPage() {
@@ -240,8 +248,8 @@ export class SearchResultComponent implements OnInit {
     this.isRelatedLoaded = true;//plan to be removed
 
     this.idControl.clearIdList();
-    this.idList = [];
-
+    this.searchResultIdList = [];
+    this.keepIdList = [];
     let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 

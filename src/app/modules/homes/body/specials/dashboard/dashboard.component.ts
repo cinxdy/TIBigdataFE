@@ -6,9 +6,10 @@ import { HttpClient } from '@angular/common/http';
 import { IpService } from 'src/app/ip.service';
 import { EPAuthService } from '../../../../core/componets/membership/auth.service';
 import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
-import { IdControlService } from "../../search/service/id-control-service/id-control.service";
+import { DocumentService } from "../../search/service/document/document.service"
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
 import { DatabaseService } from "../../../../core/componets/database/database.service";
+import {IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
@@ -39,8 +40,9 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient,
     private ipService: IpService,
     private es: ElasticsearchService,
-    private idSvs: IdControlService,
-    private rcmd: RecomandationService
+    private docSvc: DocumentService,
+    private rcmd: RecomandationService,
+    private idSvc : IdControlService
   ) { }
 
   RELATED: string = "RelatedDoc";
@@ -97,7 +99,7 @@ export class DashboardComponent implements OnInit {
       alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
     else {
       this.chosenCount = 0;
-      // this.idSvs.clearAll();
+      // this..clearAll();
       console.log("dash board - page");
       this.getMyKeepDoc();
     }
@@ -113,7 +115,7 @@ export class DashboardComponent implements OnInit {
   getMyKeepDoc() {
     this.auth.getMyDocs().then(titles => {
       this.docTitleList = titles as [];
-      this.idList = this.idSvs.getIdList();
+      this.idList = this.idSvc.getIdList();
     })
   }
 
@@ -270,7 +272,7 @@ export class DashboardComponent implements OnInit {
         for (let k = 0; k < 30; k++) {
           idsArr.push(graphData[k][1])
         }
-        this.idSvs.convertID2Title(idsArr).then(t => {
+        this.docSvc.convertID2Title(idsArr).then(t => {
           console.log("ad arr :", idsArr);
           console.log("titles : ", t);
           let titles = t as [];

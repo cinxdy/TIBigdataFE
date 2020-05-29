@@ -2,6 +2,7 @@ import { Injectable, Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { IpService } from 'src/app/ip.service'
 import { IdControlService } from '../../../homes/body/search/service/id-control-service/id-control.service';
+import { DocumentService } from '../../../homes/body/search/service/document/document.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class DatabaseService {
   constructor(private ipService: IpService,
     private idControl: IdControlService,
     private http: HttpClient,
+    private docControl : DocumentService
   ) { }
 
   /**
@@ -42,7 +44,7 @@ export class DatabaseService {
     let _rcmdIdsRes = await this.getRcmdTable(id)
     // console.log("rcmdRes:", _rcmdIdsRes)
     let rcmdIds = _rcmdIdsRes[0]["rcmd"];
-    let _titlesRes = await this.idControl.convertID2Title(rcmdIds as string[])
+    let _titlesRes = await this.docControl.convertID2Title(rcmdIds as string[])
     // console.log("rcmdRes:", rcmdIds)
 
     let titles = _titlesRes as []

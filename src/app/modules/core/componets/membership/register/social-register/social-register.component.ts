@@ -28,7 +28,7 @@ export class SocialRegisterComponent implements OnInit {
         // if(res...is yes)
         //then
         console.log(res);
-        alert(res.user + "으로 회원가입 되었습니다. KUBiC 회원이 되신 것을 환영합니다.");
+        alert(res.user + "으로 회원가입 되었습니다. KUBiC 회원이 되신 것을 환영합니다. 다시 로그인해주세요.");
         this.router.navigate(['/homes']);
 
       });

@@ -1,4 +1,3 @@
-
 <div uk-grid>
 
     <!-- <div class="row"> -->
@@ -25,7 +24,9 @@
             <div *ngFor="let doc of myDocs; index as d">
                 <a>{{ doc }} </a>
             </div>
-            <button (click)="deleteAllMyDocs()">나의 문서 모두 지우기</button>
+            <div *ngIf="!isDocEmpty">
+                <button (click)="deleteAllMyDocs()">나의 문서 모두 지우기</button>
+            </div>
         </div>
 
         <div class="uk-card uk-card-body uk-card-default">

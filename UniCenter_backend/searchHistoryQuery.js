@@ -76,7 +76,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                 google,//3
             }
          */
-     
+
 
         let userEmail = bundle.email;
         User.findOneAndUpdate({ email: userEmail }, { $push: { history: keyword } }, (err, doc) => {
@@ -109,22 +109,28 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
 router.post('/showHistory', (req, res) => {
     console.log("add history init");
     let userData = req.body;
-    User.findOne({ email: userData.email }, (err, doc) => {
+    User.findOne({ email: userData.email }, { history: 1 }, (err, doc) => {
         if (err) {
             console.log(err);
         }
         else {
+            console.log(doc)
             if (!doc) {
-                // console.log("api gchecker : post false")
-                // console.log(doc);
-                res.json({ result: false });
+                console.error(Error("Error in show history"))
             }
-            else {
-                // console.log("api gchecker : post true")
-                // console.log(doc);
+            // console.log(doc.history)
 
-                res.json({ history: doc.history });
-            }
+            if (doc.history.length == 0)//when no history records
+                res.json(new Res(false, "no history records"))
+            else
+                res.json(new Res(true, null, doc.history));
+
+            // else {
+            //     if (doc.histories != undefined)
+            //         res.json(new Res(true, null, doc.history));
+            //     else
+            //         res.json(new Res(false, "no history records"))
+            // }
         }
 
     });
@@ -259,20 +265,20 @@ async function countByMonth() {
 // aggMonth()
 function aggMonth() {
     hst.aggregate(
-        
+
         [
             {
                 // "$match" : {},
                 "$group": {
                     _id: "$month",
                     // count: { "$sum": 1 },
-                    key : {$push :{ k : "$keyword"}}
+                    key: { $push: { k: "$keyword" } }
                 }
             },
             {
-                "$group" : {
-                    _id : "$(_id.key.k)",
-                    count : {"$sum" : 1}
+                "$group": {
+                    _id: "$(_id.key.k)",
+                    count: { "$sum": 1 }
 
                 }
             },
@@ -283,15 +289,15 @@ function aggMonth() {
                 "$limit": 10
             }
         ]
-        
 
-    , (err, res) => {
-        console.log("work...")
-        // res.forEach((err,doc)=>{
-        //     console.log(doc);
-        // })
-        // console.log(res);
-    })
+
+        , (err, res) => {
+            console.log("work...")
+            // res.forEach((err,doc)=>{
+            //     console.log(doc);
+            // })
+            // console.log(res);
+        })
 }
 
 

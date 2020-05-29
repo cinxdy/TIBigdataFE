@@ -8,14 +8,14 @@ router.post('/getMyDoc', (req, res) => {
     // console.log("req : ", req);
     let user = req.body.payload;
     console.log("getMyDoc response func : ", user);
-    User.findOne({ email: user }, (err, data) => {
+    User.findOne({ email: user },{myDoc : 1}, (err, data) => {
         if (err)
             console.log(err);
-        else { }
-        console.log(data);
-        let payload = data.myDoc;
-        if (data == null)//when there are no keey docs
-            payload = null;
+        // console.log(data);
+        payload = (data == null ? null : data.myDoc);//저장되어 있는 자료가 없을 때 nill
+        // let payload = data.myDoc;
+        // if (data == null)//when there are no keey docs
+            // payload = null;
         res.json({ docs: payload });
     })
 })

@@ -19,7 +19,7 @@ export class UserpageComponent implements OnInit {
   private myDocs: string[] = [];
   // private myDocsNum : Number;
   private myHst: string[] = [];
-
+  private isDocEmpty : boolean = false;
 
   constructor(
     private http: HttpClient, private ipService: IpService,    private idSvs : IdControlService,
@@ -53,6 +53,8 @@ export class UserpageComponent implements OnInit {
 
   async getKeepDocs() {
     this.myDocs = await this._auth.getMyDocs() as string[];
+    if(this.myDocs.length == 1)
+      this.isDocEmpty = true;
     // console.log(typeof(this.myDocs))
     // console.log(this.myDocs.length)
     // this.myDocsNum = this.myDocs.length;
@@ -60,12 +62,15 @@ export class UserpageComponent implements OnInit {
 
   deleteAllMyDocs(){
     console.log("문서 지우기")
-    this._auth.eraseAllMyDoc()
+     this._auth.eraseAllMyDoc().then(
+       ()=>this.getKeepDocs()
+     );
+    
   }
 
   async getMyHst(){
     this.myHst = await this._auth.showSrchHst();
-    // console.log("my hist: ",this.myHst);
+    console.log("my hist: ",this.myHst);
   }
 
 
