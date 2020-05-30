@@ -23,10 +23,11 @@ export class DatabaseService {
   /**
     * @Param ids : id string array
     * @Param num : how many related documetns per each document? defualt = 5 if undefined.
+    * @Param sim : if request cosine similarity of document
   */
-  async getRcmdTable(ids: string | string[], num?: number) {
-    // console.log("in db rcmd : ", ids);
-    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num }).toPromise()
+  async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
+    console.log("in db rcmd : ", ids);
+    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
   }
 
   /**

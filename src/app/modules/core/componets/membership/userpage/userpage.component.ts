@@ -53,6 +53,7 @@ export class UserpageComponent implements OnInit {
 
   async getKeepDocs() {
     this.myDocs = await this._auth.getMyDocs() as string[];
+    console.log(this.myDocs)
     if(this.myDocs == null){
       this.isDocEmpty = true;
       this.myDocs = ["저장한 문서가 없어요. 검색 후 문서를 저장해보세요."];

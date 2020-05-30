@@ -82,7 +82,7 @@ export class EPAuthService {
     private http: HttpClient,
     private router: Router,
     private gauth: AuthService,
-    private docSvc:DocumentService
+    private docSvc: DocumentService
   ) {
     // this.isLogInObs$.next(logStat.unsigned);
   }
@@ -282,7 +282,7 @@ export class EPAuthService {
 
       let res = await this.http.post<any>(this.SHOW_SEARCH_HISTORY_URL, bundle).toPromise()
       console.log("show search hist : ", res);
-      if(res.succ)
+      if (res.succ)
         return res.payload.map(h => h.keyword);
       else
         return ["아직 검색 기록이 없어요. 검색창에 키워드를 입력해보세요."]
@@ -293,7 +293,7 @@ export class EPAuthService {
       //   //console.log("personal history : ", this.schHst);
       // });
     }
-    else{
+    else {
       console.error("로그인 에러. 문서 기록 요청 실패")
       return Error;
     }
@@ -318,22 +318,40 @@ export class EPAuthService {
 
   }
 
-  async getMyDocs() {
+  /**
+   * @description 저장한 나의 문서의 제목을 호출한다.
+   * @param isId 문서의 id를 같이 요구한다면 true
+   * @return string array
+   */
+  async getMyDocs(isId?: boolean) {
     //console.log("this.profile.email",this.profile.email);
     // this.myDocsTitles = [];
     // this.idList = await this.auth.getMyDocs() as string[];
     // payload = this.idList// unsure if remove just this.idListn now...
     // console.log(this.idList);
-    let res = await this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).toPromise();
-    res = res.docs;
-    console.log("get my doc : ",res);
-    if(res)
-      return await this.docSvc.convertID2Title(res)
-    else if(res == null)//when null => when no keep doc. 
+    let idRes = await this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).toPromise();
+
+    idRes = idRes.payload;
+    console.log("get my doc : ", idRes);
+
+    if (idRes) {
+      if (isId) {//when request id list
+        let titles = await this.docSvc.convertID2Title(idRes) as [];
+        let i = -1;
+        return titles.map(t=>{
+          i++
+          return {title : t, id : idRes[i]}
+        })
+        // return 
+      }
+      else//when only requset titles
+        return await this.docSvc.convertID2Title(idRes)
+    }
+    else if (idRes == null)//when null => when no keep doc. 
       return null
-    
+
     // return 
-      // Error("getMyDocs error in auth service")
+    // Error("getMyDocs error in auth service")
     // return new Promise((r) => {
     //   this.http.post<any>(this.GET_MY_DOC_URL, { payload: this.profile.email }).subscribe((res) => {
     //     //console.log("angular get mydocs result : ",res);

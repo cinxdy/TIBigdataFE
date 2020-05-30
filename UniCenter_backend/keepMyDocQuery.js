@@ -7,16 +7,25 @@ const Res = require('./models/Res');
 router.post('/getMyDoc', (req, res) => {
     // console.log("req : ", req);
     let user = req.body.payload;
-    // console.log("getMyDoc response func : ", user);
-    User.findOne({ email: user },{myDoc : 1}, (err, data) => {
-        if (err)
+    console.log("getMyDoc response func : ", user);
+    User.findOne({ email: user }, { myDoc: 1 }, (err, doc) => {
+        if (err) {
             console.log(err);
-        console.log(data);
-        payload = (data == null ? null : data.myDoc);//저장되어 있는 자료가 없을 때 nill
-        // let payload = data.myDoc;
-        // if (data == null)//when there are no keey docs
-            // payload = null;
-        res.json({ docs: payload });
+        }
+        else {
+            // console.log(doc)
+            if (!doc) {
+                console.error(Error("Error in show history"))
+            }
+            else {
+                console.log(doc.myDoc.length)
+
+                if (doc.myDoc.length == 0)//when no myDoc records
+                    res.json(new Res(false, "no myDoc records"))
+                else
+                    res.json(new Res(true, null, doc.myDoc));
+            }
+        }
     })
 })
 

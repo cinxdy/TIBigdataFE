@@ -118,34 +118,15 @@ export class SearchResultComponent implements OnInit {
     // this.idControl.clearAll();
 
   }
-  //검색되어 나온 글들의 id 값을 array에 넣어줌
 
-  // navToDataChart() {
-  //   // ////console.log("cumulative id list so far : ");
-  //   let v = this.idControl.getIdList();
-  //   // //console.log(v);
-  //   this._router.navigateByUrl("search/ChosenDocAnalysis");
-  // }
 
   navToDocDetail() {
     this._router.navigateByUrl("search/DocDetail");
   }
 
-  // chooseDoc(i) {
-  //   // this.idControl.clearIdChosen();
-  //   // this.idControl.setArticle(this.articleSources[i]);
-  //   this.idControl.setIdChosen(this.articleSources[i]["_id"]);
-  //   this.navToDocDetail();
-  // }
   setThisDoc(idx: number) {
-    // this.relatedDocs[i]["id"][r];
-    // //console.log(this.relatedDocs[i]["id"][r]);
-    // console.log(this.relatedDocs[idx]["id"])
     this.idControl.setIdChosen(this.relatedDocs[idx]["id"]);
     this.navToDocDetail();
-
-    // this.docId = this.article["_id"];
-    // //console.log(this.docId);
   }
   tgglRelated(i: number) {
     //console.log("tgglRelated")
@@ -155,25 +136,29 @@ export class SearchResultComponent implements OnInit {
 
 
   loadRelatedDocs(idx: number) {
-    this.db.getRcmdTable(this.searchResultIdList[idx]).then(_rcmdIdsRes => {
-      console.log("rcmdRes:",_rcmdIdsRes)
-      let rcmdIds = _rcmdIdsRes[0]["rcmd"];
-      this.docControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
-        console.log("rcmdRes:",rcmdIds)
-
-        let titles = _titlesRes as []
-        
-        let i = 0;
-        this.relatedDocs = titles.map(t => {
-          i++;
-          return { "id": rcmdIds[i], "title": t };
-        })
-
-
-        console.log("relatedDocs:",this.relatedDocs);
-      })
-      // }
+    this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
+      this.relatedDocs = res as [];
+      console.log("from db : ",res)
     });
+    // this.db.getRcmdTable(this.searchResultIdList[idx]).then(_rcmdIdsRes => {
+    //   console.log("rcmdRes:",_rcmdIdsRes)
+    //   let rcmdIds = _rcmdIdsRes[0]["rcmd"];
+    //   this.docControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
+    //     console.log("rcmdRes:",rcmdIds)
+
+    //     let titles = _titlesRes as []
+        
+    //     let i = 0;
+    //     this.relatedDocs = titles.map(t => {
+    //       i++;
+    //       return { "id": rcmdIds[i], "title": t };
+    //     })
+
+
+    //     console.log("relatedDocs:",this.relatedDocs);
+    //   })
+    //   // }
+    // });
   }
 
   private keywords: any[] = [];
@@ -237,9 +222,6 @@ export class SearchResultComponent implements OnInit {
       this.searchResultIdList[i] = temp[i]["_id"];
       this.relateToggle.push(false);
     }
-    // //console.log("createTable");
-
-    // //console.log(this.searchResultIdList);
   }
 
   async loadResultPage() {
@@ -258,16 +240,5 @@ export class SearchResultComponent implements OnInit {
     await this.loadSearchResult();
     this.createIdTable();
     this.loadKeywords();
-    //ready each independently after id table  => multi process
-    // this.loadKeywords().then(() => {//load from tfidf table
-    //   this.makeRelatedKey();//ready only after loadKeyworkds
-    //   //console.log("비동기 테스트 1");
-
-    // });
-    // //console.log("비동기 테스트 2");
-
-    //연관문서 속도는 미들웨어에서 프로그램 실행할 때
-    //load한 상태로 데이터를 로드한 상태를 유지하는 것으로 해결
-
   }
 }

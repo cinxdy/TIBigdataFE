@@ -9,7 +9,7 @@ import { ElasticsearchService } from "../../search/service/elasticsearch-service
 import { DocumentService } from "../../search/service/document/document.service"
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
 import { DatabaseService } from "../../../../core/componets/database/database.service";
-import {IdControlService } from "../../search/service/id-control-service/id-control.service";
+import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     private es: ElasticsearchService,
     private docSvc: DocumentService,
     private rcmd: RecomandationService,
-    private idSvc : IdControlService
+    private idSvc: IdControlService
   ) { }
 
   RELATED: string = "RelatedDoc";
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
 
   // analysisList: string[] = ["TFIDF", "LDA", "RNN"];//"Related Doc",
   graphList: string[] = ["Dounut", "Word-Cloud", "Bar", "Line"];
- 
+
 
 
 
@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
   // private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
 
-  private hstReqUrl = this.ipService.getUserServerIp() +"/hst/getTotalHistory";
+  private hstReqUrl = this.ipService.getUserServerIp() + "/hst/getTotalHistory";
   private hstFreq: any[];
 
   private graphXData = [];
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   private chosenList: string[] = [];
   private search_history = [];
   private chosenCount: number = 0;
-
+  private docIdList: string[] = [];
   private choiceComplete = false;
   private userDataChoice = [];
   private userDocChoice = [];
@@ -94,15 +94,18 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-    if (!this.auth.getLogInStat())
-      // console.log("wow");
-      alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
-    else {
-      this.chosenCount = 0;
-      // this..clearAll();
-      console.log("dash board - page");
-      this.getMyKeepDoc();
-    }
+    this.auth.getLogInObs().subscribe((logInStat) => {
+
+      if (!logInStat)
+        // console.log("wow");
+        alert("로그인이 필요한 서비스 입니다. 로그인 해주세요.");
+      else {
+        this.chosenCount = 0;
+        // this..clearAll();
+        console.log("dash board - page");
+        this.getMyKeepDoc();
+      }
+    })
 
   }
 
@@ -113,9 +116,18 @@ export class DashboardComponent implements OnInit {
   }
 
   getMyKeepDoc() {
-    this.auth.getMyDocs().then(titles => {
-      this.docTitleList = titles as [];
-      this.idList = this.idSvc.getIdList();
+    this.auth.getMyDocs(true).then(titlesNiD => {
+      console.log("get my keep doc : ", titlesNiD)
+      let temp = titlesNiD as [];
+      temp.map(o => {
+        this.docTitleList.push(o["title"]);
+        this.docIdList.push(o["id"])
+        return;
+      })//[{title, id},...]
+      // this.idList = this.idSvc.getIdList();
+
+      console.log(this.docTitleList)
+      console.log(this.docIdList)
     })
   }
 
@@ -131,18 +143,40 @@ export class DashboardComponent implements OnInit {
     console.log(this.chosenList)
 
   }
-  private filter = [];
-  private checkArr = [];
+
 
   boxChange(i) {
-    if (this.filter[i]) {
-      this.addList(i);
-      console.log(i + "넣음");
-    } else {
-      this.removeList(i);
-      console.log(i + "빠짐");
+    // this.docTitleList[i]
+    // console.log(i)
+    // console.log(this.docIdList[i])
+    let idx = this.chosenList.indexOf(this.docIdList[i]);
+    // console.log("idx : ", idx)
+    if (idx != -1) {
+      console.log("pull" + this.docTitleList[i]);
+      this.chosenList.splice(idx, 1);
     }
+    else {
+      console.log("push" + this.docTitleList[i]);
+      this.chosenList.push(this.docIdList[i])
+    }
+
+
+
+    console.log(this.chosenList)
   }
+  //solve issue that the order collapse from pop function
+
+  // private filter = [];
+  // private checkArr = [];
+  // boxChange(i) {
+  //   if (this.filter[i]) {
+  //     this.addList(i);
+  //     console.log(i + "넣음");
+  //   } else {
+  //     this.removeList(i);
+  //     console.log(i + "빠짐");
+  //   }
+  // }
 
   private TfTable = [];
 
@@ -263,15 +297,22 @@ export class DashboardComponent implements OnInit {
     else if (this.userAnalysisChoice == "RELATED") {
 
       console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-      this.db.getRcmdTable(this.chosenList[0]).then(data => {
-        // console.log(data);
+      this.db.getRcmdTable(this.chosenList[0],10,true).then(data => {
+        console.log(data);
+
         let graphData = data[0]["rcmd"] as [];
-  
+
 
         let idsArr = []
-        for (let k = 0; k < 30; k++) {
-          idsArr.push(graphData[k][1])
-        }
+        let valArr = []
+        graphData.map(d => {
+          idsArr.push(d[0])
+          valArr.push(d[1])
+          return
+        })
+        // for (let k = 0; k < graphData.length; k++) {
+        //   idsArr.push(graphData[k][1])
+        // }
         this.docSvc.convertID2Title(idsArr).then(t => {
           console.log("ad arr :", idsArr);
           console.log("titles : ", t);
@@ -279,12 +320,11 @@ export class DashboardComponent implements OnInit {
 
           let temp_cData = []
           for (var j = 0; j < titles.length; j++) {
-            if (j > 30) break
-            else if (j < 5) {
+            if (j < 5) {
               temp_cData.push(
                 {
                   text: titles[j],
-                  weight: graphData[j][1],
+                  weight: valArr[j],
                   color: "blue"
                 }
               )
@@ -293,7 +333,7 @@ export class DashboardComponent implements OnInit {
               temp_cData.push(
                 {
                   text: titles[j],
-                  weight: graphData[j][1],
+                  weight: valArr[j],
                   color: "gray"
                 }
               )

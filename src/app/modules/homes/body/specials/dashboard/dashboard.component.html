@@ -42,10 +42,9 @@
   <div class="keyword-block" style="display:table-cell; border: 1px red solid; width: 30%;">
     문서 보유 목록
     <ul>
-      <div *ngFor="let doc of this.docTitleList, index as t">
+      <div *ngFor="let doc of docTitleList, index as t">
         <div class="form-group">
-          <input class="uk-checkbox" type="checkbox" formContronName="docs" name="t" (change)="this.boxChange(t)"
-            [value]="checkArr[t]" [(ngModel)]="filter[t]">
+          <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(t)">
           {{doc}}
         </div>
       </div>
