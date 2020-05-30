@@ -27,13 +27,14 @@ router.post('/getRcmdTbl', (req, res) => {
     let num = req.body["num"]; //could be undefined if does not request specific num.
     if (num == undefined)
         num = 5;
-
+    else
+        num = parseInt(num);
     let isSim = req.body["sim"]
     let matchQuery = undefined;
- 
+
     if (typeof (ids) == "string")//only send one string 
         matchQuery = { docID: ids }
-    
+
     else //when send string array
         matchQuery = { docID: { $in: ids } }
 
@@ -57,8 +58,8 @@ router.post('/getRcmdTbl', (req, res) => {
                     rcmd: {
                         $cond: {
                             if: isSim,
-                            then: { $arrayElemAt: ["$rcmd", 0] },
-                            else: "$rcmd"
+                            then:"$rcmd",
+                            else:  { $arrayElemAt: ["$rcmd", 0] }
 
 
                         }

@@ -28,18 +28,7 @@ import { DatabaseService } from "../../../../core/componets/database/database.se
   styleUrls: ["./search-result.component.less"]
 })
 export class SearchResultComponent implements OnInit {
-  //Flask data
-  // private BASE_URL: string = "http://localhost:5000/keywordGraph";
-  // serverData: JSON;
-  // private RCMD_URL: string = "http://localhost:5000/rcmd";
-  // private static readonly INDEX = "nkdb";
-  // private static readonly TYPE = "nkdb";
-  // private queryText = "";
-  // private lastKeypress = 0;
-  // private thisURL: string = "http://localhost:4200/homes/searchResult";
-
-  // private fileDir: string =
-  //   "assets//homes_search_result_wordcloud/tfidfData.json";
+  
   public relatedKeywords = [];
   private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
@@ -52,14 +41,10 @@ export class SearchResultComponent implements OnInit {
     "Content-Type": "application/json"
   });
   private articleSources: ArticleSource[];
-  // private docId: string;
-  // private isConnected = false;
-  // private status: string;
   private subscription: Subscription;
   private searchKeyword: string;
   // private isToggleRelated: boolean
   private relateToggle: Array<boolean>;
-  // private userHistory: [] = [];
   private isLogStat: Number = 0;
 
   queryText: string;
@@ -96,6 +81,27 @@ export class SearchResultComponent implements OnInit {
     this.isLogStat = this.auth.getLogInStat()
   }
 
+
+  async loadResultPage() {
+    this.isSearchLoaded = false;
+    this.isKeyLoaded = false;
+    this.isRelatedLoaded = true;//plan to be removed
+
+    this.idControl.clearIdList();
+    this.searchResultIdList = [];
+    this.keepIdList = [];
+    let queryText = this.es.getKeyword();
+    this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
+
+
+    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
+    await this.loadSearchResult();
+    this.createIdTable();
+    this.loadKeywords();
+  }
+
+
+  
   //Get result from flask
   freqAnalysis() {
     this.searchKeyword = this.es.getKeyword();
@@ -140,42 +146,11 @@ export class SearchResultComponent implements OnInit {
       this.relatedDocs = res as [];
       console.log("from db : ",res)
     });
-    // this.db.getRcmdTable(this.searchResultIdList[idx]).then(_rcmdIdsRes => {
-    //   console.log("rcmdRes:",_rcmdIdsRes)
-    //   let rcmdIds = _rcmdIdsRes[0]["rcmd"];
-    //   this.docControl.convertID2Title(rcmdIds as string[]).then(_titlesRes => {
-    //     console.log("rcmdRes:",rcmdIds)
-
-    //     let titles = _titlesRes as []
-        
-    //     let i = 0;
-    //     this.relatedDocs = titles.map(t => {
-    //       i++;
-    //       return { "id": rcmdIds[i], "title": t };
-    //     })
-
-
-    //     console.log("relatedDocs:",this.relatedDocs);
-    //   })
-    //   // }
-    // });
+   
   }
 
   private keywords: any[] = [];
-  //aync가 의미하듯이, 비공기의 범위는 해당 함수까지만 이다.
-  //toPromise도 비동기이다. toPromise 혹은 subscribe을 만나면, 비동기는 비동기대로 하고, 나머지는 건너뛴다.
-  /***
-   * A()
-   * new Promise(r()=>B();...).then(C();)
-   * D();
-   * E();
-   *
-   * 이렇게 되어 있다면
-   * A  -> B -> C
-   *    -> D -> E
-   * 이렇게 병렬적으로 실행된다.
-   * 멀티프로세싱 혹은 시리즈 프로세싱...
-   */
+
   loadKeywords() {
     // console.log("loadKeywords : " ,this.searchResultIdList)
     this.db.getTfidfValue(this.searchResultIdList).then(res => {
@@ -224,21 +199,5 @@ export class SearchResultComponent implements OnInit {
     }
   }
 
-  async loadResultPage() {
-    this.isSearchLoaded = false;
-    this.isKeyLoaded = false;
-    this.isRelatedLoaded = true;//plan to be removed
 
-    this.idControl.clearIdList();
-    this.searchResultIdList = [];
-    this.keepIdList = [];
-    let queryText = this.es.getKeyword();
-    this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
-
-
-    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
-    await this.loadSearchResult();
-    this.createIdTable();
-    this.loadKeywords();
-  }
 }

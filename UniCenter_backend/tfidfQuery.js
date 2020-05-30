@@ -22,10 +22,13 @@ router.post("/getKeyVal", (req, res) => {
     console.log(req.body);
     let ids = req.body["id"];
     let num = req.body["num"]; //could be undefined.
+    let isVal = req.body["isVal"];
     console.log("get req");
     console.log(ids);
     if(num == undefined)
-        num = 3;
+        num = 5;
+    else
+        num = parseInt(num);
     // let id = ids[0]
     // let id = "5de1134ab53863d63aa55309"
 
@@ -47,7 +50,12 @@ router.post("/getKeyVal", (req, res) => {
             {
                 $project: {
                     tfidf: {
-                        $arrayElemAt: ["$tfidf", 0]
+                        $cond : {
+                            if : isVal,
+                            then : "$tfidf",
+                            else: {$arrayElemAt: ["$tfidf", 0]}
+
+                        }
                     }
                 }
             },
@@ -76,7 +84,7 @@ router.post("/getKeyVal", (req, res) => {
             console.log("aggragation result: ")
             if (err)
                 console.log(err)
-            // console.log(docs)
+            console.log(docs)
             res.json(docs);
         }
     )
