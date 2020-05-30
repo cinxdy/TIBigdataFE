@@ -52,6 +52,7 @@ export class UserpageComponent implements OnInit {
   }
 
   async getKeepDocs() {
+    console.log("Getkeep odcs init")
     this.myDocs = await this._auth.getMyDocs() as string[];
     console.log(this.myDocs)
     if(this.myDocs == null){
@@ -72,6 +73,7 @@ export class UserpageComponent implements OnInit {
   }
 
   async getMyHst(){
+    console.log("getmyHst init")
     this.myHst = await this._auth.showSrchHst();
     console.log("my hist: ",this.myHst);
   }
