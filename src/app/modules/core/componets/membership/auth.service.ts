@@ -276,7 +276,7 @@ export class EPAuthService {
   async showSrchHst() {
     // var hst;
     if (this.isLogIn) {
-      // //console.log("add serach history : user is login.", this.profile)
+      console.log("add serach history : user is login.", this.profile)
       let userEmail = this.profile.email;
       let bundle = { login: this.isLogIn, email: userEmail }
 
@@ -416,7 +416,7 @@ export class EPAuthService {
     //console.log("login req user : ", user);
 
     let isOurUser = await this.eCheckUser(user);
-    //console.log(isOurUser);
+    console.log(isOurUser);
     if (!isOurUser.succ) {//if this user is one of us, deny registration.
       alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
       //비밀번호 찾기 페이지도 만들어야 한다. 

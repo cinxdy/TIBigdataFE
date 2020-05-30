@@ -18,7 +18,7 @@ router.post('/getMyDoc', (req, res) => {
                 console.error(Error("Error in show history"))
             }
             else {
-                console.log(doc.myDoc.length)
+                console.log(doc.myDoc)
 
                 if (doc.myDoc.length == 0)//when no myDoc records
                     res.json(new Res(false, "no myDoc records"))
