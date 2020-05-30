@@ -31,6 +31,7 @@ export class UserpageComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("yo...")
     this._gauth.authState.subscribe((user) => {
       this.nowUser = user;
       this.getKeepDocs();
