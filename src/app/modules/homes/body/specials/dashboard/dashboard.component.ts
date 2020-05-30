@@ -146,25 +146,20 @@ export class DashboardComponent implements OnInit {
 
 
   boxChange(i) {
-    // this.docTitleList[i]
-    // console.log(i)
-    // console.log(this.docIdList[i])
+    console.log(i)
+    console.log("this.docIdList[i] : ",this.docIdList[i])
     let idx = this.chosenList.indexOf(this.docIdList[i]);
-    // console.log("idx : ", idx)
+    console.log("idx : ", idx)
     if (idx != -1) {
       console.log("pull" + this.docTitleList[i]);
       this.chosenList.splice(idx, 1);
       this.chosenCount--;
-
     }
     else {
       console.log("push" + this.docTitleList[i]);
       this.chosenList.push(this.docIdList[i])
       this.chosenCount++;
-
     }
-
-
 
     console.log(this.chosenList)
   }
