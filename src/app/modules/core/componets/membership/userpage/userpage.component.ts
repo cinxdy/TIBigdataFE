@@ -19,10 +19,10 @@ export class UserpageComponent implements OnInit {
   private myDocs: string[] = [];
   // private myDocsNum : Number;
   private myHst: string[] = [];
-  private isDocEmpty : boolean = false;
+  private isDocEmpty: boolean = false;
 
   constructor(
-    private http: HttpClient, private ipService: IpService,    private idSvs : IdControlService,
+    private http: HttpClient, private ipService: IpService, private idSvs: IdControlService,
 
 
     public _router: Router, private _auth: EPAuthService, private _login: LoginComponent, private _gauth: AuthService
@@ -32,10 +32,15 @@ export class UserpageComponent implements OnInit {
 
   ngOnInit() {
     console.log("yo...")
-    this._gauth.authState.subscribe((user) => {
-      this.nowUser = user;
+    this._auth.getLogInObs().subscribe((logstat) => {
       this.getKeepDocs();
       this.getMyHst()
+      // console.log(logstat)
+      // if(!logstat){
+      //   this.nowUser  = this._auth.getNowUser()
+      //   console.log(this.nowUser)
+
+      // }
     });
   }
 
@@ -56,7 +61,7 @@ export class UserpageComponent implements OnInit {
     console.log("Getkeep odcs init")
     this.myDocs = await this._auth.getMyDocs() as string[];
     console.log(this.myDocs)
-    if(this.myDocs == null){
+    if (this.myDocs == null) {
       this.isDocEmpty = true;
       this.myDocs = ["저장한 문서가 없어요. 검색 후 문서를 저장해보세요."];
     }
@@ -65,22 +70,22 @@ export class UserpageComponent implements OnInit {
     // this.myDocsNum = this.myDocs.length;
   }
 
-  deleteAllMyDocs(){
+  deleteAllMyDocs() {
     console.log("문서 지우기")
-     this._auth.eraseAllMyDoc().then(
-       ()=>this.getKeepDocs()
-     );
-    
+    this._auth.eraseAllMyDoc().then(
+      () => this.getKeepDocs()
+    );
+
   }
 
-  async getMyHst(){
+  async getMyHst() {
     console.log("getmyHst init")
     this.myHst = await this._auth.showSrchHst();
-    console.log("my hist: ",this.myHst);
+    console.log("my hist: ", this.myHst);
   }
 
 
-  
+
   // //dashboard ts에도 동일한 함수 있음. 차후 idList ts으로 이동하여 합침. 
   // async convertID2Title() {
   //   this.idList = await this.auth.getMyDocs() as string[];
