@@ -45,7 +45,7 @@ function verifyGoogleToken(req, res) {
 }
 
 router.post('/gRegister', (req, res) => {
-    console.log("api : gRegister init.");
+    // console.log("api : gRegister init.");
     let userData = req.body;
     userData.auth = "google";
     let user = new User(userData);
@@ -55,14 +55,14 @@ router.post('/gRegister', (req, res) => {
             res.json({ succ: false })
         }
         else {
-            console.log("api : gmail register : save ok");
+            // console.log("api : gmail register : save ok");
             res.json({ succ: true, user : user.email });
         }
     })
 })
 
 router.post('/check_is_our_g_user', (req, res) => {
-    console.log("api : gChecker init.");
+    // console.log("api : gChecker init.");
     let userData = req.body;
     User.findOne({ email: userData.email }, (error, user) => {
         if (error) {

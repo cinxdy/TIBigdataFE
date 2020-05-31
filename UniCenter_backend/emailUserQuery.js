@@ -38,9 +38,9 @@ class Res{
 // router.get()
 // router.get('/getEuserList')
 router.get('/getEuserList',(req, res)=>{
-    console.log("get all user list init");
+    // console.log("get all user list init");
     User.find((err, allUser)=>{
-        console.log(allUser);
+        // console.log(allUser);
        res.status(200).send(new Res(true, "all user list",allUser));
     });
 });
@@ -49,7 +49,7 @@ router.get('/getEuserList',(req, res)=>{
 
 //email verify code
 async function verifyToken(req, res) {
-    console.log("verifyToken func has been inited!");
+    // console.log("verifyToken func has been inited!");
     // console.log(req.headers);
     // console.log(req.body);
     try {
@@ -60,7 +60,7 @@ async function verifyToken(req, res) {
 
         //parse
         let token = JSON.parse(req.headers.authorization.split(' ')[1]).token;
-        console.log("token : ",token);
+        // console.log("token : ",token);
         //parser result is null => invalid
         if (!token) {
             return res.status(401).send(new Res(false, 'token null'));
@@ -86,11 +86,11 @@ async function verifyToken(req, res) {
             return res.status(401).send(new Res(false,'payload undefined'));
         }
 
-        console.log(payload.subject);
+        // console.log(payload.subject);
         var user_id = payload.subject//need to know how the req is formed first....
         //why do they again set value of req? not res?
         // next()//where does this function come from?
-        console.log(user_id);
+        // console.log(user_id);
         let name,email;
         await User.findOne({ _id: user_id }, (error, user) => {
             // console.log(user.name);
@@ -120,11 +120,11 @@ router.post('/eCheckUser', (req, res) => {
         }
         else {
             if (!user) {//when this user is not our list
-                console.log("user is not one of us");
+                // console.log("user is not one of us");
                 res.json(new Res(false));
             }
             else {//when this user is already our user
-                console.log("user one of us");
+                // console.log("user one of us");
                 res.json(new Res(true));
             }
         }
@@ -159,7 +159,7 @@ router.post('/register', (req, res) => {
                 if (error) {
                     console.log(error)
                 } else {
-                    console.log("api : email register : save ok, user info : ", userData);
+                    // console.log("api : email register : save ok, user info : ", userData);
                     let payload = { subject: userData._id };//new user id : subject => payload. create token.
                     var token = jwt.sign(payload, secret, { expiresIn: '24h' });//secret harry poter usage check required. //토큰 발급.
                     res.json(new Res(true, 'User registered!', {token: token, name : user.name, email : user.email}));//토큰 전송.
@@ -176,13 +176,13 @@ router.post('/register', (req, res) => {
 // http://localhost:4000/api/login
 router.post('/login', (req, res) => {
     let userData = req.body;
-    console.log("recieved user data : ",userData);
+    // console.log("recieved user data : ",userData);
     // if (!eCheckUser(userData.email)) {//when this user is not on our user list, deny login, and lead to register
     //     console.log("hello?");
     //     res.json({ success: false, message: "this user is not our user" });
     // }
     // else {
-    console.log("login process init")
+    // console.log("login process init")
     User.findOne({ email: userData.email }, (error, user) => {
         if (error) {
             console.err(error)
@@ -193,11 +193,11 @@ router.post('/login', (req, res) => {
             }
             else {
                 bcrypt.compare(userData.password, user.password, function(err, result) {
-                    console.log("recieved userdata pw : ",userData.password);
-                    console.log("user db pw : ",user.password);
-                    console.log("pw match result : ", result);
+                    // console.log("recieved userdata pw : ",userData.password);
+                    // console.log("user db pw : ",user.password);
+                    // console.log("pw match result : ", result);
                     if(!result){//hash value incorrect
-                        console.log("password failed");
+                        // console.log("password failed");
                         res.json(new Res (false,'pw'));
                     }
                     else{

@@ -57,7 +57,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
             console.log("add history fail. error : " + err);
         }
         else {
-            console.log("add total history ok")
+            // console.log("add total history ok")
         }
     });
 
@@ -85,13 +85,13 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
             }
             else {
                 if (!doc) {
-                    console.log("user not found")
-                    console.log("requested user : ", userEmail)
+                    // console.log("user not found")
+                    // console.log("requested user : ", userEmail)
                     // console.log(doc);
                     res.status(401).send({ add: false });
                 }
                 else {
-                    console.log("doc found!")
+                    // console.log("doc found!")
                     // console.log(doc);
                     userHst = doc.history;
                     userHst.push(keyword);
@@ -119,7 +119,7 @@ router.post('/showHistory', (req, res) => {
                 console.error(Error("Error in show history"))
             }
             else{
-                console.log(doc.history)
+                // console.log(doc.history)
 
                 if (doc.history.length == 0)//when no history records
                     res.json(new Res(false, "no history records"))
@@ -174,7 +174,7 @@ router.post('/getTotalHistory', (req, res) => {
                 if (err)
                     console.log("post : get total history err")
                 // console.log(hstrs);
-                console.log("post total history ok")
+                // console.log("post total history ok")
                 res.send({ histories: hstrs })
             });
 });
@@ -204,7 +204,7 @@ router.get('/getMonthFreqHistory', async (req, res) => {
     let s_t = Date.now()
     result = await countByMonth();
     let e_t = Date.now()
-    console.log(e_t, s_t);
+    // console.log(e_t, s_t);
     let elapse_t = (e_t - s_t) / 1000;
     var tmp_t;
     var sec_t = Math.floor(elapse_t % 60);
@@ -212,8 +212,8 @@ router.get('/getMonthFreqHistory', async (req, res) => {
     var min_t = Math.floor(tmp_t % 60);
     tmp_t = tmp_t / 60;
     var hour_t = Math.floor(tmp_t % 60);
-    console.log("total time taken : ", hour_t, "hour ", min_t, " min ", sec_t, " sec");
-    console.log("month func load fin")
+    // console.log("total time taken : ", hour_t, "hour ", min_t, " min ", sec_t, " sec");
+    // console.log("month func load fin")
     // console.log(result)
     res.status(200).json(result);
 });
@@ -243,9 +243,9 @@ async function countByMonth() {
 
                 let numKey = m.length;
                 let result = await countByFreq(numKey, 3, m);
-                console.log("\n\n----------debugging : ");
-                console.log(result);
-                console.log("----------\n\n")
+                // console.log("\n\n----------debugging : ");
+                // console.log(result);
+                // console.log("----------\n\n")
                 keyInMth.push([mth[i], result]);
                 idx++;//use asyncronous for performance
 
@@ -323,7 +323,7 @@ async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
     return new Promise((resolve) => {
 
         pipe_collection.distinct("keyword", (err, key) => {
-            console.log(key.length, "unique words");
+            // console.log(key.length, "unique words");
             var keyFreq = [];
             //top topX frequent keyword container
             var topKey = [];
@@ -349,7 +349,7 @@ async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
                         })
                 }//for
             }).then(() => {
-                console.log("sort?")
+                // console.log("sort?")
                 for (var i = 0; i < LIM; i++) {
                     // console.log(keyFreq[i])
                     if (i > LIM) break;//handle among only LIM number of documents.
@@ -364,8 +364,8 @@ async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
                 var min = Math.floor(tmp % 60);
                 tmp = tmp / 60;
                 var hour = Math.floor(tmp % 60);
-                console.log("sort!")
-                console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+                // console.log("sort!")
+                // console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
                 for (var i = 0; i < LIM; i++) {
                     // console.log(keyFreq[i])
                     if (i > LIM) break;
@@ -374,7 +374,7 @@ async function countByFreq(LIM = 1500, topX = 50, pipe_collection = hst) {
                 for (var i = 0; i < topX; i++) {
                     topKey.push(keyFreq[i]);
                 }
-                console.log("top key ", topX)
+                // console.log("top key ", topX)
                 // console.log(topKey);
 
 
@@ -422,8 +422,8 @@ async function aggregate() {
         var min = Math.floor(tmp % 60);
         tmp = tmp / 60;
         var hour = Math.floor(tmp % 60);
-        console.log("sort!")
-        console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
+        // console.log("sort!")
+        // console.log("time taken : ", hour, "hour ", min, " min ", sec, " sec");
         return result;
     })
 }

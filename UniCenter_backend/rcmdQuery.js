@@ -76,7 +76,7 @@ router.post('/getRcmdTbl', (req, res) => {
         (err, docs) => {
             if (err)
                 console.error(err)
-            console.log(docs);
+            // console.log(docs);
             res.json(docs)
 
         }
