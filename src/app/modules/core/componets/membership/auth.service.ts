@@ -338,9 +338,9 @@ export class EPAuthService {
       if (isId) {//when request id list
         let titles = await this.docSvc.convertID2Title(idRes) as [];
         let i = -1;
-        return titles.map(t=>{
+        return titles.map(t => {
           i++
-          return {title : t, id : idRes[i]}
+          return { title: t, id: idRes[i] }
         })
         // return 
       }
@@ -477,57 +477,57 @@ export class EPAuthService {
    * @description user login with google social login
    * @uncomment
    */
-  // async gLogIn() {
-  //   let response = await this.googleSignIn();
+  async gLogIn() {
+    //   let response = await this.googleSignIn();
 
-  //   // console.log(response)
-  //   // this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + response.authToken).subscribe(
-  //   //   (res) => {
+    //   // console.log(response)
+    //   // this.http.get<any>("https://oauth2.googleapis.com/tokeninfo?id_token=" + response.authToken).subscribe(
+    //   //   (res) => {
 
-  //   //   console.log("resresres")
-  //   //   console.log("GOOGLE AUTH DEBUG: ", res)
-  //   // },err=>{
-  //   //   if(err)
-  //   //   console.error(err)
-  //   // })
+    //   //   console.log("resresres")
+    //   //   console.log("GOOGLE AUTH DEBUG: ", res)
+    //   // },err=>{
+    //   //   if(err)
+    //   //   console.error(err)
+    //   // })
 
-  //   //check if this user is our user already
-  //   let res$ = this.check_is_our_g_user(response)
-  //   res$.subscribe((res) => {
-  //     if (res.exist == false) {
-  //       //console.log("This user is not yet our user : need sign up : ", res);
-  //       alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
-  //       this.router.navigateByUrl("/membership/register");
-  //     }
-  //     else {
-  //       //console.log("This user is already our user!");
-  //       this.socUser = response as SocialUser;
-  //       //console.log(this.socUser);
-  //       localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
+    //   //check if this user is our user already
+    //   let res$ = this.check_is_our_g_user(response)
+    //   res$.subscribe((res) => {
+    //     if (res.exist == false) {
+    //       //console.log("This user is not yet our user : need sign up : ", res);
+    //       alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
+    //       this.router.navigateByUrl("/membership/register");
+    //     }
+    //     else {
+    //       //console.log("This user is already our user!");
+    //       this.socUser = response as SocialUser;
+    //       //console.log(this.socUser);
+    //       localStorage.setItem('token', JSON.stringify(new storeToken(logStat.google, this.socUser.idToken)));
 
-  //       // localStorage.setItem('token',this.socUser.idToken);
-  //       //console.log("login user info saved : ", this.socUser);
-  //       this.isLogIn = logStat.google;
-  //       this.router.navigate(['/homes'])
-  //     }
-  //   }
-  //   );
-  // }
+    //       // localStorage.setItem('token',this.socUser.idToken);
+    //       //console.log("login user info saved : ", this.socUser);
+    //       this.isLogIn = logStat.google;
+    //       this.router.navigate(['/homes'])
+    //     }
+    //   }
+    //   );
+  }
 
   /**
    * @uncomment
    */
-  // async googleSignIn() {
-  //   let platform = GoogleLoginProvider.PROVIDER_ID;
-  //   return await this.gauth.signIn(platform);
+  async googleSignIn() {
+    //   let platform = GoogleLoginProvider.PROVIDER_ID;
+    //   return await this.gauth.signIn(platform);
 
-  //   // return new Promise((resolve) => {
-  //   //   .then((response) => {//error branch 추가할 필요성 있음...
-  //   //     resolve(response);
-  //   //   })
-  //   // })
+    //   // return new Promise((resolve) => {
+    //   //   .then((response) => {//error branch 추가할 필요성 있음...
+    //   //     resolve(response);
+    //   //   })
+    //   // })
 
-  // }
+  }
 
   /**
    * @function check_is_our_g_user 
@@ -538,18 +538,18 @@ export class EPAuthService {
     return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user);
   }
 
-  gRegisterUser(user: {}): Observable<any> {
+  gRegisterUser(user: any): Observable<any> {
     return this.http.post<any>(this.GOOGLE_REG_URL, user);
   }
 
   /**
    * @uncomment
    */
-  // gSignOut(): void {
-  //   localStorage.removeItem("token");
-  //   this.gauth.signOut();
-  //   // this.isLogIn = logStat.unsigned;
-  // }
+  gSignOut(): void {
+    //   localStorage.removeItem("token");
+    //   this.gauth.signOut();
+    //   // this.isLogIn = logStat.unsigned;
+  }
 
   //verify if this token is from google
   gVerifyToken(token: string): Observable<any> {

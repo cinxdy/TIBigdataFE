@@ -12,13 +12,28 @@ export class DatabaseService {
 
   private GET_KEYWORDS_URL = this.URL + "/keyword/getKeyVal";
   private GET_RCMD_URL = this.URL + "/rcmd/getRcmdTbl";
-
+  private GET_TOPIC_URL = this.URL + "/topic/getTopicTbl";
+  private GET_TOPIC_plain_URL = this.URL + "/topic/getTopicTblPlain";
 
   constructor(private ipService: IpService,
     private idControl: IdControlService,
     private http: HttpClient,
     private docControl : DocumentService
   ) { }
+
+  /**
+   * @Param isPlain : if true, request plain text. without this, request pre-processed table.
+   */
+  async getTopicTable(isPlain?:boolean){
+    
+    let url = this.GET_TOPIC_URL;
+    if(isPlain)
+      url = this.GET_TOPIC_plain_URL;
+    let res = await this.http.get<any>(url).toPromise();
+    console.log("in db : ",res)
+    return res
+  }
+
 
   /**
     * @Param ids : id string array

@@ -28,29 +28,37 @@ mongoose.connect(db, {
             await sendTFIDF();
             console.log("plz wait a min...");
             let flag = 0;
-            var checkData = setInterval(async ()=>{
-                for(let i = 0 ; i < numDataArr.length; i++){
-                    await modelArr[i].count({},(err,count)=>{
-                        if(count < numDataArr[i]){
-                            console.log("data size mismatch in ",modelArr[i]," database. some data are missing.");
+            var checkData = setInterval(async () => {
+                for (let i = 0; i < numDataArr.length; i++) {
+                    await modelArr[i].count({}, (err, count) => {
+                        if (count < numDataArr[i]) {
+                            console.log("data size mismatch in ", modelArr[i], " database. some data are missing.");
                             flag = 0;
                         }
                         else
-                            flag ++;
+                            flag++;
                     })
                 }
-                
-                if(flag >= 3){
+
+                if (flag >= 3) {
                     console.log("all data has been saved. turn off the program by keyborad interruption.")
                     clearInterval(checkData);
                 }
-                else{
+                else {
                     console.log("some data are missing... waiting for completing to write data...")
                 }
-            },1000)
+            }, 1000)
         }
     });
 
+async function sendCat() {
+    let rawData = fs.readFileSync("./ctgRNNResult.json");
+    let data = JSON.parse(rawData)
+    console.log(typeof(data));
+
+
+
+}
 async function sendRcmd() {
 
     let rawData = fs.readFileSync('./rcmdCombData.json')
@@ -71,7 +79,7 @@ async function sendRcmd() {
         })
         await newKey.save((err) => {
             if (err)
-                console.log(i, "th data done.\n",err)
+                console.log(i, "th data done.\n", err)
         })
     }
     numDataArr.push(data.length - 1);
@@ -99,7 +107,7 @@ async function sendTFIDF() {
         })
         await newKey.save((err) => {
             if (err)
-                console.log(i, "th data done.\n",err)
+                console.log(i, "th data done.\n", err)
         })
     }
     numDataArr.push(tfidfData.length - 1);

@@ -69,7 +69,7 @@ async function verifyToken(req, res) {
         //js with token.
         try {
             payload = jwt.verify(token, secret)
-            console.log("payload : ", payload);
+            // console.log("payload : ", payload);
         }
         catch (err) {
             // console.log(err);

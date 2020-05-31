@@ -161,7 +161,8 @@ export class SearchResultComponent implements OnInit {
         let tfVal = data[n]["tfidf"] as [];
         // console.log(tfVal)
         this.keywords.push(tfVal)
-        this.relatedKeywords = this.relatedKeywords.concat(tfVal)
+        this.relatedKeywords.push(tfVal[0])
+        // this.relatedKeywords = this.relatedKeywords.concat(tfVal)
       }
     })
     // //console.log("keywords : ",this.keywords)

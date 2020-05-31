@@ -103,7 +103,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
         });
     }
 
-    console.log("add history done");
+    // console.log("add history done");
 })
 
 router.post('/showHistory', (req, res) => {
@@ -158,6 +158,7 @@ router.get('/getHistoryCount', (req, res) => {
  * @param num : how many history data you request to backend server.
  */
 router.post('/getTotalHistory', (req, res) => {
+    console.log("this is post total history")
 
     var payload = req.body;
     var idx = payload.idx;
@@ -182,18 +183,63 @@ router.post('/getTotalHistory', (req, res) => {
 router.get('/getTotalHistory', (req, res) => {
     // var result = hst.find({});
     // console.log(result);
-    var hstResult = hst.find({})
-        .limit(30)
-    // console.log(hstResult);
-    hstResult.exec(
-        (err, hstrs) => {
-            if (err)
-                console.log("post : get total history err")
-            // console.log(hstrs);
-            res.send({ histories: hstrs })
+    console.log("this is get total history")
+    hst.aggregate([
+        {
+            $match: {
+                keywords: { $not: {$size: 0} }
+            }
+        },
+        { $unwind: "$keywords" },
+        {
+            $group: {
+                _id: {$toLower: '$keywords'},
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $match: {
+                count: { $gte: 2 }
+            }
+        },
+        { $sort : { count : -1} },
+        { $limit : 100 }
+    ]);
+    hst.aggregate([
+        {
+            $group: { _id: { keyword: '$keyword' }, count: { $sum: 1} }
+        },
+        // {
+        //     $unwind:"$countSet"
+        // },
+        // {
+        //     $group: { _id: "$_id", countSet: { $sum:1} }
+        // },
+        {
+            $sort: { count : -1}
+        },
+        {
+            $limit: 30 
         }
+        ],(err,docs) =>{
+            console.log(docs)
+            if(err)
+                console.log("error in get total history in get")
+            else    
+                res.json(docs)
+        });
+    // var hstResult = hst.find({})
+    //     .limit(30)
+    // // console.log(hstResult);
+    // hstResult.exec(
+    //     (err, hstrs) => {
+    //         if (err)
+    //             console.log("post : get total history err")
+    //         // console.log(hstrs);
+    //         res.send({ histories: hstrs })
+    //     }
 
-    )
+    // )
 
 });
 

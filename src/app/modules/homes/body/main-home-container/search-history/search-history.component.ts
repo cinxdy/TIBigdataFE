@@ -16,45 +16,20 @@ export class SearchHistoryComponent implements OnInit {
   private SORT_HST_FREQ_REQ_URL = this.ipService.getUserServerIp() + "/hst/getSortFreqHistory";
   private MONTH_HST_FREQ_REQ_URL = this.ipService.getUserServerIp() + "/hst/getMonthFreqHistory";
 
-  private hstFreq: any[];
+  private hstFreq: any[] = [];
   private isChartReady: boolean = false;
   ngOnInit() {
     // this.getMonthtHistory();
-    this.visualize(this.getSortHistory());
+    this.visualize(this.queryTotalHistory());
     // this.getSortHistory()
   }
 
   //get total history and how by ABC order
-  queryTotalHistory() {
-    return new Promise((r) => {
-      this.http
-        .get<any>(this.ALL_HST_REQ_URL)
-        .subscribe((res) => {
-          console.log(res);
-          var hst = res.histories;
-          var keyArr = hst.map((hstrs) => hstrs.keyword);
-          keyArr = keyArr.sort();
-          var lenArr = keyArr.length;
-          var count = 1;
-          var freqTable = [];
-          var idxUniq = 0;
-          for (var i = 0; i < lenArr - 1; i++) {
-            if (keyArr[i] == keyArr[i + 1]) {
-              count++;
-              continue;
-            }
-            // freqTable.push(keyArr[i],count);
-            freqTable.push({ x: idxUniq, y: count, label: keyArr[i] });
-            idxUniq++;
-            count = 1;
-          }
-          this.hstFreq = freqTable;
-
-          r();
-        });
-    });
-
-    // getTotalHistory
+  async queryTotalHistory() {
+    this.hstFreq = [];
+    let res = await this.http.get<any>(this.ALL_HST_REQ_URL).toPromise()
+    for (var i = 0; i < res.length; i++)
+      this.hstFreq.push({ x: i, y: res[i]["count"], label: res[i]["_id"]["keyword"] });
   }
 
   //get sorted history by frequency
@@ -64,7 +39,7 @@ export class SearchHistoryComponent implements OnInit {
         .get<any>(this.SORT_HST_FREQ_REQ_URL)
         .subscribe((res) => {
           // console.log(res);
-          
+
           var freqTable = [];
           for (var i = 0; i < res.length; i++) {
             // res[i][0] //key
@@ -77,8 +52,8 @@ export class SearchHistoryComponent implements OnInit {
     });
   }//getSirtHistory()
 
-   //get month history by frequency
-   getMonthtHistory() {
+  //get month history by frequency
+  getMonthtHistory() {
     return new Promise((r) => {
       this.http
         .get<any>(this.MONTH_HST_FREQ_REQ_URL)
@@ -98,8 +73,8 @@ export class SearchHistoryComponent implements OnInit {
   [ 10, [ [keyword, freq], [keyword, freq], [keyword, freq] ] ],
   [ 11, [ [keyword, freq], [keyword, freq], [keyword, freq] ] ],
   [ 12, [ [keyword, freq], [keyword, freq], [keyword, freq] ] ]
-]
-
+  ]
+  
            */
           var freqTable = [];
           let idx = 1;
@@ -112,11 +87,11 @@ export class SearchHistoryComponent implements OnInit {
             // res[i][1][1] //2nd tuple array
             // res[i][1][j] //(j-1)th tuple array
             let numKey = res[i][1].length;
-            for(var j = 0 ; j < numKey; j++){
+            for (var j = 0; j < numKey; j++) {
               let k = res[i][1][j][0];
               let f = res[i][1][j][1];
               // console.log(i,"th month, key: ", k , ", freq : ", f);
-              freqTable.push({ x: idx, y: f, label: i+1+"월 " +k });
+              freqTable.push({ x: idx, y: f, label: i + 1 + "월 " + k });
               idx++;
             }
           }
@@ -126,46 +101,46 @@ export class SearchHistoryComponent implements OnInit {
     });
   }//getMonthtHistory()
 
-  chooseTotal(){
+  chooseTotal() {
     this.visualize(this.queryTotalHistory())
   }
 
-  chooseMonthHst(){
+  chooseMonthHst() {
     this.visualize(this.getMonthtHistory());
   }
 
-  chooseTopXHst(){
+  chooseTopXHst() {
     this.visualize(this.getSortHistory())
   }
 
-  visualize(method){
+  visualize(method) {
     method.then(() => {
       // this.queryTotalHistory().then(() => {
-        // console.log("start hist")
-        // console.log(this.hstFreq);
-        let chart = new CanvasJS.Chart("chartContainer", {
-          animationEnabled: true,
-          title: {
-            text: "지금까지 HOT 한 검색 결과",
+      // console.log("start hist")
+      // console.log(this.hstFreq);
+      let chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title: {
+          text: "지금까지 HOT 한 검색 결과",
+        },
+        axisY: {
+          title: "검색 수",
+          includeZero: false,
+        },
+        toolTip: {
+          shared: true,
+        },
+        data: [
+          {
+            dataPoints:
+              this.hstFreq
           },
-          axisY: {
-            title: "검색 수",
-            includeZero: false,
-          },
-          toolTip: {
-            shared: true,
-          },
-          data: [
-            {
-              dataPoints:
-                this.hstFreq
-            },
-          ],
-        });
-        this.isChartReady = true;
-        chart.render();
-        // console.log(this.isChartReady)
+        ],
       });
+      this.isChartReady = true;
+      chart.render();
+      // console.log(this.isChartReady)
+    });
   }
 
 

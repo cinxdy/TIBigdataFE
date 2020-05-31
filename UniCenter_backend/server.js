@@ -16,6 +16,7 @@ const eUserQry = require('./emailUserQuery');
 const keepDoc = require('./keepMyDocQuery');
 const keywords = require('./tfidfQuery');
 const rcmds = require('./rcmdQuery');
+const topic = require('./topicQuery');
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/gUser',gUserQry);
@@ -24,7 +25,7 @@ app.use('/hst', hstQry);//hst 경로에서 항상 require("./hst") 호출한다.
 app.use('/myDoc',keepDoc);
 app.use('/keyword',keywords);
 app.use('/rcmd', rcmds);
-
+app.use('/topic',topic)
 //root dir
 app.get('/', function(req, res) {
     res.send('Hello from server');
