@@ -76,6 +76,11 @@ export class IpService {
     return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
   }
 
+  getMiddlewareServerIp(){
+    return this.adaptIp(this.USER_SERVER_IP)+":"+this.FLASK_PORT;
+
+  }
+
   getBackEndServerIp(){
     return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
 
