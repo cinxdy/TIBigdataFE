@@ -40,9 +40,8 @@ import { Injectable } from '@angular/core';
 })
 export class IpService {
 
-  private USER_SERVER_IP = "http://203.252.112.15";
+  private FrontEnd_SERVER_IP = "http://203.252.112.15";
   private DEV_IP = "http://localhost";
-  private curIP = "";
 
   private BackEnd_SERVER_IP = "http://203.252.112.14";
 
@@ -62,23 +61,25 @@ export class IpService {
 
   adaptIp(whichServerIp:string){
     let currIp = this.getCurrIp()
-    if (currIp != this.USER_SERVER_IP){
+    if (currIp != this.FrontEnd_SERVER_IP){
       return this.DEV_IP;
       //console.log(currIp);
     }
     else{
-      this.ES_INDEX = "/capstone";
+      this.ES_INDEX = "/capstone";//REPLACE WITH nkdb after capstone
       return whichServerIp;
     }
   }
 
   getUserServerIp(){
-    return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
+    return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
+    // return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
   }
 
   getMiddlewareServerIp(){
-    return this.adaptIp(this.USER_SERVER_IP)+":"+this.FLASK_PORT;
+    return this.FrontEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
 
+    // return this.adaptIp(this.USER_SERVER_IP)+":"+this.FLASK_PORT;
   }
 
   getBackEndServerIp(){
