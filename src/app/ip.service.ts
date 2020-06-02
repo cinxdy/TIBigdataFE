@@ -33,37 +33,60 @@
  */
 
 import { Injectable } from '@angular/core';
+//import { currentId } from 'async_hooks';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IpService {
 
-  private SERVER_IP = "http://203.252.103.123";
+  private FrontEnd_SERVER_IP = "http://203.252.112.15";
   private DEV_IP = "http://localhost";
-  private curIP = "";
 
-  private BE_SERVER_IP = "http://203.252.103.86";
+  private BackEnd_SERVER_IP = "http://203.252.112.14";
 
   USER_BE_PORT = "4000";
   FLASK_PORT = "5000";
   ES_PORT = "9200";
+  ES_INDEX = "/nkdb";
+  
+
 
   constructor() { }
 
-  getCommonIp(){
+  getCurrIp(){
     let ipArr = window.location.origin.split(/:[0-9]+/);
-    let ip = ipArr[0]
-    // console.log("current ip address : " + ip);
-    if (ip != this.SERVER_IP){
-      this.curIP = this.DEV_IP;
+    return ipArr[0];
+  }
+
+  adaptIp(whichServerIp:string){
+    let currIp = this.getCurrIp()
+    if (currIp != this.FrontEnd_SERVER_IP){
+      return this.DEV_IP;
+      //console.log(currIp);
     }
     else{
-      this.curIP = this.SERVER_IP;
+      this.ES_INDEX = "/capstone";//REPLACE WITH nkdb after capstone
+      return whichServerIp;
     }
+  }
 
-    return this.curIP;
-    
+  getUserServerIp(){
+    return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
+    // return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
+  }
+
+  getMiddlewareServerIp(){
+    return this.FrontEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+
+    // return this.adaptIp(this.USER_SERVER_IP)+":"+this.FLASK_PORT;
+  }
+
+  getBackEndServerIp(){
+    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+
+    //use local elasticsearch
+    // return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + this.ES_INDEX;
   }
 
   getDevIp(){

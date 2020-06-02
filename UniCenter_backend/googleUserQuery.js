@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const gUser = require('./models/gUser');
-
+const User = require('./models/user');
+// const conn = require('./connection/userConn')
+// const User = conn.model('user',require('./models/User'))
 //google token verify code template
 const { OAuth2Client } = require('google-auth-library');
-
 
 /**
  * @GoogleLoginFunctions
@@ -26,10 +26,10 @@ function verifyGoogleToken(req, res) {
         });
         // console.log("get ticket : ",ticket);
         const payload = ticket.getPayload();
-        const userInfo = {
-            name: payload.name,
-            email: payload.email
-        }
+        // const userInfo = {
+        //     name: payload.name,
+        //     email: payload.email
+        // }
         // const userid = payload['sub'];
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
@@ -44,46 +44,40 @@ function verifyGoogleToken(req, res) {
     })
 }
 
-
 router.post('/gRegister', (req, res) => {
-    console.log("api : gRegister init.");
+    // console.log("api : gRegister init.");
     let userData = req.body;
-    let user = new gUser(userData);
+    userData.auth = "google";
+    let user = new User(userData);
     user.save((error, registeredUser) => {
         if (error) {
             console.log("google social user register data save error : " + error);
             res.json({ succ: false })
         }
         else {
-            console.log("api : gmail register : save ok");
+            // console.log("api : gmail register : save ok");
             res.json({ succ: true, user : user.email });
         }
     })
 })
 
-router.post('/gCheckUser', (req, res) => {
-    console.log("api : gChecker init.");
+router.post('/check_is_our_g_user', (req, res) => {
+    // console.log("api : gChecker init.");
     let userData = req.body;
-    gUser.findOne({ email: userData.email }, (error, user) => {
+    User.findOne({ email: userData.email }, (error, user) => {
         if (error) {
             console.log("gCheckUSer error : " + error);
         }
         else {
             if (!user) {
-                // console.log("api gchecker : post false")
-                // console.log(user);
                 res.json({ exist: false });
             }
             else {
-                // console.log("api gchecker : post true")
-                // console.log(user);
-
                 res.json({ exist: true });
             }
         }
     })
 })
-
 
 router.post('/verifyGoogleToken', verifyGoogleToken);
 module.exports = router;

@@ -18,6 +18,8 @@ import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.ser
 import { CoreModule} from './modules/core/core.module';
 import { EPAuthService } from './modules/core/componets/membership/auth.service';
 import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
+import { DatabaseService } from './modules/core/componets/database/database.service';
+
 import { ChartsModule } from "ng2-charts";
 
 
@@ -45,7 +47,7 @@ import { ChartsModule } from "ng2-charts";
     ChartsModule
 
   ],
-  providers: [WordcloudService, EPAuthService],
+  providers: [WordcloudService, EPAuthService, DatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

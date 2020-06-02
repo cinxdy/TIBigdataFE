@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
+import { DatabaseService } from '../../../../core/componets/database/database.service';
 
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
@@ -11,14 +12,17 @@ import { IdControlService } from "../../search/service/id-control-service/id-con
   styleUrls: ["./category.component.less"]
 })
 export class CategoryComponent implements OnInit {
-  constructor(private configService: ConfigService, 
-              private idControl: IdControlService,
-              public _router: Router ) {}
+  constructor(private db: DatabaseService,
+    private configService: ConfigService,
+    private idControl: IdControlService,
+    public _router: Router) { }
   private isLoaded: boolean = false;
   private data: any;
-  private toggleTopics : boolean[];
+  private toggleTopics: boolean[];
 
   ngOnInit() {
+    // this.db.getTopicTable(true).then(data => {
+      
     this.configService.getConfig().subscribe(data => {
       this.data = data as {};
       this.toggleTopics = [];
@@ -51,11 +55,11 @@ export class CategoryComponent implements OnInit {
   //   this._router.navigateByUrl("search/library/graph");
   // }
 
-  toggleTopic(i){
-    this.toggleTopics[i] = ! this.toggleTopics[i];
+  toggleTopic(i) {
+    this.toggleTopics[i] = !this.toggleTopics[i];
   }
 
-  navToDetail(doc){
+  navToDetail(doc) {
     // console.log(doc);
     let id = doc["idList"];
     this.idControl.setIdChosen(id);

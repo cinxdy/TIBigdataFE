@@ -1,57 +1,69 @@
 import { ArticleSource } from '../../article/article.interface';
 import { Injectable } from '@angular/core';
+
 // import { HomesModule } from '../../../homes.module'
 
 @Injectable()
 export class IdControlService {
-  private idChosen : string = "";
-  private idList : string[] = new Array<string>();
-  private article : ArticleSource;
+  private oneID: string = "";
+  private idList: string[] = [];
+  private article: ArticleSource;
+
   constructor() { }
 
-  clearAll(){
-    this.idChosen = "";
+  clearAll() {
+    this.oneID = "";
     this.idList = [];
-    this.idChosen = "";
+    this.oneID = "";
   }
 
-  setIdList(id:string){
+  setIdList(id: string) {
     this.idList.push(id);
   }
 
-  clearIdList(){
+  popIdList() {
+    this.idList.pop();
+  }
+
+  clearIdList() {
     this.idList = [];
   }
 
-  getIdList(){
+  getIdList() {
     return this.idList;
   }
 
-  clearIds(){
+  clearIds() {
     this.idList = [];
   }
 
-  setIdChosen(id : string){
-    this.idChosen = id;
+  setIdChosen(id: string) {
+    this.oneID = id;
     // console.log(this.idChosen);
   }
 
-  getIdChosen(){
-    return this.idChosen;
+  getIdChosen() {
+    return this.oneID;
   }
 
-  clearIdChosen(){
-    this.idChosen = "";
+  clearIdChosen() {
+    this.oneID = "";
   }
 
-  getArticle(){
+  getArticle() {
     return this.article;
   }
 
-  setArticle(art:ArticleSource){
+  setArticle(art: ArticleSource) {
     this.article = art;
   }
 
+ 
+
   
+
+  
+
+
 
 }

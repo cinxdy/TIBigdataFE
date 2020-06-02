@@ -1,89 +1,147 @@
 <p>UserDashBoard Page</p>
 
 
+<div class="entire-Board" style="width : 100%; display: table; border: 1px black solid;">
 
+  <div class="uk-card uk-card-default uk-card-body" style="width : 100%; display: table-cell;">
+    <dl class="uk-description-list">
+      <h3>도움말</h3>
 
-<div class = "block" style= "width : 100%; display: table; border: 1px black solid;">
+      <dt>1단계</dt>
+      <dd>문서 선택 한다</dd>
 
-  <div class = "keyword-block" style="display:table-cell; border: 1px red solid; width: 20%;">
-        사용자 검색 내역 
+      <dt>2단계</dt>
+      <dd>분석 선택 한다</dd>
+
+      <dt>3단계</dt>
+      <dd>그래프 선택 한다</dd>
+    </dl>
+  </div>
+  <!--
       <ul>
-        <div *ngFor = "let hst of this.search_history; index as i">
-             <li>
-              <a>{{ search_history[i]}}</a>
-             </li>
+        <div *ngFor = "let doc of this.docTitleList; index as d">
+          <li>
+           문서 : <a>{{ docTitleList[d]}} </a>
+          </li>
         </div>
       </ul> 
-  </div>
 
-  <div class = "choose-block" style="display:table-cell; border:1px green solid; width : 30%;">
-    <div class="analysis-choose" style="border : 1px gold solid;">
-      무슨 분석을 하시겠습니까?
-         <div *ngFor="let word of this.analysisList; index as i">
-            <input type="radio" formContronName="sis"  name = "i" [value] = "analysisList[i]" [(ngModel)] = "userAnalysisChoice"> 
-            {{analysisList[i]}}
-          </div>  
+
+       <div *ngFor="let doc of myDocsTitles, index as i">
+          <div class="form-group">
+            <input type="checkbox" name = "i" (change)="this.boxChange(this)">
+          </div>
+      </div>
+    -->
+</div>
+
+
+
+<div class="block" style="width : 100%; display: table; border: 1px black solid;">
+
+  <div class="keyword-block" style="display:table-cell; border: 1px red solid; width: 30%;">
+    문서 보유 목록
+    <ul>
+      <div *ngFor="let doc of docTitleList, index as t">
+        <div class="form-group">
+          <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(t)">
+          {{doc}}
+        </div>
       </div>
 
 
+    </ul>
+  </div>
 
- 
+  <div class="choose-block" style="display:table-cell; border:1px green solid; width : 20%;">
+    <div class="analysis-choose" style="border : 1px gold solid;">
+      무슨 분석을 하시겠습니까?
+      <div *ngIf="chosenCount > 1 || chosenCount == 0">
+        <div *ngFor="let word of this.analysisList; index as i">
+          <input class="uk-radio" type="radio" formContronName="sis" name="i" [value]="analysisList[i]"
+            [(ngModel)]="userAnalysisChoice">
+          {{analysisList[i]}}
+        </div>
+      </div>
+      <div *ngIf="2 > chosenCount  ">
+        <input class="uk-radio" type="radio" formContronName="sis" name="r" value="RELATED"
+          [(ngModel)]="userAnalysisChoice">
+        연관문서
+      </div>
+    </div>
+    <!-- <div class="form-group">
+      <input class="uk-radio" type="radio" name="related" [value]="related" [(ngModel)]="userAnalysisChoice">related
+    </div> -->
+
+
+
+
 
     <div class="graph-choose" style="border : 1px cyan solid;">
       무슨 그래프를 선택하시겠습니까?
 
       <div *ngFor="let word of this.graphList; index as k">
-        <input type="radio" formContronName="gra"  name = "k" [value] = "graphList[k]" [(ngModel)] = "userGraphChoice"> 
+        <input class="uk-radio" type="radio" formContronName="gra" name="k" [value]="graphList[k]"
+          [(ngModel)]="userGraphChoice">
         {{graphList[k]}}
       </div>
-
     </div>
-    <button (click)="showResult()">Choice Complete</button>
-    <div *ngIf="choiceComplete">Your Choice :  <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph</b></div>
+
+
+    <div class="uk-margin">
+      출력할 데이터의 숫자
+      <select class="uk-select" [(ngModel)]="userNumChoice" (change)="onChange($event.target.value)">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+      </select>
+    </div>
+
+
+    <button class="btn btn-primary btn-block login-btn" (click)="showResult()">Choice Complete</button>
+    <button class="btn btn-primary btn-block login-btn" (click)="clearResult()">Clear Result</button>
+
   </div>
 
-  <div class = "graph-block" style="display:table-cell; border:1px blue solid;">
+  <div class="graph-block" style="display:table-cell; border:1px blue solid;">
     그래프
-      <div *ngIf="choiceComplete">
 
-            <div *ngIf="userGraphChoice == 'Bar'" class = "column" style="display: block; width : 90%; height : 500px; margin: 20px;">
-              <canvas baseChart
-                      [datasets]="barChartData"
-                      [labels]="barChartLabels"
-                      [options]="barChartOptions"
-                      [legend]="barChartLegend"
-                      [chartType]="barChartType"
-                      [options]="barChartOptions">
-              </canvas>
-            </div>
 
-            <div *ngIf="userGraphChoice == 'Dounut'" class = "column" style="display: block; width : 90%; height : 500px">
-                <canvas baseChart 
-                [data]="doughnutChartData"
-                [labels]="doughnutChartLabels"
-                [chartType]="doughnutChartType"
-                [colors]="doughnutChartColors"
-                >
-              </canvas>
-            </div>
 
-            <div *ngIf="userGraphChoice == 'Line'" class = "column" style="display: block; width : 90%; height : 500px">
-                <canvas baseChart 
-                    [datasets]="lineChartData" 
-                    [labels]="lineChartLabels" 
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors" 
-                    [legend]="lineChartLegend" 
-                    [chartType]="lineChartType" 
-                    [plugins]="lineChartPlugins">
-                </canvas>
-            </div>
+    <div *ngIf="choiceComplete">
+      <b>{{userAnalysisChoice}} Analysis</b> and <b>{{userGraphChoice}} Graph </b> and <b> {{userNumChoice}} Data </b>
 
-        
-        </div>
+      <div *ngIf="userGraphChoice == 'Bar'" class="column"
+        style="display: block; width : 90%; height : 500px; margin: 20px;">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptions" [colors]="barChartColors">
+        </canvas>
+      </div>
+
+      <div *ngIf="userGraphChoice == 'Dounut'" class="column" style="display: block; width : 90%; height : 500px">
+        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+          [colors]="doughnutChartColors">
+        </canvas>
+      </div>
+
+      <div *ngIf="userGraphChoice == 'Line'" class="column" style="display: block; width : 90%; height : 500px">
+        <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+          [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+          [plugins]="lineChartPlugins">
+        </canvas>
+      </div>
+
+      <div *ngIf="userGraphChoice == 'Word-Cloud'" class="column" 
+      >
+      <!-- style="display: block; width : 90%; height : 500px" -->
+      <angular-tag-cloud [data]="cData" [width]="options.width" [height]="options.height"
+        (clicked)="logClicked($event)">
+      </angular-tag-cloud>
+      <!-- {{ userGraphChoice }} -->
+      </div>
+
+
+    </div>
   </div>
 
 </div>
-
-
-

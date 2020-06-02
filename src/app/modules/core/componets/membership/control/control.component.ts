@@ -12,13 +12,13 @@ import { Event } from '@angular/router';
 export class ControlComponent implements OnInit {
 
   constructor(private http: HttpClient, private auth: EPAuthService, private ipservice: IpService) { }
-  private userEmailReqURL: string = this.ipservice.getCommonIp() + ":4000/??";
-  private userGoogleReqUrl: string = this.ipservice.getCommonIp() + ""
-  private HISTORY_URL: string = this.ipservice.getCommonIp() + ":4000/hst/getTotalHistory";
-  private HISTORY_COUNT_URL: string = this.ipservice.getCommonIp() + ":4000/hst/getHistoryCount";
+  // private userEmailReqURL: string = this.ipservice.getUserServerIp() + "/??";
+  // private userGoogleReqUrl: string = this.ipservice.getUserServerIp() + ""
+  private HISTORY_URL: string = this.ipservice.getUserServerIp() + "/hst/getTotalHistory";
+  private HISTORY_COUNT_URL: string = this.ipservice.getUserServerIp() + "/hst/getHistoryCount";
 
-  private E_USER_URL: string = this.ipservice.getCommonIp() + ":4000/eUser/getEuserList";
-  private G_USER_URL: string = this.ipservice.getCommonIp() + ":4000/gUser/getGuserList";
+  private E_USER_URL: string = this.ipservice.getUserServerIp() + "/eUser/getEuserList";
+  private G_USER_URL: string = this.ipservice.getUserServerIp() + "/gUser/getGuserList";
 
   private pageNum: number;
   private pages: any[] = [];
