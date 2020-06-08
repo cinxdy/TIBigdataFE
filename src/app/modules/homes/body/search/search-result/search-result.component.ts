@@ -30,7 +30,7 @@ import { DatabaseService } from "../../../../core/componets/database/database.se
 export class SearchResultComponent implements OnInit {
   
   public relatedKeywords = [];
-  private RCMD_URL: string = this.ipService.getUserServerIp() + ":5000/rcmd";
+  // private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
   private relatedDocs: {}[] = [];
@@ -158,9 +158,11 @@ export class SearchResultComponent implements OnInit {
       let data = res as []
       // console.log("loadkeywords : ", data)
       for (let n = 0; n < data.length; n++) {
-        let tfVal = data[n]["tfidf"] as [];
-        // console.log(tfVal)
+        let tfVal = data[n]["tfidf"];
+        console.log(tfVal[0])
         this.keywords.push(tfVal)
+        if(n > 10)
+          continue;
         this.relatedKeywords.push(tfVal[0])
         // this.relatedKeywords = this.relatedKeywords.concat(tfVal)
       }

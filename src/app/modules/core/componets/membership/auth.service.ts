@@ -268,8 +268,9 @@ export class EPAuthService {
         //console.log("personal history : ", this.schHst);
       });
     }
-    else
-      console.error("로그인 에러. 문서 저장 실패")
+    //비 로그인일 경우 문서 저장하지 않음.
+    // else
+    //   console.error("로그인 에러. 문서 저장 실패")
 
   }
 

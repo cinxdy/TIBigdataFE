@@ -7,5 +7,5 @@ const rcmdSchema = new Schema({
     relatedDoc : [],
     lastUpdate : Date
 })  
-
-module.exports = mongoose.model('rcmd',rcmdSchema);
+const conn = require('../connection/dataConn');
+module.exports = conn.model('rcmd',rcmdSchema);
