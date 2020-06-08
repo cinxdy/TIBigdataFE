@@ -5,13 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 // import { FiltersComponent } from './componets/filters/filters.component';
 
-import { RegisterComponent } from './componets/membership/register/register.component';
-import { LoginComponent } from './componets/membership/login/login.component';
-import { EventsComponent} from './componets/membership/events/events.component';
-import { AuthGuard } from './componets/membership/auth.guard';
-import { SocialRegisterComponent } from './componets/membership/register/social-register/social-register.component';
-import { UserpageComponent } from './componets/membership/userpage/userpage.component';
-import { ControlComponent } from './componets/membership/control/control.component';
+import { RegisterComponent } from '../homes/body/membership/register/register.component';
+import { LoginComponent } from '../homes/body/membership/login/login.component';
+import { EventsComponent} from '../homes/body/membership/events/events.component';
+import { AuthGuard } from './fe-backend-db/membership/auth.guard';
+import { SocialRegisterComponent } from '../homes/body/membership/register/social-register/social-register.component';
+import { UserpageComponent } from '../homes/body/membership/userpage/userpage.component';
+import { ControlComponent } from '../homes/body/membership/control/control.component';
 
 const routes: Routes = [
     // {
@@ -50,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CoreRoutingModule { }
+export class CommunicationRoutingModule { }

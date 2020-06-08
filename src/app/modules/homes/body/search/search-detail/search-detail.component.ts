@@ -7,7 +7,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { RecomandationService } from '../service/recommandation-service/recommandation.service';
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
 
 @Component({
   selector: 'app-search-detail',
@@ -26,7 +26,7 @@ export class SearchDetailComponent implements OnInit {
     private idControl: IdControlService,
     private wordcloud: WordcloudService,
     private es: ElasticsearchService,
-    private db: DatabaseService
+    private db: AnalysisDatabaseService
   ) { }
 
   ngOnInit() {

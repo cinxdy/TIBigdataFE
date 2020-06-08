@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IpService } from 'src/app/ip.service';
-import { EPAuthService } from '../auth.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 import { HttpClient } from "@angular/common/http";
 import { Event } from '@angular/router';
 
@@ -14,11 +14,11 @@ export class ControlComponent implements OnInit {
   constructor(private http: HttpClient, private auth: EPAuthService, private ipservice: IpService) { }
   // private userEmailReqURL: string = this.ipservice.getUserServerIp() + "/??";
   // private userGoogleReqUrl: string = this.ipservice.getUserServerIp() + ""
-  private HISTORY_URL: string = this.ipservice.getUserServerIp() + "/hst/getTotalHistory";
-  private HISTORY_COUNT_URL: string = this.ipservice.getUserServerIp() + "/hst/getHistoryCount";
+  private HISTORY_URL: string = this.ipservice.get_FE_DB_ServerIp() + "/hst/getTotalHistory";
+  private HISTORY_COUNT_URL: string = this.ipservice.get_FE_DB_ServerIp() + "/hst/getHistoryCount";
 
-  private E_USER_URL: string = this.ipservice.getUserServerIp() + "/eUser/getEuserList";
-  private G_USER_URL: string = this.ipservice.getUserServerIp() + "/gUser/getGuserList";
+  private E_USER_URL: string = this.ipservice.get_FE_DB_ServerIp() + "/eUser/getEuserList";
+  private G_USER_URL: string = this.ipservice.get_FE_DB_ServerIp() + "/gUser/getGuserList";
 
   private pageNum: number;
   private pages: any[] = [];

@@ -1,8 +1,8 @@
 import { Component, AfterViewChecked,OnInit, OnChanges, Output, EventEmitter, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { EPAuthService } from '../../core/componets/membership/auth.service';
+import { EPAuthService } from '../../communications/fe-backend-db/membership/auth.service';
 // import { LoginComponent} from '../../core/componets/membership/login/login.component';
-import { UserpageComponent } from '../../core/componets/membership/userpage/userpage.component';
+import { UserpageComponent } from '../body/membership/userpage/userpage.component';
 import { SocialUser, AuthService} from 'angularx-social-login';
 
 @Component({
@@ -24,7 +24,7 @@ export class NavComponent implements OnInit {
     this.auth.verifySignIn();
     this.auth.getLogInObs().subscribe((logInStat)=>{
       // console.log("stat update! ", logInStat);
-      this.isLogin = logInStat as any;
+      this.isLogin = logInStat as any;//should i set this any really? what about logStat?
       this.auth.setLogStat(logInStat);
       if(logInStat > 0)//only when user is already login, update name
         this.nowUser = this.auth.getUserName();

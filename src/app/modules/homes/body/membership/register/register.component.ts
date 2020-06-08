@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EPAuthService } from '../auth.service';//register user service
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';//register user service
 import { Router } from '@angular/router'
 class userProfile{
   nickName : String;

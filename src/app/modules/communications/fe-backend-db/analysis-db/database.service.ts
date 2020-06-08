@@ -7,8 +7,8 @@ import { DocumentService } from '../../../homes/body/search/service/document/doc
 @Injectable({
   providedIn: 'root'
 })
-export class DatabaseService {
-  private URL = this.ipService.getUserServerIp();
+export class AnalysisDatabaseService {
+  private URL = this.ipService.get_FE_DB_ServerIp();
 
   private GET_KEYWORDS_URL = this.URL + "/keyword/getKeyVal";
   private GET_RCMD_URL = this.URL + "/rcmd/getRcmdTbl";
@@ -16,21 +16,22 @@ export class DatabaseService {
   private GET_TOPIC_plain_URL = this.URL + "/topic/getTopicTblPlain";
 
   constructor(private ipService: IpService,
-    private idControl: IdControlService,
     private http: HttpClient,
-    private docControl : DocumentService
+    private docControl: DocumentService
   ) { }
 
+
   /**
+   * @description get requset to gain topic analysis LSTM table
    * @Param isPlain : if true, request plain text. without this, request pre-processed table.
    */
-  async getTopicTable(isPlain?:boolean){
-    
+  async getTopicTable(isPlain?: boolean) {
+
     let url = this.GET_TOPIC_URL;
-    if(isPlain)
+    if (isPlain)
       url = this.GET_TOPIC_plain_URL;
     let res = await this.http.get<any>(url).toPromise();
-    console.log("in db : ",res)
+    console.log("in db : ", res)
     return res
   }
 
@@ -40,9 +41,9 @@ export class DatabaseService {
     * @Param num : how many related documetns per each document? defualt = 5 if undefined.
     * @Param sim : if request cosine similarity of document
   */
-  async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
+  async getRcmdTable(ids: string | string[], num?: number, sim?: boolean) {
     console.log("in db rcmd : ", ids);
-    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
+    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim": sim }).toPromise()
   }
 
   /**
@@ -54,10 +55,10 @@ export class DatabaseService {
 ]
   */
 
-  async getTfidfValue(ids: string[], num?: number, isVal? : boolean) {
-    console.log("getTFIDF ids:", ids);
+  async getTfidfValue(ids: string[], num?: number, isVal?: boolean) {
+    // console.log("getTFIDF ids:", ids);
 
-    return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num, "isVal" : isVal}).toPromise()
+    return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num, "isVal": isVal }).toPromise()
   }
 
   async getRelatedDocs(id: string) {
@@ -77,6 +78,6 @@ export class DatabaseService {
 
     // console.log("relatedDocs:", relatedDocs);
     return relatedDocs;
-}
+  }
 
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialUser, AuthService } from 'angularx-social-login';
 import { Router } from '@angular/router';
-import { EPAuthService } from '../auth.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 import { LoginComponent } from '../login/login.component';
 import { HttpClient } from "@angular/common/http";
 import { IpService } from 'src/app/ip.service'
-import { IdControlService } from "../../../../homes/body/search/service/id-control-service/id-control.service";
+import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 @Component({
   selector: 'app-userpage',

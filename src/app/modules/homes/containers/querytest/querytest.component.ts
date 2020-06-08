@@ -14,7 +14,7 @@ import { IpService } from 'src/app/ip.service'
 })
 export class QuerytestComponent implements OnInit {
 
-  private URL = this.ipService.getUserServerIp()
+  private URL = this.ipService.get_FE_DB_ServerIp()
   //Flask data
   private BASE_URL: string = URL+':5000/queryTest';
   // private headers: Headers = new Headers({'Content-Type': 'application/json'});

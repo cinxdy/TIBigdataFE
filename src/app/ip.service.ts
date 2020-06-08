@@ -71,7 +71,7 @@ export class IpService {
     }
   }
 
-  getUserServerIp(){
+  get_FE_DB_ServerIp(){
     return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
     // return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
   }
