@@ -42,7 +42,7 @@ export class DatabaseService {
   */
   async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
     console.log("in db rcmd : ", ids);
-    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
+    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise();
   }
 
   /**
@@ -62,7 +62,7 @@ export class DatabaseService {
 
   async getRelatedDocs(id: string) {
     let _rcmdIdsRes = await this.getRcmdTable(id)
-    // console.log("rcmdRes:", _rcmdIdsRes)
+    console.log("rcmdRes:", _rcmdIdsRes)
     let rcmdIds = _rcmdIdsRes[0]["rcmd"];
     let _titlesRes = await this.docControl.convertID2Title(rcmdIds as string[])
     // console.log("rcmdRes:", rcmdIds)
