@@ -41,14 +41,17 @@ export class AuthGuard implements CanActivate {
     console.log("curr path : ", p.toString());
     return p.toString()
   }
+  
   canActivate(route: ActivatedRouteSnapshot): boolean {
+    console.log(route)
+    console.log(this.getPath(route));
     if (this.getPath(route) === "login" ||this.getPath(route) ==="register"||this.getPath(route) ==="socReg") {//user access to login page
       //when login stat is not login, access ok. when already login, access no.
       console.log("curr login stat :",this.authService.getLogInStat());
       return !this.authService.getLogInStat()? true : false;
     }
     
-    if(this.getPath(route) === "userpage" ){
+    if(this.getPath(route) === "userpage" || this.getPath(route) === ""){
       //when login stat is login, access ok. when user not login, access no.
       console.log("curr login stat :",this.authService.getLogInStat());
       return this.authService.getLogInStat()? true : false;

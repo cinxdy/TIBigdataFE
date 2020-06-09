@@ -72,13 +72,12 @@ export class IpService {
   }
 
   getUserServerIp(){
-    return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
-    // return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.USER_BE_PORT;
+    // return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
+    return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.USER_BE_PORT;
   }
 
   getMiddlewareServerIp(){
     return this.FrontEnd_SERVER_IP + ":"+this.FLASK_PORT;
-
     // return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.FLASK_PORT;
   }
 

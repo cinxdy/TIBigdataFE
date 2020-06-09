@@ -142,9 +142,10 @@ export class SearchResultComponent implements OnInit {
 
 
   loadRelatedDocs(idx: number) {
+    
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
       this.relatedDocs = res as [];
-      console.log("from db : ",res)
+      // console.log("from db : ",res)
     });
    
   }
@@ -159,7 +160,7 @@ export class SearchResultComponent implements OnInit {
       // console.log("loadkeywords : ", data)
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"];
-        console.log(tfVal[0])
+        // console.log(tfVal[0])
         this.keywords.push(tfVal)
         if(n > 10)
           continue;
@@ -194,10 +195,10 @@ export class SearchResultComponent implements OnInit {
   }
 
   createIdTable() {
-    let temp = this.articleSources as []; //검색된 데이터들을 받음
+    // let temp = this.articleSources as []; //검색된 데이터들을 받음
     this.relateToggle = []; //연관 문서 여닫는 버튼 토글 초기화
-    for (var i in temp) {
-      this.searchResultIdList[i] = temp[i]["_id"];
+    for (var i in this.articleSources) {
+      this.searchResultIdList[i] = this.articleSources[i]["_id"];
       this.relateToggle.push(false);
     }
   }

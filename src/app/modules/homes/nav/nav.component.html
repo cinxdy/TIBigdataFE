@@ -3,55 +3,29 @@
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
             <div *ngIf="isLogin">
                 <ul class="uk-navbar-nav uk-visible@m">
-                    <li><a href="#">안녕하세요 {{nowUser}} 님</a></li> 
-                    <li><a (click)="toUserPage()">My Page</a></li>                    
-                    <li><a (click)="logOut()">로그아웃</a></li>    
+                    <li><a href="#">안녕하세요 {{nowUser}} 님</a></li>
+                    <li><a (click)="toUserPage()">My Page</a></li>
+                    <li><a (click)="logOut()">로그아웃</a></li>
                     <li><a *ngIf="isLogin==1" (click)="toControl()">SUPERUSER</a></li>
                 </ul>
             </div>
-            <div *ngIf = "!isLogin">
+            <div *ngIf="!isLogin">
                 <ul class="uk-navbar-nav uk-visible@m">
                     <li><a (click)="toLogin()">로그인</a> </li>
                     <li><a (click)="toRegister()">회원가입</a></li>
                 </ul>
             </div>
-                <li><a (click)="ready()">사이트맵</a></li>
-                <!-- <li><a (click)="this.auth.forceLogOut()" >강제 로그아웃(개발용)</a></li> -->
+            <li><a (click)="ready()">사이트맵</a></li>
+            <!-- <li><a (click)="this.auth.forceLogOut()" >강제 로그아웃(개발용)</a></li> -->
         </ul>
     </div>
 </div>
-<!--
 
-
-                <table>
-                    <th>                        
-                        <div *ngIf="isLogin">
-                            <td>
-                                <a href="#">안녕하세요, {{nowUser}} 님</a>
-                            </td>
-                            <td>
-                                <a (click)="toUserPage()">My Page</a>
-                                <a (click)="logOut()">로그아웃</a>
-                                <a *ngIf="isLogin==1" (click)="toControl()">SUPERUSER PAGE</a>
-                            </td>
-                        </div>
-
-                        <div *ngIf = "!isLogin">
-                            <td>
-                                <li><a (click)="toLogin()">로그인</a></li>
-                            </td>
-
-                            <td>
-                                <li><a (click)="toRegister()">회원가입</a></li>
-                            </td>
-                        </div>
-                    </th>
-                </table>      
- -->                              
 
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left uk-flex-nowrap">
-        <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle href="#hamburger-menu">
+        <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle
+            href="#hamburger-menu">
         </a>
         <div class="uk-navbar-item uk-logo uk-padding">
             <img (click)="toHomes()" src="assets/kubic_logo.png" alt="" width="120">
@@ -81,7 +55,9 @@
             <li><a (click)="navigateSpecials()">특별기획</a>
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <li><a (click)="navigateSpecials()">대시보드</a></li>
+                        <div *ngIf="isLogin">
+                            <li><a (click)="navigateSpecials()">대시보드</a></li>
+                        </div>
                         <!-- <li><a href="#">기획2</a></li> -->
                         <!-- <li><a href="#">기획3</a></li> -->
                     </ul>

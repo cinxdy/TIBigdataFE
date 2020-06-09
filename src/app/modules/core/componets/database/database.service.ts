@@ -30,7 +30,7 @@ export class DatabaseService {
     if(isPlain)
       url = this.GET_TOPIC_plain_URL;
     let res = await this.http.get<any>(url).toPromise();
-    console.log("in db : ",res)
+    console.log("in db getTopicTable: ",res)
     return res
   }
 
@@ -41,8 +41,10 @@ export class DatabaseService {
     * @Param sim : if request cosine similarity of document
   */
   async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
-    console.log("in db rcmd : ", ids);
-    return await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise();
+    console.log("in db getRcmdTable, input ids : ", ids);
+    let res = await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
+    console.log("in db rcmdTable : ",res);
+    return res;
   }
 
   /**
@@ -56,21 +58,28 @@ export class DatabaseService {
   */
 
   async getTfidfValue(ids: string | string[] , num?: number, isVal? : boolean) {
-    console.log("getTFIDF ids:", ids);
+    console.log("in db : getTFIDF ids:", ids);
 
     return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num, "isVal" : isVal}).toPromise()
   }
 
+
+
+  /**
+   * @description 문서 id을 받아서 연관문서 array을 반환
+   * @param id document id
+   * @returns [ {id : 12345, "title" : 연관문서 제목 1},...]
+   */
   async getRelatedDocs(id: string) {
     let _rcmdIdsRes = await this.getRcmdTable(id)
-    console.log("rcmdRes:", _rcmdIdsRes)
+    console.log("in db : getRelatedDocs : rcmd response id list:", _rcmdIdsRes)
     let rcmdIds = _rcmdIdsRes[0]["rcmd"];
     let _titlesRes = await this.docControl.convertID2Title(rcmdIds as string[])
-    // console.log("rcmdRes:", rcmdIds)
+    console.log("in db : rcmdRes:", _titlesRes)
 
     let titles = _titlesRes as []
 
-    let i = 0;
+    let i = -1;
     let relatedDocs = titles.map(t => {
       i++;
       return { "id": rcmdIds[i], "title": t };

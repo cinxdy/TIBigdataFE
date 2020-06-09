@@ -383,17 +383,26 @@ export class DashboardComponent implements OnInit {
 
 
   makeRelatedCloud() {
-
     console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-    this.db.getRcmdTable(this.chosenList[0], 10, true).then(data => {
-      console.log(data);
-
-      let graphData = data[0]["rcmd"] as [];
+    this.db.getRcmdTable(this.chosenList[0], 10, true).then(data1 => {
+      console.log("makeRelatedCloud : ",data1);
 
 
+      let data = []
+      let count = 0;
+      for(let i = 0 ; i < data.length; i++){
+        console.log(data1[i])
+        if(data1[i]){
+          data[count] = data1[i]
+          count++;
+        }
+      }
+
+      // let graphData = data[0]["rcmd"] as [];
+      console.log("data : ", data);
       let idsArr = []
       let valArr = []
-      graphData.map(d => {
+      data.map(d => {
         idsArr.push(d[0])
         valArr.push(d[1])
         return

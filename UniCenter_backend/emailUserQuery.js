@@ -9,9 +9,9 @@ const User = require('./models/user');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-class Res{
+class Res {
     //there is no type restriction in typescript.
-    constructor(succ, msg, payload){
+    constructor(succ, msg, payload) {
         this.succ = succ;//try to be booelan //request success or fail!
         this.msg = msg;//try to be string
         this.payload = payload;//try to be object
@@ -37,11 +37,11 @@ class Res{
  */
 // router.get()
 // router.get('/getEuserList')
-router.get('/getEuserList',(req, res)=>{
+router.get('/getEuserList', (req, res) => {
     // console.log("get all user list init");
-    User.find((err, allUser)=>{
+    User.find((err, allUser) => {
         // console.log(allUser);
-       res.status(200).send(new Res(true, "all user list",allUser));
+        res.status(200).send(new Res(true, "all user list", allUser));
     });
 });
 
@@ -55,7 +55,7 @@ async function verifyToken(req, res) {
     try {
         //if req header is not valid
         if (!req.headers.authorization) {
-            return res.status(401).send(new Res(false,'header authorization issue'));
+            return res.status(401).send(new Res(false, 'header authorization issue'));
         }
 
         //parse
@@ -73,17 +73,17 @@ async function verifyToken(req, res) {
         }
         catch (err) {
             // console.log(err);
-            if(err.message == "jwt expired"){
-                return res.status(200).send(new Res(false,"expired"));
+            if (err.message == "jwt expired") {
+                return res.status(200).send(new Res(false, "expired"));
             }
-            else{
+            else {
                 console.log("jwt verify error!");
-                return res.status(401).send(new Res(false,"token unverified!"));
+                return res.status(401).send(new Res(false, "token unverified!"));
             }
         }
         //if decoded is not wrong? invalid? how invalid then?
         if (!payload) {
-            return res.status(401).send(new Res(false,'payload undefined'));
+            return res.status(401).send(new Res(false, 'payload undefined'));
         }
 
         // console.log(payload.subject);
@@ -91,15 +91,21 @@ async function verifyToken(req, res) {
         //why do they again set value of req? not res?
         // next()//where does this function come from?
         // console.log(user_id);
-        let name,email;
+        let name, email;
         await User.findOne({ _id: user_id }, (error, user) => {
             // console.log(user.name);
-            name = user.name;
-            email = user.email
+            if (error)
+                console.log("error")
+            if(user == null)
+                console.log(user)
+            else {
+                name = user.name;
+                email = user.email
+            }
         })
 
 
-        return res.status(200).send(new Res(true, "OK", {name : name, email : email}));
+        return res.status(200).send(new Res(true, "OK", { name: name, email: email }));
         // name : user.name, email : user.email
     }
     catch (err) {
@@ -149,8 +155,8 @@ router.post('/register', (req, res) => {
     // var pw = jwt.sign(userData.password,secret);
     // userData.password = pw;//hide password
     // userData.password
-    bcrypt.genSalt(saltRounds, (err,salt)=>{
-        bcrypt.hash(userData.password, salt,(err,hash)=>{
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+        bcrypt.hash(userData.password, salt, (err, hash) => {
             userData.password = hash;
             // console.log(userData);
             userData.auth = "email";
@@ -162,7 +168,7 @@ router.post('/register', (req, res) => {
                     // console.log("api : email register : save ok, user info : ", userData);
                     let payload = { subject: userData._id };//new user id : subject => payload. create token.
                     var token = jwt.sign(payload, secret, { expiresIn: '24h' });//secret harry poter usage check required. //토큰 발급.
-                    res.json(new Res(true, 'User registered!', {token: token, name : user.name, email : user.email}));//토큰 전송.
+                    res.json(new Res(true, 'User registered!', { token: token, name: user.name, email: user.email }));//토큰 전송.
                 }
             })
 
@@ -189,21 +195,21 @@ router.post('/login', (req, res) => {
         }
         else {
             if (!user) {//no user -> serious error since we have already check this user is one of us in FE.
-                res.json(new Res (false,'danger'));
+                res.json(new Res(false, 'danger'));
             }
             else {
-                bcrypt.compare(userData.password, user.password, function(err, result) {
+                bcrypt.compare(userData.password, user.password, function (err, result) {
                     // console.log("recieved userdata pw : ",userData.password);
                     // console.log("user db pw : ",user.password);
                     // console.log("pw match result : ", result);
-                    if(!result){//hash value incorrect
+                    if (!result) {//hash value incorrect
                         // console.log("password failed");
-                        res.json(new Res (false,'pw'));
+                        res.json(new Res(false, 'pw'));
                     }
-                    else{
+                    else {
                         let payload = { subject: user._id };//토큰에 오고 갈 정보 : id
                         var token = jwt.sign(payload, secret, { expiresIn: '24h' });//토큰 발급.
-                        res.json(new Res(true, 'User authenticated!', {token: token, name : user.name, email : user.email}));//토큰 전송
+                        res.json(new Res(true, 'User authenticated!', { token: token, name: user.name, email: user.email }));//토큰 전송
                     }
                 });
             }
