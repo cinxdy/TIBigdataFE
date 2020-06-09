@@ -183,28 +183,28 @@ router.post('/getTotalHistory', (req, res) => {
 router.get('/getTotalHistory', (req, res) => {
     // var result = hst.find({});
     // console.log(result);
-    console.log("this is get total history")
-    hst.aggregate([
-        {
-            $match: {
-                keywords: { $not: {$size: 0} }
-            }
-        },
-        { $unwind: "$keywords" },
-        {
-            $group: {
-                _id: {$toLower: '$keywords'},
-                count: { $sum: 1 }
-            }
-        },
-        {
-            $match: {
-                count: { $gte: 2 }
-            }
-        },
-        { $sort : { count : -1} },
-        { $limit : 100 }
-    ]);
+    // console.log("this is get total history")
+    // hst.aggregate([
+    //     {
+    //         $match: {
+    //             keywords: { $not: {$size: 0} }
+    //         }
+    //     },
+    //     { $unwind: "$keywords" },
+    //     {
+    //         $group: {
+    //             _id: {$toLower: '$keywords'},
+    //             count: { $sum: 1 }
+    //         }
+    //     },
+    //     {
+    //         $match: {
+    //             count: { $gte: 2 }
+    //         }
+    //     },
+    //     { $sort : { count : -1} },
+    //     { $limit : 100 }
+    // ]);
     hst.aggregate([
         {
             $group: { _id: { keyword: '$keyword' }, count: { $sum: 1} }
@@ -222,7 +222,7 @@ router.get('/getTotalHistory', (req, res) => {
             $limit: 30 
         }
         ],(err,docs) =>{
-            console.log(docs)
+            // console.log(docs)
             if(err)
                 console.log("error in get total history in get")
             else    

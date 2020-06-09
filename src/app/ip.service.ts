@@ -77,9 +77,9 @@ export class IpService {
   }
 
   getMiddlewareServerIp(){
-    return this.FrontEnd_SERVER_IP + ":"+this.FLASK_PORT + "/nkdb";
+    // return this.FrontEnd_SERVER_IP + ":"+this.FLASK_PORT + "/nkdb";
 
-    // return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.FLASK_PORT;
+    return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.FLASK_PORT;
   }
 
   getBackEndServerIp(){

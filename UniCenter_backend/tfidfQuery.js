@@ -21,11 +21,18 @@ router.get("/test", (req, res) => {
 router.post("/getKeyVal", (req, res) => {
     // console.log(req.body);
     let ids = req.body["id"];
+
+    if (typeof (ids) == "string")//only send one string 
+        matchQuery = { docID: ids }
+
+    else //when send string array
+        matchQuery = { docID: { $in: ids } }
+
     let num = req.body["num"]; //could be undefined.
     let isVal = req.body["isVal"];
     // console.log("get req");
     // console.log(ids);
-    if(num == undefined)
+    if (num == undefined)
         num = 5;
     else
         num = parseInt(num);
@@ -35,7 +42,7 @@ router.post("/getKeyVal", (req, res) => {
     //use aggragation
     Keywords.aggregate(
         [
-            { $match: { docID: { $in: ids } } },
+            { $match: matchQuery },
             // { $addFields : { keywords : }},
             {
                 $project: {
@@ -50,20 +57,20 @@ router.post("/getKeyVal", (req, res) => {
             {
                 $project: {
                     tfidf: {
-                        $cond : {
-                            if : isVal,
-                            then : "$tfidf",
-                            else: {$arrayElemAt: ["$tfidf", 0]}
+                        $cond: {
+                            if: isVal,
+                            then: "$tfidf",
+                            else: { $arrayElemAt: ["$tfidf", 0] }
 
                         }
                     }
                 }
             },
             {
-                $group:{
-                    _id : "$_id",
-                    tfidf : {$addToSet : "$tfidf"}
-                    
+                $group: {
+                    _id: "$_id",
+                    tfidf: { $addToSet: "$tfidf" }
+
                 }
             }
 

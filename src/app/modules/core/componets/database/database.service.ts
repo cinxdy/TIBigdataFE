@@ -48,13 +48,14 @@ export class DatabaseService {
   /**
     * @Param ids : id string array
     * @Param num : how many related documetns per each document? defualt = 5 if undefined.
+    * @Param isVal : if true, get the value of tfidf data as well.
     * @returns return : [
   { _id: 5ed0cabae859f4127006b78f, tfidf: [ '증강', '탐지', '군사력' ] },       
   { _id: 5ed0cabae859f4127006b759, tfidf: [ '도시', '지구', '천지' ] }
 ]
   */
 
-  async getTfidfValue(ids: string[], num?: number, isVal? : boolean) {
+  async getTfidfValue(ids: string | string[] , num?: number, isVal? : boolean) {
     console.log("getTFIDF ids:", ids);
 
     return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num, "isVal" : isVal}).toPromise()

@@ -53,9 +53,9 @@
     <div class="uk-navbar-left uk-flex-nowrap">
         <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle href="#hamburger-menu">
         </a>
-        <a href="/homes" class="uk-navbar-item uk-logo uk-padding">
-            <img src="assets/kubic_logo.png" alt="" width="120">
-        </a>
+        <div class="uk-navbar-item uk-logo uk-padding">
+            <img (click)="toHomes()" src="assets/kubic_logo.png" alt="" width="120">
+        </div>
     </div>
 
     <div class="uk-navbar-right">
