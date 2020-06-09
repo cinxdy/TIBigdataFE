@@ -22,7 +22,7 @@ export class WordcloudService {
 
         let tfidfData = data[0] as [];
         let tfIdfVal = tfidfData["tfidf"] as [];
-        for (var k = 0; k <= tfIdfVal.length; k++) {
+        for (var k = 0; k < tfIdfVal.length; k++) {
           try {
             cData.push({
               text: tfIdfVal[k][0],
