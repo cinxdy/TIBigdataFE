@@ -1,4 +1,5 @@
-import { Profile, Auth, logStat } from './auth.service';
+import { UserProfile, logStat } from './user.model';
+import {Auth} from "./userAuth.model";
 import { HttpClient } from "@angular/common/http";
 import { Injectable, Injector } from "@angular/core";
 import { Router } from "@angular/router";
@@ -9,7 +10,8 @@ import { QueryServiceService } from '../query-service.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthEmailService extends Auth {
+export class AuthEmailService extends  Auth{
+
     protected URL = this.ipService.get_FE_DB_ServerIp();
 
     private EMAIL_REG_URL = this.URL + "/eUser/register"; //mongoDB
@@ -37,6 +39,18 @@ export class AuthEmailService extends Auth {
      *  functions:
      */
 
+    getProfile(user: any) {
+        throw new Error("Method not implemented.");
+    }
+    
+    /**
+    * @function getInstance()
+    * @returns email auth 인스턴스를 반환. 싱글턴 패턴 사용.
+    */
+    getInstance() {
+        return this;
+    }
+
     //email user : check if this user is already our user
     async isOurUser(user: {}): Promise<any> {
         let isOurUser = await this.http.post<any>(this.EMAIL_CHECK_OUR_USER_URL, user).toPromise();
@@ -59,7 +73,8 @@ export class AuthEmailService extends Auth {
             this.router.navigateByUrl("/membership/login");
         }
         else {
-            let res = await this.db.registerEmail(user);
+            let res = await this.http.post<any>(this.EMAIL_REG_URL, user).toPromise();
+
             // //console.log(res)
             alert("환영합니다, " + res.payload.name + "님. 홈 화면으로 이동합니다.");
             return res.succ;
@@ -81,7 +96,7 @@ export class AuthEmailService extends Auth {
         }
         else {
             //console.log("user input check : ", user);
-            var res = await this.db.logInQuery(user);
+            var res = await await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
             //console.log("login process result : ", res);
             // login succ
             if (res.succ) {
@@ -108,9 +123,9 @@ export class AuthEmailService extends Auth {
      *                                  }
      *                      }
      */
-    getProfile(user) {
-        return new Profile(user.payload.name, user.payload.email)
-    }
+    // getProfile(user) {
+    //     return new Profile(user.payload.name, user.payload.email)
+    // }
 
     //email sign out function
     logOut(): void {
@@ -122,8 +137,8 @@ export class AuthEmailService extends Auth {
 
 
     //email verify token
-    verifyToken(token): Promise<any> {
-        return this.db.verifyTokenQuery(token);
+    async verifyToken(token): Promise<any> {
+        return await this.http.post<any>(this.EMAIL_VERIFY_TOKEN, token).toPromise();
     }
 
 

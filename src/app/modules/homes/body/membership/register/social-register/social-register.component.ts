@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EPAuthService } from '../../../../../communications/fe-backend-db/membership/auth.service';
+import { AuthGoogleService } from '../../../../../communications/fe-backend-db/membership/auth-google.service';
 import { Router } from "@angular/router";
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 })
 export class SocialRegisterComponent implements OnInit {
 
-  constructor(private auth: EPAuthService, private router : Router) { }
+  constructor(private gAuth: AuthGoogleService, private router : Router) { }
 
   private agrEmail: boolean = false;
   private agrAcs: boolean = false;
@@ -20,11 +20,11 @@ export class SocialRegisterComponent implements OnInit {
 
   gRegister(platform: string): void {
 
-    this.auth.googleSignIn().then((user) => {
+    this.gAuth.googleSignIn().then((user) => {
 
       // gauth.signIn(platform).then((response) => {
 
-      this.auth.gRegisterUser(user).subscribe((res) => {
+      this.gAuth.gRegisterUser(user).subscribe((res) => {
         // if(res...is yes)
         //then
         console.log(res);

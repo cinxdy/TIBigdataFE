@@ -2,7 +2,9 @@ import { Injectable, Injector } from "@angular/core";
 import { IpService } from 'src/app/ip.service';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { EPAuthService, Profile, Auth, logStat } from './auth.service';
+// import { EPAuthService, Profile, } from './auth.service';
+import {logStat,UserProfile} from "./user.model";
+import {Auth} from "./userAuth.model";
 
 import { Router } from "@angular/router";
 import { DocumentService } from "../../../homes/body/search/service/document/document.service";
@@ -17,6 +19,9 @@ import {
   providedIn: 'root'
 })
 export class AuthGoogleService extends Auth {
+  getProfile(user: any) {
+    throw new Error("Method not implemented.");
+  }
 
 
 
@@ -33,7 +38,7 @@ export class AuthGoogleService extends Auth {
     private router: Router,
     private gauth: AuthService,
     private docSvc: DocumentService,
-    private auth: EPAuthService
+    // private auth: EPAuthService
   ) {
     super();
     // this.isLogInObs$.next(logStat.unsigned);
@@ -44,6 +49,19 @@ export class AuthGoogleService extends Auth {
    * Functions : login, checkUSer, register, signout, verify token
    */
 
+
+
+  /**
+   * @function getInstance()
+   * @returns google auth 인스턴스를 반환. 싱글턴 패턴 사용.
+   */
+  getInstance(){
+    return this;
+  }
+
+
+
+   
   /**
    * @function gLogIn
    * @param platform 
@@ -51,7 +69,7 @@ export class AuthGoogleService extends Auth {
    * 
    */
  
-  async logIn(user): Promise<any> {
+  async logIn(): Promise<any> {
     let response = await this.googleSignIn();
 
     /**
@@ -80,7 +98,7 @@ export class AuthGoogleService extends Auth {
     else {
       this.router.navigate(['/homes'])
 
-      return new Profile(response.name, response.email,  response.idToken,logStat.google);
+      return new UserProfile(response.name, response.email,  response.idToken,logStat.google);
       //console.log("This user is already our user!");
       // this.socUser = response as SocialUser;
       //console.log(this.socUser);
@@ -100,9 +118,9 @@ export class AuthGoogleService extends Auth {
    *                                  }
    *                      }
    */
-  getProfile(res: any) {
-    return new Profile(res.user.name, res.user.email);
-  }
+  // getProfile(res: any) {
+  //   return new Profile(res.user.name, res.user.email);
+  // }
 
 
   /**

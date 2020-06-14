@@ -1,3 +1,5 @@
+import { UserProfile, logStat} from "./user.model";
+import {Auth} from "./userAuth.model";
 import { Injectable, Injector } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
@@ -12,56 +14,50 @@ import {
   // GoogleLoginProvider,
 } from "angularx-social-login";
 
-export abstract class Auth {
-  constructor() { }
+// export abstract class Auth {
+//   constructor() { }
 
-  abstract verifyToken(tk): Promise<any>;
-  abstract isOurUser(user): Promise<any>;
+//   abstract verifyToken(tk): Promise<any>;
+//   abstract isOurUser(user): Promise<any>;
 
-  /**
-   * 
-   * @param user 로그인하는 유저. 구글의 경우 undefined
-   * @return 로그인 성공 했을 때 email인지 구글인지 어느 방식인지 반환
-   */
-  abstract logIn(user?): Promise<any>;
+//   /**
+//    * 
+//    * @param user 로그인하는 유저. 구글의 경우 undefined
+//    * @return 로그인 성공 했을 때 email인지 구글인지 어느 방식인지 반환
+//    */
+//   abstract logIn(user?): Promise<any>;
 
-  // logIn():Promise<any>;
-  abstract logOut(): void;
-  abstract getProfile(user);
-  // register():Promise<any>;
-}
+//   // logIn():Promise<any>;
+//   abstract logOut(): void;
+//   abstract getProfile(user);
+//   // register():Promise<any>;
+// }
 
 
-//enumerate login status
-export enum logStat {
-  unsigned,//0
-  SUPERUSER,//1
-  email,//2
-  google,//3
-}
 
-export class Profile {
-  registerStat: logStat;
-  email: string;
-  name: string;
-  token : string;
-  password?: string;
 
-  // nickname? : string;
-  inst?: string;
-  photo?: string;
+// export class Profile {
+//   registerStat: logStat;
+//   email: string;
+//   name: string;
+//   token : string;
+//   password?: string;
 
-  constructor(name: string, email: string, token : string,reg: logStat, pw?: string, inst?, photo?) {
-    this.name = name;
-    this.password = pw;
-    this.email = email;
-    this.registerStat = reg;
-    this.token = token;
-    this.photo = photo;
-    this.inst = inst;
-  }
+//   // nickname? : string;
+//   inst?: string;
+//   photo?: string;
 
-}
+//   constructor(name: string, email: string, token : string,reg: logStat, pw?: string, inst?, photo?) {
+//     this.name = name;
+//     this.password = pw;
+//     this.email = email;
+//     this.registerStat = reg;
+//     this.token = token;
+//     this.photo = photo;
+//     this.inst = inst;
+//   }
+
+// }
 
 
 /**
@@ -105,6 +101,9 @@ export class EPAuthService {
   private isLogInObs$: BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers
   private loginUserData = {};
   private socUser: SocialUser = null;//for social login
+  private userProfile = undefined;
+  private auth: Auth = undefined;
+
   // private profile: {//for user profile
   //   name: String,
   //   email: String,
@@ -118,11 +117,10 @@ export class EPAuthService {
     private router: Router,
     // private gauth: AuthService,
     private docSvc: DocumentService,
-    private auth: Auth,
     // private authFac : authFactory,
     private eAuth: AuthEmailService,
     private gAuth: AuthGoogleService,
-    private userProfile: Profile
+    // private userProfile: UserProfile
   ) {
     // this.isLogInObs$.next(logStat.unsigned);
   }
@@ -176,20 +174,20 @@ export class EPAuthService {
    * @description factory method을 참조. factory class의 역할.
    * @param logStat 선택한 로그인 종류
    */
-  async logIn(logStat: string, user?) {
-    if (logStat == "g")
-      this.auth = this.eAuth;
-    if (logStat == "e")
-      this.auth = this.gAuth;
-    let pf = await this.auth.logIn(user);
-    if (pf) {
-      this.confirmUser(pf);
-    }
+  // async logIn(logStat: string, user?) {
+  //   if (logStat == "g")
+  //     this.auth = this.eAuth;
+  //   if (logStat == "e")
+  //     this.auth = this.gAuth;
+  //   let pf = await this.auth.logIn(user);
+  //   if (pf) {
+  //     this.confirmUser(pf);
+  //   }
 
-  }
+  // }
 
   async register(logStat: string, user?) {
-
+    
   }
 
 
@@ -199,7 +197,7 @@ export class EPAuthService {
    * @param stat 
    * @param user 로그인 확정할 유저 정보. user = { token : 토큰 string, name : string, email : string}
    */
-  confirmUser(profile: Profile): void {
+  confirmUser(profile: UserProfile): void {
     //console.log(res);
     this.isLogIn = profile.registerStat;
     localStorage.setItem('token', JSON.stringify(new storeToken(profile.registerStat, profile.token)));
@@ -265,6 +263,17 @@ export class EPAuthService {
       var type = tk_with_type.type;
       // console.log("Token found! : ", tk_with_type);
 
+
+      /**
+       * create instance or get instance using singlton pattern.
+       */
+      if(type == logStat.google)
+        this.auth = this.gAuth.getInstance();
+      else if(type == logStat.email)
+        this.auth = this.eAuth.getInstance();
+
+
+
       var tkStat = await this.auth.verifyToken(tk);//verify it this token is valid or expired.
       //console.log(tkStat);
       if (tkStat.status) {//if token is valid
@@ -286,71 +295,7 @@ export class EPAuthService {
       }
     }
 
-    //   else {//when token is not valid
-    //     console.error("token verify fail");
-    //   }
-
-
-    //   if (type == logStat.google) {
-    //     //console.log("token is from google");
-    //     var tkStat = await this.auth.verifyToken(tk);//verify it this token is valid or expired.
-    //     //console.log(tkStat);
-    //     if (tkStat.status) {//if token is valid
-    //       this.socUser = tkStat.user;
-    //       var n = this.socUser.name;
-    //       var e = this.socUser.email;
-    //       this.userProfile = new Profile(n, e);//userProfile property is used to show in nav bar.
-
-
-    //       //console.log("token verify succ");
-    //       // this.isLogInObs$.next(this.isLogIn);//send the news that token status is updated to other components
-    //     }
-
-    //     else {//when token is not valid
-    //       console.error("token verify fail");
-    //     }
-    //     // err => {//when err occurs
-    //     //   console.error('error occurs! not google user : ', err);
-    //     // },
-    //     );
-    //   }
-
-    //   else if (type == logStat.email) {
-    //     //console.log("token is from email");
-    //     var eTkRes$ = await this.auth.verifyToken(tk);
-    //     eTkRes$.subscribe(
-    //       res => {
-    //         if (res.succ) {//token verify success
-    //           //console.log(res);res
-    //           // else {
-    //           //   this.isLogIn = logStat.google;//update token status 
-    //           // }
-    //           // this.isLogIn = logStat.email;
-    //           this.auth.getProfile()
-    //           this.userProfile = new Profile(res.payload.name, res.payload.email);
-    //           if (this.userProfile.email === this.JC || this.userProfile.email === this.BAEK || this.userProfile.email === this.SONG) {
-    //             this.isLogIn = logStat.SUPERUSER;
-    //           }
-    //           // //console.log(this.userProfile);
-    //           this.setLogStat(type);
-
-    //           // this.isLogInObs$.next(this.isLogIn);
-    //         }
-    //         else {//toekn verify failed
-    //           if (res.msg == "expired") {
-    //             alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-    //             this.auth.logOut();
-    //             this.router.navigate(['/homes']);
-    //           }
-    //         }
-    //       },
-    //       err => {//when error occurs
-    //         console.log('error occurs! not email user : ', err);
-    //       }
-    //     )
-
-    //   }
-    // }
+   
 
     else {//when token does not exist.
       //console.log("token is not found. Hello, newbie!");

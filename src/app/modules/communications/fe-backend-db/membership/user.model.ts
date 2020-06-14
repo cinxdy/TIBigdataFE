@@ -1,10 +1,25 @@
-export interface User {
-    id: String;//유저 id
-    name: String;//유저 실명?
-    institution : String;//유저 소속 기관
-    email : String;//등록 혹은 연락하려는 이메일
-    // responsible: String;
-    // description: String;
-    severity: String;//일반 유저 혹은 관리자?
-    // status: String;
+export class UserProfile {
+    registerStat: logStat;
+    email: string;
+    name: string;
+    token: string;
+    password?: string;
+    nickName? : String;
+    // nickname? : string;
+    inst?: string;
+    photo?: string;
+    constructor(reg, email, name, token){
+        this.registerStat = reg;
+        this.email = email;
+        this.name = name;
+        this.token = token;
+    }
 }
+
+//enumerate login status
+export enum logStat {
+    unsigned,//0
+    SUPERUSER,//1
+    email,//2
+    google,//3
+  }

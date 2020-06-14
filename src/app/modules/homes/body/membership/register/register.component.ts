@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';//register user service
+import { AuthEmailService } from '../../../../communications/fe-backend-db/membership/auth-email.service';//register user service
 import { Router } from '@angular/router'
 class userProfile{
   nickName : String;
@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
   registerUserData = new userProfile();
   private pw1;
   private pw2;
-  constructor(private _auth: EPAuthService, private _router: Router) { }
+  constructor(private eAuth: AuthEmailService, private _router: Router) { }
 
   ngOnInit() {
   }
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
     if(this.pw1 == this.pw2)//check for sure
       this.registerUserData.password = this.pw1;
     console.log(this.registerUserData);
-    this._auth.eRegisterUser(this.registerUserData) //_auth : register user service
+    this.eAuth.register(this.registerUserData) //_auth : register user service
   }
   
   toSocReg(){

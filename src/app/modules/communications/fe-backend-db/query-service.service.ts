@@ -54,12 +54,12 @@ export class QueryServiceService {
 
   }
 
-  async registerEmail(user){
-    return await this.http.post<any>(this.EMAIL_REG_URL, user).toPromise();
-  }
+  // async registerEmail(user){
+  //   return await this.http.post<any>(this.EMAIL_REG_URL, user).toPromise();
+  // }
 
   async verifyTokenQuery(token): Promise<any> {
-    return await this.http.post<any>(this.EMAIL_VERIFY_TOKEN, token).toPromise();
+    // return await this.http.post<any>(this.EMAIL_VERIFY_TOKEN, token).toPromise();
   }
 
   /**
@@ -68,9 +68,9 @@ export class QueryServiceService {
    * @return object : {succ : boolean, msg : string, payload : {token: token, name : string, email : string}}
    */
   async logInQuery(user) {
-    let res = await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
+    // let res = await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
     // return this.checkType(res)
-    return res;
+    // return res;
   }
 
 
