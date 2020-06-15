@@ -46,7 +46,8 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
         month: time.getMonth(),
         date: time.getDate(),
         hour: time.getHours(),
-        min: time.getMinutes()
+        min: time.getMinutes(),
+        time : time
     };
 
     //add total search history from all users
@@ -96,7 +97,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                     userHst = doc.history;
                     userHst.push(keyword);
                     // console.log(userHst);
-                    res.json({ history: userHst });
+                    res.json(new Res(true, "response of add history",{ history: userHst }));
                 }
             }
 
@@ -146,7 +147,7 @@ router.get('/getHistoryCount', (req, res) => {
             res.status(401);
         }
         else
-            res.json({ count: count });
+            res.json(new Res(true, "response of get getHistoryCount",{ count: count }));
     })
 })
 
@@ -176,7 +177,7 @@ router.post('/getTotalHistory', (req, res) => {
                     console.log("post : get total history err")
                 // console.log(hstrs);
                 // console.log("post total history ok")
-                res.send({ histories: hstrs })
+                res.send(new Res(true, "response of post get totla data : total user history data",{ histories: hstrs }))
             });
 });
 
@@ -226,7 +227,7 @@ router.get('/getTotalHistory', (req, res) => {
             if(err)
                 console.log("error in get total history in get")
             else    
-                res.json(docs)
+                res.json(new Res(true, "response of get of get total data .",docs))
         });
     // var hstResult = hst.find({})
     //     .limit(30)

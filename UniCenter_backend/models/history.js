@@ -8,7 +8,8 @@ const srchHstSchema = new Schema({
     month : Number,
     date : Number,
     hour : Number,
-    min : Number
+    min : Number,
+    time : Date
 })  
 
 // module.exports = mongoose.model('history',srchHstSchema);

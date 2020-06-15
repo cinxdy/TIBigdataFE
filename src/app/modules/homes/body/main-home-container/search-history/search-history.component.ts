@@ -28,6 +28,7 @@ export class SearchHistoryComponent implements OnInit {
   async queryTotalHistory() {
     this.hstFreq = [];
     let res = await this.http.get<any>(this.ALL_HST_REQ_URL).toPromise()
+    res = res.payload;
     for (var i = 0; i < res.length; i++)
       this.hstFreq.push({ x: i, y: res[i]["count"], label: res[i]["_id"]["keyword"] });
   }

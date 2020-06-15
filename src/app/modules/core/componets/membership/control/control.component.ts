@@ -32,7 +32,7 @@ export class ControlComponent implements OnInit {
 
     //get history count
     this.http.get<any>(this.HISTORY_COUNT_URL).subscribe((res) => {
-      let count = res.count;
+      let count = res.payload.count;
 
       //create page numbers...
       this.pageNum = Math.floor(count / this.HST_PER_PAGE);//total pages.
@@ -58,7 +58,7 @@ export class ControlComponent implements OnInit {
 
       //get total history
       this.http.post<any>(this.HISTORY_URL, { idx: startIdx, num: num }).subscribe((res) => {
-        var r = res.histories;
+        var r = res.payload.histories;
         // console.log(r);
         this.hst = [];
         for (var i = 0; i < r.length; i++) {
@@ -66,7 +66,8 @@ export class ControlComponent implements OnInit {
           this.hst.push(
             {
               key: d.keyword,
-              time: d.year + "년" + d.month + "월" + d.date + "일" + d.hour + "시" + d.min + "분"
+              // time: d.year + "년" + d.month + "월" + d.date + "일" + d.hour + "시" + d.min + "분"
+              time : d.time
             });
         }
         console.log(this.hst);
@@ -113,7 +114,7 @@ export class ControlComponent implements OnInit {
     var startIdx = num * 50;
     console.log("startIDx : ", startIdx);
     this.http.post<any>(this.HISTORY_URL, { idx: 50 * num, num: 50 }).subscribe((res) => {
-      var r = res.histories;
+      var r = res.payload.histories;
       // console.log(r);
       this.hst = [];
 

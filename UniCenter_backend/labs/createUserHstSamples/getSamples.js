@@ -68,17 +68,29 @@ py.stdout.on('data', (d) => {
                 hour: Math.floor(Math.random() * 24),
                 min: Math.floor(Math.random() * 60)
             };
-            newHst = new hst(hstData);
-            newHst.save((err, h) => {
-                if (err) {
-                    console.log("add history fail. error : " + err);
+
+
+            let tt = Date.parse(hstData.date + " " + hstData.month + " " + hstData.year + " " + hstData.hour + ":" + hstData.min + ":00")
+            // console.log(typeof(tt));
+            if (!isNaN(tt)) {
+                // console.log(tt)
+                hstData = {
+                    keyword: data[i][j],
+                    time : tt
                 }
-                else {
-                    // count ++;
-                    // console.log(count)
-                    // console.log("add " + count + "th new history");
-                }
-            });
+
+                newHst = new hst(hstData);
+                newHst.save((err, h) => {
+                    if (err) {
+                        console.log("add history fail. error : " + err);
+                    }
+                    else {
+                        // count ++;
+                        // console.log(count)
+                        // console.log("add " + count + "th new history");
+                    }
+                });
+            }
         }
 
     }
