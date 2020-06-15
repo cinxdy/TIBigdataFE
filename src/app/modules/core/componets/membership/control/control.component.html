@@ -17,9 +17,15 @@
 </div>
 <ng-container>
     <div class="row">
-        <div *ngFor="let page of pages">
-            <div class="col">
-                <button (click)="click_i_th_history(page)"> {{ page }} </button>
+        <!-- <div *ngFor="let page of pages"> -->
+        <div class="col">
+            <div *ngIf="!isSinglePage">
+                <div *ngIf="1 < pageNum">
+                    <button (click)="priorButton()"> 이전 </button>
+                </div>
+                <div *ngIf="pageNum < lastPageNum">
+                    <button (click)="nextButton()"> 다음 </button>
+                </div>
             </div>
         </div>
     </div>
