@@ -39,10 +39,14 @@ const hst = require('../../models/history');
 //     console.log('Express server running on port ' + PORT)
 // });
 
+
+let sampleList = [];
+
 py.stdout.on('data', (d) => {
     var rawdata = fs.readFileSync(pyDir + '/tokened_history.json');
     let data = JSON.parse(rawdata);
-    console.log(data.length);
+    // console.log(data.length);
+    //샘플데이터를 생성하는 부분
     var count = 0;
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < data[i].length; j++) {
@@ -56,44 +60,54 @@ py.stdout.on('data', (d) => {
                         date : Number,//1~31.1,3,5,7,8,10,12, 1~30, 4,6,9,11. 1~28 for 2.
                         hour : Number,0~23.
                         min : Number, 0~59.
+                        time : javascript Date
                     }
              */
 
             var mth = Math.floor(Math.random() * 12) + 1;
-            var hstData = {
-                keyword: data[i][j],
-                year: 2019,
-                month: Math.floor(Math.random() * 12) + 1,
-                date: mth == (1 || 3 || 5 || 7 || 8 || 10 || 12) ? Math.floor(Math.random() * 31) + 1 : (mth == (4 || 6 || 9 || 11) ? Math.floor(Math.random() * 30) + 1 : Math.floor(Math.random() * 28) + 1),
-                hour: Math.floor(Math.random() * 24),
-                min: Math.floor(Math.random() * 60)
-            };
+            var keyword = data[i][j];
+            var year = 2019;
+            var month = Math.floor(Math.random() * 12) + 1;
+            var date = mth == (1 || 3 || 5 || 7 || 8 || 10 || 12) ? Math.floor(Math.random() * 31) + 1 : (mth == (4 || 6 || 9 || 11) ? Math.floor(Math.random() * 30) + 1 : Math.floor(Math.random() * 28) + 1);
+            var hour = Math.floor(Math.random() * 24);
+            var min = Math.floor(Math.random() * 60);
 
 
-            let tt = Date.parse(hstData.date + " " + hstData.month + " " + hstData.year + " " + hstData.hour + ":" + hstData.min + ":00")
+
+            let tt = Date.parse(date + " " + month + " " + year + " " + hour + ":" + min + ":00")
             // console.log(typeof(tt));
-            if (!isNaN(tt)) {
+            if (!isNaN(tt)) {//땜빵용 코드... date을 만들어서 invalid한 결과는 지운다.
                 // console.log(tt)
-                hstData = {
-                    keyword: data[i][j],
-                    time : tt
+                let hstData = {
+                    keyword: keyword,
+                    year: year,
+                    month: month,
+                    date: date,
+                    hour: hour,
+                    min: min,
+                    time: tt
                 }
-
-                newHst = new hst(hstData);
-                newHst.save((err, h) => {
-                    if (err) {
-                        console.log("add history fail. error : " + err);
-                    }
-                    else {
-                        // count ++;
-                        // console.log(count)
-                        // console.log("add " + count + "th new history");
-                    }
-                });
+                sampleList.push(hstData)
             }
         }
 
     }
+
+    //샘플 데이터 시간 순으로 정렬
+    sampleList.sort((a, b) => {
+        return b.time - a.time
+    })
+    sampleList.forEach(e => {
+
+        newHst = new hst(e);
+        newHst.save((err, h) => {
+            if (err) {
+                console.log("add history fail. error : " + err);
+            }
+        });
+    })
+
+
 })
 
 
