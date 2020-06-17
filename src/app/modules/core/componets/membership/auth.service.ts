@@ -45,7 +45,7 @@ export class EPAuthService {
   private SONG: string = "21500831@handong.edu";
 
 
-  private URL = this.ipService.getUserServerIp();
+  private URL = this.ipService.get_FE_DB_ServerIp();
 
 
   private EMAIL_REG_URL = this.URL + "/eUser/register"; //mongoDB
@@ -295,7 +295,7 @@ export class EPAuthService {
       // });
     }
     else {
-      console.error("로그인 에러. 문서 기록 요청 실패")
+      console.log("비 로그인 상태")
       return Error;
     }
 

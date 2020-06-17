@@ -12,8 +12,8 @@ import { ElasticsearchService } from "../service/elasticsearch-service/elasticse
 import { ArticleSource } from "../../../containers/shared/article.interface";
 import { Subscription } from "rxjs";
 import { Observable, of } from "rxjs";
-import { EventService } from "../../../../core/componets/membership/event.service";
-import { EPAuthService } from '../../../../core/componets/membership/auth.service';
+import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 
 @Component({
   selector: "app-search-bar",

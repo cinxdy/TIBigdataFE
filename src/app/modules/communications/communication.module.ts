@@ -19,16 +19,17 @@ import {
   MatDividerModule,
   MatSnackBarModule } from '@angular/material';
 
-import { CoreRoutingModule } from './core-routing.module';
-import { RegisterComponent } from './componets/membership/register/register.component';
-import { LoginComponent } from './componets/membership/login/login.component';
-import { EventsComponent } from './componets/membership/events/events.component';
-import { EventService } from './componets/membership/event.service';
-import { AuthGuard } from './componets/membership/auth.guard';
-import { TokenInterceptorService} from './componets/membership/token-interceptor.service';
-import { SocialRegisterComponent } from './componets/membership/register/social-register/social-register.component';
-import { UserpageComponent } from './componets/membership/userpage/userpage.component';
-import { ControlComponent } from './componets/membership/control/control.component';
+import { CommunicationRoutingModule } from './communication-routing.module';
+import { RegisterComponent } from '../homes/body/membership/register/register.component';
+import { LoginComponent } from '../homes/body/membership/login/login.component';
+import { EventsComponent } from '../homes/body/membership/events/events.component';
+import { EventService } from './fe-backend-db/membership/event.service';
+import { AuthGuard } from './fe-backend-db/membership/auth.guard';
+import { TokenInterceptorService} from './fe-backend-db/membership/token-interceptor.service';
+import { SocialRegisterComponent } from '../homes/body/membership/register/social-register/social-register.component';
+import { UserpageComponent } from '../homes/body/membership/userpage/userpage.component';
+import { ControlComponent } from '../homes/body/membership/control/control.component';
+import { QueryServiceComponent } from './fe-backend-db/query-service/query-service.component';
 
 const PROVIDER_ID : string = "287082486827-0junp0td4ajs1c5p0381topvh168o6l5.apps.googleusercontent.com"; //진범 localhost 승인
 
@@ -46,13 +47,14 @@ let config = new AuthServiceConfig([
     EventsComponent,
     SocialRegisterComponent,
     UserpageComponent,
-    ControlComponent
+    ControlComponent,
+    QueryServiceComponent
   ],
   imports: [
     FormsModule,
     CommonModule,
     HttpClientModule,
-    CoreRoutingModule,
+    CommunicationRoutingModule,
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
@@ -87,4 +89,4 @@ let config = new AuthServiceConfig([
   ],
   // exports:[HeaderContainerComponent]
 })
-export class CoreModule { }
+export class CommunicationModule { }

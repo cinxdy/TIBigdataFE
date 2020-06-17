@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EPAuthService } from '../../../core/componets/membership/auth.service';
+import { EPAuthService } from '../../../communications/fe-backend-db/membership/auth.service';
 import {AuthService} from 'angularx-social-login'
 
 @Component({

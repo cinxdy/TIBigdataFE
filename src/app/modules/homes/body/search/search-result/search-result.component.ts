@@ -17,9 +17,9 @@ import { DocumentService } from "../service/document/document.service";
 
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
-import { EPAuthService } from '../../../../core/componets/membership/auth.service';
-import { EventService } from "../../../../core/componets/membership/event.service";
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
+import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
 
 
 @Component({
@@ -30,7 +30,7 @@ import { DatabaseService } from "../../../../core/componets/database/database.se
 export class SearchResultComponent implements OnInit {
   
   public relatedKeywords = [];
-  // private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
+  private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
   private relatedDocs: {}[] = [];
@@ -59,7 +59,7 @@ export class SearchResultComponent implements OnInit {
     public _router: Router,
     private http: HttpClient,
     private es: ElasticsearchService, //private cd: ChangeDetectorRef.
-    private db: DatabaseService,
+    private db: AnalysisDatabaseService,
     private docControl : DocumentService
   ) {
     // this.isConnected = false;
@@ -70,7 +70,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.getUserServerIp() == this.ipService.getDevIp()) {
+    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
       if (this.es.getKeyword() == undefined) {
         this.es.setKeyword("북한산");
         this.queryText = "북한산";
@@ -164,9 +164,7 @@ export class SearchResultComponent implements OnInit {
         let tfVal = data[n]["tfidf"];
         // console.log(tfVal[0])
         this.keywords.push(tfVal)
-        if(n > 10)
-          continue;
-        this.relatedKeywords.push(tfVal[0])
+        this.relatedKeywords.push(tfVal)
         // this.relatedKeywords = this.relatedKeywords.concat(tfVal)
       }
     })

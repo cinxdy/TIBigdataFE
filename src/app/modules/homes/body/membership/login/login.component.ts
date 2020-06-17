@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { EPAuthService } from '../auth.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
+import { AuthEmailService } from '../../../../communications/fe-backend-db/membership/auth-email.service';
+import { AuthGoogleService } from '../../../../communications/fe-backend-db/membership/auth-google.service';
 import { Router } from '@angular/router'
 import { AuthService, SocialUser,GoogleLoginProvider} from 'angularx-social-login';
 import { thresholdSturges } from 'd3-array';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +12,7 @@ import { thresholdSturges } from 'd3-array';
   providers:[AuthService]
 })
 export class LoginComponent implements OnInit {
-  constructor(private auth: EPAuthService, private _router: Router, private _gauth: AuthService) { }
+  constructor(private auth: EPAuthService, private _router: Router, private _gauth: AuthService, private gAuth : AuthGoogleService, private eAuth : AuthEmailService) { }
   private loginUserData = undefined;
   
   // private user: SocialUser; 
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   // login with email
   eLogIn() {
-    this.auth.eLoginUser(this.loginUserData)
+    this.eAuth.logIn(this.loginUserData)
     // .subscribe((res) => {
     //   //nickname should be added to identify user using the applicatoin.
     //   localStorage.setItem('token', res.token);
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   //login with google
   gLogIn():void{ 
-    this.auth.gLogIn();
+    this.gAuth.logIn();
   }
 
 

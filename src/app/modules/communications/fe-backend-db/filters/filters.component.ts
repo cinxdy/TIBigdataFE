@@ -18,7 +18,7 @@ interface Post{
 /*export*/ class FiltersComponent implements OnInit {
 
   public post;
-  private URL = this.ipService.getUserServerIp() + ":9200/victolee/blog/1/_source"
+  private URL = this.ipService.get_FE_DB_ServerIp() + ":9200/victolee/blog/1/_source"
 
   constructor(public http:HttpClient,private ipService : IpService
     ) { }
