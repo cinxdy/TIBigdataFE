@@ -34,6 +34,7 @@ export class SearchResultComponent implements OnInit {
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
   private relatedDocs: {}[] = [];
+  private userSearchHistory: string[];
   private isSearchLoaded: boolean = false;
   private isRelatedLoaded: boolean = true;//going to be removed
   private isKeyLoaded: boolean = false;
@@ -88,12 +89,13 @@ export class SearchResultComponent implements OnInit {
     this.isRelatedLoaded = true;//plan to be removed
 
     this.idControl.clearIdList();
+    this.userSearchHistory = [];
     this.searchResultIdList = [];
     this.keepIdList = [];
     let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
-
+    this.getUserSearchHistory()
     //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.loadSearchResult();
     this.createIdTable();
@@ -201,6 +203,11 @@ export class SearchResultComponent implements OnInit {
       this.searchResultIdList[i] = this.articleSources[i]["_id"];
       this.relateToggle.push(false);
     }
+  }
+
+  async getUserSearchHistory(){
+    this.userSearchHistory = await this.auth.showSrchHst();
+    console.log("userSearch history" + this.userSearchHistory)
   }
 
 
