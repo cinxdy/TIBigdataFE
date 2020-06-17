@@ -82,7 +82,7 @@ export class IpService {
   }
 
   getBackEndServerIp(){
-    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + this.ES_INDEX;
 
     //use local elasticsearch
     // return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + this.ES_INDEX;

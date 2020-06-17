@@ -97,8 +97,6 @@ py.stdout.on('data', (d) => {
     sampleList.sort((a, b) => {
         return b.time - a.time
     })
-
-    //각 샘플 다시 업로드
     sampleList.forEach(e => {
 
         newHst = new hst(e);

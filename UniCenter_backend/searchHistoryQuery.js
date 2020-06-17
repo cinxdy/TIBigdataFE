@@ -53,6 +53,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
     //add total search history from all users
     //new history keyword that is goona be added soon.
     newHst = new hst(keyword);
+    // newHst.
     newHst.save((err, keyword) => {
         if (err) {
             console.log("add history fail. error : " + err);

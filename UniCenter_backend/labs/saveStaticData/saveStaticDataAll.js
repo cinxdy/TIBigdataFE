@@ -3,50 +3,46 @@ const rcmd = require('../../models/rcmd');
 const keyword = require('../../models/tfidf');
 const Topic = require('../../models/topic');
 
-const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
-const db = 'mongodb://localhost:27017/analysis';
 
-let modelArr = [rcmd, keyword];
+
+
+let modelArr = [rcmd];
+
+let modelArr = [rcmd, keyword,Topic];
 let numDataArr = [];
 
-mongoose.connect(db, {
-    server: {
-        socketOptions: {
-            socketTimeoutMS: 0,
-            connectTimeoutMS: 0
-        }
-    }
-},
-    async function (err) {
-        if (err) {
-            console.error('Error!' + err)
-        } else {
-            console.log('Connected to mongodb');
-            await sendTopic();
-            // console.log("plz wait a min...");
-            // let flag = 0;
-            // var checkData = setInterval(async () => {
-            //     for (let i = 0; i < numDataArr.length; i++) {
-            //         await modelArr[i].count({}, (err, count) => {
-            //             if (count < numDataArr[i]) {
-            //                 console.log("data size mismatch in ", modelArr[i], " database. some data are missing.");
-            //                 flag = 0;
-            //             }
-            //             else
-            //                 flag++;
-            //         })
-            //     }
 
-            //     if (flag >= 3) {
-            //         console.log("all data has been saved. turn off the program by keyborad interruption.")
-            //         clearInterval(checkData);
-            //     }
-            //     else {
-            //         console.log("some data are missing... waiting for completing to write data...")
-            //     }
-            // }, 1000)
+async function run() {
+
+
+    console.log('Connected to mongodb');
+    await sendTopic();
+    await sendRcmd();
+    await sendTFIDF();
+    console.log("plz wait a min...");
+    let flag = 0;
+    var checkData = setInterval(async () => {
+        for (let i = 0; i < numDataArr.length; i++) {
+            await modelArr[i].count({}, (err, count) => {
+                if (count < numDataArr[i]) {
+                    console.log("data size mismatch in ", modelArr[i], " database. some data are missing.");
+                    flag = 0;
+                }
+                else
+                    flag++;
+            })
         }
-    });
+
+        if (flag >= 3) {
+            console.log("all data has been saved. turn off the program by keyborad interruption.")
+            clearInterval(checkData);
+        }
+        else {
+            console.log("some data are missing... waiting for completing to write data...")
+        }
+    }, 1000)
+}
+run();
 
 async function sendTopic() {
     let rawData = fs.readFileSync("./ctgRNNResult.json");
@@ -83,7 +79,7 @@ async function sendTopic() {
             console.log("top data save filed.")
     })
     numDataArr.push(count - 1);
-    console.log("finish sending rcmd data")
+    console.log("finish sending topic data")
 
 }
 async function sendRcmd() {

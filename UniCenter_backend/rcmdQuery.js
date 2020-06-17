@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Keywords = require('./models/rcmd');
-
+const Res = require('./models/Res');
 router.get('/', (req, res) => {
     res.send('rcmdQuery')
 })
@@ -21,9 +21,9 @@ router.get('/test', (req, res) => {
 router.post('/getRcmdTbl', (req, res) => {
     let ids = req.body["id"];
 
-    // console.log("post getRcmdTbl")
-    // console.log(ids)
-    // console.log(typeof(ids))
+    console.log("post getRcmdTbl")
+    console.log(ids)
+    console.log(typeof(ids))
     let num = req.body["num"]; //could be undefined if does not request specific num.
     if (num == undefined)
         num = 6;
@@ -47,70 +47,70 @@ router.post('/getRcmdTbl', (req, res) => {
     
     
     // console.log("right b4 equey")
-    // console.log(matchQuery)
-    Keywords.aggregate(
-        [
-            {
-                $match: matchQuery
-            },
-            {
-                $project: {
-                    docID: 1,
-                    rcmd: { $slice: ["$rcmd", num] }
-                }
-            },
-            {
-                $unwind: "$rcmd"
-            },
+    console.log(matchQuery)
+    // Keywords.aggregate(
+    //     [
+    //         {
+    //             $match: matchQuery
+    //         },
+    //         {
+    //             $project: {
+    //                 docID: 1,
+    //                 rcmd: { $slice: ["$rcmd", num] }
+    //             }
+    //         },
+    //         {
+    //             $unwind: "$rcmd"
+    //         },
 
-        ], (err, doc) => {
-            console.log("till unwind : ", doc)
-        })
-    Keywords.aggregate(
-        [
-            {
-                $match: matchQuery
-            },
-            {
-                $project: {
-                    docID: 1,
-                    rcmd: { $slice: ["$rcmd", num] }
-                }
-            },
-            {
-                $unwind: "$rcmd"
-            },
-            {
-                $project: {
-                    docID: 1,
-                    rcmd: {
-                        $filter: {
-                            input: "$rcmd",
-                            cond: {
-                                $ne: [{ $arrayElemAt: ["$rcmd", 0] }, ids]
-                            }
-                        }
-                    },
-                }
-            },
-            {
-                $project: {
-                    docID: 1,
-                    rcmd: {
-                        $cond: {
-                            if: isSim,
-                            then: "$rcmd",
-                            else: { $arrayElemAt: ["$rcmd", 0] }
+    //     ], (err, doc) => {
+    //         console.log("till unwind : ", doc)
+    //     })
+    // Keywords.aggregate(
+    //     [
+    //         {
+    //             $match: matchQuery
+    //         },
+    //         {
+    //             $project: {
+    //                 docID: 1,
+    //                 rcmd: { $slice: ["$rcmd", num] }
+    //             }
+    //         },
+    //         {
+    //             $unwind: "$rcmd"
+    //         },
+    //         {
+    //             $project: {
+    //                 docID: 1,
+    //                 rcmd: {
+    //                     $filter: {
+    //                         input: "$rcmd",
+    //                         cond: {
+    //                             $ne: [{ $arrayElemAt: ["$rcmd", 0] }, ids]
+    //                         }
+    //                     }
+    //                 },
+    //             }
+    //         },
+    //         {
+    //             $project: {
+    //                 docID: 1,
+    //                 rcmd: {
+    //                     $cond: {
+    //                         if: isSim,
+    //                         then: "$rcmd",
+    //                         else: { $arrayElemAt: ["$rcmd", 0] }
 
 
-                        }
-                    }
-                }
-            },
+    //                     }
+    //                 }
+    //             }
+    //         },
 
-        ], (err, doc) => {
-            console.log("till project", doc)
-        })
+    //     ], (err, doc) => {
+    //         console.log("till project", doc)
+    //     })
     Keywords.aggregate(
         [
             {
@@ -166,7 +166,7 @@ router.post('/getRcmdTbl', (req, res) => {
                 console.error(err)
             console.log("result : ")
             console.log(docs);
-            res.json(docs)
+            res.json(new Res(true, "response of get rcmd table ",docs))
 
         }
     )

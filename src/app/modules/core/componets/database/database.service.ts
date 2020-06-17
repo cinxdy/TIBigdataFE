@@ -43,8 +43,11 @@ export class DatabaseService {
   async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
     console.log("in db getRcmdTable, input ids : ", ids);
     let res = await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
-    console.log("in db rcmdTable : ",res);
-    return res;
+    if(res.succ){
+
+      console.log("in db rcmdTable : ",res);
+      return res.payload;
+    }
   }
 
   /**
