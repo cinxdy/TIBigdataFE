@@ -4,11 +4,11 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { MultiDataSet } from 'ng2-charts';
 import { HttpClient } from '@angular/common/http';
 import { IpService } from 'src/app/ip.service';
-import { EPAuthService } from '../../../../core/componets/membership/auth.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
 import { DocumentService } from "../../search/service/document/document.service"
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 
@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective, { static: false }) charts: QueryList<BaseChartDirective>;;
 
   constructor(
-    private db: DatabaseService,
+    private db: AnalysisDatabaseService,
     private auth: EPAuthService,
     private http: HttpClient,
     private ipService: IpService,
@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
   // private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
 
-  private hstReqUrl = this.ipService.getUserServerIp() + "/hst/getTotalHistory";
+  private hstReqUrl = this.ipService.get_FE_DB_ServerIp() + "/hst/getTotalHistory";
   private hstFreq: any[];
 
   private graphXData = [];

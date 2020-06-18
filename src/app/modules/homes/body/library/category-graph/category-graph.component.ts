@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ElasticsearchService } from '../../search/service/elasticsearch-service/elasticsearch.service';
-import { DatabaseService } from '../../../../core/componets/database/database.service';
+import { AnalysisDatabaseService } from '../../../../communications/fe-backend-db/analysis-db/database.service';
 import * as CanvasJS from '../../../../../../assets/canvasjs.min.js';
 import CirclePack from 'circlepack-chart';
 import { ConfigService } from './category-graph.service';
@@ -25,7 +25,7 @@ import { doc } from './nodes';
 
 
 export class CatGraphComponent implements OnInit {
-  constructor(private db: DatabaseService, private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
+  constructor(private db: AnalysisDatabaseService, private http: HttpClient, private es: ElasticsearchService, private configService: ConfigService) { }
 
   // private BASE_URL: string = 'http://localhost:5000/wordrank';
   // private TEST_URL: string = 'http://localhost:5000/three';

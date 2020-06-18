@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 // import { IdControlService } from "../../";
 import { HttpClient } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { DatabaseService } from "../../../core/componets/database/database.service";
+import { AnalysisDatabaseService } from "../../../../modules/communications/fe-backend-db/analysis-db/database.service";
+// communications/fe-backend-db/analysis-db/database.service";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +11,7 @@ import { DatabaseService } from "../../../core/componets/database/database.servi
 export class WordcloudService {
   // private cData: CloudData[] = [];
   // private
-  constructor(private http: HttpClient, private db: DatabaseService) { }
+  constructor(private http: HttpClient, private db: AnalysisDatabaseService) { }
 
   async createCloud(id: string) {
     let cData = new Array<CloudData>();

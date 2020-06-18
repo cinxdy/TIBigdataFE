@@ -124,9 +124,9 @@
                 검색 기록
                 <div class="uk-card uk-card-body uk-card-default">
 
-                    <div *ngFor="let hst of auth.schHst; index as i">
+                    <div *ngFor="let hst of userSearchHistory; index as i">
                         <div class="row">
-                            <a (click)="relatedSearch(hst.keyword)">{{ hst.keyword }}</a>
+                            <a (click)="relatedSearch(hst)">{{hst}}</a>
                         </div>
                     </div>
                 </div>

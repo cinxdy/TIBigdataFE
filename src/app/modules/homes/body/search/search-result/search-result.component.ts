@@ -17,9 +17,9 @@ import { DocumentService } from "../service/document/document.service";
 
 import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
-import { EPAuthService } from '../../../../core/componets/membership/auth.service';
-import { EventService } from "../../../../core/componets/membership/event.service";
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
+import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
 
 
 @Component({
@@ -30,10 +30,11 @@ import { DatabaseService } from "../../../../core/componets/database/database.se
 export class SearchResultComponent implements OnInit {
   
   public relatedKeywords = [];
-  // private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
+  private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
   private relatedDocs: {}[] = [];
+  private userSearchHistory: string[];
   private isSearchLoaded: boolean = false;
   private isRelatedLoaded: boolean = true;//going to be removed
   private isKeyLoaded: boolean = false;
@@ -58,7 +59,7 @@ export class SearchResultComponent implements OnInit {
     public _router: Router,
     private http: HttpClient,
     private es: ElasticsearchService, //private cd: ChangeDetectorRef.
-    private db: DatabaseService,
+    private db: AnalysisDatabaseService,
     private docControl : DocumentService
   ) {
     // this.isConnected = false;
@@ -69,7 +70,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.getUserServerIp() == this.ipService.getDevIp()) {
+    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
       if (this.es.getKeyword() == undefined) {
         this.es.setKeyword("북한산");
         this.queryText = "북한산";
@@ -88,12 +89,13 @@ export class SearchResultComponent implements OnInit {
     this.isRelatedLoaded = true;//plan to be removed
 
     this.idControl.clearIdList();
+    this.userSearchHistory = [];
     this.searchResultIdList = [];
     this.keepIdList = [];
     let queryText = this.es.getKeyword();
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
-
+    this.getUserSearchHistory()
     //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.loadSearchResult();
     this.createIdTable();
@@ -158,14 +160,12 @@ export class SearchResultComponent implements OnInit {
       // console.log(res)
       let data = res as []
       // console.log("loadkeywords : ", data)
+      
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"];
         // console.log(tfVal[0])
         this.keywords.push(tfVal)
-        if(n > 10)
-          continue;
         this.relatedKeywords.push(tfVal[0])
-        // this.relatedKeywords = this.relatedKeywords.concat(tfVal)
       }
     })
     // //console.log("keywords : ",this.keywords)
@@ -201,6 +201,11 @@ export class SearchResultComponent implements OnInit {
       this.searchResultIdList[i] = this.articleSources[i]["_id"];
       this.relateToggle.push(false);
     }
+  }
+
+  async getUserSearchHistory(){
+    this.userSearchHistory = await this.auth.showSrchHst();
+    console.log("userSearch history" + this.userSearchHistory)
   }
 
 

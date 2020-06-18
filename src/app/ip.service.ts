@@ -71,9 +71,9 @@ export class IpService {
     }
   }
 
-  getUserServerIp(){
-    // return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
-    return this.adaptIp(this.FrontEnd_SERVER_IP)+":"+this.USER_BE_PORT;
+  get_FE_DB_ServerIp(){
+    return this.FrontEnd_SERVER_IP+":"+this.USER_BE_PORT;
+    // return this.adaptIp(this.USER_SERVER_IP)+":"+this.USER_BE_PORT;
   }
 
   getMiddlewareServerIp(){
@@ -82,7 +82,7 @@ export class IpService {
   }
 
   getBackEndServerIp(){
-    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + "/nkdb";
+    return this.BackEnd_SERVER_IP + ":"+this.ES_PORT + this.ES_INDEX;
 
     //use local elasticsearch
     // return this.adaptIp(this.BackEnd_SERVER_IP) + ":"+this.ES_PORT + this.ES_INDEX;
