@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { EPAuthService } from '../../../../../core/componets/membership/auth.service';
-import { ElasticsearchService } from "../../../search/service/elasticsearch-service/elasticsearch.service";
+import { ElasticsearchService } from "src/app/modules/communications/elasticsearch-service/elasticsearch.service"
+
 
 @Injectable({
   providedIn: 'root'

@@ -7,7 +7,7 @@ import {
   // Output
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";

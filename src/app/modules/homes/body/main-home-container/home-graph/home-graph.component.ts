@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { Router } from "@angular/router";
 
