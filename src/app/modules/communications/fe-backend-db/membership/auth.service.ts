@@ -186,10 +186,6 @@ export class EPAuthService {
 
   // }
 
-  async register(logStat: string, user?) {
-    
-  }
-
 
 
   /**

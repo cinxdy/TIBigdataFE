@@ -16,4 +16,5 @@ export abstract class Auth {
     abstract getProfile(user);
     // register():Promise<any>;
     abstract getInstance();
+    // abstract register():void
   }

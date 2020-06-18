@@ -160,12 +160,12 @@ export class SearchResultComponent implements OnInit {
       // console.log(res)
       let data = res as []
       // console.log("loadkeywords : ", data)
+      
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"];
         // console.log(tfVal[0])
         this.keywords.push(tfVal)
-        this.relatedKeywords.push(tfVal)
-        // this.relatedKeywords = this.relatedKeywords.concat(tfVal)
+        this.relatedKeywords.push(tfVal[0])
       }
     })
     // //console.log("keywords : ",this.keywords)
