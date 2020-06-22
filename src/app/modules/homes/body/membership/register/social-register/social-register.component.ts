@@ -24,7 +24,7 @@ export class SocialRegisterComponent implements OnInit {
 
       // gauth.signIn(platform).then((response) => {
 
-      this.gAuth.gRegisterUser(user).subscribe((res) => {
+      this.gAuth.register(user).subscribe((res) => {
         // if(res...is yes)
         //then
         console.log(res);

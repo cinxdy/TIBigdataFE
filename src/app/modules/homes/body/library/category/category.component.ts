@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
-import { AnalysisDatabaseService } from '../../../../communications/fe-backend-db/analysis-db/database.service';
+import { AnalysisDatabaseService } from '../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service';
 
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 

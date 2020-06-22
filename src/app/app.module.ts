@@ -18,7 +18,7 @@ import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.ser
 import { CommunicationModule} from './modules/communications/communication.module';
 import { EPAuthService } from './modules/communications/fe-backend-db/membership/auth.service';
 import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
-import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/database.service';
+import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/analysisDatabase.service';
 
 import { ChartsModule } from "ng2-charts";
 

@@ -6,7 +6,8 @@ import { Router } from "@angular/router";
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { IpService } from 'src/app/ip.service';
 import { DocumentService } from "../../../homes/body/search/service/document/document.service";
-import { QueryServiceService } from '../query-service.service';
+// import { profile } from 'console';
+// import { QueryServiceService } from '../query-service.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -19,15 +20,16 @@ export class AuthEmailService extends  Auth{
     private EMAIL_VERIFY_TOKEN = this.URL + "/eUser/verify";
     private EMAIL_CHECK_OUR_USER_URL = this.URL + "/eUser/eCheckUser";
     constructor(
+        // private router : Router,
         protected ipService: IpService,
         private http: HttpClient,
         private router: Router,
         // private gauth: AuthService,
         private docSvc: DocumentService,
-        private db: QueryServiceService
+        // private db: QueryServiceService
         // private auth : EPAuthService,
     ) {
-        super();
+        super(router);
         // this.isLogInObs$.next(logStat.unsigned);
     }
 
@@ -97,13 +99,14 @@ export class AuthEmailService extends  Auth{
         else {
             //console.log("user input check : ", user);
             var res = await await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
-            //console.log("login process result : ", res);
+            // console.log("login process result : ", res);
             // login succ
             if (res.succ) {
                 alert("돌아오신 걸 환영합니다, " + res.payload.name + "님. 홈 화면으로 이동합니다.");
-                return { logStat: logStat.email, token: res.payload.toekn, name: res.payload.name, email: res.payload.email };
+                var pf = new UserProfile(logStat.email, res.payload.email, res.payload.name,res.payload.token)
+                super.confirmUser(pf);
+                // return { logStat: logStat.email, token: res.payload.toekn, name: res.payload.name, email: res.payload.email };
             }
-            // this.auth.confirmUser(this.auth.logStat.email, res);
             //login fail. maybe wrong password or id?
             if (!res.succ) {
                 alert("이메일 혹은 비밀번호가 잘못되었어요.");

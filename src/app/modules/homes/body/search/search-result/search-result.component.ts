@@ -19,7 +19,7 @@ import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 
 
 @Component({

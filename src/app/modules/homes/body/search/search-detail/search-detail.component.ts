@@ -7,7 +7,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { RecomandationService } from '../service/recommandation-service/recommandation.service';
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 
 @Component({
   selector: 'app-search-detail',

@@ -8,7 +8,7 @@ import { EPAuthService } from '../../../../communications/fe-backend-db/membersh
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { DocumentService } from "../../search/service/document/document.service"
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 
