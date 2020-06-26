@@ -1,8 +1,8 @@
 <div class="uk-section  uk-preserve-color">
-    <div class="uk-container">
+    <div class="uk-container-center">
         <div class="uk-grid-match uk-column-1-1@m" uk-grid>
             
-            <div class="uk-align-center">
+            <div class="uk-align-center  uk-width-*">
 
                  <div class="uk-text-bold uk-flex-center">오늘의 키워드</div>
                     <ul class="uk-flex-center" uk-tab>
@@ -18,7 +18,7 @@
                     </ul>
 
                 <div>
-                    <angular-tag-cloud
+                    <angular-tag-cloud  class="uk-width-*"
                     [data]="cData"
                     [width]="options.width"
                     [height]="options.height"
