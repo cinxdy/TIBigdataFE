@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   registerUser(){
     if(this.pw1 == this.pw2)//check for sure
       this.registerUserData.password = this.pw1;
-    console.log(this.registerUserData);
+    // console.log(this.registerUserData);
     this.eAuth.register(this.registerUserData) //_auth : register user service
   }
   

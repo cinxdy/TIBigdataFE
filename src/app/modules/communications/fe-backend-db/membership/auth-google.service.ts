@@ -34,13 +34,13 @@ export class AuthGoogleService extends Auth {
   constructor(
     private injector: Injector,
     private ipService: IpService,
-    private http: HttpClient,
-    private router: Router,
+    http: HttpClient,
+    router: Router,
     private gauth: AuthService,
     private docSvc: DocumentService,
     // private auth: EPAuthService
   ) {
-    super(router);
+    super(router, http);
     // this.isLogInObs$.next(logStat.unsigned);
   }
   /**
@@ -66,9 +66,9 @@ export class AuthGoogleService extends Auth {
    * @param user
    * @description check if this user is already our user. check out from the DB. 
    */
-  isOurUser(user: {}): Promise<any> {
-    return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user).toPromise();
-  }
+  // isOurUser(user: {}): Promise<any> {
+  //   return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user).toPromise();
+  // }
 
   register(user: any): Observable<any> {
     return this.http.post<any>(this.GOOGLE_REG_URL, user);
@@ -100,9 +100,9 @@ export class AuthGoogleService extends Auth {
     // })
 
     //check if this user is our user already
-    let res = await this.isOurUser(response)
+    let res = await super.postIsOurUser(response, this.GOOGLE_CHECK_OUR_USER_URL)
 
-    if (res.exist == false) {
+    if (res.succ == false) {
       //console.log("This user is not yet our user : need sign up : ", res);
       alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
       this.router.navigateByUrl("/membership/register");

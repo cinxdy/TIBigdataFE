@@ -22,14 +22,14 @@ export class AuthEmailService extends  Auth{
     constructor(
         // private router : Router,
         protected ipService: IpService,
-        private http: HttpClient,
-        private router: Router,
+        http: HttpClient,
+        router: Router,
         // private gauth: AuthService,
         private docSvc: DocumentService,
         // private db: QueryServiceService
         // private auth : EPAuthService,
     ) {
-        super(router);
+        super(router, http);
         // this.isLogInObs$.next(logStat.unsigned);
     }
 
@@ -54,11 +54,11 @@ export class AuthEmailService extends  Auth{
     }
 
     //email user : check if this user is already our user
-    async isOurUser(user: {}): Promise<any> {
-        let isOurUser = await this.http.post<any>(this.EMAIL_CHECK_OUR_USER_URL, user).toPromise();
+    // async isOurUser(user: {}): Promise<any> {
+    //     let isOurUser = await this.http.post<any>(this.EMAIL_CHECK_OUR_USER_URL, user).toPromise();
 
-        return isOurUser;
-    }
+    //     return isOurUser;
+    // }
 
 
     //email registration function
@@ -67,7 +67,7 @@ export class AuthEmailService extends  Auth{
 
         // let isOurUser$ = this.eCheckUser(user);
         // let res = await isOurUser$.toPromise();
-        let isOurUser = await this.isOurUser(user);
+        let isOurUser = await super.isOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
         //console.log(isOurUser);
         if (isOurUser.succ) {//if this user is one of us, deny registration.
             alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
@@ -90,7 +90,7 @@ export class AuthEmailService extends  Auth{
     async logIn(user): Promise<any> {
         //console.log("login req user : ", user);
 
-        let isOurUser = await this.isOurUser(user);
+        let isOurUser = await super.isOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
         // console.log(isOurUser);
         if (!isOurUser.succ) {//if this user is one of us, deny registration.
             alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
@@ -98,7 +98,7 @@ export class AuthEmailService extends  Auth{
         }
         else {
             //console.log("user input check : ", user);
-            var res = await await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
+            var res = await this.http.post<any>(this.EMAIL_LOGIN_URL, user).toPromise();
             // console.log("login process result : ", res);
             // login succ
             if (res.succ) {

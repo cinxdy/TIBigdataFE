@@ -127,7 +127,7 @@ router.post('/eCheckUser', (req, res) => {
         }
         else {
             if (!user) {//when this user is not our list
-                // console.log("user is not one of us");
+                console.log("user is not one of us");
                 res.json(new Res(false));
             }
             else {//when this user is already our user

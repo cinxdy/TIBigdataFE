@@ -1,6 +1,7 @@
 import { UserProfile, logStat } from "./user.model"
 import { Router } from '@angular/router'
-
+import { HttpClient } from "@angular/common/http";
+import { Res } from "../res.model";
 
 /**
  * Token stored in front end browser.
@@ -19,14 +20,27 @@ class storeToken {
 }
 
 export abstract class Auth {
-  r : Router ;
-  constructor(router: Router) {
-     this.r = router;
-   }
+  router: Router;
+  http: HttpClient;
+  constructor(router: Router, http: HttpClient) {
+    this.router = router;
+    this.http = http;
+  }
 
   abstract verifyToken(tk): Promise<any>;
-  abstract isOurUser(user): Promise<any>;
-  
+  async postIsOurUser(user, URL: string): Promise<any> {
+    // console.log(await this.http.post<any>(URL, user).toPromise())
+    
+    var res = await this.http.post<any>(URL, user).toPromise();
+
+    let isOurUserRes = new Res(res.succ, res.msg, res.payload);
+    return isOurUserRes;
+  };
+
+  postLoginRequset(URL : string, user){
+    return this.http.post<any>(URL, user).toPromise();
+  }
+
 
   /**
    * 
@@ -35,12 +49,40 @@ export abstract class Auth {
    */
   // abstract logIn(user?): Promise<any>;
 
-  // logIn():Promise<any>;
+  async logIn(URL : string, user): Promise<any> {
+    let isOurUser = await this.postIsOurUser(user, URL);
+    // console.log(isOurUser);
+    if (!isOurUser.succ) {//if this user is one of us, deny registration.
+      alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");
+      //비밀번호 찾기 페이지도 만들어야 한다. 
+    }
+    else {
+      //console.log("user input check : ", user);
+      var res = await this.postLoginRequset(URL,user)
+      // console.log("login process result : ", res);
+      // login succ
+      if (res.succ) {
+        alert("돌아오신 걸 환영합니다, " + res.payload.name + "님. 홈 화면으로 이동합니다.");
+        var pf = new UserProfile(logStat.email, res.payload.email, res.payload.name, res.payload.token)
+        this.confirmUser(pf);
+        // return { logStat: logStat.email, token: res.payload.toekn, name: res.payload.name, email: res.payload.email };
+      }
+      //login fail. maybe wrong password or id?
+      if (!res.succ) {
+        alert("이메일 혹은 비밀번호가 잘못되었어요.");
+        return null;
+      }
+      err => {
+        console.log(err)
+      }
+    }
+  };
+
   abstract logOut(): void;
   // abstract getProfile(user);
   // register():Promise<any>;
   abstract getInstance();
-  abstract register(user : any):void
+  abstract register(user: any): void
 
   /**
    * 
@@ -48,11 +90,11 @@ export abstract class Auth {
    * @param user 로그인 확정할 유저 정보. user = { token : 토큰 string, name : string, email : string}
    */
   confirmUser(profile: UserProfile): void {
-    console.log("user auth model : confirmUser : ",profile);
+    console.log("user auth model : confirmUser : ", profile);
     // this.isLogIn = profile.registerStat;
     localStorage.setItem('token', JSON.stringify(new storeToken(profile.registerStat, profile.token)));
     // this.userProfile = profile;
     // else { }//user for google. coupling for flexibility.
-    this.r.navigate(['/homes']);
+    this.router.navigate(['/homes']);
   }
 }
