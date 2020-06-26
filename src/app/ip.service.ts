@@ -48,7 +48,7 @@ export class IpService {
   USER_BE_PORT = "4000";
   FLASK_PORT = "5000";
   ES_PORT = "9200";
-  ES_INDEX = "/nkdb";
+  ES_INDEX = "/capstone";
   
 
 
@@ -61,12 +61,12 @@ export class IpService {
 
   adaptIp(whichServerIp:string){
     let currIp = this.getCurrIp()
+    // this.ES_INDEX = "/capstone";//REPLACE WITH nkdb after capstone
     if (currIp != this.FrontEnd_SERVER_IP){
       return this.DEV_IP;
       //console.log(currIp);
     }
     else{
-      this.ES_INDEX = "/capstone";//REPLACE WITH nkdb after capstone
       return whichServerIp;
     }
   }
