@@ -70,12 +70,7 @@ export class SearchResultComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
-      if (this.es.getKeyword() == undefined) {
-        this.es.setKeyword("북한산");
-        this.queryText = "북한산";
-      }
-    }
+
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
@@ -84,15 +79,27 @@ export class SearchResultComponent implements OnInit {
 
 
   async loadResultPage() {
+    // console.log("search result compoenent : loadResultPage working...")
+    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
+    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
+      if (this.es.getKeyword() == undefined) {
+        this.es.setKeyword("북한산");
+        this.queryText = "북한산";
+        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
+
+      }
+    }
+
     this.isSearchLoaded = false;
     this.isKeyLoaded = false;
     this.isRelatedLoaded = true;//plan to be removed
 
     this.idControl.clearIdList();
     this.userSearchHistory = [];
+    this.relatedKeywords = [];
     this.searchResultIdList = [];
     this.keepIdList = [];
-    let queryText = this.es.getKeyword();
+    let queryText = this.es.getKeyword();     
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
     this.getUserSearchHistory()
@@ -152,6 +159,8 @@ export class SearchResultComponent implements OnInit {
    
   }
 
+
+  //각 문서마다 들어갈 상위 키워드를 저장할 array
   private keywords: any[] = [];
 
   loadKeywords() {
@@ -164,8 +173,10 @@ export class SearchResultComponent implements OnInit {
       for (let n = 0; n < data.length; n++) {
         let tfVal = data[n]["tfidf"];
         // console.log(tfVal[0])
-        this.keywords.push(tfVal)
-        this.relatedKeywords.push(tfVal[0])
+        this.keywords.push(tfVal)//각 문서에 상위 키워드 배열을 담는다.
+
+        if(this.relatedKeywords.length < 10)
+          this.relatedKeywords.push(tfVal[0])//현재 검색어의 연관검색어를 각 문서의 상위 키워드로 저장
       }
     })
     // //console.log("keywords : ",this.keywords)
