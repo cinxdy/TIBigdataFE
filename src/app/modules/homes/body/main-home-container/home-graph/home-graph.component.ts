@@ -30,7 +30,7 @@ export class HomeGraphComponent implements OnInit {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
     // width: 1000,
     // height: 250,
-    overflow: true
+    // overflow: true
   };
   serverData: JSON;
   cData: CloudData[] = [];
