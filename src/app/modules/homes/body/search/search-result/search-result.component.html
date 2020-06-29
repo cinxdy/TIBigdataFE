@@ -52,7 +52,7 @@
             </div>
 
             <!-- 좌측 검색 필터 -->
-            <div uk-grid>
+            <div class="uk-margin-small" uk-grid>
                 <div class="search-filter uk-align-center">
                     <app-search-filter></app-search-filter>
                 </div>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <!-- 중앙 검색 결과 -->
-        <div class="uk-width-expand">
+        <div class="uk-width-*">
 
             <div class="search-result">
                 <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
