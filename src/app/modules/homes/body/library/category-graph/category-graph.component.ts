@@ -95,18 +95,19 @@ export class CatGraphComponent implements OnInit {
         })
         // .showLabels(true)
         .color('color')
-        // .onClick((d) => {
-        //   if (d.level == "child") {
-        //     this.title = "" + d.name;
-        //     this.contents = "Contents : " + d.contents;
-        //     this.keywords = "Keywords : " + d.keyWords;
+        .onClick((d) => {
+          console.log(d)
+          if (d.level == "child") {
+            this.title = "" + d.name;
+            this.contents = "Contents : " + d.contents;
+            this.keywords = "Keywords : " + d.keyWords;
 
-        //     console.log(d.name + d.contents + d.keyWords);
+            console.log(d.name + d.contents + d.keyWords);
 
-        //   }
-        //   else
-        //     myChart.focusOnNode(d);
-        // })
+          }
+          else
+            myChart.focusOnNode(d);
+        })
         (
           // document.getElementById('chartSun'),
           document.getElementById('chartSun')
