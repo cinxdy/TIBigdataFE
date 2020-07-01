@@ -35,11 +35,12 @@ export class RegisterComponent implements OnInit {
   }
 
   // when button clicked, this func init.
-  registerUser(){
+  async registerUser(){
     if(this.pw1 == this.pw2)//check for sure
       this.registerUserData.password = this.pw1;
     console.log(this.registerUserData);
-    this.eAuth.register(this.registerUserData) //_auth : register user service
+    await this.eAuth.register(this.registerUserData) //_auth : register user service
+    this._router.navigate(['/homes'])
   }
   
   toSocReg(){
