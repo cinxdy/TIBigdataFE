@@ -7,13 +7,24 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { IpService } from 'src/app/ip.service';
 import { DocumentService } from "../../../homes/body/search/service/document/document.service";
 import { QueryServiceService } from '../query-service.service';
+class storeToken {
+    //property coverage should be considered more... use private?
+    type: logStat;
+    token: string;
+  
+    constructor(type: logStat, token: string) {
+      this.type = type;
+      this.token = token
+    }
+  }
+
 @Injectable({
     providedIn: 'root'
 })
 export class AuthEmailService extends  Auth{
 
     protected URL = this.ipService.get_FE_DB_ServerIp();
-
+    protected user : UserProfile;
     private EMAIL_REG_URL = this.URL + "/eUser/register"; //mongoDB
     private EMAIL_LOGIN_URL = this.URL + "/eUser/login";
     private EMAIL_VERIFY_TOKEN = this.URL + "/eUser/verify";
@@ -40,7 +51,9 @@ export class AuthEmailService extends  Auth{
      */
 
     getProfile(user: any) {
-        throw new Error("Method not implemented.");
+        console.log("getProfile from eamil auth : ", this.user)
+        return this.user;
+        // throw new Error("Method not implemented.");
     }
     
     /**
@@ -74,7 +87,7 @@ export class AuthEmailService extends  Auth{
         }
         else {
             let res = await this.http.post<any>(this.EMAIL_REG_URL, user).toPromise();
-
+            
             // //console.log(res)
             alert("환영합니다, " + res.payload.name + "님. 홈 화면으로 이동합니다.");
             return res.succ;
@@ -101,7 +114,11 @@ export class AuthEmailService extends  Auth{
             // login succ
             if (res.succ) {
                 alert("돌아오신 걸 환영합니다, " + res.payload.name + "님. 홈 화면으로 이동합니다.");
-                return { logStat: logStat.email, token: res.payload.toekn, name: res.payload.name, email: res.payload.email };
+                console.log("answer : ",res)
+            localStorage.setItem('token', JSON.stringify(new storeToken(logStat.email, res.payload.token)));
+                this.user = new UserProfile(logStat.email,res.payload.email,res.payload.name,res.payload.token)
+                console.log("result : ", this.user);
+                return { logStat: logStat.email, token: res.payload.token, name: res.payload.name, email: res.payload.email };
             }
             // this.auth.confirmUser(this.auth.logStat.email, res);
             //login fail. maybe wrong password or id?

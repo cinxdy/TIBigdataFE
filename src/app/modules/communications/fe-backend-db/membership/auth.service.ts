@@ -253,7 +253,7 @@ export class EPAuthService {
   async verifySignIn() {
     var isSignIn: boolean = false;
     var tk_with_type = JSON.parse(this.getToken());//token is stored in string.
-
+    console.log("token: " ,tk_with_type)
     if (tk_with_type) {//when token exists
       var tk = tk_with_type.token;
       var type = tk_with_type.type;
@@ -263,17 +263,23 @@ export class EPAuthService {
       /**
        * create instance or get instance using singlton pattern.
        */
-      if(type == logStat.google)
+      if(type == logStat.google){
         this.auth = this.gAuth.getInstance();
-      else if(type == logStat.email)
+
+      }
+      else if(type == logStat.email){
         this.auth = this.eAuth.getInstance();
+        console.log("email mode")
+      }
 
 
 
       var tkStat = await this.auth.verifyToken(tk);//verify it this token is valid or expired.
-      //console.log(tkStat);
-      if (tkStat.status) {//if token is valid
+      console.log("tkStat:", tkStat);
+      if (tkStat.succ) {//if token is valid
         this.userProfile = this.auth.getProfile(tkStat);
+        console.log("userProfile: ",this.userProfile)
+        console.log(this.auth)
         let isSU = this.SUPERUSER.findIndex(i => {
           i == this.userProfile.name
         })

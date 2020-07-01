@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
   }
 
   // login with email
-  eLogIn() {
-    this.eAuth.logIn(this.loginUserData)
+  async eLogIn() {
+    await this.eAuth.logIn(this.loginUserData)
     this._router.navigate(['/homes'])
     // .subscribe((res) => {
     //   //nickname should be added to identify user using the applicatoin.
