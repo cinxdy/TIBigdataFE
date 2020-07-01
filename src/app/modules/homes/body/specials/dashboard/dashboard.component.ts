@@ -387,31 +387,35 @@ export class DashboardComponent implements OnInit {
     this.db.getRcmdTable(this.chosenList[0], 10, true).then(data1 => {
       console.log("makeRelatedCloud : ",data1);
 
-
+      data1 = data1[0]["rcmd"]
       let data = []
       let count = 0;
-      for(let i = 0 ; i < data.length; i++){
-        console.log(data1[i])
-        if(data1[i]){
-          data[count] = data1[i]
-          count++;
+      let idsArr = []
+      let valArr = []
+      for(let i = 0 ; i < data1.length; i++){
+        if(data1[i] != undefined && data1[i].length > 0){
+          console.log(data1[i].length)
+          idsArr.push(data1[i][0])
+          valArr.push(data1[i][1])
+          // data[count] = data1[i][0]
+          // count++;
         }
       }
 
       // let graphData = data[0]["rcmd"] as [];
-      console.log("data : ", data);
-      let idsArr = []
-      let valArr = []
-      data.map(d => {
-        idsArr.push(d[0])
-        valArr.push(d[1])
-        return
-      })
+      // console.log("data : ", data);
+      // let idsArr = []
+      // let valArr = []
+      // data.map(d => {
+      //   idsArr.push(d[0])
+      //   valArr.push(d[1])
+      //   return
+      // })
       // for (let k = 0; k < graphData.length; k++) {
       //   idsArr.push(graphData[k][1])
       // }
       this.docSvc.convertID2Title(idsArr).then(t => {
-        console.log("ad arr :", idsArr);
+        console.log("ids arr :", idsArr);
         console.log("titles : ", t);
         let titles = t as [];
 
