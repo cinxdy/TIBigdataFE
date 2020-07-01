@@ -44,15 +44,15 @@
 
             <!-- 문서 저장 KEEP -->
             <div class="uk-margin-small" uk-grid>
-                <div *ngIf="isLogStat">
-                    <button (click)="keepMyDoc()" class="uk-button uk-button-primary uk-align-center">
+                <div class="uk-align-center" *ngIf="isLogStat">
+                    <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
                         KEEP
                     </button>
                 </div>
             </div>
 
             <!-- 좌측 검색 필터 -->
-            <div class="uk-margin-small" uk-grid>
+            <div uk-grid>
                 <div class="search-filter uk-align-center">
                     <app-search-filter></app-search-filter>
                 </div>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <!-- 중앙 검색 결과 -->
-        <div class="uk-width-*">
+        <div class="uk-width-expand">
 
             <div class="search-result">
                 <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
