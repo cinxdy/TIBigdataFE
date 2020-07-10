@@ -17,6 +17,7 @@ const keepDoc = require('./keepMyDocQuery');
 const keywords = require('./tfidfQuery');
 const rcmds = require('./rcmdQuery');
 const topic = require('./topicQuery');
+const community = require('./communityDocsQuery')
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/gUser',gUserQry);
@@ -26,6 +27,7 @@ app.use('/myDoc',keepDoc);
 app.use('/keyword',keywords);
 app.use('/rcmd', rcmds);
 app.use('/topic',topic)
+app.use('/community',community);
 //root dir
 app.get('/', function(req, res) {
     res.send('Hello from server');
