@@ -115,6 +115,10 @@ export class NavComponent implements OnInit {
   toControl(){
     this._router.navigateByUrl("/membership/control");
   }
+
+  toCommunity(){
+    this._router.navigateByUrl("/community")
+  }
 }
 
 

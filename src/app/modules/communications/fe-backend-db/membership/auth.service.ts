@@ -335,19 +335,19 @@ export class EPAuthService {
   addSrchHst(keyword: string): void {
     // //console.log(this.socUser);
 
-
+    let bundle = { login: undefined, email: undefined, key: keyword }
     if (this.isLogIn) {
-      // //console.log("add serach history : user is login.", this.userProfile)
+      console.log("add serach history : user is login.", this.userProfile)
       let userEmail = this.userProfile.email;
-      let bundle = { login: this.isLogIn, email: userEmail, key: keyword }
-      this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
-        //console.log("history added raw result : ", res);
-        this.schHst = res.history;
-        //console.log("personal history : ", this.schHst);
-      });
+      bundle = { login: this.isLogIn, email: userEmail, key: keyword }
     }
-    else
-      console.log("비 로그인 상태")
+        this.http.post<any>(this.ADD_SEARCH_HISTORY_URL, bundle).subscribe((res) => {
+          console.log("history added raw result : ", res);
+          this.schHst = res.history;
+          console.log("personal history : ", this.schHst);
+        });
+    // else
+      // console.log("비 로그인 상태")
 
   }
 

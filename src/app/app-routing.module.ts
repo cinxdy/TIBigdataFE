@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./modules/communications/communication.module').then(m => m.CommunicationModule),
     // canLoad : [AuthGuard]./modules/communications/communication.module
   },
+  {
+    path : 'community',
+    loadChildren: () => import('./modules/homes/body/community/community.module').then(m => m.CommunityModule),
+  }
  
  
 
