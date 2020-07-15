@@ -63,17 +63,18 @@ async function loadFirstDocList() {
 
 function loadNextDocList(req, res) {
     let bundle = req.body;
-    let start_idx = bundle.cur_idx + DOC_NUMBERS;//다음 문서 리스트 idx
-
-    testHook = function (){
+    let start_idx = bundle.cur_start_idx + DOC_NUMBERS;//다음 문서 리스트 idx
+    // console.log(start_idx)
+    testHook = function () {
         return new Promise(r => {
 
             comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
                 if (err)
-                console.log("/loadFirstDocList failed");
+                    console.log("/loadNextDocList failed");
                 else {
+                    // console.log(doc_res)
                     // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
-                    r( new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }) );
+                    r(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
                     // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
                 }
             })
