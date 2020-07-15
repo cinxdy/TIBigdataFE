@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 const communityModule = require('./communityDocsQuery')
 const funcTest = communityModule.writeNewDoc;
 
+const Res = require('./models/Res');
+
 function removeCollection(){
     return new Promise((resolve)=>{
 
@@ -64,21 +66,20 @@ describe('community module tests', function () {
         })
     });
 
-    it('writeNewDoc test',  (done) => {
+    it('writeNewDoc test',  async () => {
         var testCases = [];
         var flag = 0;
         for (var i = 0; i < 10; i++) {
             sample = { body: { user: "user"+i, content: "content"+i } }
             // console.log(funcTest);
-            funcTest(sample).then((r)=>{
-                // console.log("flag : "+flag)
-                flag ++;
-                // console.log(r)
-                if(flag > 9)
-                done(); 
-                
-            })
-            
+            r = await funcTest(sample);
+            console.log(r)
+            // console.log(i ," : ", r);
+            var _res_ = new Res(true,"writeNewDoc ok");
+            // console.log(_res_)
+            assert.deepEqual(r,_res_);
+        
+        
             
         }
     })

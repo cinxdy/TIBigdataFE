@@ -26,7 +26,7 @@ export class CommunityComponent implements OnInit {
    * @param i : i번째 문서를 읽는다
    */
   navToReadThisDoc(i: number) {
-
+    
   }
 
   /**
@@ -48,6 +48,7 @@ export class CommunityComponent implements OnInit {
    * @description 새 글 쓰는 화면으로 이동
    */
   navToWriteNewDoc() {
+    this.router.navigateByUrl("community/newDoc");
 
   }
   /**

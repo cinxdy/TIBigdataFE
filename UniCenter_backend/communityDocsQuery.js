@@ -105,9 +105,9 @@ router.get('/loadPriorDocList', (req, res) => {
     })
 })
 
-function writeNewDoc(req, res) {
+async function writeNewDoc(req, res) {
     let bundle = req.body;
-    console.log("writeNewDoc : ", bundle);
+    // console.log("writeNewDoc : ", bundle);
     let user = bundle.user;
     let content = bundle.content;
     let time = new Date();
@@ -125,26 +125,114 @@ function writeNewDoc(req, res) {
     newComDoc = new comDoc(data);
 
 
+    /**
+     * real working operation
+     */
+    // newComDoc.save((err, data) => {
+    //     if (err)
+    //         console.log("error occured! : ", err);
+    //     else {
+    //         // console.log("data saved!");
+    //         // debug(new Res(true,"writeNewDoc ok"))
+    //         res.status(200).send(new Res(true,"writeNewDoc ok"));
+    //     }
+    // })
 
-    return new Promise((resolve) => {
+    /**
+     * test operation
+     */
+    // return new Promise((resolve) => {
+    //     newComDoc.save((err, data) => {
+    //         if (err)
+    //             console.log("error occured! : ", err);
+    //         else {
+    //             // console.log("data saved!");
+    //             // debug(new Res(true,"writeNewDoc ok"))
+    //             resolve(new Res(true, "writeNewDoc ok"))
+    //         }
+    //     })
+    // })
+    testhook = function () {
+        console.log("texthook init!")
+        return new Promise(r => {
+
+            newComDoc.save((err, data) => {
+
+                if (err)
+                    console.log("error occured! : ", err);
+                else {
+                    console.log("data saved!");
+                    // debug(new Res(true,"writeNewDoc ok"))
+                    r(new Res(true, "writeNewDoc ok"))
+                    // resolve(new Res(true, "writeNewDoc ok"));
+                }
+            })
+        })
+    }
+
+    realHook = function () {
         newComDoc.save((err, data) => {
             if (err)
                 console.log("error occured! : ", err);
             else {
-                console.log("data saved!");
-                resolve(new Res(true, "writeNewDoc ok"))
+                // console.log("data saved!");
                 // debug(new Res(true,"writeNewDoc ok"))
-                // res.status(200).send(new Res(true,"writeNewDoc ok"));
+                res.status(200).send(new Res(true, "writeNewDoc ok"));
             }
         })
-    })
+    }
+    return await template(realHook, false);
 
-    // return newComDoc.save();
+
+
+
+
+
+
 }
 
-function dumb() {
+/**
+ * template method
+ */
+function template(hook, isTest) {
+    // console.log("template func init")
+    /**
+     * if test
+     */
+    if (isTest) {
+        return new Promise(async (resolve) => {
+            // console.log("in promise")
+            _res_ = await hook()
+            // console.log("promise almost done! r : ", _res_)
+            resolve(_res_);
 
+        })
+    }
+    // console.log("isTest part fin.")
+
+    /**
+     * if real operation
+     */
+    else {
+        hook();
+    }
 }
+
+/**
+ * hook method
+ */
+
+//  function hook(resolve){
+//     newComDoc.save((err, data) => {
+//         if (err)
+//             console.log("error occured! : ", err);
+//         else {
+//             // console.log("data saved!");
+//             // debug(new Res(true,"writeNewDoc ok"))
+//             resolve(new Res(true,"writeNewDoc ok"))
+//         }
+//     })
+//  }
 
 router.post('/writeNewDoc', writeNewDoc)
 
