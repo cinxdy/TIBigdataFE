@@ -5,91 +5,29 @@ const Res = require('./models/Res');
 
 const DOC_NUMBERS = 10;
 
-
-function debug(result) {
-    // let isTest = false;
-    // func = undefined;
-    // if(isTest){
-    //     func = function(){
-    //         res.json(result)
-    //     }
-    // }
-    // else{
-    func = function () {
-        return new Promise((resolve) => {
-            resolve(result)
-        })
-    }
-    // }
-
-    return func;
-}
-
-//test community server file
-// var assert = require('assert');
-// describe('writeNewDoc',() =>{
-//     it('writeNewDoc test',() =>{
-//         for(var i = 0 ; i < 10; i++){
-//             sample = {body : { user : "user1", content : "content1"}}
-//             writeNewDoc(sample)
-//         }
-//         assert.equal(comDoc, sample)
-//     })
-
-
-// })
-
-
+/**
+ * 
+ * template method 아이디어
+ * 
+ * let db_res;
+ * mongodb.function((err,db_data)=>{
+ *  ...
+ *  db_res = db_data
+ * })
+ * 
+ * if(db_res)
+ * res.status(200).send(db_res)
+ */
 
 //yet useless dir
 router.get('/', (req, res) => {
     res.send('communityDocQuery works!');
 })
 
-router.get('/loadFirstDocList', (req, res) => {
-    comDoc.find({}).limit(DOC_NUMBERS).exec((err, res) => {
-        if (err)
-            console.log("/loadFirstDocList failed");
-        else {
-            debug(new Res(true, "/loadFirstDocList ok", res))
-            // res.json(new Res(true,"/loadFirstDocList ok",res));
-        }
-    })
 
-    // hst.aggregate([
-    //     {
-    //         $group: { _id: { keyword: '$keyword' }, count: { $sum: 1} }
-    //     },
-    //     {
-    //         $sort: { count : -1}
-    //     },
-    //     {
-    //         $limit: 30 
-    //     }
-    //     ],(err,docs) =>{
-    //         // console.log(docs)
-    //         if(err)
-    //             console.log("error in get total history in get")
-    //         else    
-    //             res.json(new Res(true, "response of get of get total data .",docs))
-    //     });
+router.get('/loadFirstDocList', loadFirstDocList);
 
-});
-
-router.get('/loadNextDocList', (req, res) => {
-    let bundle = req.body;
-    let cur_idx = bundle.cur_idx + DOC_NUMBERS;//다음 문서 리스트 idx
-
-    comDoc.find({}).skip(cur_idx).limit(cur_idx + DOC_NUMBERS).exec((err, doc_res) => {
-        if (err)
-            console.log("/loadFirstDocList failed");
-        else {
-            debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: cur_idx }))
-
-            // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :cur_idx}));
-        }
-    })
-})
+router.get('/loadNextDocList', loadNextDocList);
 
 router.get('/loadPriorDocList', (req, res) => {
     let bundle = req.body;
@@ -104,6 +42,47 @@ router.get('/loadPriorDocList', (req, res) => {
         }
     })
 })
+
+async function loadFirstDocList() {
+
+    testHook = function () {
+        return new Promise(r => {
+            comDoc.find({}).limit(DOC_NUMBERS).exec((err, res) => {
+                if (err)
+                    console.log("/loadFirstDocList failed");
+                else {
+                    r(new Res(true, "/loadFirstDocList ok", res))
+                }
+            })
+
+        })
+    }
+
+    return await template(testHook, true);
+}
+
+function loadNextDocList(req, res) {
+    let bundle = req.body;
+    let start_idx = bundle.cur_idx + DOC_NUMBERS;//다음 문서 리스트 idx
+
+    testHook = function (){
+        return new Promise(r => {
+
+            comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+                if (err)
+                console.log("/loadFirstDocList failed");
+                else {
+                    // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
+                    r( new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }) );
+                    // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
+                }
+            })
+        })
+    }
+
+    return template(testHook, true);
+}
+
 
 async function writeNewDoc(req, res) {
     let bundle = req.body;
@@ -153,18 +132,13 @@ async function writeNewDoc(req, res) {
     //     })
     // })
     testhook = function () {
-        console.log("texthook init!")
         return new Promise(r => {
-
             newComDoc.save((err, data) => {
-
                 if (err)
                     console.log("error occured! : ", err);
                 else {
-                    console.log("data saved!");
-                    // debug(new Res(true,"writeNewDoc ok"))
+                    // console.log("data saved!");
                     r(new Res(true, "writeNewDoc ok"))
-                    // resolve(new Res(true, "writeNewDoc ok"));
                 }
             })
         })
@@ -175,19 +149,11 @@ async function writeNewDoc(req, res) {
             if (err)
                 console.log("error occured! : ", err);
             else {
-                // console.log("data saved!");
-                // debug(new Res(true,"writeNewDoc ok"))
                 res.status(200).send(new Res(true, "writeNewDoc ok"));
             }
         })
     }
-    return await template(realHook, false);
-
-
-
-
-
-
+    return await template(testhook, true);
 
 }
 
@@ -195,20 +161,16 @@ async function writeNewDoc(req, res) {
  * template method
  */
 function template(hook, isTest) {
-    // console.log("template func init")
     /**
      * if test
      */
     if (isTest) {
         return new Promise(async (resolve) => {
-            // console.log("in promise")
             _res_ = await hook()
-            // console.log("promise almost done! r : ", _res_)
             resolve(_res_);
 
         })
     }
-    // console.log("isTest part fin.")
 
     /**
      * if real operation
@@ -218,23 +180,7 @@ function template(hook, isTest) {
     }
 }
 
-/**
- * hook method
- */
-
-//  function hook(resolve){
-//     newComDoc.save((err, data) => {
-//         if (err)
-//             console.log("error occured! : ", err);
-//         else {
-//             // console.log("data saved!");
-//             // debug(new Res(true,"writeNewDoc ok"))
-//             resolve(new Res(true,"writeNewDoc ok"))
-//         }
-//     })
-//  }
-
 router.post('/writeNewDoc', writeNewDoc)
 
 // exports.writeNewDoc = writeNewDoc;
-module.exports = { writeNewDoc, };
+module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, DOC_NUMBERS };
