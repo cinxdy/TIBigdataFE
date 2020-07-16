@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommunityRootComponent} from './community-root/community-root.component';
 import { CommunityComponent } from './community/community.component';
 import { WriteNewCommunityDocComponent } from './write-new-community-doc/write-new-community-doc.component';
-
+import { ReadCommunityDocComponent } from "./read-community-doc/read-community-doc.component";
 const routes: Routes = [
   {
     path : "",
@@ -16,6 +16,10 @@ const routes: Routes = [
       {
         path :"newDoc",
         component : WriteNewCommunityDocComponent
+      },
+      {
+        path :"readDoc",
+        component :ReadCommunityDocComponent
       }
         
     ]

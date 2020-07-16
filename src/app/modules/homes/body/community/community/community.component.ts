@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { CommunityServiceService } from 'src/app/modules/communications/fe-backend-db/community/community-service.service';
 
 @Component({
   selector: 'app-community',
@@ -8,17 +9,30 @@ import { Router } from "@angular/router";
 })
 export class CommunityComponent implements OnInit {
 
+  private docList : {}[] = [];
+  private cur_start_idx : number = 0;
+  headers = ["번호", "이름", "내용"];
+
   constructor(       
-    private router: Router,) { }
+    private router: Router, private cm_svc : CommunityServiceService) { }
 
   ngOnInit() {
+    this.loadFirstDocList();
   }
 
   /**
    * @description 가장 최근 게시판 글들 로드하는 함수
    */
-  loadFirstDocList() {
+  async loadFirstDocList() {
+    this.docList = await this.cm_svc.loadFirstDocList();
+    if(this.docList.length != 10){
+      console.log("ERROR : community component : load first doc list : doc num not 10");
+    }
+    // console.log("cur_start idx : ", this.cur_start_idx)
 
+    this.cur_start_idx = this.cm_svc.getNewStartIDx();//first page doc num= 기준 문서 수
+    // console.log("new cur_start idx : ", this.cur_start_idx)
+    // console.log("community component : load first doc list : ", this.docList);
   }
 
   /**
@@ -26,22 +40,33 @@ export class CommunityComponent implements OnInit {
    * @param i : i번째 문서를 읽는다
    */
   navToReadThisDoc(i: number) {
-    
+    // console.log(i+"th doc clicked!")
+    this.cm_svc.choseDoc(i);
+    this.router.navigateByUrl("community/readDoc");
+
   }
 
   /**
    * @function pressNextList
    * @description 다음 리스트의 커뮤니티 게시판을 요청하는 함수. FE 백엔드 서버에 요청.
    */
-  pressNextList() {
-
+  async pressNextList() {
+    
+    this.docList = await this.cm_svc.loadNextDocList(this.cur_start_idx);
+    // console.log("pressNextList : ", this.docList)
+    // console.log("cur idx : ", this.cur_start_idx)
+    this.cur_start_idx = this.cm_svc.getNewStartIDx();
+    // console.log("new cur idx : ", this.cur_start_idx)
   }
 
   /**
    * @description 이전 게시판 글 리스트를 요청하는 함수
    */
-  pressPriorList() {
-
+  async pressPriorList() {
+    this.docList = await this.cm_svc.loadPriorDocList(this.cur_start_idx);
+    // console.log("pressNextList : ", this.docList)
+    // console.log("cur idx : ", this.cur_start_idx)
+    this.cur_start_idx = this.cm_svc.getNewStartIDx();
   }
 
   /**

@@ -28,13 +28,13 @@ router.post('/writeNewDoc', writeNewDoc)
 
 router.get('/loadFirstDocList', loadFirstDocList);
 
-router.get('/loadNextDocList', loadNextDocList);
+router.post('/loadNextDocList', loadNextDocList);
 
-router.get('/loadPriorDocList', loadPriorDocList);
+router.post('/loadPriorDocList', loadPriorDocList);
 
 
 
-async function loadFirstDocList(req,res) {
+async function loadFirstDocList(req, res) {
 
     testHook = function () {
         return new Promise(r => {
@@ -49,12 +49,12 @@ async function loadFirstDocList(req,res) {
         })
     }
 
-    
+
     res_tmp = await template(testHook, IS_TEST);
-    if(IS_TEST){
+    if (IS_TEST) {
         return res_tmp;
     }
-    else{
+    else {
         res.status(200).send(res_tmp);
     }
 }
@@ -76,13 +76,21 @@ async function loadPriorDocList(req, res) {
         })
     }
 
-    return await template(testHook,true);
+    res_tmp = await template(testHook, IS_TEST);
+    // console.log("res_tmp : " , res_tmp);
+    if (IS_TEST) {
+        return res_tmp;
+    }
+    else {
+        console.log("real operation in write new doc")
+        res.status(200).send(res_tmp);
+    }
 }
 
-function loadNextDocList(req, res) {
+async function loadNextDocList(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx + DOC_NUMBERS;//다음 문서 리스트 idx
-    // console.log(start_idx)
+    console.log(start_idx)
     testHook = function () {
         return new Promise(r => {
 
@@ -90,7 +98,7 @@ function loadNextDocList(req, res) {
                 if (err)
                     console.log("/loadNextDocList failed");
                 else {
-                    // console.log(doc_res)
+                    console.log(doc_res)
                     // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
                     r(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
                     // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
@@ -99,7 +107,15 @@ function loadNextDocList(req, res) {
         })
     }
 
-    return template(testHook, true);
+    res_tmp = await template(testHook, IS_TEST);
+    // console.log("res_tmp : " , res_tmp);
+    if (IS_TEST) {
+        return res_tmp;
+    }
+    else {
+        console.log("real operation in write new doc")
+        res.status(200).send(res_tmp);
+    }
 }
 
 
@@ -156,30 +172,20 @@ async function writeNewDoc(req, res) {
                 if (err)
                     console.log("error occured! : ", err);
                 else {
-                    console.log("data saved!");
+                    // console.log("data saved!");
                     r(new Res(true, "writeNewDoc ok"))
                 }
             })
         })
     }
 
-    realHook = function () {
-        newComDoc.save((err, data) => {
-            if (err)
-                console.log("error occured! : ", err);
-            else {
-                res.status(200).send(new Res(true, "writeNewDoc ok"));
-            }
-        })
-    }
-
     res_tmp = await template(testHook, IS_TEST);
-    console.log("res_tmp : " , res_tmp);
-    if(IS_TEST){
+    // console.log("res_tmp : " , res_tmp);
+    if (IS_TEST) {
         return res_tmp;
     }
-    else{
-        console.log("real operation in write new doc")
+    else {
+        // console.log("real operation in write new doc")
         res.status(200).send(res_tmp);
     }
     // return await template(testhook, true);
@@ -190,24 +196,12 @@ async function writeNewDoc(req, res) {
  * template method
  */
 function template(hook, isTest) {
-    /**
-     * if test
-     */
-    // if (isTest) {
-        return new Promise(async (resolve) => {
-            _res_ = await hook()
-            console.log("_res_ : ", _res_);
-            resolve(_res_);
+    return new Promise(async (resolve) => {
+        _res_ = await hook()
+        // console.log("_res_ : ", _res_);
+        resolve(_res_);
+    })
 
-        })
-    // }
-
-    /**
-     * if real operation
-     */
-    // else {
-    //     hook();
-    // }
 }
 
 

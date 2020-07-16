@@ -16,12 +16,15 @@ export class WriteNewCommunityDocComponent implements OnInit {
   }
 
   async saveNewDocument(){
-    let body = {
-      user: "user", 
-      content: "content"
-   }
-    this.cm_svs.writeNewDoc(body);
-    alert("새글쓰기")
+    for(var i = 0 ; i < 100 ; i ++){
+      let body = {
+        user: "user" + i, 
+        content: "content" + i
+     }
+      this.cm_svs.writeNewDoc(body);
+
+    }
+    // alert("새글쓰기")
   }
 
   toCommunity(){
