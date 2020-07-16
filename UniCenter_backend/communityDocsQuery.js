@@ -4,7 +4,7 @@ const comDoc = require('./models/community');
 const Res = require('./models/Res');
 
 const DOC_NUMBERS = 10;
-
+const IS_TEST = false;
 /**
  * 
  * template method 아이디어
@@ -23,27 +23,18 @@ const DOC_NUMBERS = 10;
 router.get('/', (req, res) => {
     res.send('communityDocQuery works!');
 })
+router.post('/writeNewDoc', writeNewDoc)
 
 
 router.get('/loadFirstDocList', loadFirstDocList);
 
 router.get('/loadNextDocList', loadNextDocList);
 
-router.get('/loadPriorDocList', (req, res) => {
-    let bundle = req.body;
-    let cur_idx = bundle.cur_idx - DOC_NUMBERS;//다음 문서 리스트 idx
+router.get('/loadPriorDocList', loadPriorDocList);
 
-    comDoc.find({}).skip(cur_idx).limit(cur_idx + DOC_NUMBERS).exec((err, doc_res) => {
-        if (err)
-            console.log("/loadFirstDocList failed");
-        else {
-            debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: cur_idx }))
-            // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
-        }
-    })
-})
 
-async function loadFirstDocList() {
+
+async function loadFirstDocList(req,res) {
 
     testHook = function () {
         return new Promise(r => {
@@ -58,7 +49,34 @@ async function loadFirstDocList() {
         })
     }
 
-    return await template(testHook, true);
+    
+    res_tmp = await template(testHook, IS_TEST);
+    if(IS_TEST){
+        return res_tmp;
+    }
+    else{
+        res.status(200).send(res_tmp);
+    }
+}
+
+async function loadPriorDocList(req, res) {
+    let bundle = req.body;
+    let start_idx = bundle.cur_start_idx - DOC_NUMBERS;//다음 문서 리스트 idx
+
+    testHook = function () {
+        return new Promise(r => {
+            comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+                if (err)
+                    console.log("/loadPriorDocList failed");
+                else {
+                    r(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
+                    // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
+                }
+            })
+        })
+    }
+
+    return await template(testHook,true);
 }
 
 function loadNextDocList(req, res) {
@@ -87,7 +105,7 @@ function loadNextDocList(req, res) {
 
 async function writeNewDoc(req, res) {
     let bundle = req.body;
-    // console.log("writeNewDoc : ", bundle);
+    console.log("writeNewDoc : ", bundle);
     let user = bundle.user;
     let content = bundle.content;
     let time = new Date();
@@ -132,13 +150,13 @@ async function writeNewDoc(req, res) {
     //         }
     //     })
     // })
-    testhook = function () {
+    testHook = function () {
         return new Promise(r => {
             newComDoc.save((err, data) => {
                 if (err)
                     console.log("error occured! : ", err);
                 else {
-                    // console.log("data saved!");
+                    console.log("data saved!");
                     r(new Res(true, "writeNewDoc ok"))
                 }
             })
@@ -154,7 +172,17 @@ async function writeNewDoc(req, res) {
             }
         })
     }
-    return await template(testhook, true);
+
+    res_tmp = await template(testHook, IS_TEST);
+    console.log("res_tmp : " , res_tmp);
+    if(IS_TEST){
+        return res_tmp;
+    }
+    else{
+        console.log("real operation in write new doc")
+        res.status(200).send(res_tmp);
+    }
+    // return await template(testhook, true);
 
 }
 
@@ -165,23 +193,24 @@ function template(hook, isTest) {
     /**
      * if test
      */
-    if (isTest) {
+    // if (isTest) {
         return new Promise(async (resolve) => {
             _res_ = await hook()
+            console.log("_res_ : ", _res_);
             resolve(_res_);
 
         })
-    }
+    // }
 
     /**
      * if real operation
      */
-    else {
-        hook();
-    }
+    // else {
+    //     hook();
+    // }
 }
 
-router.post('/writeNewDoc', writeNewDoc)
 
 // exports.writeNewDoc = writeNewDoc;
-module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, DOC_NUMBERS };
+module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
+module.exports = router;

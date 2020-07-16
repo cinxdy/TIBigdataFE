@@ -21,6 +21,7 @@ export class CommunityServiceService {
    */
   async loadFirstDocList() {
     let res = await this.http.get<any>(this.URL_LOAD_FIRST_DOC_LIST).toPromise();
+    // console.log(res);
     if(res.succ){
       this.docList = res.payload.list;
     }
@@ -28,6 +29,13 @@ export class CommunityServiceService {
       this.isDocListExist = false;
     }
     return this.docList;
+  }
+
+  async writeNewDoc(body : {}){
+    
+    let res = await this.http.post<any>(this.URL_WRITE_NEW_DOC,body).toPromise();
+    console.log("community-service writeNewDoc : ", res);
+    alert("ok")
   }
 
   /**
