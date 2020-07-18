@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const comDoc = require('./models/community');
 const Res = require('./models/Res');
-
+const template = require('./test/template');
+console.log(template)
 const DOC_NUMBERS = 10;
-const IS_TEST = false;
+const IS_TEST = true;
 /**
  * 
  * template method 아이디어
@@ -195,16 +196,18 @@ async function writeNewDoc(req, res) {
 /**
  * template method
  */
-function template(hook, isTest) {
-    return new Promise(async (resolve) => {
-        _res_ = await hook()
-        // console.log("_res_ : ", _res_);
-        resolve(_res_);
-    })
+// function template(hook, isTest) {
+//     return new Promise(async (resolve) => {
+//         _res_ = await hook()
+//         // console.log("_res_ : ", _res_);
+//         resolve(_res_);
+//     })
 
-}
+// }
 
 
 // exports.writeNewDoc = loadFirstDocList;
+if(IS_TEST)
 module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
+else
 module.exports = router;
