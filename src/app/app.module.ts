@@ -21,7 +21,6 @@ import { SearchHistoryComponent } from './modules/homes/body/main-home-container
 import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/database.service';
 
 import { ChartsModule } from "ng2-charts";
-import { ReadCommunityDocComponent } from './src/app/modules/homes/body/community/read-community-doc/read-community-doc.component';
 
 
 @NgModule({
@@ -33,7 +32,6 @@ import { ReadCommunityDocComponent } from './src/app/modules/homes/body/communit
     HomeSearchBarComponent,
     HomeGraphComponent,
     SearchHistoryComponent,
-    ReadCommunityDocComponent
   ],
   imports: [
     BrowserModule,

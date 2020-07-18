@@ -10,12 +10,18 @@ import { CommunityServiceService } from 'src/app/modules/communications/fe-backe
 export class WriteNewCommunityDocComponent implements OnInit {
 
   constructor( private router: Router, private cm_svs : CommunityServiceService) { }
-
+  private title : string;
+  private content : string;
+  
   ngOnInit() {
     
   }
 
-  async saveNewDocument(){
+
+  /**
+   * @description 테스트로 더미 100개
+   */
+  testSave100(){
     for(var i = 0 ; i < 100 ; i ++){
       let body = {
         user: "user" + i, 
@@ -24,7 +30,13 @@ export class WriteNewCommunityDocComponent implements OnInit {
       this.cm_svs.writeNewDoc(body);
 
     }
-    // alert("새글쓰기")
+  }
+
+
+  async saveNewDocument(){
+    
+
+    
   }
 
   toCommunity(){

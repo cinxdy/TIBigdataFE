@@ -53,22 +53,26 @@
                     </ul>
                 </div>
             </li>
-            <li><a (click)="navigateSpecials()">특별기획</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <div *ngIf="isLogin">
-                            <li><a (click)="navigateSpecials()">대시보드</a></li>
-                        </div>
-                        <!-- <li><a href="#">기획2</a></li> -->
-                        <!-- <li><a href="#">기획3</a></li> -->
-                    </ul>
-                </div>
-            </li>
+            <div *ngIf="isLogin">
+
+                <li><a (click)="navigateSpecials()">특별기획</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <div *ngIf="isLogin">
+                                <li><a (click)="navigateSpecials()">대시보드</a></li>
+                            </div>
+                            <!-- <li><a href="#">기획2</a></li> -->
+                            <!-- <li><a href="#">기획3</a></li> -->
+                        </ul>
+                    </div>
+                </li>
+            </div>
             <li><a (click)="toCommunity()">커뮤니티</a>
 
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
                         <li><a (click)="toCommunity()">공지사항</a></li>
+                        <li><a (click)="toCommunity()">광장</a></li>
                         <li><a (click)="toCommunity()">FAQ</a></li>
                         <li><a (click)="toCommunity()">관리자에게 바란다.</a></li>
                         <!-- <li><a href="#">이벤트</a></li> -->

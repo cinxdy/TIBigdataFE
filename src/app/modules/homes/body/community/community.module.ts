@@ -6,10 +6,13 @@ import { CommunityRootComponent } from './community-root/community-root.componen
 import { CommunityComponent } from './community/community.component';
 import { WriteNewCommunityDocComponent } from './write-new-community-doc/write-new-community-doc.component';
 import { ReadCommunityDocComponent } from './read-community-doc/read-community-doc.component';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { FAQComponent } from './faq/faq.component';
+import { RequestToAdminComponent } from './request-to-admin/request-to-admin.component';
 
 
 @NgModule({
-  declarations: [CommunityRootComponent, CommunityComponent, WriteNewCommunityDocComponent, ReadCommunityDocComponent],
+  declarations: [CommunityRootComponent, CommunityComponent, WriteNewCommunityDocComponent, ReadCommunityDocComponent, AnnouncementComponent, FAQComponent, RequestToAdminComponent],
   imports: [
     CommonModule,
     CommunityRoutingModule
