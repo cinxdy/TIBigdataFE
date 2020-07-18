@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Keywords = require('./models/rcmd');
 const Res = require('./models/Res');
+
+const IS_TEST = true;
+
 router.get('/', (req, res) => {
     res.send('rcmdQuery')
 })
@@ -113,5 +116,8 @@ function getRcmdTbl(req, res) {
     )
 
 };
-module.exports = { getRcmdTbl, };
-module.exports = router;
+
+if(IS_TEST)
+    module.exports = { getRcmdTbl, };
+else
+    module.exports = router;

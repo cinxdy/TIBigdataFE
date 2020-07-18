@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const comDoc = require('./models/community');
 const Res = require('./models/Res');
-
+const template = require('./test/template');
 const DOC_NUMBERS = 10;
-const IS_TEST = false;
+// const template2 = require('./test/template');
+const IS_TEST = true;
 /**
  * 
  * template method 아이디어
@@ -36,27 +37,29 @@ router.post('/loadPriorDocList', loadPriorDocList);
 
 async function loadFirstDocList(req, res) {
 
-    testHook = function () {
-        return new Promise(r => {
-            comDoc.find({}).limit(DOC_NUMBERS).exec((err, res) => {
-                if (err)
-                    console.log("/loadFirstDocList failed");
-                else {
-                    r(new Res(true, "/loadFirstDocList ok", res))
-                }
-            })
+    hook = comDoc.find({}).limit(DOC_NUMBERS);
+    // return template2(hook);
+    // testHook = function () {
+    //     return new Promise(r => {
+    //         comDoc.find({}).limit(DOC_NUMBERS).exec((err, data) => {
+    //             if (err)
+    //                 console.log("/loadFirstDocList failed");
+    //             else {
+    //                 r(new Res(true, "/loadFirstDocList ok", data))
+    //             }
+    //         })
 
-        })
-    }
+    //     })
+    // }
 
 
-    res_tmp = await template(testHook, IS_TEST);
-    if (IS_TEST) {
-        return res_tmp;
-    }
-    else {
-        res.status(200).send(res_tmp);
-    }
+    // res_tmp = await template(testHook, IS_TEST);
+    // if (IS_TEST) {
+    //     return res_tmp;
+    // }
+    // else {
+    //     res.status(200).send(res_tmp);
+    // }
 }
 
 async function loadPriorDocList(req, res) {
@@ -82,7 +85,7 @@ async function loadPriorDocList(req, res) {
         return res_tmp;
     }
     else {
-        console.log("real operation in write new doc")
+        // console.log("real operation in write new doc")
         res.status(200).send(res_tmp);
     }
 }
@@ -90,7 +93,7 @@ async function loadPriorDocList(req, res) {
 async function loadNextDocList(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx + DOC_NUMBERS;//다음 문서 리스트 idx
-    console.log(start_idx)
+    // console.log(start_idx)
     testHook = function () {
         return new Promise(r => {
 
@@ -98,7 +101,7 @@ async function loadNextDocList(req, res) {
                 if (err)
                     console.log("/loadNextDocList failed");
                 else {
-                    console.log(doc_res)
+                    // console.log(doc_res)
                     // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
                     r(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
                     // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
@@ -121,7 +124,7 @@ async function loadNextDocList(req, res) {
 
 async function writeNewDoc(req, res) {
     let bundle = req.body;
-    console.log("writeNewDoc : ", bundle);
+    // console.log("writeNewDoc : ", bundle);
     let user = bundle.user;
     let content = bundle.content;
     let time = new Date();
@@ -192,19 +195,9 @@ async function writeNewDoc(req, res) {
 
 }
 
-/**
- * template method
- */
-function template(hook, isTest) {
-    return new Promise(async (resolve) => {
-        _res_ = await hook()
-        // console.log("_res_ : ", _res_);
-        resolve(_res_);
-    })
-
-}
 
 
-// exports.writeNewDoc = loadFirstDocList;
-module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
-module.exports = router;
+if(IS_TEST)
+    module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
+else
+    module.exports = router;
