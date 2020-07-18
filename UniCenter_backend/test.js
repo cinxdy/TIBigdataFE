@@ -18,7 +18,6 @@ const TEST_NUM = DOC_NUM * ITERATION;
 
 
 const Res = require('./models/Res');
-const { TIMEOUT } = require('dns');
 
 function removeCollection() {
     return new Promise((resolve) => {

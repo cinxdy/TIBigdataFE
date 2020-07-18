@@ -18,12 +18,20 @@ router.get('/test', (req, res) => {
     })
 })
 
-router.post('/getRcmdTbl', (req, res) => {
+router.post('/getRcmdTbl', getRcmdTbl);
+
+
+
+/**
+ * @description 문서의 id (혹은 id list) 을 전달 받으면 그 문서들의 연관 문서들을 문서 id 형태로 반환해준다. 
+ */
+function getRcmdTbl(req, res) {
     let ids = req.body["id"];
 
-    console.log("post getRcmdTbl")
-    console.log(ids)
-    console.log(typeof(ids))
+    // console.log("post getRcmdTbl")
+    // console.log(ids)
+    // console.log(typeof(ids))
+    //연관문서의 수를 몇개까지 반환해줄지 결정한다. 전달받은게 없으면 default으로 5개 반환한다.
     let num = req.body["num"]; //could be undefined if does not request specific num.
     if (num == undefined)
         num = 6;
@@ -31,6 +39,7 @@ router.post('/getRcmdTbl', (req, res) => {
         num = parseInt(num);
         num++;//자기 자신 지워야 한다. 코사인 유사도는 자기 자신에 대해서 가장 높은 값.
     }
+    //연관문서 결과를 반환할 때 연관된 정도의 수치도 함께 반환할지 결정
     let isSim = req.body["sim"]
     let matchQuery = undefined;
 
@@ -39,78 +48,10 @@ router.post('/getRcmdTbl', (req, res) => {
 
     else //when send string array
         matchQuery = { docID: { $in: ids } }
-    // if (typeof (ids) == "string")//only send one string 
-    //     matchQuery = { $and: [{ docID: ids }, { $ne: [{ $arrayElemAt: ["$rcmd", 0] }, ids] }] }
-
-    // else //when send string array
-    //     matchQuery = { $and: [{ docID: { $in: ids } }, { $ne: [{ $arrayElemAt: ["$rcmd", 0] }, ids] }] }
-    
     
     // console.log("right b4 equey")
-    console.log(matchQuery)
-    // Keywords.aggregate(
-    //     [
-    //         {
-    //             $match: matchQuery
-    //         },
-    //         {
-    //             $project: {
-    //                 docID: 1,
-    //                 rcmd: { $slice: ["$rcmd", num] }
-    //             }
-    //         },
-    //         {
-    //             $unwind: "$rcmd"
-    //         },
-
-    //     ], (err, doc) => {
-    //         console.log("till unwind : ", doc)
-    //     })
-    // Keywords.aggregate(
-    //     [
-    //         {
-    //             $match: matchQuery
-    //         },
-    //         {
-    //             $project: {
-    //                 docID: 1,
-    //                 rcmd: { $slice: ["$rcmd", num] }
-    //             }
-    //         },
-    //         {
-    //             $unwind: "$rcmd"
-    //         },
-    //         {
-    //             $project: {
-    //                 docID: 1,
-    //                 rcmd: {
-    //                     $filter: {
-    //                         input: "$rcmd",
-    //                         cond: {
-    //                             $ne: [{ $arrayElemAt: ["$rcmd", 0] }, ids]
-    //                         }
-    //                     }
-    //                 },
-    //             }
-    //         },
-    //         {
-    //             $project: {
-    //                 docID: 1,
-    //                 rcmd: {
-    //                     $cond: {
-    //                         if: isSim,
-    //                         then: "$rcmd",
-    //                         else: { $arrayElemAt: ["$rcmd", 0] }
-
-
-    //                     }
-    //                 }
-    //             }
-    //         },
-
-    //     ], (err, doc) => {
-    //         console.log("till project", doc)
-    //     })
+    // console.log(matchQuery)
+   
     Keywords.aggregate(
         [
             {
@@ -171,6 +112,6 @@ router.post('/getRcmdTbl', (req, res) => {
         }
     )
 
-})
-
+};
+module.exports = { getRcmdTbl, };
 module.exports = router;

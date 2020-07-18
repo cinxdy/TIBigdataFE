@@ -205,6 +205,6 @@ function template(hook, isTest) {
 }
 
 
-// exports.writeNewDoc = writeNewDoc;
+// exports.writeNewDoc = loadFirstDocList;
 module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
 module.exports = router;
