@@ -1,3 +1,4 @@
+const Res = require('../models/Res');
 
 /**
  * 
@@ -15,25 +16,29 @@ function template(hook,is_test) {
 /**
  * 
  */
-// function template2(hook,res, is_test){
-//     return new Promise(async (resolve)=>{
-//         hook().exec((err, data) => {
-//             if (err)
-//                 console.log("/loadFirstDocList failed");
-//             else {
-//                 resolve(new Res(true, "/loadFirstDocList ok", data))
-//             }
-//         })
-//     }).then((rtrn)=>{
-//         if (is_test) {
-//             return res_tmp;
-//         }
-//         else {
-//             res.status(200).send(res_tmp);
-//             return;
-//         }
-//     })
-// }
+function template2(hook,res, is_test){
+    console.log(hook)
+    return new Promise(async (resolve)=>{
+        hook.exec((err, data) => {
+            console.log("hook data : ", data)
+            if (err)
+                console.log("/loadFirstDocList failed");
+            else {
+                resolve(new Res(true, "/loadFirstDocList ok", data))
+            }
+        })
+    }).then((rtrn)=>{
+        console.log("rtrn done : ", rtrn)
+        // console.log
+        if (is_test) {
+            return rtrn;
+        }
+        else {
+            res.status(200).send(rtrn);
+            // return rtrn;
+        }
+    })
+}
 
 /**
  *     testHook = function () {
@@ -61,8 +66,4 @@ function template(hook,is_test) {
  * 
  */
 
-<<<<<<< HEAD
-module.exports = template;
-=======
-module.exports = {template};
->>>>>>> backup
+module.exports = {template, template2};

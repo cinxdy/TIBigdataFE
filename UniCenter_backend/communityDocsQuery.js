@@ -2,15 +2,12 @@ const express = require('express');
 const router = express.Router();
 const comDoc = require('./models/community');
 const Res = require('./models/Res');
-const template = require('./test/template');
-<<<<<<< HEAD
-console.log(template)
+const templateModule = require('./test/template');
+const template = templateModule.template;
+const template2 = templateModule.template2;
+// console.log(template)
 const DOC_NUMBERS = 10;
-=======
-const DOC_NUMBERS = 10;
-// const template2 = require('./test/template');
->>>>>>> backup
-const IS_TEST = true;
+const IS_TEST = false;
 /**
  * 
  * template method 아이디어
@@ -41,30 +38,9 @@ router.post('/loadPriorDocList', loadPriorDocList);
 
 
 async function loadFirstDocList(req, res) {
-
+    console.log("load first page ok")
     hook = comDoc.find({}).limit(DOC_NUMBERS);
-    // return template2(hook);
-    // testHook = function () {
-    //     return new Promise(r => {
-    //         comDoc.find({}).limit(DOC_NUMBERS).exec((err, data) => {
-    //             if (err)
-    //                 console.log("/loadFirstDocList failed");
-    //             else {
-    //                 r(new Res(true, "/loadFirstDocList ok", data))
-    //             }
-    //         })
-
-    //     })
-    // }
-
-
-    // res_tmp = await template(testHook, IS_TEST);
-    // if (IS_TEST) {
-    //     return res_tmp;
-    // }
-    // else {
-    //     res.status(200).send(res_tmp);
-    // }
+    return template2(hook,res,IS_TEST);
 }
 
 async function loadPriorDocList(req, res) {
