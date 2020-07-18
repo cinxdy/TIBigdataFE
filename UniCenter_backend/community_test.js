@@ -41,7 +41,7 @@ describe('community module tests', function () {
     after(removeCollection)
 
     //create tests
-    it.skip('save data test', function (done) {
+    it('save data test', function (done) {
         var cd = new comDoc({
             user: "username",
             content: "This is long long string contents",
@@ -65,7 +65,7 @@ describe('community module tests', function () {
         });
     });
 
-    it.skip('remove collection test', function (done) {
+    it('remove collection test', function (done) {
         removeCollection().then(() => {
 
             comDoc.count({}, (err, res) => {

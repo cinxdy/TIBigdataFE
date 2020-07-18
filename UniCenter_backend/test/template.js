@@ -61,4 +61,8 @@ function template(hook,is_test) {
  * 
  */
 
+<<<<<<< HEAD
 module.exports = template;
+=======
+module.exports = {template};
+>>>>>>> backup
