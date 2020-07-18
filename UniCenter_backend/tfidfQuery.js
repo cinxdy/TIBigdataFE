@@ -19,7 +19,7 @@ router.get("/test", (req, res) => {
 });
 
 /**
- * @description 받은 id 혹은 id list에 대해 
+ * @description 받은 id 혹은 id list에 대해 그 문서의 tfidf 값을 반환해준다.
  */
 function getKeyVal(req, res) {
     // console.log(req.body);
@@ -30,9 +30,11 @@ function getKeyVal(req, res) {
 
     else //when send string array
         matchQuery = { docID: { $in: ids } }
+    
+    let isVal = req.body["isVal"];//tfidf 값에 해당하는 키워드를 반환할 때 tfidf 값도 함께 반환할 것인지 파악.
 
+    //tfidf 테이블에서 몇개의 핵심 단어들을 반환할지 결정.  undefined 으로 넘어오면 default 5를 반환해준다.
     let num = req.body["num"]; //could be undefined.
-    let isVal = req.body["isVal"];
     // console.log("get req");
     // console.log(ids);
     if (num == undefined)
@@ -54,7 +56,7 @@ function getKeyVal(req, res) {
                 }
             },
             {
-                $unwind: "$tfidf"
+                $unwind: "$tfidf"//array을 풀어서 하나의 array으로 만든다.
             },
             {
                 $project: {
