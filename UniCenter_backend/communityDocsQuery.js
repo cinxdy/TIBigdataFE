@@ -7,7 +7,7 @@ const template = templateModule.template;
 const template2 = templateModule.template2;
 // console.log(template)
 const DOC_NUMBERS = 10;
-const IS_TEST = false;
+const IS_TEST = true;
 /**
  * 
  * template method 아이디어
@@ -38,68 +38,72 @@ router.post('/loadPriorDocList', loadPriorDocList);
 
 
 async function loadFirstDocList(req, res) {
-    console.log("load first page ok")
+    // console.log("load first page ok")
     hook = comDoc.find({}).limit(DOC_NUMBERS);
-    return template2(hook,res,IS_TEST);
+    return template2(hook, res, IS_TEST, "/loadFirstDocList failed", "/loadFirstDocList ok");
 }
 
 async function loadPriorDocList(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx - DOC_NUMBERS;//다음 문서 리스트 idx
 
-    testHook = function () {
-        return new Promise(r => {
-            comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
-                if (err)
-                    console.log("/loadPriorDocList failed");
-                else {
-                    r(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
-                    // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
-                }
-            })
-        })
-    }
+    // testHook = function () {
+    hook = comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS);
+    return template2(hook, res, IS_TEST, "/loadPriorDocList failed", "/loadPriorDocList ok");
+    // return new Promise(r => {
+    //     comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+    //         if (err)
+    //             console.log("/loadPriorDocList failed");
+    //         else {
+    //             r(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
+    //             // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
+    //         }
+    //     })
+    // })
+    // }
 
-    res_tmp = await template(testHook, IS_TEST);
-    // console.log("res_tmp : " , res_tmp);
-    if (IS_TEST) {
-        return res_tmp;
-    }
-    else {
-        // console.log("real operation in write new doc")
-        res.status(200).send(res_tmp);
-    }
+    // res_tmp = await template(testHook, IS_TEST);
+    // // console.log("res_tmp : " , res_tmp);
+    // if (IS_TEST) {
+    //     return res_tmp;
+    // }
+    // else {
+    //     // console.log("real operation in write new doc")
+    //     res.status(200).send(res_tmp);
+    // }
 }
 
 async function loadNextDocList(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx + DOC_NUMBERS;//다음 문서 리스트 idx
     // console.log(start_idx)
-    testHook = function () {
-        return new Promise(r => {
+    hook = comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS);
+    return template2(hook,res,IS_TEST,"/loadNextDocList failed","/loadNextDocList ok")
+    // testHook = function () {
+    //     return new Promise(r => {
 
-            comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
-                if (err)
-                    console.log("/loadNextDocList failed");
-                else {
-                    // console.log(doc_res)
-                    // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
-                    r(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
-                    // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
-                }
-            })
-        })
-    }
+    //         comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+    //             if (err)
+    //                 console.log("/loadNextDocList failed");
+    //             else {
+    //                 // console.log(doc_res)
+    //                 // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
+    //                 r(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
+    //                 // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
+    //             }
+    //         })
+    //     })
+    // }
 
-    res_tmp = await template(testHook, IS_TEST);
-    // console.log("res_tmp : " , res_tmp);
-    if (IS_TEST) {
-        return res_tmp;
-    }
-    else {
-        console.log("real operation in write new doc")
-        res.status(200).send(res_tmp);
-    }
+    // res_tmp = await template(testHook, IS_TEST);
+    // // console.log("res_tmp : " , res_tmp);
+    // if (IS_TEST) {
+    //     return res_tmp;
+    // }
+    // else {
+    //     console.log("real operation in write new doc")
+    //     res.status(200).send(res_tmp);
+    // }
 }
 
 
@@ -150,35 +154,39 @@ async function writeNewDoc(req, res) {
     //         }
     //     })
     // })
-    testHook = function () {
-        return new Promise(r => {
-            newComDoc.save((err, data) => {
-                if (err)
-                    console.log("error occured! : ", err);
-                else {
-                    // console.log("data saved!");
-                    r(new Res(true, "writeNewDoc ok"))
-                }
-            })
-        })
-    }
 
-    res_tmp = await template(testHook, IS_TEST);
-    // console.log("res_tmp : " , res_tmp);
-    if (IS_TEST) {
-        return res_tmp;
-    }
-    else {
-        // console.log("real operation in write new doc")
-        res.status(200).send(res_tmp);
-    }
+    hook = newComDoc.save();
+    return template2(hook,res,IS_TEST,"writeNewDoc failed ","writeNewDoc ok");
+    
+    // testHook = function () {
+    //     return new Promise(r => {
+    //         newComDoc.save((err, data) => {
+    //             if (err)
+    //                 console.log("error occured! : ", err);
+    //             else {
+    //                 // console.log("data saved!");
+    //                 r(new Res(true, "writeNewDoc ok"))
+    //             }
+    //         })
+    //     })
+    // }
+
+    // res_tmp = await template(testHook, IS_TEST);
+    // // console.log("res_tmp : " , res_tmp);
+    // if (IS_TEST) {
+    //     return res_tmp;
+    // }
+    // else {
+    //     // console.log("real operation in write new doc")
+    //     res.status(200).send(res_tmp);
+    // }
     // return await template(testhook, true);
 
 }
 
 
 
-if(IS_TEST)
+if (IS_TEST)
     module.exports = { writeNewDoc, loadFirstDocList, loadNextDocList, loadPriorDocList, DOC_NUMBERS };
 else
     module.exports = router;

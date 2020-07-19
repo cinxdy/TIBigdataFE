@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 
 //test methods and modules
 const communityModule = require('./communityDocsQuery')
-const funcTest = communityModule.writeNewDoc;
+const writeNewDoc = communityModule.writeNewDoc;
 const loadFirstDocList = communityModule.loadFirstDocList;
 const loadNextDocList = communityModule.loadNextDocList;
 const loadPriorDocList = communityModule.loadPriorDocList;
@@ -18,6 +18,7 @@ const TEST_NUM = DOC_NUM * ITERATION;
 
 
 const Res = require('./models/Res');
+const { skip } = require('rxjs-compat/operator/skip');
 
 function removeCollection() {
     return new Promise((resolve) => {
@@ -80,8 +81,8 @@ describe('community module tests', function () {
         var flag = 0;
         for (var i = 0; i < TEST_NUM; i++) {
             sample = { body: { user: "user" + i, content: "content" + i } }
-            // console.log(funcTest);
-            r = await funcTest(sample);
+            // console.log(writeNewDoc);
+            r = await writeNewDoc(sample);
             // console.log(r)
             // console.log(i ," : ", r);
             var _res_ = new Res(true, "writeNewDoc ok");
@@ -90,7 +91,7 @@ describe('community module tests', function () {
         }
     })
 
-    it('loadFirstDocList test', async () => {
+    it.skip('loadFirstDocList test', async () => {
         r = await loadFirstDocList();
         // console.log(r);
         res_succ = true;
@@ -108,7 +109,7 @@ describe('community module tests', function () {
         }
     })
 
-    it('loadNextDocList test', async () => {
+    it.skip('loadNextDocList test', async () => {
         let cur_start_idx = 0;
         for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
             var req = {
@@ -135,7 +136,7 @@ describe('community module tests', function () {
         }
     })
 
-    it('loadPriorDocList test', async() => {
+    it.skip('loadPriorDocList test', async() => {
         let cur_start_idx = ITERATION * DOC_NUM;
         for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
             var req = {
