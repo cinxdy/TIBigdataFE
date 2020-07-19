@@ -16,19 +16,21 @@ function template(hook,is_test) {
 /**
  * 
  */
-function template2(hook,res, is_test){
-    console.log(hook)
+function template2(hook, res, is_test, err_msg, succ_msg){
+    // console.log("HELLOHELLOHELLOHELLOHELLO")
+    // console.log(hook)
     return new Promise(async (resolve)=>{
+        // console.log(typeof hook);
         hook.exec((err, data) => {
-            console.log("hook data : ", data)
+            // console.log("hook data : ", data)
             if (err)
-                console.log("/loadFirstDocList failed");
+                console.log(err_msg);
             else {
                 resolve(new Res(true, "/loadFirstDocList ok", data))
             }
         })
     }).then((rtrn)=>{
-        console.log("rtrn done : ", rtrn)
+        // console.log("rtrn done : ", rtrn)
         // console.log
         if (is_test) {
             return rtrn;
