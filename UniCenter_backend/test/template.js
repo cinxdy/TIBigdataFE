@@ -21,7 +21,8 @@ function template2(hook, res, is_test, err_msg, succ_msg){
     // console.log(hook)
     return new Promise(async (resolve)=>{
         // console.log(typeof hook);
-        hook.exec((err, data) => {
+        hook.exec(
+            (err, data) => {
             // console.log("hook data : ", data)
             if (err)
                 console.log(err_msg);
