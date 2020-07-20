@@ -1,10 +1,16 @@
 const mocha = require('mocha');
-var chai = require('chai');
-var expect = chai.expect;
-var assert = chai.assert;
-var should = chai.should();
-const comDoc = require('./models/community');
-const mongoose = require('mongoose')
+const sinon = require('sinon');
+
+const mockRequest = (req_body) => {
+    {body : req_body}
+}
+
+const mockResponse = () => {
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+    return res;
+};
 
 //test methods and modules
 const communityModule = require('./communityDocsQuery')
@@ -78,6 +84,12 @@ describe('community module tests', function () {
         var testCases = [];
         var flag = 0;
         for (var i = 0; i < TEST_NUM; i++) {
+            const req = mockRequest(
+                {},
+                { body: { user: "user" + i, content: "content" + i } }
+            );
+            const res = mockResponse();
+
             sample = { body: { user: "user" + i, content: "content" + i } }
             // console.log(writeNewDoc);
             r = await writeNewDoc(sample);
@@ -109,7 +121,7 @@ describe('community module tests', function () {
 
     it.skip('loadNextDocList test', async () => {
         let cur_start_idx = 0;
-        for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+        for (var j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
             var req = {
                 body:
                 {
@@ -134,9 +146,9 @@ describe('community module tests', function () {
         }
     })
 
-    it.skip('loadPriorDocList test', async() => {
+    it.skip('loadPriorDocList test', async () => {
         let cur_start_idx = ITERATION * DOC_NUM;
-        for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+        for (var j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
             var req = {
                 body:
                 {
