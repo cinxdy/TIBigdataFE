@@ -1,8 +1,12 @@
 const mocha = require('mocha');
 const sinon = require('sinon');
-
+const comDoc = require('./models/community');
+var chai = require('chai');
+var expect = chai.expect;
+var assert = chai.assert;
+var should = chai.should();
 const mockRequest = (req_body) => {
-    {body : req_body}
+    return { body: req_body }
 }
 
 const mockResponse = () => {
@@ -81,27 +85,35 @@ describe('community module tests', function () {
     });
 
     it('writeNewDoc test', async () => {
+        console.log("hello?")
         var testCases = [];
         var flag = 0;
         for (var i = 0; i < TEST_NUM; i++) {
-            const req = mockRequest(
-                {},
-                { body: { user: "user" + i, content: "content" + i } }
+            let req = mockRequest(
+                { user: "user" + i, content: "content" + i }
             );
-            const res = mockResponse();
+            let res = mockResponse();
 
-            sample = { body: { user: "user" + i, content: "content" + i } }
             // console.log(writeNewDoc);
-            r = await writeNewDoc(sample);
+            await writeNewDoc(req,res);
             // console.log(r)
             // console.log(i ," : ", r);
             var _res_ = new Res(true, "writeNewDoc ok");
-            // console.log(_res_)
-            assert.deepEqual(r, _res_);
+            // console.log(res.json)
+            // assert.deepEqual(res.json.calledWith, _res_);
+            // sinon.assert.calledWith(spyOrSpyCall, arg1, arg2, ...);
+            // console.log(res.json.firstCall)
+            expect(res.json.calledWith(_res_))
+            expect(res.status.calledWith(200))
+
+
         }
     })
 
     it.skip('loadFirstDocList test', async () => {
+        let mockRequest(){
+            
+        }
         r = await loadFirstDocList();
         // console.log(r);
         res_succ = true;

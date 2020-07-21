@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Routeres.status(200).send();
+const router = express.Router();
 const comDoc = require('./models/community');
 const Res = require('./models/Res');
 const templateModule = require('./test/template');
@@ -7,7 +7,7 @@ const template = templateModule.template;
 const template2 = templateModule.template2;
 // console.log(template)
 const DOC_NUMBERS = 10;
-const IS_TEST = false;
+const IS_TEST = true;
 
 //yet useless dir
 router.get('/', (req, res) => {
@@ -73,7 +73,6 @@ async function loadNextDocList(req, res) {
 
 async function writeNewDoc(req, res) {
     let bundle = req.body;
-    // console.log("writeNewDoc : ", bundle);
     let user = bundle.user;
     let content = bundle.content;
     let time = new Date();
@@ -81,21 +80,21 @@ async function writeNewDoc(req, res) {
     let data = {
         user: user,
         content: content,
-        year: time.getFullYeares.status(200).send(),
+        year: time.getFullYear(),
         month: time.getMonth(),
         date: time.getDate(),
         hour: time.getHours(),
         min: time.getMinutes(),
         time: time
     }
-    newComDoc = new comDoc(data);
 
-    newComDoc.save((err, data) => {
+    newComDoc = new comDoc(data);
+    newComDoc.save((err, d) => {
+
         if (err)
             console.log("error occured! : ", err);
         else {
-            // console.log("data saved!");
-            res.status(200).send(new Res(true, "writeNewDoc ok"))
+            res.status(200).json(new Res(true, "writeNewDoc ok"))
         }
     })
 }
