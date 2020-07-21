@@ -27,7 +27,7 @@ function template2(hook, res, is_test, err_msg, succ_msg){
             if (err)
                 console.log(err_msg);
             else {
-                resolve(new Res(true, "/loadFirstDocList ok", data))
+                resolve(new Res(true, succ_msg, data))
             }
         })
     }).then((rtrn)=>{
