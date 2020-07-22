@@ -5,6 +5,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 var should = chai.should();
+
 const mockRequest = (req_body) => {
     return { body: req_body }
 }
@@ -94,15 +95,10 @@ describe('community module tests', function () {
             );
             let res = mockResponse();
 
-            // console.log(writeNewDoc);
-            await writeNewDoc(req,res);
-            // console.log(r)
-            // console.log(i ," : ", r);
+            await writeNewDoc(req, res);
+
             var _res_ = new Res(true, "writeNewDoc ok");
-            // console.log(res.json)
-            // assert.deepEqual(res.json.calledWith, _res_);
-            // sinon.assert.calledWith(spyOrSpyCall, arg1, arg2, ...);
-            // console.log(res.json.firstCall)
+
             expect(res.json.calledWith(_res_))
             expect(res.status.calledWith(200))
 
@@ -110,78 +106,115 @@ describe('community module tests', function () {
         }
     })
 
-    it.skip('loadFirstDocList test', async () => {
-        let mockRequest(){
-            
-        }
-        r = await loadFirstDocList();
-        // console.log(r);
-        res_succ = true;
-        res_msg = '/loadFirstDocList ok';
-        // res_payload_len = DOC_NUM;
-        assert.deepEqual(r.succ, res_succ);
-        assert.deepEqual(r.msg, res_msg);
-        r.payload.should.have.length(DOC_NUM);
-        // assert.deepEqual(r.payload.length, res_payload_len);
+    it('loadFirstDocList test', async () => {
+        let req = mockRequest();
+        let res = mockResponse();
+        await loadFirstDocList(req, res);
+
+        let data = [];
         for (var i = 0; i < TEST_NUM; i++) {
             if (i < DOC_NUM) {
-                assert.deepEqual(r.payload[i]["user"], "user" + i);
-                assert.deepEqual(r.payload[i]["content"], "content" + i);
+                let d = {
+                    "user": "user" + i,
+                    "content": "content" + i
+                };
+                data.push(d);
             }
         }
+        _res_ = new Res(true, "/loadFirstDocList ok", { data: data });
+        expect(res.json.calledWith(_res_));
+        expect(res.status.calledWith(200));
+
     })
 
-    it.skip('loadNextDocList test', async () => {
+    it('loadNextDocList test', async () => {
         let cur_start_idx = 0;
-        for (var j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
-            var req = {
-                body:
-                {
-                    cur_start_idx: cur_start_idx
-                }
-            }
-            r = await loadNextDocList(req);
-            data = r.payload.data;
-            assert.deepEqual(r.succ, true);
-            assert.deepEqual(r.msg, "/loadNextDocList ok");
-            data.should.have.length(DOC_NUM);
-            new_idx = r.payload.next_start_idx;//새 페이지의 시작하는 index
+        /**
+         * 나는 결과로 얻은 next_Start_idx을 그대로 사용하려고 했었는데, sinon의 결과로 값을 어떻게 받는지 모르겠다. return 함수 등은 무슨 말인지 이해할 수 없다.
+         * 그리고 예시도 없다.
+         * 
+         * 그냥 이렇게 정리하자. 테스트 케이스에서 dependency을 또 만드려구? 테스트 케이스까지 복잡해진다!
+         * 그냥 brute force으로 여기서 다음 값을 예측해서 new Res에 넣자!
+         * 
+         */
+        for (let j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+            let start_idx = cur_start_idx + DOC_NUM;
+            let req = mockRequest({
+                cur_start_idx: cur_start_idx
+            });
+
+            let res = mockResponse();
+            await loadNextDocList(req, res);
+            // data = r.payload.data;
+            // assert.deepEqual(r.succ, true);
+            // assert.deepEqual(r.msg, "/loadNextDocList ok");
+            // data.should.have.length(DOC_NUM);
+            // new_idx = res.json.returnValues
+
+            // console.log("returned : ",new_idx)
+            // payload.next_start_idx;
+            ;//새 페이지의 시작하는 index
             // console.log(new_idx);
-            assert.deepEqual(new_idx, cur_start_idx + DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
-            for (var i = 0; i < data.length; i++) {
+            // assert.deepEqual(new_idx, cur_start_idx + DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
+            let data = [];
+            for (let i = 0; i < data.length; i++) {
                 // console.log(data[i])
-                var idx = i + new_idx;
-                assert.deepEqual(data[i]["user"], "user" + idx);
-                assert.deepEqual(data[i]["content"], "content" + idx);
+                let idx = i + new_idx;
+                let d = {
+                    "user": "user" + idx,
+                    "content": "content" + idx
+                };
+                data.push(d);
             }
-            cur_start_idx = new_idx;
+            cur_start_idx += 10;
+            _res_ = new Res(true, "/loadNextDocList ok", { data: data, next_start_idx: start_idx });
+            expect(res.json.calledWith(_res_));
         }
     })
 
-    it.skip('loadPriorDocList test', async () => {
+    it('loadPriorDocList test', async () => {
         let cur_start_idx = ITERATION * DOC_NUM;
-        for (var j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
-            var req = {
-                body:
-                {
-                    cur_start_idx: cur_start_idx
-                }
-            }
-            r = await loadPriorDocList(req);
-            data = r.payload.data;
-            assert.deepEqual(r.succ, true);
-            assert.deepEqual(r.msg, "/loadPriorDocList ok");
-            data.should.have.length(DOC_NUM);
-            new_idx = r.payload.next_start_idx;//새 페이지의 시작하는 index
+        /**
+         * 나는 결과로 얻은 next_Start_idx을 그대로 사용하려고 했었는데, sinon의 결과로 값을 어떻게 받는지 모르겠다. return 함수 등은 무슨 말인지 이해할 수 없다.
+         * 그리고 예시도 없다.
+         * 
+         * 그냥 이렇게 정리하자. 테스트 케이스에서 dependency을 또 만드려구? 테스트 케이스까지 복잡해진다!
+         * 그냥 brute force으로 여기서 다음 값을 예측해서 new Res에 넣자!
+         * 
+         */
+        for (let j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+            let start_idx = cur_start_idx + DOC_NUM;
+            let req = mockRequest({
+                cur_start_idx: cur_start_idx
+            });
+
+            let res = mockResponse();
+            await loadNextDocList(req, res);
+            // data = r.payload.data;
+            // assert.deepEqual(r.succ, true);
+            // assert.deepEqual(r.msg, "/loadNextDocList ok");
+            // data.should.have.length(DOC_NUM);
+            // new_idx = res.json.returnValues
+
+            // console.log("returned : ",new_idx)
+            // payload.next_start_idx;
+            ;//새 페이지의 시작하는 index
             // console.log(new_idx);
-            assert.deepEqual(new_idx, cur_start_idx - DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
-            for (var i = 0; i < data.length; i++) {
+            // assert.deepEqual(new_idx, cur_start_idx + DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
+            let data = [];
+            for (let i = 0; i < data.length; i++) {
                 // console.log(data[i])
-                var idx = i + new_idx;
-                assert.deepEqual(data[i]["user"], "user" + idx);
-                assert.deepEqual(data[i]["content"], "content" + idx);
+                let idx = i + new_idx;
+                let d = {
+                    "user": "user" + idx,
+                    "content": "content" + idx
+                };
+                data.push(d);
             }
-            cur_start_idx = new_idx;
+            cur_start_idx -= 10;
+            _res_ = new Res(true, "/loadNextDocList ok", { data: data, next_start_idx: start_idx });
+            expect(res.json.calledWith(_res_));
         }
+
     })
 });

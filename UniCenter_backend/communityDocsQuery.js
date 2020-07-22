@@ -31,7 +31,7 @@ async function loadFirstDocList(req, res) {
             console.log("load fist doc list err")
         }
         else{
-            res.status(200).send(new Res(true, "/loadFirstDocList ok", { data: data}))
+            res.status(200).json(new Res(true, "/loadFirstDocList ok", { data: data}))
         }
     })
 }
@@ -44,7 +44,7 @@ async function loadPriorDocList(req, res) {
         if (err)
             console.log("/loadPriorDocList failed");
         else {
-            res.status(200).send(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
+            res.status(200).json(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
             // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
         }
     })
@@ -62,7 +62,7 @@ async function loadNextDocList(req, res) {
         else {
             // console.log(doc_res)
             // debug(new Res(true, "/loadFirstDocList ok", { data: doc_res, idx: start_idx }))
-            res.status(200).send(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
+            res.status(200).json(new Res(true, "/loadNextDocList ok", { data: doc_res, next_start_idx: start_idx }));
             // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx :start_idx}));
         }
     })
