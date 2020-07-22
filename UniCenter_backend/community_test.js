@@ -1,10 +1,21 @@
 const mocha = require('mocha');
+const sinon = require('sinon');
+const comDoc = require('./models/community');
 var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 var should = chai.should();
-const comDoc = require('./models/community');
-const mongoose = require('mongoose')
+
+const mockRequest = (req_body) => {
+    return { body: req_body }
+}
+
+const mockResponse = () => {
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+    return res;
+};
 
 //test methods and modules
 const communityModule = require('./communityDocsQuery')
@@ -75,89 +86,99 @@ describe('community module tests', function () {
     });
 
     it('writeNewDoc test', async () => {
+        console.log("hello?")
         var testCases = [];
         var flag = 0;
         for (var i = 0; i < TEST_NUM; i++) {
-            sample = { body: { user: "user" + i, content: "content" + i } }
-            // console.log(writeNewDoc);
-            r = await writeNewDoc(sample);
-            // console.log(r)
-            // console.log(i ," : ", r);
+            let req = mockRequest(
+                { user: "user" + i, content: "content" + i }
+            );
+            let res = mockResponse();
+
+            await writeNewDoc(req, res);
+
             var _res_ = new Res(true, "writeNewDoc ok");
-            // console.log(_res_)
-            assert.deepEqual(r, _res_);
+
+            expect(res.json.calledWith(_res_))
+            expect(res.status.calledWith(200))
+
+
         }
     })
 
-    it.skip('loadFirstDocList test', async () => {
-        r = await loadFirstDocList();
-        // console.log(r);
-        res_succ = true;
-        res_msg = '/loadFirstDocList ok';
-        // res_payload_len = DOC_NUM;
-        assert.deepEqual(r.succ, res_succ);
-        assert.deepEqual(r.msg, res_msg);
-        r.payload.should.have.length(DOC_NUM);
-        // assert.deepEqual(r.payload.length, res_payload_len);
+    it('loadFirstDocList test', async () => {
+        let req = mockRequest();
+        let res = mockResponse();
+        await loadFirstDocList(req, res);
+
+        let data = [];
         for (var i = 0; i < TEST_NUM; i++) {
             if (i < DOC_NUM) {
-                assert.deepEqual(r.payload[i]["user"], "user" + i);
-                assert.deepEqual(r.payload[i]["content"], "content" + i);
+                let d = {
+                    "user": "user" + i,
+                    "content": "content" + i
+                };
+                data.push(d);
             }
         }
+        _res_ = new Res(true, "/loadFirstDocList ok", { data: data });
+        expect(res.json.calledWith(_res_));
+        expect(res.status.calledWith(200));
+
     })
 
-    it.skip('loadNextDocList test', async () => {
+    it('loadNextDocList test', async () => {
         let cur_start_idx = 0;
-        for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
-            var req = {
-                body:
-                {
-                    cur_start_idx: cur_start_idx
-                }
+   
+        for (let j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+            let start_idx = cur_start_idx + DOC_NUM;
+            let req = mockRequest({
+                cur_start_idx: cur_start_idx
+            });
+
+            let res = mockResponse();
+            await loadNextDocList(req, res);
+
+            let data = [];
+            for (let i = 0; i < data.length; i++) {
+                let idx = i + new_idx;
+                let d = {
+                    "user": "user" + idx,
+                    "content": "content" + idx
+                };
+                data.push(d);
             }
-            r = await loadNextDocList(req);
-            data = r.payload.data;
-            assert.deepEqual(r.succ, true);
-            assert.deepEqual(r.msg, "/loadNextDocList ok");
-            data.should.have.length(DOC_NUM);
-            new_idx = r.payload.next_start_idx;//새 페이지의 시작하는 index
-            // console.log(new_idx);
-            assert.deepEqual(new_idx, cur_start_idx + DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
-            for (var i = 0; i < data.length; i++) {
-                // console.log(data[i])
-                var idx = i + new_idx;
-                assert.deepEqual(data[i]["user"], "user" + idx);
-                assert.deepEqual(data[i]["content"], "content" + idx);
-            }
-            cur_start_idx = new_idx;
+            cur_start_idx += 10;
+            _res_ = new Res(true, "/loadNextDocList ok", { data: data, next_start_idx: start_idx });
+            expect(res.json.calledWith(_res_));
         }
     })
 
-    it.skip('loadPriorDocList test', async() => {
+    it('loadPriorDocList test', async () => {
         let cur_start_idx = ITERATION * DOC_NUM;
-        for (var j = 0; j < ITERATION -1 ; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
-            var req = {
-                body:
-                {
-                    cur_start_idx: cur_start_idx
-                }
+ 
+        for (let j = 0; j < ITERATION - 1; j++) { //전체 페이지 테스트. 맨 처음 페이지는 loadFirstDocList에서 한번 추출했다. 그래서 start_idx가 0에서 시작.
+            let start_idx = cur_start_idx + DOC_NUM;
+            let req = mockRequest({
+                cur_start_idx: cur_start_idx
+            });
+
+            let res = mockResponse();
+            await loadNextDocList(req, res);
+           
+            let data = [];
+            for (let i = 0; i < data.length; i++) {
+                let idx = i + new_idx;
+                let d = {
+                    "user": "user" + idx,
+                    "content": "content" + idx
+                };
+                data.push(d);
             }
-            r = await loadPriorDocList(req);
-            data = r.payload.data;
-            assert.deepEqual(r.succ, true);
-            assert.deepEqual(r.msg, "/loadPriorDocList ok");
-            data.should.have.length(DOC_NUM);
-            new_idx = r.payload.next_start_idx;//새 페이지의 시작하는 index
-            // console.log(new_idx);
-            assert.deepEqual(new_idx, cur_start_idx - DOC_NUM); //다음 페이지의 문서를 가져왔으니 idx 는 start_idx + 10이 됨.
-            for (var i = 0; i < data.length; i++) {
-                // console.log(data[i])
-                var idx = i + new_idx;
-                assert.deepEqual(data[i]["user"], "user" + idx);
-                assert.deepEqual(data[i]["content"], "content" + idx);
-            }
-            cur_start_idx = new_idx;
+            cur_start_idx -= 10;
+            _res_ = new Res(true, "/loadNextDocList ok", { data: data, next_start_idx: start_idx });
+            expect(res.json.calledWith(_res_));
         }
+
     })
 });
