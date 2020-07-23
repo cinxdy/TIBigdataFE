@@ -1,13 +1,14 @@
 const fs = require('fs');
 const rcmd = require('../../models/rcmd');
 const keyword = require('../../models/tfidf');
-const Topic = require('../../models/topic');
+const topic = require('../../models/topic');
+const topicCount = require('../../models/topicCount');
 
 
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 const db = 'mongodb://localhost:27017/analysis';
 
-let modelArr = [rcmd, keyword, Topic];
+let modelArr = [rcmd, keyword, topic];
 let numDataArr = [];
 
 
@@ -58,6 +59,7 @@ mongoose.connect(db, {
         let rawData = fs.readFileSync("./ctgRNNResult.json");
         let data = JSON.parse(rawData)
         let count = 0;
+        let each_cat_count = [];
         console.log("sending data started...")
         let arr = [];
         for (var i in data) {
@@ -66,8 +68,10 @@ mongoose.connect(db, {
             console.log(topData["topic"])
             let docs = topData["doc"];
             // console.log(docs)
-    
-            for (var j = 0; j < docs.length; j++) {
+            var this_topic_docs_len = docs.length;
+            each_cat_count.push({topic : tp, count : this_topic_docs_len});
+            console.log("topic " + tp + " doc count : " + this_topic_docs_len);
+            for (var j = 0; j < this_topic_docs_len; j++) {
                 console.log(docs[j]["titles"])
                 arr.push(
                     {
@@ -78,15 +82,16 @@ mongoose.connect(db, {
                 )
                 count++;
             }
-    
-            // newTop = new Topic(
-    
-            //     // { topic: topData["topic"], doc: topData["doc"] }
-            // )
+
         }
-        Topic.insertMany(arr, err => {
+        topic.insertMany(arr, err => {
             if (err)
                 console.log("top data save filed.")
+        })
+
+        topicCount.insertMany(each_cat_count, err=>{
+            if(err)
+                console.log("topic count save failed")
         })
         numDataArr.push(count - 1);
         console.log("finish sending topic data")
