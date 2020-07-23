@@ -28,6 +28,7 @@ mongoose.connect(db, {
             console.log('Connected to mongodb');
             await sendRcmd();
             await sendTFIDF();
+            await sendTopic();
             console.log("plz wait a min...");
             let flag = 0;
             var checkData = setInterval(async () => {
