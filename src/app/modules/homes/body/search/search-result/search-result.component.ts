@@ -33,7 +33,7 @@ export class SearchResultComponent implements OnInit {
   private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
-  private relatedDocs: {}[] = [];
+  private relatedDocs: ArticleSource[][] = [];
   private userSearchHistory: string[];
   private isSearchLoaded: boolean = false;
   private isRelatedLoaded: boolean = true;//going to be removed
@@ -151,9 +151,9 @@ export class SearchResultComponent implements OnInit {
 
 
   loadRelatedDocs(idx: number) {
-    
+    // this.relatedDocs[idx]=[];
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
-      this.relatedDocs = res as [];
+      this.relatedDocs[idx] = res as [];
       // console.log("from db : ",res)
     });
    

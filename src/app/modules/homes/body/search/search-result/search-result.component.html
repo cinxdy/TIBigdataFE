@@ -111,7 +111,7 @@
                                             연관문서
                                         </button>
                                         <div *ngIf="relateToggle[i] == true">
-                                            <div *ngFor="let rcmd of relatedDocs; index as r">
+                                            <div *ngFor="let rcmd of relatedDocs[i]; index as r">
                                                 <!-- {{ relatedDocs[i]["rcmd"] }} -->
                                                 <a (click)="setThisDoc(r)">{{ rcmd["title"] }}</a>
                                             </div>
