@@ -1,6 +1,6 @@
 const mocha = require('mocha');
 const sinon = require('sinon');
-const comDoc = require('./models/community');
+const comDoc = require('../models/community');
 var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
@@ -18,7 +18,7 @@ const mockResponse = () => {
 };
 
 //test methods and modules
-const communityModule = require('./communityDocsQuery')
+const communityModule = require('../communityDocsQuery')
 const writeNewDoc = communityModule.writeNewDoc;
 const loadFirstDocList = communityModule.loadFirstDocList;
 const loadNextDocList = communityModule.loadNextDocList;
@@ -28,7 +28,7 @@ const ITERATION = 10; // 몇 페이지의 문서를 생성할 것인지 결정
 const TEST_NUM = DOC_NUM * ITERATION;
 
 
-const Res = require('./models/Res');
+const Res = require('../models/Res');
 const { skip } = require('rxjs-compat/operator/skip');
 
 function removeCollection() {

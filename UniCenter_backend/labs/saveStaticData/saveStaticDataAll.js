@@ -6,9 +6,9 @@ const Topic = require('../../models/topic');
 
 
 
-let modelArr = [rcmd];
+// let modelArr = [rcmd];
 
-let modelArr = [rcmd, keyword,Topic];
+let modelArr = [rcmd, keyword];
 let numDataArr = [];
 
 

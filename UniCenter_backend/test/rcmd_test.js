@@ -4,9 +4,9 @@ var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 var should = chai.should();
-const Rcmd = require('./models/rcmd');
+const Rcmd = require('../models/rcmd');
 
-const rcmdModule = require('./rcmdQuery')
+const rcmdModule = require('../rcmdQuery')
 const getRcmdTbl = rcmdModule.getRcmdTbl;
 // console.log(getRcmdTbl)
 // console.log(funcTest)
@@ -23,8 +23,8 @@ const mockResponse = () => {
     return res;
 };
 
-const Res = require('./models/Res');
-const rcmd = require('./models/rcmd');
+const Res = require('../models/Res');
+const rcmd = require('../models/rcmd');
 
 var request = require('request');
 var headers = {
