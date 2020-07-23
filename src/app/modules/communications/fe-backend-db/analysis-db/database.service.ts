@@ -76,10 +76,10 @@ export class AnalysisDatabaseService {
    */
   async getRelatedDocs(id: string) {
     let _rcmdIdsRes = await this.getRcmdTable(id)
-    console.log("in db : getRelatedDocs : rcmd response id list:", _rcmdIdsRes)
+    // console.log("in db : getRelatedDocs : rcmd response id list:", _rcmdIdsRes)
     let rcmdIds = _rcmdIdsRes[0]["rcmd"];
     let _titlesRes = await this.docControl.convertID2Title(rcmdIds as string[])
-    console.log("in db : rcmdRes:", _titlesRes)
+    // console.log("in db : rcmdRes:", _titlesRes)
 
     let titles = _titlesRes as []
 

@@ -30,11 +30,18 @@ export class DocumentService {
           for (let i = 0; i < articles.length; i++) {
             console.log("i = ", i);
             var id = articles[i]["_id"];
-            console.log("in document : id : ", id);
+            // console.log("in document : id : ", id);
             var idx = ids.indexOf(id);//es에서 받아오는 결과가 asyncronous해서 순서가 틀어진다. 순서 교정. 해당 id을 찾아서 그 index에 넣어준다.
-            console.log("in document : idx: ", idx)
-            console.log("in document : title : ", articles[i]["_source"]["post_title"][0])
-            this.myDocsTitles[idx] = articles[i]["_source"]["post_title"][0];
+            // console.log("in document : idx: ", idx)
+            // console.log("in document : title : ", articles[i]["_source"]["post_title"])
+            var title = articles[i]["_source"]["post_title"];
+            /**
+             * 임시 방편 : 620 데이터에서는 제목이 array인것도 있고 string인 것도 있다...
+             */
+            if(typeof(title) == "string")
+              this.myDocsTitles[idx] = title;
+            else if(Array.isArray(title))
+              this.myDocsTitles[idx] = title[0];
           }
         }
         catch{

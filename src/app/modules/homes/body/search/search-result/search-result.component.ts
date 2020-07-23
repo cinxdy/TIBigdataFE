@@ -139,8 +139,8 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("search/DocDetail");
   }
 
-  setThisDoc(idx: number) {
-    this.idControl.setIdChosen(this.relatedDocs[idx]["id"]);
+  setThisDoc(article_source_idx : number, related_doc_idx: number) {
+    this.idControl.setIdChosen(this.relatedDocs[article_source_idx][related_doc_idx]["id"]);
     this.navToDocDetail();
   }
   tgglRelated(i: number) {
@@ -154,7 +154,14 @@ export class SearchResultComponent implements OnInit {
     // this.relatedDocs[idx]=[];
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
       this.relatedDocs[idx] = res as [];
+    
       // console.log("from db : ",res)
+      // this.es.searchById("5de1105f4b79a29a5f9880f8").then(res=>{
+      //   console.log(res)
+      // })
+      // this.es.searchById("5de111abb53863d63aa5522a").then(res=>{
+      //   console.log(res);
+      // })
     });
    
   }
