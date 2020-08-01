@@ -32,15 +32,29 @@ export class WriteNewCommunityDocComponent implements OnInit {
     }
   }
 
+  updateContent($event){
+    this.content = $event.target.value;
+  }
+  updateTitle($event){
+    this.title = $event.target.value;
+  }
 
   async saveNewDocument(){
-    
+    let body = {
+      user : this.title,
+      content : this.content
+    };
 
-    
+    console.log(body)
+
+    await this.cm_svs.writeNewDoc(body);
+    console.log("save new doc end")
+    this.toCommunity();
   }
 
   toCommunity(){
-  this.saveNewDocument();
+  // this.saveNewDocument();
+  // this.testSave100();
 
     this.router.navigateByUrl("/community");
   }

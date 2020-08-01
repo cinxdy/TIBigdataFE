@@ -88,6 +88,8 @@ async function writeNewDoc(req, res) {
         time: time
     }
 
+    console.log(data)
+
     newComDoc = new comDoc(data);
     newComDoc.save((err, d) => {
 
