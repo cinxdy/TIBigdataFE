@@ -67,7 +67,7 @@ export class AuthEmailService extends  Auth{
 
         // let isOurUser$ = this.eCheckUser(user);
         // let res = await isOurUser$.toPromise();
-        let isOurUser = await super.isOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
+        let isOurUser = await super.postIsOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
         //console.log(isOurUser);
         if (isOurUser.succ) {//if this user is one of us, deny registration.
             alert("이미 등록되어 있는 id 입니다. 로그인 페이지로 이동합니다.");
@@ -90,7 +90,7 @@ export class AuthEmailService extends  Auth{
     async logIn(user): Promise<any> {
         //console.log("login req user : ", user);
 
-        let isOurUser = await super.isOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
+        let isOurUser = await super.postIsOurUser(user,this.EMAIL_CHECK_OUR_USER_URL);
         // console.log(isOurUser);
         if (!isOurUser.succ) {//if this user is one of us, deny registration.
             alert("아직 KUBiC 회원이 아니시군요? 회원가입 해주세요! :)");

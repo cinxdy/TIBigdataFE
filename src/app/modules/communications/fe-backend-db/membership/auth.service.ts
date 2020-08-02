@@ -1,3 +1,11 @@
+/**
+ * auth.service.ts
+ * 역할 : email 과 google 두가지 종류의 auth의 공통된 기능을 담당하는 component
+ * 로그인, 로그아웃, 토큰 확인, 검색어 저장 등...
+ * 
+ * 
+ */
+
 import { UserProfile, logStat} from "./user.model";
 import {Auth} from "./userAuth.model";
 import { Injectable, Injector } from "@angular/core";
@@ -214,7 +222,8 @@ export class EPAuthService {
 
     if (this.isLogIn == logStat.unsigned)
       new Error("logStat screwed up. need to be checked.");//in case of screwed up
-    this.isLogInObs$.next(logStat.unsigned)
+    // this.isLogInObs$.next(logStat.unsigned)
+    this.setLogStat(logStat.unsigned);
     this.router.navigate(["/homes"]);
   }
 
@@ -226,7 +235,7 @@ export class EPAuthService {
   async verifySignIn() {
     var isSignIn: boolean = false;
     var tk_with_type = JSON.parse(this.getToken());//token is stored in string.
-    // console.log("auth service : token : ", tk_with_type);
+    console.log("auth service : token : ", tk_with_type);
     if (tk_with_type) {//when token exists
       var tk = tk_with_type.token;
       var type = tk_with_type.type;

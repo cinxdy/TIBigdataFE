@@ -79,7 +79,10 @@ export class SearchResultComponent implements OnInit {
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
-    this.isLogStat = this.auth.getLogInStat()
+    this.auth.getLogInObs().subscribe(stat=>{
+      this.isLogStat = stat;
+    })
+    // this.isLogStat = this.auth.getLogInStat()
   }
 
 
