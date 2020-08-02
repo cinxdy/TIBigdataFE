@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FreqAnalysisComponent } from './freq-analysis.component';
+import { FreqAnalysisComponent } from "./freq-analysis.component";
 
-describe('AnalysisComponent', () => {
+describe('FreqAnalysisComponent', () => {
   let component: FreqAnalysisComponent;
   let fixture: ComponentFixture<FreqAnalysisComponent>;
 

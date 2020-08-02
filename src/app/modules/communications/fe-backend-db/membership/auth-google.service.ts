@@ -3,8 +3,8 @@ import { IpService } from 'src/app/ip.service';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 // import { EPAuthService, Profile, } from './auth.service';
-import {logStat,UserProfile} from "./user.model";
-import {Auth} from "./userAuth.model";
+import { logStat, UserProfile } from "./user.model";
+import { Auth } from "./userAuth.model";
 
 import { Router } from "@angular/router";
 import { DocumentService } from "../../../homes/body/search/service/document/document.service";
@@ -34,13 +34,13 @@ export class AuthGoogleService extends Auth {
   constructor(
     private injector: Injector,
     private ipService: IpService,
-    private http: HttpClient,
-    private router: Router,
+    http: HttpClient,
+    router: Router,
     private gauth: AuthService,
     private docSvc: DocumentService,
     // private auth: EPAuthService
   ) {
-    super();
+    super(router, http);
     // this.isLogInObs$.next(logStat.unsigned);
   }
   /**
@@ -55,20 +55,32 @@ export class AuthGoogleService extends Auth {
    * @function getInstance()
    * @returns google auth 인스턴스를 반환. 싱글턴 패턴 사용.
    */
-  getInstance(){
+  getInstance() {
     return this;
   }
 
 
 
-   
+  /**
+   * @function isOurUser 
+   * @param user
+   * @description check if this user is already our user. check out from the DB. 
+   */
+  // isOurUser(user: {}): Promise<any> {
+  //   return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user).toPromise();
+  // }
+
+  register(user: any): Observable<any> {
+    return this.http.post<any>(this.GOOGLE_REG_URL, user);
+  }
+
   /**
    * @function gLogIn
    * @param platform 
    * @description user login with google social login
    * 
    */
- 
+
   async logIn(): Promise<any> {
     let response = await this.googleSignIn();
 
@@ -88,9 +100,9 @@ export class AuthGoogleService extends Auth {
     // })
 
     //check if this user is our user already
-    let res = await this.isOurUser(response)
+    let res = await super.postIsOurUser(response, this.GOOGLE_CHECK_OUR_USER_URL)
 
-    if (res.exist == false) {
+    if (res.succ == false) {
       //console.log("This user is not yet our user : need sign up : ", res);
       alert("아직 KUBiC 회원이 아니시군요?\n 반갑습니다!\n 회원가입 페이지로 이동합니다. :)");
       this.router.navigateByUrl("/membership/register");
@@ -98,7 +110,7 @@ export class AuthGoogleService extends Auth {
     else {
       this.router.navigate(['/homes'])
 
-      return new UserProfile(response.name, response.email,  response.idToken,logStat.google);
+      return new UserProfile(response.name, response.email, response.idToken, logStat.google);
       //console.log("This user is already our user!");
       // this.socUser = response as SocialUser;
       //console.log(this.socUser);
@@ -138,18 +150,6 @@ export class AuthGoogleService extends Auth {
 
   }
 
-  /**
-   * @function isOurUser 
-   * @param user
-   * @description check if this user is already our user. check out from the DB. 
-   */
-  isOurUser(user: {}): Promise<any> {
-    return this.http.post<any>(this.GOOGLE_CHECK_OUR_USER_URL, user).toPromise();
-  }
-
-  gRegisterUser(user: any): Observable<any> {
-    return this.http.post<any>(this.GOOGLE_REG_URL, user);
-  }
 
   /**
    * @description 구글 로그아웃

@@ -1,3 +1,11 @@
+/**
+ * auth.service.ts
+ * 역할 : email 과 google 두가지 종류의 auth의 공통된 기능을 담당하는 component
+ * 로그인, 로그아웃, 토큰 확인, 검색어 저장 등...
+ * 
+ * 
+ */
+
 import { UserProfile, logStat} from "./user.model";
 import {Auth} from "./userAuth.model";
 import { Injectable, Injector } from "@angular/core";
@@ -13,6 +21,7 @@ import {
   SocialUser,
   // GoogleLoginProvider,
 } from "angularx-social-login";
+
 
 // export abstract class Auth {
 //   constructor() { }
@@ -60,21 +69,6 @@ import {
 // }
 
 
-/**
- * Token stored in front end browser.
- * check login type among email, google, facebook, etc...
- * check token value.
- */
-class storeToken {
-  //property coverage should be considered more... use private?
-  type: logStat;
-  token: string;
-
-  constructor(type: logStat, token: string) {
-    this.type = type;
-    this.token = token
-  }
-}
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +95,7 @@ export class EPAuthService {
   private isLogInObs$: BehaviorSubject<logStat> = new BehaviorSubject(logStat.unsigned);//to stream to subscribers
   private loginUserData = {};
   private socUser: SocialUser = null;//for social login
-  private userProfile = undefined;
+  private userProfile : UserProfile = undefined;
   private auth: Auth = undefined;
 
   // private profile: {//for user profile
@@ -188,19 +182,6 @@ export class EPAuthService {
 
 
 
-  /**
-   * 
-   * @param stat 
-   * @param user 로그인 확정할 유저 정보. user = { token : 토큰 string, name : string, email : string}
-   */
-  confirmUser(profile: UserProfile): void {
-    //console.log(res);
-    this.isLogIn = profile.registerStat;
-    localStorage.setItem('token', JSON.stringify(new storeToken(profile.registerStat, profile.token)));
-    this.userProfile = profile;
-    // else { }//user for google. coupling for flexibility.
-    this.router.navigate(['/homes']);
-  }
 
   // getLogInStatObs() {//return type be logStat
   //   // var stat;
@@ -241,7 +222,8 @@ export class EPAuthService {
 
     if (this.isLogIn == logStat.unsigned)
       new Error("logStat screwed up. need to be checked.");//in case of screwed up
-    this.isLogInObs$.next(logStat.unsigned)
+    // this.isLogInObs$.next(logStat.unsigned)
+    this.setLogStat(logStat.unsigned);
     this.router.navigate(["/homes"]);
   }
 
@@ -253,7 +235,7 @@ export class EPAuthService {
   async verifySignIn() {
     var isSignIn: boolean = false;
     var tk_with_type = JSON.parse(this.getToken());//token is stored in string.
-    console.log("token: " ,tk_with_type)
+    console.log("auth service : token : ", tk_with_type);
     if (tk_with_type) {//when token exists
       var tk = tk_with_type.token;
       var type = tk_with_type.type;
@@ -275,11 +257,11 @@ export class EPAuthService {
 
 
       var tkStat = await this.auth.verifyToken(tk);//verify it this token is valid or expired.
-      console.log("tkStat:", tkStat);
+      // console.log(tkStat);
       if (tkStat.succ) {//if token is valid
-        this.userProfile = this.auth.getProfile(tkStat);
-        console.log("userProfile: ",this.userProfile)
-        console.log(this.auth)
+        this.userProfile = new UserProfile(type,tkStat.payload.email, tkStat.payload.name, tk);
+        // this.auth.getProfile(tkStat);
+        // console.log("auth service : verifySignIn : userProfile : ", this.userProfile);
         let isSU = this.SUPERUSER.findIndex(i => {
           i == this.userProfile.name
         })

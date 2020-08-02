@@ -41,6 +41,8 @@ export class RegisterComponent implements OnInit {
     console.log(this.registerUserData);
     await this.eAuth.register(this.registerUserData) //_auth : register user service
     this._router.navigate(['/homes'])
+    // console.log(this.registerUserData);
+    // this.eAuth.register(this.registerUserData) //_auth : register user service
   }
   
   toSocReg(){

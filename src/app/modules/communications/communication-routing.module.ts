@@ -7,7 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RegisterComponent } from '../homes/body/membership/register/register.component';
 import { LoginComponent } from '../homes/body/membership/login/login.component';
-import { EventsComponent} from '../homes/body/membership/events/events.component';
+// import { EventsComponent} from '../homes/body/membership/events/events.component';
 import { AuthGuard } from './fe-backend-db/membership/auth.guard';
 import { SocialRegisterComponent } from '../homes/body/membership/register/social-register/social-register.component';
 import { UserpageComponent } from '../homes/body/membership/userpage/userpage.component';
@@ -32,10 +32,10 @@ const routes: Routes = [
       component: LoginComponent,
       canActivate : [AuthGuard]
     },
-    { path: 'event',
-      component: EventsComponent,
-      canActivate: [AuthGuard]
-    },
+    // { path: 'event',
+    //   component: EventsComponent,
+    //   canActivate: [AuthGuard]
+    // },
     { path : 'userpage',
       component : UserpageComponent
     },

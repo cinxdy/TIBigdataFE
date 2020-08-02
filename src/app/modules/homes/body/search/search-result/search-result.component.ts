@@ -7,7 +7,7 @@ import {
   // Output
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { ElasticsearchService } from "../service/elasticsearch-service/elasticsearch.service";
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
@@ -19,7 +19,7 @@ import { IpService } from "src/app/ip.service";
 import { RecomandationService } from "../service/recommandation-service/recommandation.service";
 import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 
 
 @Component({
@@ -74,7 +74,10 @@ export class SearchResultComponent implements OnInit {
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
-    this.isLogStat = this.auth.getLogInStat()
+    this.auth.getLogInObs().subscribe(stat=>{
+      this.isLogStat = stat;
+    })
+    // this.isLogStat = this.auth.getLogInStat()
   }
 
 

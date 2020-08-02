@@ -1,13 +1,13 @@
 // import { Injectable } from '@angular/core';
 import { IdControlService } from '../service/id-control-service/id-control.service';
 import { Article } from "../article/article.interface";
-import { ElasticsearchService } from '../service/elasticsearch-service/elasticsearch.service';
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { Component, OnInit, Inject } from '@angular/core';
 // import { Article } from '../article/article.interface';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { RecomandationService } from '../service/recommandation-service/recommandation.service';
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 
 @Component({
   selector: 'app-search-detail',
