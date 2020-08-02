@@ -3,7 +3,7 @@ const router = express.Router();
 const Keywords = require('./models/rcmd');
 const Res = require('./models/Res');
 
-const IS_TEST = true;
+const IS_TEST = false;
 
 router.get('/', (req, res) => {
     res.send('rcmdQuery')

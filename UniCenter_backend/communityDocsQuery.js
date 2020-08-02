@@ -7,7 +7,7 @@ const template = templateModule.template;
 const template2 = templateModule.template2;
 // console.log(template)
 const DOC_NUMBERS = 10;
-const IS_TEST = true;
+const IS_TEST = false;
 
 //yet useless dir
 router.get('/', (req, res) => {
@@ -87,6 +87,8 @@ async function writeNewDoc(req, res) {
         min: time.getMinutes(),
         time: time
     }
+
+    console.log(data)
 
     newComDoc = new comDoc(data);
     newComDoc.save((err, d) => {

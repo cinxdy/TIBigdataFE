@@ -57,8 +57,12 @@ export class CommunityServiceService {
     this.clearDocList();
     if (res.succ) {
       // console.log(res);
-      var payload = res.payload;
+      var payload = res.payload.data;
       // console.log("payload : ", payload)
+
+      if(payload.length < this.DOC_NUM_PER_EACH_PAGE)
+        this.DOC_NUM_PER_EACH_PAGE = (payload.length);
+
       for (var i = 0; i < this.DOC_NUM_PER_EACH_PAGE; i++) {
         var doc = {};
 
@@ -138,7 +142,8 @@ export class CommunityServiceService {
   async writeNewDoc(body: {}) {
 
     let res = await this.http.post<any>(this.URL_WRITE_NEW_DOC, body).toPromise();
-    // console.log("community-service writeNewDoc : ", res);
+    console.log("community-service writeNewDoc : ", res);
+
     // alert("ok")
   }
 

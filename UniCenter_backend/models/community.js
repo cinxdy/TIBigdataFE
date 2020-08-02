@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const communityDocSchema = new Schema({
     user : String,
+    title : String,
     content : String,
     date : Date
 })
