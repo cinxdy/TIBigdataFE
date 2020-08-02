@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { IpService } from 'src/app/ip.service';
 import { DocumentService } from "../../../homes/body/search/service/document/document.service";
-import { QueryServiceService } from '../query-service.service';
+// import { QueryServiceService } from '../query-service.service';
 class storeToken {
     //property coverage should be considered more... use private?
     type: logStat;
@@ -121,9 +121,9 @@ export class AuthEmailService extends  Auth{
                 localStorage.setItem('token', JSON.stringify(new storeToken(logStat.email, res.payload.token)));
                 this.user = new UserProfile(logStat.email,res.payload.email,res.payload.name,res.payload.token)
                 console.log("result : ", this.user);
-                super.confirmUser(user);
-                return { logStat: logStat.email, token: res.payload.token, name: res.payload.name, email: res.payload.email };
-                var pf = new UserProfile(logStat.email, res.payload.email, res.payload.name,res.payload.token)
+                super.confirmUser(this.user);
+                // return { logStat: logStat.email, token: res.payload.token, name: res.payload.name, email: res.payload.email };
+                // var pf = new UserProfile(logStat.email, res.payload.email, res.payload.name,res.payload.token)
                 // return { logStat: logStat.email, token: res.payload.toekn, name: res.payload.name, email: res.payload.email };
             }
             //login fail. maybe wrong password or id?

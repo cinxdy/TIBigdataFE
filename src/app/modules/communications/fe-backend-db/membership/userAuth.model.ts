@@ -91,6 +91,7 @@ export abstract class Auth {
    */
   confirmUser(profile: UserProfile): void {
     console.log("user auth model : confirmUser : ", profile);
+    console.log("profile.stat ,", profile.registerStat)
     // this.isLogIn = profile.registerStat;
     localStorage.setItem('token', JSON.stringify(new storeToken(profile.registerStat, profile.token)));
     // this.userProfile = profile;
