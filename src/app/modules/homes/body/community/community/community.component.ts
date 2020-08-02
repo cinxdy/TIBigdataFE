@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { CommunityServiceService } from 'src/app/modules/communications/fe-backend-db/community/community-service.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 
 @Component({
   selector: 'app-community',
@@ -11,13 +12,18 @@ export class CommunityComponent implements OnInit {
 
   private docList : {}[] = [];
   private cur_start_idx : number = 0;
+  private isLogStat: Number = 0;
   headers = ["번호", "이름", "내용"];
 
   constructor(       
-    private router: Router, private cm_svc : CommunityServiceService) { }
+    private router: Router, private cm_svc : CommunityServiceService, private auth : EPAuthService) { }
 
   ngOnInit() {
     this.loadFirstDocList();
+    this.auth.getLogInObs().subscribe(stat=>{
+      this.isLogStat = stat;
+      console.log("comm compo stat : ", stat)
+    })
   }
 
   /**

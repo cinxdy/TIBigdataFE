@@ -67,6 +67,7 @@ export class CommunityServiceService {
         var doc = {};
 
         doc["user"] = payload[i].user;
+        doc["title"] = payload[i].title;
         doc["content"] = payload[i].content;
         this.docList.push(doc);
         this.isDocListExist = true;
@@ -98,6 +99,8 @@ export class CommunityServiceService {
         var doc = {};
 
         doc["user"] = payload.data[i].user;
+        doc["user"] = payload[i].user;
+
         doc["content"] = payload.data[i].content;
         this.docList.push(doc);
         this.isDocListExist = true;
@@ -126,6 +129,8 @@ export class CommunityServiceService {
         var doc = {};
 
         doc["user"] = payload.data[i].user;
+        doc["user"] = payload[i].user;
+
         doc["content"] = payload.data[i].content;
         this.docList.push(doc);
         this.isDocListExist = true;

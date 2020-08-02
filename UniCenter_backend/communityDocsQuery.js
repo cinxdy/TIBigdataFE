@@ -74,11 +74,13 @@ async function loadNextDocList(req, res) {
 async function writeNewDoc(req, res) {
     let bundle = req.body;
     let user = bundle.user;
+    let title = bundle.title;
     let content = bundle.content;
     let time = new Date();
 
     let data = {
         user: user,
+        title : title,
         content: content,
         year: time.getFullYear(),
         month: time.getMonth(),

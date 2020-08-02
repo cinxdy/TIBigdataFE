@@ -56,6 +56,7 @@ describe('community module tests', function () {
     it('save data test', function (done) {
         var cd = new comDoc({
             user: "username",
+            title : "title",
             content: "This is long long string contents",
             date: new Date()
         });

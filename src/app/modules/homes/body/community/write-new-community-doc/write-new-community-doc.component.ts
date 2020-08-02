@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { CommunityServiceService } from 'src/app/modules/communications/fe-backend-db/community/community-service.service';
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
 
 @Component({
   selector: 'app-write-new-community-doc',
@@ -9,7 +10,7 @@ import { CommunityServiceService } from 'src/app/modules/communications/fe-backe
 })
 export class WriteNewCommunityDocComponent implements OnInit {
 
-  constructor( private router: Router, private cm_svs : CommunityServiceService) { }
+  constructor( private router: Router, private cm_svs : CommunityServiceService, private auth : EPAuthService) { }
   private title : string;
   private content : string;
   
@@ -40,8 +41,10 @@ export class WriteNewCommunityDocComponent implements OnInit {
   }
 
   async saveNewDocument(){
+    let userName = this.auth.getUserName();
     let body = {
-      user : this.title,
+      user : userName,
+      title : this.title,
       content : this.content
     };
 
