@@ -26,6 +26,27 @@ export class CommunityComponent implements OnInit {
     })
   }
 
+
+  /**
+   * 
+   * 
+   */
+
+  async loadPages(){
+    let pageInfo = await this.cm_svc.pagingAlgo();
+  //  * @return numPagePerBloc
+  //  * @return numPage
+  //  * @return numBloc  
+  //  *
+    let numPagePerBloc = pageInfo.numPagePerBloc;
+    let numPage = pageInfo.numPage;
+    let numBloc = pageInfo.numBloc;
+    
+  
+  }
+
+
+
   /**
    * @description 가장 최근 게시판 글들 로드하는 함수
    */
@@ -37,7 +58,7 @@ export class CommunityComponent implements OnInit {
     // console.log("cur_start idx : ", this.cur_start_idx)
 
     this.cur_start_idx = this.cm_svc.getNewStartIDx();//first page doc num= 기준 문서 수
-    // console.log("new cur_start idx : ", this.cur_start_idx)
+    console.log("new cur_start idx : ", this.cur_start_idx)
     // console.log("community component : load first doc list : ", this.docList);
   }
 

@@ -26,6 +26,7 @@ export class WriteNewCommunityDocComponent implements OnInit {
     for(var i = 0 ; i < 100 ; i ++){
       let body = {
         user: "user" + i, 
+        title : "title" + i,
         content: "content" + i
      }
       this.cm_svs.writeNewDoc(body);
@@ -41,6 +42,7 @@ export class WriteNewCommunityDocComponent implements OnInit {
   }
 
   async saveNewDocument(){
+    this.testSave100();
     let userName = this.auth.getUserName();
     let body = {
       user : userName,

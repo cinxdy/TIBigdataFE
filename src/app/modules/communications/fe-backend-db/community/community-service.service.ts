@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { IpService } from 'src/app/ip.service';
 import { HttpClient } from "@angular/common/http";
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +13,7 @@ export class CommunityServiceService {
   private URL_LOAD_NEXT_DOC_LIST = this.URL + "/community/loadNextDocList"; //mongoDB
   private URL_LOAD_PRIOR_DOC_LIST = this.URL + "/community/loadPriorDocList"; //mongoDB
   private URL_WRITE_NEW_DOC = this.URL + "/community/writeNewDoc"; //mongoDB
+  private URL_GET_DOC_NUM = this.URL + "/community/getDocNum"; //mongoDB
   private docList: {}[] = [];
   private idx: number = 0;
   private isDocListExist: boolean = true;
@@ -26,6 +29,7 @@ export class CommunityServiceService {
     // this.
     this.aDoc["user"] = this.docList[i]["user"];
     this.aDoc["content"] = this.docList[i]["content"];
+    this.aDoc["title"] = this.docList[i]["title"];
 
   }
   getChosenDoc(){
@@ -40,13 +44,106 @@ export class CommunityServiceService {
     return this.DOC_NUM_PER_EACH_PAGE;
   }
 
-  setNewStartIdx(new_idx) {
+  /**
+   * @description 페이지 이동 후에 전체 게시글 DB에서 새로운 시작하는 게시글 인덱스 업데이트
+   * @param new_idx 
+   */
+  updateStartIdx(new_idx) {
     this.idx = new_idx;
+    // console.log("updated idx : " , this.idx)
   }
 
+  /**
+   * @description 페이지 이동 후 전체 게시글 DB에서 현재 시작하는 게시글 번호
+   */
   getNewStartIDx() {
     return this.idx;
   }
+
+  /**
+   * pseudo code 
+      number of docs per page ← N
+      number of pages ← number of total docs / N
+      if number of total docs % N > 0:
+        then number of pages ++
+      number of pages per bloc ← M
+      number of bloc ← number of pages / M
+      if number of pages % M > 0:
+        then number of bloc ++
+
+   * 
+   * 
+   */
+
+  /**
+   * 
+   * @param res 
+   * 처음에 numPagePerBloc만큼만 보여준다.
+   * pageIdx % numPagePerBloc = 0이 되면 다음 bloc으로 이동. bloc idx update. bloc idx의 최대값은 numBloc이다.
+   * pageIdx 의 최대값ㅂ은 numPage이다.
+   * @return numPagePerBloc
+   * @return numPage
+   * @return numBloc
+   */
+  async pagingAlgo(){
+    //number of docs per page ← N
+    // use predefined this.DOC_NUM_PER_EACH_PAGE;
+    //number of pages ← number of total docs / N
+    let numTotalDocs = await this.http.get<any>(this.URL_GET_DOC_NUM).toPromise();
+    let numPage = numTotalDocs / this.DOC_NUM_PER_EACH_PAGE;
+    //if number of total docs % N > 0:
+    if (numTotalDocs % this.DOC_NUM_PER_EACH_PAGE > 0)
+    //  then number of pages ++
+      numPage++;  
+    //number of pages per bloc ← M
+    // let numPagePerBloc = this.DOC_NUM_PER_EACH_PAGE;
+    let numPagePerBloc = 3;
+    //number of bloc ← number of pages / M
+    let numBloc = numPage / numPagePerBloc;
+    //if number of pages % M > 0:
+    if(numPage % numPagePerBloc > 0)
+    //  then number of bloc ++
+      numBloc++;
+    return { numPage : numPage, numPagePerBloc : numPagePerBloc, numBloc : numBloc};
+  }
+
+
+  /**
+   * @description response 받은 Object에서 문서 제목 유저 내용 등을 추출해서 저장
+   * @param res 
+   */
+  loadCommunityDocs(res){
+    this.clearDocList();
+    if (res.succ) {
+      // console.log(res);
+      var docs = res.payload.data;
+      // console.log("docs : ", docs)
+
+      if(docs.length < this.DOC_NUM_PER_EACH_PAGE)
+        this.DOC_NUM_PER_EACH_PAGE = (docs.length);
+
+      for (var i = 0; i < docs.length; i++) {
+        var doc = {};
+
+        doc["user"] = docs[i].user;
+        doc["title"] = docs[i].title;
+        doc["content"] = docs[i].content;
+        this.docList.push(doc);
+        this.isDocListExist = true;
+        // console.log("service start idx : ", this.idx);
+        // console.log("new service start idx : ", this.idx);
+        
+      }
+      
+      this.updateStartIdx(res.payload.next_start_idx);
+      // console.log("Then what the hell is the next_start_idx? : ", res.payload.next_start_idx)
+      // console.log("docList : ", this.docList);
+    }
+    if (this.docList.length == 0) {
+      this.isDocListExist = false;
+    }
+    return this.docList;
+  } 
 
 
   /**
@@ -54,96 +151,44 @@ export class CommunityServiceService {
    */
   async loadFirstDocList() {
     let res = await this.http.get<any>(this.URL_LOAD_FIRST_DOC_LIST).toPromise();
-    this.clearDocList();
-    if (res.succ) {
-      // console.log(res);
-      var payload = res.payload.data;
-      // console.log("payload : ", payload)
-
-      if(payload.length < this.DOC_NUM_PER_EACH_PAGE)
-        this.DOC_NUM_PER_EACH_PAGE = (payload.length);
-
-      for (var i = 0; i < this.DOC_NUM_PER_EACH_PAGE; i++) {
-        var doc = {};
-
-        doc["user"] = payload[i].user;
-        doc["title"] = payload[i].title;
-        doc["content"] = payload[i].content;
-        this.docList.push(doc);
-        this.isDocListExist = true;
-        // console.log("service start idx : ", this.idx);
-        this.setNewStartIdx(0);
-        // console.log("new service start idx : ", this.idx);
-
-      }
-      // console.log("docList : ", this.docList);
-    }
-    if (this.docList.length == 0) {
-      this.isDocListExist = false;
-    }
-    return this.docList;
+    return this.loadCommunityDocs(res);
   }
 
+
+  /**
+   * @description 다음 페이지의 게시글들을 로드하는 함수
+   * @param start_idx 
+   */
   async loadNextDocList(start_idx: number) {
     // console.log("start idx : ", start_idx)
     let body = { cur_start_idx: start_idx };
     // console.log("comnunity service load next doc list : before send" )
 
     let res = await this.http.post<any>(this.URL_LOAD_NEXT_DOC_LIST, body).toPromise();
-    // console.log("comnunity service load next doc list")
-    this.clearDocList();
-    if (res.succ) {
-      // console.log(res);
-      var payload = res.payload;
-      for (var i = 0; i < this.DOC_NUM_PER_EACH_PAGE; i++) {
-        var doc = {};
+    return this.loadCommunityDocs(res);
 
-        doc["user"] = payload.data[i].user;
-        doc["user"] = payload[i].user;
-
-        doc["content"] = payload.data[i].content;
-        this.docList.push(doc);
-        this.isDocListExist = true;
-      }
-      this.setNewStartIdx(payload.next_start_idx);
-      // console.log("docList : ", this.docList);
-    }
-    if (this.docList.length == 0) {
-      this.isDocListExist = false;
-    }
-    return this.docList;
   }
 
+
+
+/**
+ * @description 이전 페이지의 게시글들을 로드하는 함수
+ * @param start_idx 
+ */
   async loadPriorDocList(start_idx: number) {
     // console.log("start idx : ", start_idx)
     let body = { cur_start_idx: start_idx };
     // console.log("comnunity service load next doc list : before send" )
 
     let res = await this.http.post<any>(this.URL_LOAD_PRIOR_DOC_LIST, body).toPromise();
-    // console.log("comnunity service load next doc list")
-    this.clearDocList();
-    if (res.succ) {
-      // console.log(res);
-      var payload = res.payload;
-      for (var i = 0; i < this.DOC_NUM_PER_EACH_PAGE; i++) {
-        var doc = {};
-
-        doc["user"] = payload.data[i].user;
-        doc["user"] = payload[i].user;
-
-        doc["content"] = payload.data[i].content;
-        this.docList.push(doc);
-        this.isDocListExist = true;
-      }
-      this.setNewStartIdx(payload.next_start_idx);
-      // console.log("docList : ", this.docList);
-    }
-    if (this.docList.length == 0) {
-      this.isDocListExist = false;
-    }
-    return this.docList;
+    return this.loadCommunityDocs(res);
   }
 
+
+  /**
+   * @description 새 게시글을 작성하는 함수
+   * @param body 
+   */
   async writeNewDoc(body: {}) {
 
     let res = await this.http.post<any>(this.URL_WRITE_NEW_DOC, body).toPromise();
