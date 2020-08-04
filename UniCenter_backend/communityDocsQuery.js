@@ -31,7 +31,7 @@ async function loadFirstDocList(req, res) {
             console.log("load fist doc list err")
         }
         else{
-            res.status(200).json(new Res(true, "/loadFirstDocList ok", { data: data}))
+            res.status(200).json(new Res(true, "/loadFirstDocList ok", { data: data,next_start_idx: 0}))
         }
     })
 }
