@@ -13,6 +13,9 @@ export class CommunityComponent implements OnInit {
   private docList : {}[] = [];
   private cur_start_idx : number = 0;
   private isLogStat: Number = 0;
+  private numPagePerBloc : Number = 0;
+  private numPage : Number = 0;
+  private numBloc : Number = 0;
   headers = ["번호", "이름", "내용"];
 
   constructor(       
@@ -38,9 +41,22 @@ export class CommunityComponent implements OnInit {
   //  * @return numPage
   //  * @return numBloc  
   //  *
-    let numPagePerBloc = pageInfo.numPagePerBloc;
-    let numPage = pageInfo.numPage;
-    let numBloc = pageInfo.numBloc;
+    this.numPagePerBloc = pageInfo.numPagePerBloc;
+    this.numPage = pageInfo.numPage;
+    this.numBloc = pageInfo.numBloc;
+
+    /**
+     * if numBloc > 1
+     *  
+     * else
+     *  
+     * 현재 bloc idx * numPagePerBloc의 값. 
+     * 그... array에 번호를 넣는다.
+     * 그 번호는 표시된다.
+     * 사용자가 그번호를 누르면 그 번호에 해당하는 숫자를 백엔드로 보낸다.
+     * 백엔드는 받은 숫자 * 10을 해서 새로운 index으로 삼는다.
+     * 
+     */
     
   
   }
