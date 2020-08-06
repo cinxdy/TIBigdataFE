@@ -47,7 +47,8 @@ export class WriteNewCommunityDocComponent implements OnInit {
     let body = {
       user : userName,
       title : this.title,
-      content : this.content
+      content : this.content,
+      docId : this.createDocId()
     };
 
     console.log(body)
@@ -55,6 +56,12 @@ export class WriteNewCommunityDocComponent implements OnInit {
     await this.cm_svs.writeNewDoc(body);
     console.log("save new doc end")
     this.toCommunity();
+  }
+
+  async createDocId(){
+    let res = await this.cm_svs.getDocsNum();
+    let numDocs = res.payload.data;
+    return numDocs + 1;
   }
 
   toCommunity(){

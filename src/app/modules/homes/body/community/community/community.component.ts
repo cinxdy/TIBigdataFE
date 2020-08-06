@@ -11,11 +11,14 @@ import { EPAuthService } from '../../../../communications/fe-backend-db/membersh
 export class CommunityComponent implements OnInit {
 
   private docList : {}[] = [];
+  private pages : number[] = [];
   private cur_start_idx : number = 0;
-  private isLogStat: Number = 0;
-  private numPagePerBloc : Number = 0;
-  private numPage : Number = 0;
-  private numBloc : Number = 0;
+  private isLogStat: number = 0;
+  private numPagePerBloc : number = 0;
+  private numPage : number = 0;
+  private numBloc : number = 0;
+  private blocIdx : number = 0;
+  private pageIdx : number = 0;
   headers = ["번호", "이름", "내용"];
 
   constructor(       
@@ -23,6 +26,7 @@ export class CommunityComponent implements OnInit {
 
   ngOnInit() {
     this.loadFirstDocList();
+    this.loadPages();
     this.auth.getLogInObs().subscribe(stat=>{
       this.isLogStat = stat;
       console.log("comm compo stat : ", stat)
@@ -37,6 +41,7 @@ export class CommunityComponent implements OnInit {
 
   async loadPages(){
     let pageInfo = await this.cm_svc.pagingAlgo();
+    console.log("community compo : load pages : pageInfo : ", pageInfo)
   //  * @return numPagePerBloc
   //  * @return numPage
   //  * @return numBloc  
@@ -45,10 +50,24 @@ export class CommunityComponent implements OnInit {
     this.numPage = pageInfo.numPage;
     this.numBloc = pageInfo.numBloc;
 
+    // this.pageIdx = this.numBloc  * this.numPagePerBloc;
+    if(this.numBloc > 1){
+      for(let i = 0 ; i < this.numPagePerBloc; i++){
+        this.pages.push(i);
+      }
+    }
+    else{
+      for(let i = 0 ; i < this.numPage; i++){
+        this.pages.push(i);
+      }
+    }
+      
     /**
      * if numBloc > 1
+     *  numPagePerBloc 만큼 숫자 만들기
+     * else if numBloc < 1
+     *  numPages만큼 숫자 만들기
      *  
-     * else
      *  
      * 현재 bloc idx * numPagePerBloc의 값. 
      * 그... array에 번호를 넣는다.
@@ -89,6 +108,23 @@ export class CommunityComponent implements OnInit {
 
   }
 
+  async choosePageNum(i : number){
+    // console.log("hello number ",i);
+    this.docList = await this.cm_svc.loadListByPageIdx(i);
+    // console.log("pressNextList : ", this.docList)
+    // console.log("cur idx : ", this.cur_start_idx)
+    this.cur_start_idx = this.cm_svc.getNewStartIDx();
+  }
+
+
+  async loadNextDocList(){
+
+    this.docList = await this.cm_svc.loadNextDocList(this.cur_start_idx);
+    // console.log("pressNextList : ", this.docList)
+    // console.log("cur idx : ", this.cur_start_idx)
+    this.cur_start_idx = this.cm_svc.getNewStartIDx();
+  }
+
   /**
    * @function pressNextList
    * @description 다음 리스트의 커뮤니티 게시판을 요청하는 함수. FE 백엔드 서버에 요청.
@@ -112,6 +148,50 @@ export class CommunityComponent implements OnInit {
     this.cur_start_idx = this.cm_svc.getNewStartIDx();
   }
 
+
+  async pressNextBloc(){
+    this.docList = [];
+    this.blocIdx++;
+    this.pages = [];
+    let newStartIdx = this.blocIdx * this.numPagePerBloc;
+    this.docList = await this.cm_svc.loadListByPageIdx(newStartIdx);
+    console.log(this.docList);
+    if(this.blocIdx < this.numBloc -1 ){
+      for(let i = 0; i < this.numPagePerBloc ; i++ ){
+        this.pages.push(newStartIdx + i);
+      }
+
+    }
+    else{
+      let redundentNumPages = this.numPage % this.numPagePerBloc;
+      for(let i = 0 ; i < redundentNumPages; i++){
+        this.pages.push(newStartIdx + i);
+      }
+    }
+
+  }
+
+  async pressPriorBloc(){
+    this.docList = [];
+
+    this.blocIdx--;
+    this.pages = [];
+    let newStartIdx = this.blocIdx * this.numPagePerBloc;
+    this.docList = await this.cm_svc.loadListByPageIdx(newStartIdx);
+    if(this.blocIdx < this.numBloc -1 ){//bloc 시작 Index = 0. numBloc = 2라면 1페이지까지가 꽉 찬다.
+      for(let i = 0; i < this.numPagePerBloc ; i++ ){
+        this.pages.push(newStartIdx + i);
+      }
+
+    }
+    else{
+      let redundentNumPages = this.numPage % this.numPagePerBloc;
+      for(let i = 0 ; i < redundentNumPages; i++){
+        this.pages.push(newStartIdx + i);
+      }
+    }
+  }
+
   /**
    * @description 새 글 쓰는 화면으로 이동
    */
@@ -119,6 +199,8 @@ export class CommunityComponent implements OnInit {
     this.router.navigateByUrl("community/newDoc");
 
   }
+
+
   /**
    * 
    * 게시판 글을 불러오는 기능

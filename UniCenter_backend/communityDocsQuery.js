@@ -21,8 +21,50 @@ router.get('/loadFirstDocList', loadFirstDocList);
 router.post('/loadNextDocList', loadNextDocList);
 
 router.post('/loadPriorDocList', loadPriorDocList);
+router.post('/loadDocListByPageIdx', loadDocListByPageIdx);
+router.get('/getDocNum', getDocNum);
+
+// function getNextDocId(){
+//     return new Promise((r)=>{
+//         comDoc.find({}).limit(1).exec((err, lastDoc)=>{
+//             if(err)
+//             console.log("getNextDocId error occur!");
+//             else{
+//                 if(lastDoc.docId == undefined)
+//                     lastDoc.docId = 0;
+//                 r(lastDoc.docId + 1);
+//             }
+//         })
+//     })
+// }
 
 
+async function getDocNum(req, res){
+    console.log("getDocNum")
+    comDoc.count({}).exec((err, data)=>{
+        if(err){
+            console.log("getDocNum error occurs!");
+        }
+        else{
+            console.log(data);
+            res.status(200).json(new Res(true, "/getDocNum ok!",{data : data}));
+        }
+    })
+}
+
+async function loadDocListByPageIdx(req, res) {
+    let bundle = req.body;
+    let start_idx = bundle.cur_start_idx * DOC_NUMBERS;//다음 문서 리스트 idx
+
+    comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+        if (err)
+            console.log("/loadPriorDocList failed");
+        else {
+            res.status(200).json(new Res(true, "/loadPriorDocList ok", { data: doc_res, next_start_idx: start_idx }))
+            // res.json(new Res(true,"/loadFirstDocList ok",{data : doc_res, idx : cur_idx}));
+        }
+    })
+}
 
 async function loadFirstDocList(req, res) {
     console.log("load first page ok")
@@ -77,6 +119,10 @@ async function writeNewDoc(req, res) {
     let title = bundle.title;
     let content = bundle.content;
     let time = new Date();
+    let newId = bundle.docId;
+    console.log("new ID : " , newId + 1);
+    if(newId == undefined)
+        newId = 0;
 
     let data = {
         user: user,
@@ -87,7 +133,8 @@ async function writeNewDoc(req, res) {
         date: time.getDate(),
         hour: time.getHours(),
         min: time.getMinutes(),
-        time: time
+        time: time,
+        docId : newId
     }
 
     console.log(data)

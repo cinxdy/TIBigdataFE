@@ -14,6 +14,7 @@ export class CommunityServiceService {
   private URL_LOAD_PRIOR_DOC_LIST = this.URL + "/community/loadPriorDocList"; //mongoDB
   private URL_WRITE_NEW_DOC = this.URL + "/community/writeNewDoc"; //mongoDB
   private URL_GET_DOC_NUM = this.URL + "/community/getDocNum"; //mongoDB
+  private URL_LOAD_LIST_BY_PAGE_IDX = this.URL + "/community/loadDocListByPageIdx"; //mongoDB
   private docList: {}[] = [];
   private idx: number = 0;
   private isDocListExist: boolean = true;
@@ -89,22 +90,29 @@ export class CommunityServiceService {
     //number of docs per page ← N
     // use predefined this.DOC_NUM_PER_EACH_PAGE;
     //number of pages ← number of total docs / N
-    let numTotalDocs = await this.http.get<any>(this.URL_GET_DOC_NUM).toPromise();
-    let numPage = numTotalDocs / this.DOC_NUM_PER_EACH_PAGE;
+    let res = await this.getDocsNum();
+    let numTotalDocs = res.payload.data;
+    console.log("community service numTotalDocs : ", res.payload.data);
+
+    let numPage = Math.floor(numTotalDocs / this.DOC_NUM_PER_EACH_PAGE);
     //if number of total docs % N > 0:
     if (numTotalDocs % this.DOC_NUM_PER_EACH_PAGE > 0)
     //  then number of pages ++
       numPage++;  
     //number of pages per bloc ← M
     // let numPagePerBloc = this.DOC_NUM_PER_EACH_PAGE;
-    let numPagePerBloc = 3;
+    let numPagePerBloc = 10;
     //number of bloc ← number of pages / M
-    let numBloc = numPage / numPagePerBloc;
+    let numBloc = Math.floor(numPage / numPagePerBloc);
     //if number of pages % M > 0:
     if(numPage % numPagePerBloc > 0)
     //  then number of bloc ++
       numBloc++;
     return { numPage : numPage, numPagePerBloc : numPagePerBloc, numBloc : numBloc};
+  }
+
+  async getDocsNum(){
+    return await this.http.get<any>(this.URL_GET_DOC_NUM).toPromise();
   }
 
 
@@ -145,7 +153,17 @@ export class CommunityServiceService {
     return this.docList;
   } 
 
+  /**
+   * @description 가장 최근 게시판 글들 로드하는 함수
+   */
+  async loadListByPageIdx(start_idx: number) {
+    let body = { cur_start_idx: start_idx };
 
+    let res = await this.http.post<any>(this.URL_LOAD_LIST_BY_PAGE_IDX,body).toPromise();
+    return this.loadCommunityDocs(res);
+  }
+
+  
   /**
    * @description 가장 최근 게시판 글들 로드하는 함수
    */
