@@ -40,12 +40,13 @@
 
     </table>
    
-    <button class="uk-button uk-button-text" (click)="pressPriorBloc()"> 이전 블록 </button>
-    <button class="uk-button uk-button-text" (click)="pressPriorList()"> 이전 페이지 </button>
-    <button (click)="choosePageNum(i)" *ngFor="let i of pages">{{i}}</button>
+    <button class="uk-button uk-button-text" (click)="pressPriorBloc()"> <-- </button>
+    <button class="uk-button uk-button-text" (click)="pressPriorList()"> 이전 </button>
+    <button (click)="choosePageNum(i)" *ngFor="let i of pages">  {{  i  }}  </button>
+    <button class="uk-button uk-button-text" (click)="pressNextList()"> 다음 </button>
+    <button class="uk-button uk-button-text" (click)="pressNextBloc()"> --> </button>
+    <br>
     <button *ngIf = "isLogStat" class="uk-button uk-button-text" (click)="navToWriteNewDoc()"> 새 글 쓰기 </button>
-    <button class="uk-button uk-button-text" (click)="pressNextList()"> 다음 페이지 </button>
-    <button class="uk-button uk-button-text" (click)="pressNextBloc()"> 다음 블록 </button>
 
 
 

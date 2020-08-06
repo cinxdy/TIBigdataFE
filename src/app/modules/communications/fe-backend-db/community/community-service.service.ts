@@ -211,7 +211,7 @@ export class CommunityServiceService {
   async writeNewDoc(body: {}) {
 
     let res = await this.http.post<any>(this.URL_WRITE_NEW_DOC, body).toPromise();
-    console.log("community-service writeNewDoc : ", res);
+    // console.log("community-service writeNewDoc : ", res);
 
     // alert("ok")
   }

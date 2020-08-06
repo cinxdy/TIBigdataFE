@@ -22,9 +22,9 @@ export class WriteNewCommunityDocComponent implements OnInit {
   /**
    * @description 테스트로 더미 100개
    */
-  testSave100(){
+  async testSave100(){
     for(var i = 0 ; i < 100 ; i ++){
-      let newID = this.createDocId();
+      let newID = await this.createDocId();
       let body = {
         user: "user" + i, 
         title : "title" + i,
@@ -35,6 +35,8 @@ export class WriteNewCommunityDocComponent implements OnInit {
       this.cm_svs.writeNewDoc(body);
 
     }
+    this.toCommunity();
+
   }
 
   updateContent($event){
