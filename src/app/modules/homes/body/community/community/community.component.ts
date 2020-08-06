@@ -87,6 +87,7 @@ export class CommunityComponent implements OnInit {
    */
   async loadFirstDocList() {
     this.docList = await this.cm_svc.loadFirstDocList();
+    console.log("commu compo load first doc list : ", this.docList);
     if(this.docList.length != 10){
       console.log("ERROR : community component : load first doc list : doc num not 10");
     }

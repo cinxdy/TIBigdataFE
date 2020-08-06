@@ -125,7 +125,7 @@ export class CommunityServiceService {
     if (res.succ) {
       // console.log(res);
       var docs = res.payload.data;
-      // console.log("docs : ", docs)
+      console.log("docs : ", docs)
 
       if(docs.length < this.DOC_NUM_PER_EACH_PAGE)
         this.DOC_NUM_PER_EACH_PAGE = (docs.length);
@@ -136,6 +136,7 @@ export class CommunityServiceService {
         doc["user"] = docs[i].user;
         doc["title"] = docs[i].title;
         doc["content"] = docs[i].content;
+        doc["id"] = docs[i].docId;
         this.docList.push(doc);
         this.isDocListExist = true;
         // console.log("service start idx : ", this.idx);

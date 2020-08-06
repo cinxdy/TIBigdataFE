@@ -31,7 +31,7 @@
         <tbody>
             <tr *ngFor="let d of docList; let i = index">
 
-                <td (click)="navToReadThisDoc(i)">{{ cur_start_idx + i + 1 }}</td>
+                <td (click)="navToReadThisDoc(i)">{{ d["id"] }}</td>
                 <td (click)="navToReadThisDoc(i)">{{ d["user"] }}</td>
                 <td (click)="navToReadThisDoc(i)">{{ d["title"] }}</td>
                 <!-- <td (click)="navToReadThisDoc(i)">{{ d["content"] }}</td> -->

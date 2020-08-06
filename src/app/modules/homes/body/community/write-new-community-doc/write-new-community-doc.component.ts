@@ -24,10 +24,13 @@ export class WriteNewCommunityDocComponent implements OnInit {
    */
   testSave100(){
     for(var i = 0 ; i < 100 ; i ++){
+      let newID = this.createDocId();
       let body = {
         user: "user" + i, 
         title : "title" + i,
-        content: "content" + i
+        content: "content" + i,
+        docId : newID
+
      }
       this.cm_svs.writeNewDoc(body);
 
@@ -42,13 +45,15 @@ export class WriteNewCommunityDocComponent implements OnInit {
   }
 
   async saveNewDocument(){
-    this.testSave100();
+    // this.testSave100();
+    let newID = await this.createDocId();
+    console.log("save new doc new id : ", newID);
     let userName = this.auth.getUserName();
     let body = {
       user : userName,
       title : this.title,
       content : this.content,
-      docId : this.createDocId()
+      docId : newID
     };
 
     console.log(body)

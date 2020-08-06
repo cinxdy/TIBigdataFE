@@ -56,7 +56,7 @@ async function loadDocListByPageIdx(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx * DOC_NUMBERS;//다음 문서 리스트 idx
 
-    comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+    comDoc.find({}).sort({docId : -1}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
         if (err)
             console.log("/loadPriorDocList failed");
         else {
@@ -68,11 +68,12 @@ async function loadDocListByPageIdx(req, res) {
 
 async function loadFirstDocList(req, res) {
     console.log("load first page ok")
-    comDoc.find({}).limit(DOC_NUMBERS).exec((err,data)=>{
+    comDoc.find({}).sort({docId : -1}).limit(DOC_NUMBERS).exec((err,data)=>{
         if(err){
             console.log("load fist doc list err")
         }
         else{
+            console.log(data)
             res.status(200).json(new Res(true, "/loadFirstDocList ok", { data: data,next_start_idx: 0}))
         }
     })
@@ -82,7 +83,7 @@ async function loadPriorDocList(req, res) {
     let bundle = req.body;
     let start_idx = bundle.cur_start_idx - DOC_NUMBERS;//다음 문서 리스트 idx
 
-    comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+    comDoc.find({}).sort({docId : -1}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
         if (err)
             console.log("/loadPriorDocList failed");
         else {
@@ -98,7 +99,7 @@ async function loadNextDocList(req, res) {
     let start_idx = bundle.cur_start_idx + DOC_NUMBERS;//다음 문서 리스트 idx
     // console.log(start_idx)
 
-    comDoc.find({}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
+    comDoc.find({}).sort({docId : -1}).skip(start_idx).limit(DOC_NUMBERS).exec((err, doc_res) => {
         if (err)
             console.log("/loadNextDocList failed");
         else {
