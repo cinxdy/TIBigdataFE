@@ -4,7 +4,7 @@
   </p>
 <div class="uk-container">
     
-    <input type="text" #tbString> 
+    <!-- <input type="text" #tbString>  -->
  
  <input type="button" value="미리 보기" (click)="previewString()"> <br>
  
@@ -61,7 +61,7 @@
         <div class="uk-container-center" uk-grid>
         <br>
 
-        <input (keyup)="updateContent($event)" #result style="width:800px; height:200px" placeholder="문서 내용" />
+        <input (keyup)="updateContent($event)" ##tbString style="width:800px; height:200px" placeholder="문서 내용" />
     </div>
     <button class="uk-button uk-button-primary " (click) ="saveNewDocument()">등록하기</button>
     <button class="uk-button uk-button-primary" (click) ="testSave100()"> 테스트 용 100개 더미 만들기</button>
