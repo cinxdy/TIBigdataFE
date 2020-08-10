@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
-import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { Router } from "@angular/router";
 
@@ -28,9 +28,9 @@ export class HomeGraphComponent implements OnInit {
 
   options: CloudOptions = {
     // if width is between 0 and 1 it will be set to the size of the upper element multiplied by the value
-    width: 1000,
-    height: 250,
-    overflow: true
+    // width: 1000,
+    // height: 250,
+    // overflow: true
   };
   serverData: JSON;
   cData: CloudData[] = [];

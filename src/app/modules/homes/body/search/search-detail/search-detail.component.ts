@@ -1,13 +1,13 @@
 // import { Injectable } from '@angular/core';
 import { IdControlService } from '../service/id-control-service/id-control.service';
 import { Article } from "../article/article.interface";
-import { ElasticsearchService } from '../service/elasticsearch-service/elasticsearch.service';
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { Component, OnInit, Inject } from '@angular/core';
 // import { Article } from '../article/article.interface';
 import { WordcloudService } from '../../../graphs/wordcloud/wordcloud.service';
 import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { RecomandationService } from '../service/recommandation-service/recommandation.service';
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 
 @Component({
   selector: 'app-search-detail',
@@ -18,7 +18,9 @@ export class SearchDetailComponent implements OnInit {
 
   private article: Article;
   private cData: CloudData[];
-  private isLoaded: boolean = false;
+  private isRelatedLoaded = 0;
+  private isCloudLoaded = 0;
+  private isDocInfoLoaded = 0;
   private rcmdList: Array<string>;
   private relateToggle: boolean = false;
   constructor(
@@ -26,7 +28,7 @@ export class SearchDetailComponent implements OnInit {
     private idControl: IdControlService,
     private wordcloud: WordcloudService,
     private es: ElasticsearchService,
-    private db: DatabaseService
+    private db: AnalysisDatabaseService
   ) { }
 
   ngOnInit() {
@@ -36,24 +38,29 @@ export class SearchDetailComponent implements OnInit {
   }
   goToDoc(r) {
     // console.log(r)
-    this.idControl.setIdChosen(this.rcmdList[0]["id"][r]);
+    this.idControl.setIdChosen(this.rcmdList[r]["id"]);
+    // console.log("goToDoc : ", this.rcmdList[r]["id"])
     this.loadPage();
     // this.rcmd.goToDoc(r);
   }
 
   loadPage() {
-    this.isLoaded = false;
-    this.relateToggle = false;
+    // this.isLoaded = 0;
+    this.isRelatedLoaded = 0;
+    this.isCloudLoaded = 0;
+    this.isDocInfoLoaded = 0;
+    // this.relateToggle = false;
     // this.article = this.idControl.getArticle()["_source"];
     let id = this.idControl.getIdChosen();
-    // console.log("id : " + id)
+    // console.log("loadPage : id : " + id)
     // this.es.idSearch(id).then((r) =>{
     //   this.article = r;
     // });
     this.db.getRelatedDocs(id).then(res => {
       this.rcmdList = res as [];
-      console.log("from db : ",res)
-      this.relateToggle = true;
+      // console.log("loadPage : from db : ", res)
+      // console.log("load page : get recommm ok")
+      this.isRelatedLoaded ++;
     });
     // this.rcmd.getRcmd([id]).then((data)=>{
     //   // console.log(data);
@@ -63,17 +70,20 @@ export class SearchDetailComponent implements OnInit {
 
     this.es.searchById(id).then((res) => {
       // this.article = res.hits.hits._source
-      // console.log(res);
       this.article = res["hits"]["hits"][0]["_source"];
+      // console.log("loadPage : es response ok");
       // console.log(this.article)
-      this.wordcloud.createCloud(id)
-        .then((data) => {
-          this.cData = data as CloudData[]
-          this.isLoaded = true;
+      this.isDocInfoLoaded ++;
 
-          // console.log("detail comp data store test : " + this.cData);
-        });
     })
+    this.wordcloud.createCloud(id)
+      .then((data) => {
+        // console.log("load{age : wordcloud info responseo ok")
+        this.cData = data as CloudData[]
+        this.isCloudLoaded ++;
+        // console.log("cloud ok : ", true)
+        // console.log("detail comp data store test : " + this.cData);
+      });
     // let id = this.idControl.getArticle()["_id"];
 
     // console.log(this.article);

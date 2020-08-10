@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ElasticsearchService } from '../../search/service/elasticsearch-service/elasticsearch.service';
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { Router } from '@angular/router';
-import { ArticleSource } from '../../search/article/article.interface';
+// import { ArticleSource } from '../../search/article/article.interface';
 
 
 @Component({
@@ -11,17 +11,17 @@ import { ArticleSource } from '../../search/article/article.interface';
 })
 export class HomeSearchBarComponent implements OnInit {
 
-  private static readonly INDEX = 'nkdboard';
-  private static readonly TYPE = 'nkdboard';
+  // private static readonly INDEX = 'nkdboard';
+  // private static readonly TYPE = 'nkdboard';
 
-  private queryText = '';
+  // private queryText = '';
  
-  private lastKeypress = 0;
+  // private lastKeypress = 0;
 
-  articleSources: ArticleSource[];
+  // articleSources: ArticleSource[];
 
-  constructor(public _router: Router, private es: ElasticsearchService) {
-    this.queryText='';
+  constructor() {
+    // this.queryText='';
    }
 
   ngOnInit() {

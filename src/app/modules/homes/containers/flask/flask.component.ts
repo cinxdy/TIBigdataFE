@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import { ElasticsearchService } from '../../body/search/service/elasticsearch-service/elasticsearch.service';
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import * as CanvasJS from '../../../../../assets/canvasjs.min.js';
 import { IpService } from 'src/app/ip.service'
 
@@ -14,7 +14,7 @@ import { Observable, of} from 'rxjs';
   styleUrls: ['./flask.component.less']
 })
 export class FlaskComponent implements OnInit {
-  private URL = this.ipService.getUserServerIp();
+  private URL = this.ipService.get_FE_DB_ServerIp();
   private BASE_URL: string = this.URL+':5000/wordrank';
   private TEST_URL: string = this.URL+':5000/test';
 

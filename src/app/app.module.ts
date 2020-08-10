@@ -15,10 +15,10 @@ import { HomeGraphComponent } from './modules/homes/body/main-home-container/hom
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { LibraryModule } from './modules/homes/body/library/library.module';
 import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
-import { CoreModule} from './modules/core/core.module';
-import { EPAuthService } from './modules/core/componets/membership/auth.service';
+import { CommunicationModule} from './modules/communications/communication.module';
+import { EPAuthService } from './modules/communications/fe-backend-db/membership/auth.service';
 import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
-import { DatabaseService } from './modules/core/componets/database/database.service';
+import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/analysisDatabase.service';
 
 import { ChartsModule } from "ng2-charts";
 
@@ -31,7 +31,7 @@ import { ChartsModule } from "ng2-charts";
     MainHomeContainerComponent,
     HomeSearchBarComponent,
     HomeGraphComponent,
-    SearchHistoryComponent
+    SearchHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,15 +39,14 @@ import { ChartsModule } from "ng2-charts";
     AppRoutingModule,
     SearchModule,
     SpecialsModule,
-    CoreModule,
+    CommunicationModule,
     FormsModule,
     TagCloudModule,
     LibraryModule,
-    CoreModule,
     ChartsModule
 
   ],
-  providers: [WordcloudService, EPAuthService, DatabaseService],
+  providers: [WordcloudService, EPAuthService, AnalysisDatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

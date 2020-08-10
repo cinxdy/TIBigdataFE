@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WordcloudService } from '../wordcloud.service';
+import { WordcloudService } from './wordcloud.service';
 
 describe('WordcloudService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

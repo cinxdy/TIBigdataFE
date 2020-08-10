@@ -46,12 +46,14 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
         month: time.getMonth(),
         date: time.getDate(),
         hour: time.getHours(),
-        min: time.getMinutes()
+        min: time.getMinutes(),
+        time : time
     };
 
     //add total search history from all users
     //new history keyword that is goona be added soon.
     newHst = new hst(keyword);
+    // newHst.
     newHst.save((err, keyword) => {
         if (err) {
             console.log("add history fail. error : " + err);
@@ -88,7 +90,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                     // console.log("user not found")
                     // console.log("requested user : ", userEmail)
                     // console.log(doc);
-                    res.status(401).send({ add: false });
+                    res.status(401).send(new Res(false, "fail to response of add history", { add: false }));
                 }
                 else {
                     // console.log("doc found!")
@@ -96,7 +98,7 @@ router.post('/addHistory', (req, res) => { //post로 바꿔주었음 20.05.13 16
                     userHst = doc.history;
                     userHst.push(keyword);
                     // console.log(userHst);
-                    res.json({ history: userHst });
+                    res.json(new Res(true, "response of add history",{ history: userHst }));
                 }
             }
 
@@ -146,7 +148,7 @@ router.get('/getHistoryCount', (req, res) => {
             res.status(401);
         }
         else
-            res.json({ count: count });
+            res.json(new Res(true, "response of get getHistoryCount",{ count: count }));
     })
 })
 
@@ -176,45 +178,15 @@ router.post('/getTotalHistory', (req, res) => {
                     console.log("post : get total history err")
                 // console.log(hstrs);
                 // console.log("post total history ok")
-                res.send({ histories: hstrs })
+                res.send(new Res(true, "response of post get totla data : total user history data",{ histories: hstrs }))
             });
 });
 
 router.get('/getTotalHistory', (req, res) => {
-    // var result = hst.find({});
-    // console.log(result);
-    console.log("this is get total history")
-    hst.aggregate([
-        {
-            $match: {
-                keywords: { $not: {$size: 0} }
-            }
-        },
-        { $unwind: "$keywords" },
-        {
-            $group: {
-                _id: {$toLower: '$keywords'},
-                count: { $sum: 1 }
-            }
-        },
-        {
-            $match: {
-                count: { $gte: 2 }
-            }
-        },
-        { $sort : { count : -1} },
-        { $limit : 100 }
-    ]);
     hst.aggregate([
         {
             $group: { _id: { keyword: '$keyword' }, count: { $sum: 1} }
         },
-        // {
-        //     $unwind:"$countSet"
-        // },
-        // {
-        //     $group: { _id: "$_id", countSet: { $sum:1} }
-        // },
         {
             $sort: { count : -1}
         },
@@ -222,24 +194,12 @@ router.get('/getTotalHistory', (req, res) => {
             $limit: 30 
         }
         ],(err,docs) =>{
-            console.log(docs)
+            // console.log(docs)
             if(err)
                 console.log("error in get total history in get")
             else    
-                res.json(docs)
+                res.json(new Res(true, "response of get of get total data .",docs))
         });
-    // var hstResult = hst.find({})
-    //     .limit(30)
-    // // console.log(hstResult);
-    // hstResult.exec(
-    //     (err, hstrs) => {
-    //         if (err)
-    //             console.log("post : get total history err")
-    //         // console.log(hstrs);
-    //         res.send({ histories: hstrs })
-    //     }
-
-    // )
 
 });
 

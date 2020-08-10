@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "../category-graph/category-graph.service";
 import { Router } from "@angular/router";
-import { DatabaseService } from '../../../../core/componets/database/database.service';
+import { AnalysisDatabaseService } from '../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service';
 
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
@@ -12,7 +12,7 @@ import { IdControlService } from "../../search/service/id-control-service/id-con
   styleUrls: ["./category.component.less"]
 })
 export class CategoryComponent implements OnInit {
-  constructor(private db: DatabaseService,
+  constructor(private db: AnalysisDatabaseService,
     private configService: ConfigService,
     private idControl: IdControlService,
     public _router: Router) { }

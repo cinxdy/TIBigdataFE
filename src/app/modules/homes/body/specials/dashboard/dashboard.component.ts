@@ -4,11 +4,11 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { MultiDataSet } from 'ng2-charts';
 import { HttpClient } from '@angular/common/http';
 import { IpService } from 'src/app/ip.service';
-import { EPAuthService } from '../../../../core/componets/membership/auth.service';
-import { ElasticsearchService } from "../../search/service/elasticsearch-service/elasticsearch.service";
+import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
+import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { DocumentService } from "../../search/service/document/document.service"
 import { RecomandationService } from "../../search/service/recommandation-service/recommandation.service";
-import { DatabaseService } from "../../../../core/componets/database/database.service";
+import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
 
@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective, { static: false }) charts: QueryList<BaseChartDirective>;;
 
   constructor(
-    private db: DatabaseService,
+    private db: AnalysisDatabaseService,
     private auth: EPAuthService,
     private http: HttpClient,
     private ipService: IpService,
@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
   // private tfidfDir: string = "../../../../../../assets/entire_tfidf/data.json";
 
 
-  private hstReqUrl = this.ipService.getUserServerIp() + "/hst/getTotalHistory";
+  private hstReqUrl = this.ipService.get_FE_DB_ServerIp() + "/hst/getTotalHistory";
   private hstFreq: any[];
 
   private graphXData = [];
@@ -383,26 +383,39 @@ export class DashboardComponent implements OnInit {
 
 
   makeRelatedCloud() {
-
     console.log("분석 : " + this.userAnalysisChoice + " 그래프 : " + this.userGraphChoice);
-    this.db.getRcmdTable(this.chosenList[0], 10, true).then(data => {
-      console.log(data);
+    this.db.getRcmdTable(this.chosenList[0], 10, true).then(data1 => {
+      console.log("makeRelatedCloud : ",data1);
 
-      let graphData = data[0]["rcmd"] as [];
-
-
+      data1 = data1[0]["rcmd"]
+      let data = []
+      let count = 0;
       let idsArr = []
       let valArr = []
-      graphData.map(d => {
-        idsArr.push(d[0])
-        valArr.push(d[1])
-        return
-      })
+      for(let i = 0 ; i < data1.length; i++){
+        if(data1[i] != undefined && data1[i].length > 0){
+          console.log(data1[i].length)
+          idsArr.push(data1[i][0])
+          valArr.push(data1[i][1])
+          // data[count] = data1[i][0]
+          // count++;
+        }
+      }
+
+      // let graphData = data[0]["rcmd"] as [];
+      // console.log("data : ", data);
+      // let idsArr = []
+      // let valArr = []
+      // data.map(d => {
+      //   idsArr.push(d[0])
+      //   valArr.push(d[1])
+      //   return
+      // })
       // for (let k = 0; k < graphData.length; k++) {
       //   idsArr.push(graphData[k][1])
       // }
       this.docSvc.convertID2Title(idsArr).then(t => {
-        console.log("ad arr :", idsArr);
+        console.log("ids arr :", idsArr);
         console.log("titles : ", t);
         let titles = t as [];
 

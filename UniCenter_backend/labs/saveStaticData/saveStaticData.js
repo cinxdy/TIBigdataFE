@@ -1,11 +1,14 @@
 const fs = require('fs');
 const rcmd = require('../../models/rcmd');
 const keyword = require('../../models/tfidf');
+const topic = require('../../models/topic');
+const topicCount = require('../../models/topicCount');
+
 
 const mongoose = require('mongoose'); //mongose 서버와 백엔드 연결 
 const db = 'mongodb://localhost:27017/analysis';
 
-let modelArr = [rcmd, keyword];
+let modelArr = [rcmd, keyword, topic];
 let numDataArr = [];
 
 
@@ -26,6 +29,7 @@ mongoose.connect(db, {
             console.log('Connected to mongodb');
             await sendRcmd();
             await sendTFIDF();
+            await sendTopic();
             console.log("plz wait a min...");
             let flag = 0;
             var checkData = setInterval(async () => {
@@ -51,14 +55,48 @@ mongoose.connect(db, {
         }
     });
 
-async function sendCat() {
-    let rawData = fs.readFileSync("./ctgRNNResult.json");
-    let data = JSON.parse(rawData)
-    console.log(typeof(data));
+    async function sendTopic() {
+        let rawData = fs.readFileSync("./ctgRNNResult.json");
+        let data = JSON.parse(rawData)
+        let count = 0;
+        let each_cat_count = [];
+        console.log("sending data started...")
+        let arr = [];
+        for (var i in data) {
+            var topData = data[i];
+            var tp = topData["topic"];
+            console.log(topData["topic"])
+            let docs = topData["doc"];
+            // console.log(docs)
+            var this_topic_docs_len = docs.length;
+            each_cat_count.push({topic : tp, count : this_topic_docs_len});
+            console.log("topic " + tp + " doc count : " + this_topic_docs_len);
+            for (var j = 0; j < this_topic_docs_len; j++) {
+                console.log(docs[j]["titles"])
+                arr.push(
+                    {
+                        topic: tp,
+                        docID: docs[j]["idList"],
+                        docTitle: docs[j]["titles"],
+                    }
+                )
+                count++;
+            }
 
+        }
+        topic.insertMany(arr, err => {
+            if (err)
+                console.log("top data save filed.")
+        })
 
-
-}
+        topicCount.insertMany(each_cat_count, err=>{
+            if(err)
+                console.log("topic count save failed")
+        })
+        numDataArr.push(count - 1);
+        console.log("finish sending topic data")
+    
+    }
 async function sendRcmd() {
 
     let rawData = fs.readFileSync('./rcmdCombData.json')

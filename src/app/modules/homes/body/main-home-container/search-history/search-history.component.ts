@@ -12,9 +12,9 @@ import { IpService } from 'src/app/ip.service'
 export class SearchHistoryComponent implements OnInit {
 
   constructor(private http: HttpClient, private ipService: IpService) { }
-  private ALL_HST_REQ_URL = this.ipService.getUserServerIp() + "/hst/getTotalHistory";
-  private SORT_HST_FREQ_REQ_URL = this.ipService.getUserServerIp() + "/hst/getSortFreqHistory";
-  private MONTH_HST_FREQ_REQ_URL = this.ipService.getUserServerIp() + "/hst/getMonthFreqHistory";
+  private ALL_HST_REQ_URL = this.ipService.get_FE_DB_ServerIp() + "/hst/getTotalHistory";
+  private SORT_HST_FREQ_REQ_URL = this.ipService.get_FE_DB_ServerIp() + "/hst/getSortFreqHistory";
+  private MONTH_HST_FREQ_REQ_URL = this.ipService.get_FE_DB_ServerIp() + "/hst/getMonthFreqHistory";
 
   private hstFreq: any[] = [];
   private isChartReady: boolean = false;
@@ -28,6 +28,7 @@ export class SearchHistoryComponent implements OnInit {
   async queryTotalHistory() {
     this.hstFreq = [];
     let res = await this.http.get<any>(this.ALL_HST_REQ_URL).toPromise()
+    res = res.payload;
     for (var i = 0; i < res.length; i++)
       this.hstFreq.push({ x: i, y: res[i]["count"], label: res[i]["_id"]["keyword"] });
   }

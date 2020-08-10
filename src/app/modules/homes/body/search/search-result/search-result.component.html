@@ -1,8 +1,13 @@
-<div class="uk-container">
-    <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6">
+<div class="uk-container-center">
+
+    <!-- 검색 bar -->
+    <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6 uk-align-center">
         <app-search-bar [queryText]="queryText" (searched)="loadResultPage()"></app-search-bar>
     </form>
-    <div class="uk-flex-inline">
+
+
+    <!-- 연관검색어 -->
+    <div class="uk-flex-center" uk-grid>
         <button class="uk-button uk-button-text">
             연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
         </button>
@@ -17,34 +22,44 @@
             </ul>
         </ng-template>
     </div>
-    <form #dataForm="ngForm" (ngSubmit)="this.navToDataChart()">
-        <div *ngIf="articleSources?.length > 1" class="uk-flex uk-flex-right">
-            <!-- <button class="uk-button uk-button-danger">
-        Chosen Doc WordCloud
-      </button> -->
-        </div>
-    </form>
+
+
+    <!-- 수평선 긋기 -->
     <hr />
-    <div class="uk-child-width-expand@s" uk-grid>
-        <div class="uk-width-small">
-            <div class="row">
-                <button (click)="freqAnalysis()" class="uk-button uk-button-primary">
-                    키워드 분석
+
+
+    <!-- 하단부 -->
+    <div class="uk-container-center" uk-grid>
+
+
+        <!-- 좌측 패널 -->
+        <div class="uk-width-medium">
+
+            <!-- 키워드분석 -->
+            <div class="uk-margin-small" uk-grid>
+                <button (click)="freqAnalysis()" class="uk-button uk-button-primary uk-align-center">
+                    키워드분석
                 </button>
             </div>
-            <div class="row">
-                <div *ngIf="isLogStat">
+
+            <!-- 문서 저장 KEEP -->
+            <div class="uk-margin-small" uk-grid>
+                <div class="uk-align-center" *ngIf="isLogStat">
                     <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
                         KEEP
                     </button>
                 </div>
             </div>
-            <div class="row">
-                <div class="search-filter" style="width : 50px;">
+
+            <!-- 좌측 검색 필터 -->
+            <div uk-grid>
+                <div class="search-filter uk-align-center">
                     <app-search-filter></app-search-filter>
                 </div>
+
             </div>
         </div>
+        <!-- 중앙 검색 결과 -->
         <div class="uk-width-expand">
 
             <div class="search-result">
@@ -59,7 +74,7 @@
 
                                     <div class="form-group">
                                         <!-- <input type="checkbox" (click)="this.addList(i)" /> -->
-                                        <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(i)"/>
+                                        <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(i)" />
 
                                     </div>
                                 </div>
@@ -96,9 +111,9 @@
                                             연관문서
                                         </button>
                                         <div *ngIf="relateToggle[i] == true">
-                                            <div *ngFor="let rcmd of relatedDocs; index as r">
+                                            <div *ngFor="let rcmd of relatedDocs[i]; index as r">
                                                 <!-- {{ relatedDocs[i]["rcmd"] }} -->
-                                                <a (click)="setThisDoc(r)">{{ rcmd["title"] }}</a>
+                                                <a (click)="setThisDoc(i,r)">{{ rcmd["title"] }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -116,6 +131,8 @@
                 </ng-template>
             </div>
         </div>
+
+        <!-- 우측 검색 기록 -->
         <div class="uk-width-small">
             <div *ngIf="isLogStat">
                 <!-- {{ console.log(" histroy test")}} -->
@@ -124,12 +141,14 @@
                 검색 기록
                 <div class="uk-card uk-card-body uk-card-default">
 
-                    <div *ngFor="let hst of auth.schHst; index as i">
+                    <div *ngFor="let hst of userSearchHistory; index as i">
                         <div class="row">
-                            <a (click)="relatedSearch(hst.keyword)">{{ hst.keyword }}</a>
+                            <a (click)="relatedSearch(hst)">{{hst}}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>

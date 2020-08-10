@@ -1,0 +1,48 @@
+<h1>관리자에게 바란다</h1>
+<div class="uk-container">
+    <!-- <table>
+        <th *ngFor="let column of headers">
+            {{column}}
+        </th>
+        <tr *ngFor="let row of rows">
+
+            <td>{{ d["user"] }}</td>
+            <td>{{ d["content"] }}</td>
+        </tr>
+    </table> -->
+
+
+    <table class="uk-table">
+        <!-- <caption>커뮤니티 페이지</caption> -->
+        <thead>
+            <tr>
+                <th>글 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <!-- <tr>
+                <td>Table Footer</td>
+                <td>Table Footer</td>
+                <td>Table Footer</td>
+            </tr> -->
+        </tfoot>
+        <tbody>
+            <tr *ngFor="let d of docList; let i = index">
+
+                <td (click)="navToReadThisDoc(i)">{{ cur_start_idx + i + 1 }}</td>
+                <td (click)="navToReadThisDoc(i)">{{ d["user"] }}</td>
+                <td (click)="navToReadThisDoc(i)">{{ d["content"] }}</td>
+            </tr>
+        </tbody>
+
+    </table>
+   
+
+    <button class="uk-button uk-button-text" (click)="navToWriteNewDoc()"> 새 글 쓰기 </button>
+    <button class="uk-button uk-button-text" (click)="pressNextList()"> 다음 페이지 </button>
+    <button class="uk-button uk-button-text" (click)="pressPriorList()"> 이전 페이지 </button>
+
+
+</div>

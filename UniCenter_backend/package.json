@@ -11,16 +11,19 @@
     "google-auth-library": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "minimist": "^1.2.5",
-    "mongoose": "^5.9.10"
+    "mocha": "^8.0.1",
+    "mongoose": "^5.9.10",
+    "sinon": "^9.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "dev": "babel-watch server.js"
   },
   "author": "",

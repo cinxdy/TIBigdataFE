@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ArticleSource } from '../article.interface';
+// import { ArticleSource } from '../article.interface';
 
 @Component({
   selector: 'app-show-articles',
