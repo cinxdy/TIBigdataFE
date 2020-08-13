@@ -119,6 +119,14 @@ export class NavComponent implements OnInit {
   toCommunity(){
     this._router.navigateByUrl("/community")
   }
+  
+  toAnnouncement(){
+    this._router.navigateByUrl("/community/announcement");
+  }
+
+  toFaq(){
+    this._router.navigateByUrl("/community/faq");
+  }
 }
 
 

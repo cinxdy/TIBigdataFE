@@ -1,5 +1,8 @@
 <h1>커뮤니티 광장</h1>
-<div class="uk-container">
+<div class="uk-container-center margin">
+    
+    <!-- <div class="body"> -->
+
     <!-- <table>
         <th *ngFor="let column of headers">
             {{column}}
@@ -11,8 +14,13 @@
         </tr>
     </table> -->
 
+    <div uk-grid>
+        
 
-    <table class="uk-table">
+    
+
+    <table class="uk-table uk-table-striped">
+    <!-- <table class="tbl-ex"> -->
         <caption>커뮤니티 페이지</caption>
         <thead>
             <tr>
@@ -39,15 +47,28 @@
         </tbody>
 
     </table>
-   
-    <button class="uk-button uk-button-text" (click)="pressPriorBloc()"> <-- </button>
+</div>
+<div class="uk-flex-center" uk-grid>
+
+    <button class="uk-button uk-button-text " (click)="pressPriorBloc()"> <-- </button>
     <!-- <button class="uk-button uk-button-text" (click)="pressPriorList()"> 이전 </button> -->
-    <button (click)="choosePageNum(i)" *ngFor="let i of pages">  {{  i  }}  </button>
+    <!-- &nbsp -->
+    <!-- <p uk-margin> -->
+        <button class = "uk-button uk-button-primary uk-button-small" (click)="choosePageNum(i)" *ngFor="let i of pages">  {{  i  }}  </button>
+        <span>&nbsp;</span>
+
+    <!-- </p> -->
     <!-- <button class="uk-button uk-button-text" (click)="pressNextList()"> 다음 </button> -->
-    <button class="uk-button uk-button-text" (click)="pressNextBloc()"> --> </button>
+    <!-- &nbsp -->
+    <button class="uk-button uk-button-text " (click)="pressNextBloc()"> --> </button>
     <br>
-    <button *ngIf = "isLogStat" class="uk-button uk-button-text" (click)="navToWriteNewDoc()"> 새 글 쓰기 </button>
+    <button *ngIf = "isLogStat" class="uk-button uk-button-text " (click)="navToWriteNewDoc()"> 새 글 쓰기 </button>
+</div>
 
+    <div class="uk-flex-center" uk-grid>
 
+    <input class = "" (keyup)="updateSearchKey($event)" placeholder="문서 검색" />
+</div>
 
 </div>
+<!-- </div> -->

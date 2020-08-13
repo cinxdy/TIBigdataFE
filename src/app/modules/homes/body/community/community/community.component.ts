@@ -193,6 +193,11 @@ export class CommunityComponent implements OnInit {
     }
   }
 
+
+  updateSearchKey($event){
+    let keyword = $event.target.value;
+  }
+
   /**
    * @description 새 글 쓰는 화면으로 이동
    */

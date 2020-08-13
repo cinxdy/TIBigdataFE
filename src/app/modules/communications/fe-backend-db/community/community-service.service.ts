@@ -15,6 +15,7 @@ export class CommunityServiceService {
   private URL_WRITE_NEW_DOC = this.URL + "/community/writeNewDoc"; //mongoDB
   private URL_GET_DOC_NUM = this.URL + "/community/getDocNum"; //mongoDB
   private URL_LOAD_LIST_BY_PAGE_IDX = this.URL + "/community/loadDocListByPageIdx"; //mongoDB
+  private URL_SEARCH_DOC = this.URL + "/community/searchDoc"; //mongoDB
   private docList: {}[] = [];
   private idx: number = 0;
   private isDocListExist: boolean = true;
@@ -52,6 +53,11 @@ export class CommunityServiceService {
   updateStartIdx(new_idx) {
     this.idx = new_idx;
     // console.log("updated idx : " , this.idx)
+  }
+
+  async search(keyword : string){
+    let res = await this.http.post<any>(this.URL_SEARCH_DOC, keyword).toPromise();
+    // res.
   }
 
   /**
