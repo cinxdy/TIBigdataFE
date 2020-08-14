@@ -1,5 +1,5 @@
 <div class="uk-navbar-container" uk-navbar>
-    <div class="uk-navbar-right ">
+    <div class="uk-navbar-left ">
         <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
             <div *ngIf="isLogin">
                 <ul class="uk-navbar-nav uk-visible@m">
@@ -17,33 +17,7 @@
             </div>
             <li><a (click)="ready()">사이트맵</a></li>
             <!-- <li><a (click)="this.auth.forceLogOut()" >강제 로그아웃(개발용)</a></li> -->
-        </ul>
-    </div>
-</div>
-
-
-<nav class="uk-navbar-container" uk-navbar>
-    <div class="uk-navbar-left uk-flex-nowrap">
-        <!-- 브라우저 크기를 좌우로 줄이면 새 메뉴가 생긴다... -->
-        <!-- <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle
-            href="#hamburger-menu">
-        </a> -->
-        <div class="uk-navbar-item uk-logo uk-padding">
-            <img (click)="toHomes()" src="assets/kubic_logo.png" alt="" width="120">
-        </div>
-    </div>
-
-    <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
-            <!-- <li><a (click)="navigateLibrary()">검색&middot;분석</a>
-                <div class="uk-navbar-dropdown">
-                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                        <li><a href="#">검색</a></li>
-                        <li><a href="#">분석</a></li>
-                        <li><a href="#">기타</a></li>
-                    </ul>
-                </div>
-            </li> -->
+        
             <li><a (click)="navigateLibrary()">자료열람</a>
                 <div class="uk-navbar-dropdown">
                     <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -89,6 +63,36 @@
                     </ul>
                 </div>
             </li>
+        </ul>
+    </div>
+</div>
+
+
+<nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-center uk-flex-nowrap">
+        <!-- 브라우저 크기를 좌우로 줄이면 새 메뉴가 생긴다... -->
+        <!-- <a class="uk-navbar-toggle uk-hidden@m uk-padding-remove-left" uk-navbar-toggle-icon uk-toggle
+            href="#hamburger-menu">
+        </a> -->
+
+        <!-- 로고 -->
+        <!-- <div class="uk-navbar-item uk-logo uk-padding">
+            <img (click)="toHomes()" src="assets/kubic_logo.png" alt="" width="120">
+        </div> -->
+    </div>
+
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav uk-visible@m" routerLinkActive="active">
+            <!-- <li><a (click)="navigateLibrary()">검색&middot;분석</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li><a href="#">검색</a></li>
+                        <li><a href="#">분석</a></li>
+                        <li><a href="#">기타</a></li>
+                    </ul>
+                </div>
+            </li> -->
+            
         </ul>
     </div>
 

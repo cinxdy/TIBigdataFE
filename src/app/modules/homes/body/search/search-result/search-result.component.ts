@@ -190,7 +190,7 @@ export class SearchResultComponent implements OnInit {
       }
     })
     // //console.log("keywords : ",this.keywords)
-    this.isKeyLoaded = true;
+    this.isKeyLoaded = true;  
   }
 
 
