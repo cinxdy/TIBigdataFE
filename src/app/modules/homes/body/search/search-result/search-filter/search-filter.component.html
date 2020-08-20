@@ -5,10 +5,43 @@
     </button>
   </div>
 
-  <button
-    class="uk-button uk-button-default uk-button-small"
-    uk-toggle="target: .filter_category"
-  >
+  결과내 재검색
+
+  <div uk-grid>
+
+    <input class="uk-input search-bar uk-form-width-small" type="text" (keyup)="updateKeyword($event)"
+      value="{{ queryText }}" (keydown.enter)="search()" style="border-radius:20px; background-color: white;"
+      placeholder="키워드 포함" />
+  </div>
+
+  <div uk-grid>
+
+    <input class="uk-input search-bar uk-form-width-small" type="text" (keyup)="updateKeyword($event)"
+      value="{{ queryText }}" (keydown.enter)="search()" style="border-radius:20px; background-color: white;"
+      placeholder="키워드 제외" />
+    <a (click)="sendResult()"></a>
+  </div>
+
+
+  <!-- 기간 -->
+  <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: .filter_date">
+    기간<span uk-icon="icon: triangle-down"></span>
+  </button>
+
+  <div class="filter_date">
+    <div class="uk-card uk-card-small uk-card-body">
+      <div class="uk-margin" style="width : 80pt">
+        <input class="uk-range" type="range" value="1970" min="1950" max="2019" step="1" [(ngModel)]="sValue" />
+        To {{ sValue }}
+      </div>
+    </div>
+  </div>
+
+  <!-- 기관별 -->
+  기관
+
+
+  <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: .filter_category">
     카테고리<span uk-icon="icon: triangle-down"></span>
   </button>
 
@@ -20,33 +53,11 @@
         <li *ngFor="let topic of topics">
           {{ topic }} (100)
 
-          <label><input class="uk-checkbox" type="checkbox"/></label>
+          <label><input class="uk-checkbox" type="checkbox" /></label>
         </li>
       </ul>
     </div>
   </div>
 
-  <button
-    class="uk-button uk-button-default uk-button-small"
-    uk-toggle="target: .filter_date"
-  >
-    기간<span uk-icon="icon: triangle-down"></span>
-  </button>
 
-  <div class="filter_date">
-    <div class="uk-card uk-card-small uk-card-body">
-      <div class="uk-margin" style="width : 80pt">
-        <input
-          class="uk-range"
-          type="range"
-          value="1970"
-          min="1950"
-          max="2019"
-          step="1"
-          [(ngModel)]="sValue"
-        />
-        To {{ sValue }}
-      </div>
-    </div>
-  </div>
 </div>
