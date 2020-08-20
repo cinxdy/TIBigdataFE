@@ -10,7 +10,7 @@ import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
 import { SearchRoutingModule } from './search-routing.module';
 import { SearchResultComponent } from './search-result/search-result.component';
-import { SearchBarComponent } from './search-result/search-bar/search-bar.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchFilterComponent } from './search-result/search-filter/search-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { SearchRootComponent } from './search-root/search-root.component';
