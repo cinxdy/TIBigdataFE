@@ -68,6 +68,6 @@ export class SearchBarComponent implements OnInit {
     this.auth.addSrchHst(this.queryText);
     // console.log("emitted!")
     // console.log("search bar : fulltextsearch done with " + this.queryText);
-    this._router.navigateByUrl("body/search");
+    this._router.navigateByUrl("search");
   }
 }

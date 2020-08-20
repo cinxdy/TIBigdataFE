@@ -71,6 +71,7 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log("search result compo")
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();

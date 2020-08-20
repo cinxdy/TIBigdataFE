@@ -10,7 +10,8 @@ import { BodyRoutingModule } from "./body-routing.module";
 @NgModule({
   declarations: [
     // SearchBarComponent
-  BodyContainerComponent],
+  BodyContainerComponent
+],
   imports: [
     CommonModule,
     SearchModule,
