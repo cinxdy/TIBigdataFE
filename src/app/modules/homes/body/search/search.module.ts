@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { SearchRoutingModule } from './search-routing.module';
 
 import { IdControlService } from './service/id-control-service/id-control.service';
 
 import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/chosen-doc-analysis.component';
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
-import { SearchRoutingModule } from './search-routing.module';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchFilterComponent } from './search-result/search-filter/search-filter.component';
