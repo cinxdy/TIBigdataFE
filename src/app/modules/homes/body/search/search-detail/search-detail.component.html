@@ -1,49 +1,38 @@
-<div class="uk-container search-detail-area">
+<div class="search-detail-area">
   <h2>문서 상세보기</h2>
-  <span uk-spinner="ratio: 4.5" *ngIf="isLoaded < 3">Loading...</span>
-  <div *ngIf="0 < isDocInfoLoaded">
 
-    <div>
-      <h3 class="uk-align-left">
-        {{ article.post_title }}
-      </h3>
+  <h4 class=" alignleft">{{ article.post_title }}</h4>
+  <h4 class=" alignright">{{ article.post_writer }}</h4>
+  <div style="clear: both;"></div>
 
-      <h3 class="uk-align-right">
-        {{ article.post_writer }}
-      </h3>
-    </div>
-    <hr>
+  <hr>
 
-    <div class="uk-align-right temp-url-area">
-      {{article.published_institution_url}}
-    </div>
-
-
-    <div class="uk-align-center">
-      발행기관 {{article.published_institution_url}}
-    </div>
-    <div class="uk-align-center">
-      간행물 
-    </div>
-    <div class="uk-align-center">
-      간행물 구분
-    </div>
-    <div class="uk-align-center">
-      발행년월 {{article.post_date}}
-    </div>
-    <div class="uk-align-center">
-      페이지 {{article.number}}
-    </div>
-    <div class="uk-align-center">
-
-    </div>
-
-    
-    
-    
-    
-    
-    
-    
+  <div class="uk-align-right temp-url-area">
+    {{article.published_institution_url}}
   </div>
+
+
+    
+    
+    
+  <div class="uk-align-center">
+    발행기관 {{article.published_institution_url}}
+  </div>
+    
+  <div class="uk-align-center">
+    간행물 
+  </div>
+  <div class="uk-align-center">
+    간행물 구분
+  </div>
+  <div class="uk-align-center">
+    발행년월 {{article.post_date}}
+  </div>
+  <div class="uk-align-center">
+    페이지 {{article.number}}
+  </div>
+  <div class="uk-align-center">
+
+  </div>
+    
 </div>
