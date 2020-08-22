@@ -111,20 +111,20 @@
                                 <div uk-grid>
                                     <app-article-details [article]="articleSource">
                                     </app-article-details>
-                                    <div #relatedKeyWords uk-grid>
+                                    <!-- <div #relatedKeyWords uk-grid>
                                         <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
                                             Loading...
-                                        </div>
-                                        <ng-template #infoLoadFin>
-                                            <div class="uk-width-auto@m">
+                                        </div> -->
+                                        <!-- <ng-template #infoLoadFin> -->
+                                            <!-- <div class="uk-width-auto@m">
                                                 키워드 : {{ keywords[i] }}
-                                            </div>
+                                            </div> -->
                                             <!-- <div class="uk-width-auto@m">
                     <div uk-grid>연관문서</div>
                     <div uk-grid>{{ relatedDocs[i]["rcmd"] }}</div>
                   </div> -->
-                                        </ng-template>
-                                    </div>
+                                        <!-- </ng-template> -->
+                                    <!-- </div> -->
                                 </div>
                             </div>
                             <div #relatedDocuments uk-grid>

@@ -1,24 +1,34 @@
 <div *ngIf="article">
   <article class="uk-article">
-    <div class = "row">
+    <div class="row">
       <div class="uk-text-large">
         <!-- <a href="{{article.published_institution_url}}"> -->
-            <div> <a (click)="setThisDoc()">{{article.post_title}} </a></div>
+        <div> <a (click)="setThisDoc()">{{article.post_title}} </a></div>
         <!-- </a> -->
       </div>
-   </div>
-   <div class = "row">
+    </div>
+    <div class="row">
       <p>
         {{ (article.post_body.length > 80) ? (article.post_body | slice:0:80)+'..' : (article.post_body)}}
       </p>
     </div>
-    <div class = "row">
-    <div class = "container">
-      <div class="uk-grid-small uk-child-width-auto" uk-grid>               
-        {{article.post_date | date:"yyyy/MM/dd"}} |  {{article.post_writer}}
+    <div class="row">
+      <div class="container">
+        <div class="uk-grid-small uk-child-width-auto" uk-grid>
+          {{article.post_date | date:"yyyy/MM/dd"}} | {{article.post_writer}}
+        </div>
       </div>
     </div>
+
+    <div #relatedKeyWords>
+      <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
+        Loading...
+      </div>
+      <!-- <ng-template #infoLoadFin> -->
+        <div class="uk-width-auto@m">
+          키워드 : {{ keywords[0] }}
+        </div>
+      <!-- </ng-template> -->
     </div>
   </article>
 </div>
-
