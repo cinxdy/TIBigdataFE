@@ -14,9 +14,11 @@
     </div>
     <div class="row">
       <div class="container">
-        <div class="uk-grid-small uk-child-width-auto" uk-grid>
-          {{article.post_date | date:"yyyy/MM/dd"}} | {{article.post_writer}}
+        <div class="uk-align-left">
+          {{article.post_date | date:"yyyy/MM/dd"}} | {{article.post_writer}}  
         </div>
+
+        <div class="uk-align-right">키워드 : {{ keywords[0] }}</div>
       </div>
     </div>
 
@@ -25,9 +27,9 @@
         Loading...
       </div>
       <!-- <ng-template #infoLoadFin> -->
-        <div class="uk-width-auto@m">
-          키워드 : {{ keywords[0] }}
-        </div>
+        <!-- <div class="uk-width-auto@m"> -->
+         
+        <!-- </div> -->
       <!-- </ng-template> -->
     </div>
   </article>

@@ -111,42 +111,25 @@
                                 <div uk-grid>
                                     <app-article-details [article]="articleSource">
                                     </app-article-details>
-                                    <!-- <div #relatedKeyWords uk-grid>
-                                        <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
-                                            Loading...
-                                        </div> -->
-                                        <!-- <ng-template #infoLoadFin> -->
-                                            <!-- <div class="uk-width-auto@m">
-                                                키워드 : {{ keywords[i] }}
-                                            </div> -->
-                                            <!-- <div class="uk-width-auto@m">
-                    <div uk-grid>연관문서</div>
-                    <div uk-grid>{{ relatedDocs[i]["rcmd"] }}</div>
-                  </div> -->
-                                        <!-- </ng-template> -->
-                                    <!-- </div> -->
                                 </div>
                             </div>
-                            <div #relatedDocuments uk-grid>
-                                <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
+                            <!-- <div #relatedDocuments>
+                                <span uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
                                     Loading...
-                                </div>
-                                <div *ngIf="isRelatedLoaded == true">
-                                    <div class="uk-width-auto@m" style="margin: auto; padding: 1em;">
-                                        <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
+                                </span> -->
+                                <!-- <div *ngIf="isRelatedLoaded == true"> -->
+                                    <div class="uk-width-auto@m " style="margin: auto; padding: 1em;">
+                                        <button class="uk-button uk-button-secondary uk-align-center" (click)="tgglRelated(i)">
                                             연관문서
                                         </button>
                                         <div *ngIf="relateToggle[i] == true">
                                             <div *ngFor="let rcmd of relatedDocs[i]; index as r">
-                                                <!-- {{ relatedDocs[i]["rcmd"] }} -->
-                                                <a (click)="setThisDoc(i, r)">{{
-                              rcmd["title"]
-                            }}</a>
+                                                <a (click)="setThisDoc(i, r)">{{rcmd["title"]}}</a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                <!-- </div> -->
+                            <!-- </div> -->
                         </div>
                         <hr />
 

@@ -157,9 +157,9 @@ export class SearchResultComponent implements OnInit {
   loadRelatedDocs(idx: number) {
     // this.relatedDocs[idx]=[];
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
+      console.log("from db : ",res)
       this.relatedDocs[idx] = res as [];
     
-      // console.log("from db : ",res)
       // this.es.searchById("5de1105f4b79a29a5f9880f8").then(res=>{
       //   console.log(res)
       // })

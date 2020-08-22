@@ -53,7 +53,7 @@ export class ArticleDetailsComponent implements OnInit {
           //   this.relatedKeywords.push(tfVal[0])//현재 검색어의 연관검색어를 각 문서의 상위 키워드로 저장
         }
       })
-      console.log("article detail : keywords : ",this.keywords)
+      // console.log("article detail : keywords : ",this.keywords)
       // this.isKeyLoaded = true;  
     }
 
