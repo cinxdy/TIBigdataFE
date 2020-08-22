@@ -1,4 +1,4 @@
-<div class="uk-container k-container-center uk-margin-medium-left uk-margin-medium-right">
+<div class="uk-container uk-container-center uk-margin-medium-left uk-margin-medium-right">
     <!-- 검색 bar -->
     <!-- <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6 uk-align-center">
         <app-search-bar [queryText]="queryText" (searched)="loadResultPage()"></app-search-bar>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="uk-width-medium">
-            
+
             <button class="uk-button uk-button-primary bt-color">
                 최신순
             </button>
@@ -60,28 +60,32 @@
 
 
     <!-- 하단부 -->
-    <div class="uk-container-center" uk-grid>
-        <!-- 좌측 패널 -->
-        <div class="uk-width-medium">
-            <!--outline-->
+    <div class="uk-container" uk-grid>
+        <!-- 좌측 패널 responsive web 1/4 of container following 1/4 columns from design-->
+        <div class="uk-width-1-4 left-wing">
+            <!-- border-radius round outline -->
             <div class="outline">
-                <div class="uk-panal uk-panel-box-primary">
-                    <!-- 문서 저장 KEEP -->
-                    <div class="uk-margin-small" uk-grid>
-                        <div class="uk-align-center" *ngIf="isLogStat">
-                            <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
-                                KEEP
-                            </button>
-                        </div>
-                    </div>
+                <!-- <div class="uk-panal uk-panel-box-primary"> -->
 
-                    <!-- 좌측 검색 필터 -->
-                    <div uk-grid>
-                        <div class="search-filter uk-align-center">
-                            <app-search-filter></app-search-filter>
-                        </div>
+                <!-- 문서 저장 KEEP -->
+                <div class="uk-margin-small" uk-grid>
+                    <div class="uk-align-center" *ngIf="isLogStat">
+                        <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
+                            KEEP
+                        </button>
                     </div>
                 </div>
+
+                <!-- 좌측 검색 필터 -->
+                <div class="filter-in-result">
+                    <div>
+                        filter-in-result
+                    </div>
+                    <!-- <div class="search-filter"> -->
+                    <app-search-filter></app-search-filter>
+                </div>
+                <!-- </div> -->
+                <!-- </div> -->
             </div>
         </div>
 
