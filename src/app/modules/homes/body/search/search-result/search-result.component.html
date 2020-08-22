@@ -107,19 +107,23 @@
                                 </div>
                             </div>
 
-                            <div class="uk-width-auto@m">
-                                <div uk-grid>
-                                    <app-article-details [article]="articleSource">
-                                    </app-article-details>
-                                </div>
-                            </div>
+                            <!-- <div class="uk-width-auto@m"> -->
+                                <!-- <div uk-grid> -->
+                                    <div class="article-detail">
+
+                                        <app-article-details [article]="articleSource">
+                                        </app-article-details>
+                                    
+                                <!-- </div> -->
+                            <!-- </div> -->
                             <!-- <div #relatedDocuments>
                                 <span uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
                                     Loading...
                                 </span> -->
                                 <!-- <div *ngIf="isRelatedLoaded == true"> -->
-                                    <div class="uk-width-auto@m " style="margin: auto; padding: 1em;">
-                                        <button class="uk-button uk-button-secondary uk-align-center" (click)="tgglRelated(i)">
+                                    <div class="uk-width-auto@m" >
+                                        <!-- style="padding: 1em; margin: auto;  -->
+                                        <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
                                             연관문서
                                         </button>
                                         <div *ngIf="relateToggle[i] == true">
@@ -128,6 +132,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 <!-- </div> -->
                             <!-- </div> -->
                         </div>
