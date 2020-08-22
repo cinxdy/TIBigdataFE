@@ -89,7 +89,7 @@ export class IpService {
   }
 
   getDevIp(){
-    return this.DEV_IP;
+    return this.DEV_IP+":"+this.USER_BE_PORT;;
   }
 }
 

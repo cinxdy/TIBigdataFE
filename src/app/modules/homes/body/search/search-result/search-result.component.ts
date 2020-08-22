@@ -84,15 +84,7 @@ export class SearchResultComponent implements OnInit {
 
   async loadResultPage() {
     // console.log("search result compoenent : loadResultPage working...")
-    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
-    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
-      if (this.es.getKeyword() == undefined) {
-        this.es.setKeyword("북한산");
-        this.queryText = "북한산";
-        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
 
-      }
-    }
 
     this.isSearchLoaded = false;
     this.isKeyLoaded = false;
@@ -103,7 +95,15 @@ export class SearchResultComponent implements OnInit {
     this.relatedKeywords = [];
     this.searchResultIdList = [];
     this.keepIdList = [];
-    let queryText = this.es.getKeyword();     
+    let queryText = this.es.getKeyword();  
+    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
+    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
+      if (this.es.getKeyword() == undefined) {
+        this.es.setKeyword("북한산");
+        this.queryText = "북한산";
+        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
+      }
+    }   
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
     this.getUserSearchHistory()
