@@ -2,9 +2,7 @@
   <article class="uk-article">
     <div class="row">
       <div class="uk-text-large">
-        <!-- <a href="{{article.published_institution_url}}"> -->
         <div> <a (click)="setThisDoc()">{{article.post_title}} </a></div>
-        <!-- </a> -->
       </div>
     </div>
     <div class="row">
@@ -22,11 +20,6 @@
       <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
         Loading...
       </div>
-      <!-- <ng-template #infoLoadFin> -->
-        <!-- <div class="uk-width-auto@m"> -->
-         
-        <!-- </div> -->
-      <!-- </ng-template> -->
     </div>
   </article>
 </div>

@@ -1,8 +1,5 @@
 <div class="uk-container uk-container-center uk-margin-medium-left uk-margin-medium-right">
-    <!-- 검색 bar -->
-    <!-- <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6 uk-align-center">
-        <app-search-bar [queryText]="queryText" (searched)="loadResultPage()"></app-search-bar>
-    </form> -->
+
     <div class="uk-align-center uk-margin-small uk-width-1-2" uk-grid>
         <app-search-bar></app-search-bar>
     </div>
@@ -28,7 +25,6 @@
     <hr />
 
     <!-- 세부메뉴 : 키워드분석, 검색 결과는 몇개 입니다, 최신순, 10건 씩 보기 -->
-    <!-- <div uk-grid> -->
     <!-- 키워드분석 -->
     <div uk-grid>
         <div class="uk-width-expand">
@@ -65,8 +61,6 @@
         <div class="uk-width-1-4 left-wing">
             <!-- border-radius round outline -->
             <div class="outline">
-                <!-- <div class="uk-panal uk-panel-box-primary"> -->
-
                 <!-- 문서 저장 KEEP -->
                 <div class="uk-margin-small" uk-grid>
                     <div class="uk-align-center" *ngIf="isLogStat">
@@ -79,62 +73,54 @@
                 <!-- 좌측 검색 필터 -->
                 <div class="filter-in-result">
                     <div>
-                        filter-in-result
+                        <!-- filter-in-result -->
                     </div>
-                    <!-- <div class="search-filter"> -->
                     <app-search-filter></app-search-filter>
                 </div>
-                <!-- </div> -->
-                <!-- </div> -->
             </div>
         </div>
 
         <!-- 중앙 검색 결과 -->
-        <div class="uk-width-expand">
+        <div class="uk-width-3-4 middle-result-area">
+            <!-- middle-result-area -->
+            <div class="form-group">
+                <input class="uk-checkbox custom-check" type="checkbox" (change)="this.boxChange(i)" />
+                전체선택
+            </div>
+
             <div class="search-result">
-                <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
+                <!-- search-result -->
+                <span uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
                     Loading...
-                </div>
+                </span>
                 <ng-template #loadFin>
                     <div *ngFor="let articleSource of articleSources; index as i">
-                        <div uk-grid>
-                            <div class="uk-width-auto@m-xs" style="margin: auto; padding: 1em;">
-                                <div *ngIf="isLogStat">
-                                    <div class="form-group">
-                                        <!-- <input type="checkbox" (click)="this.addList(i)" /> -->
-                                        <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(i)" />
-                                    </div>
-                                </div>
+                        <div class="uk-child-width-expand " uk-grid>
+                            <div *ngIf="isLogStat" class="uk-width-small check-box-postition" >
+                                <!-- check-box-position -->
+
+                                <span class="form-group">
+                                    <input class="uk-checkbox custom-check" type="checkbox" (change)="this.boxChange(i)" />
+                                </span>
                             </div>
+                            <div class="article-detail uk-width-expand">
+                                <!-- article-detail -->
+                                <app-article-details [article]="articleSource">
+                                </app-article-details>
 
-                            <!-- <div class="uk-width-auto@m"> -->
-                                <!-- <div uk-grid> -->
-                                    <div class="article-detail">
 
-                                        <app-article-details [article]="articleSource">
-                                        </app-article-details>
-                                    
-                                <!-- </div> -->
-                            <!-- </div> -->
-                            <!-- <div #relatedDocuments>
-                                <span uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
-                                    Loading...
-                                </span> -->
-                                <!-- <div *ngIf="isRelatedLoaded == true"> -->
-                                    <div class="uk-width-auto@m" >
-                                        <!-- style="padding: 1em; margin: auto;  -->
-                                        <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
-                                            연관문서
-                                        </button>
-                                        <div *ngIf="relateToggle[i] == true">
-                                            <div *ngFor="let rcmd of relatedDocs[i]; index as r">
-                                                <a (click)="setThisDoc(i, r)">{{rcmd["title"]}}</a>
-                                            </div>
+                                <div class="uk-width-auto@m">
+                                    <!-- style="padding: 1em; margin: auto;  -->
+                                    <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
+                                        연관문서
+                                    </button>
+                                    <div *ngIf="relateToggle[i] == true">
+                                        <div *ngFor="let rcmd of relatedDocs[i]; index as r">
+                                            <a (click)="setThisDoc(i, r)">{{rcmd["title"]}}</a>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- </div> -->
-                            <!-- </div> -->
+                            </div>
                         </div>
                         <hr />
 
@@ -152,8 +138,6 @@
         <!-- 우측 검색 기록 -->
         <div class="uk-width-small">
             <div *ngIf="isLogStat">
-                <!-- {{ console.log(" histroy test")}} -->
-                <!-- {{ console.log( this.auth.schHst )}} -->
 
                 검색 기록
                 <div class="uk-card uk-card-body uk-card-default">
