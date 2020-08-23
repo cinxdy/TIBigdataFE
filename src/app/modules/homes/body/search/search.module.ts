@@ -11,7 +11,7 @@ import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 // import { SearchBarComponent } from './search-bar/search-bar.component';
-import { SearchFilterComponent } from './search-result/search-filter/search-filter.component';
+import { SearchResultFilterComponent } from './search-result/search-result-filter/search-result-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { SearchRootComponent } from './search-root/search-root.component';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
@@ -22,7 +22,7 @@ import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.mo
   declarations: [
     SearchResultComponent,
     // SearchBarComponent,
-    SearchFilterComponent,
+    SearchResultFilterComponent,
     ArticleDetailsComponent,
     FreqAnalysisComponent,
     ChosenDocAnalysisComponent,
