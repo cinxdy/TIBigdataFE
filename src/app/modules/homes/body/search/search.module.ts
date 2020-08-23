@@ -40,7 +40,7 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
     IdControlService
   ],
   exports: [
-    SearchResultComponent,
+    // SearchResultComponent,
     SearchBarComponent
   ]
 })
