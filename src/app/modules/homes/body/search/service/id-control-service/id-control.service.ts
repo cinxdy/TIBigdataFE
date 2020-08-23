@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 
 // import { HomesModule } from '../../../homes.module'
 
-@Injectable()
+@Injectable(  
+  {
+    providedIn: 'root'
+  }
+    )
 export class IdControlService {
   private oneID: string = "";
   private idList: string[] = [];

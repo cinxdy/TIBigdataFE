@@ -10,17 +10,18 @@ import { IdControlService } from './service/id-control-service/id-control.servic
 import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/chosen-doc-analysis.component';
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
 import { SearchResultComponent } from './search-result/search-result.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
+// import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SearchFilterComponent } from './search-result/search-filter/search-filter.component';
 import { ArticleDetailsComponent } from './article/article-details/article-details.component';
 import { SearchRootComponent } from './search-root/search-root.component';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 
+import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.module';
 // import {} from './article/'
 @NgModule({
   declarations: [
     SearchResultComponent,
-    SearchBarComponent,
+    // SearchBarComponent,
     SearchFilterComponent,
     ArticleDetailsComponent,
     FreqAnalysisComponent,
@@ -33,7 +34,8 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
     CommonModule,
     SearchRoutingModule,
     FormsModule,
-    TagCloudModule
+    TagCloudModule,
+    CommonSearchBarModule
 
   ],
   providers :[
@@ -41,7 +43,7 @@ import { SearchDetailComponent } from './search-detail/search-detail.component';
   ],
   exports: [
     // SearchResultComponent,
-    SearchBarComponent
+    // SearchBarComponent
   ]
 })
 export class SearchModule { }

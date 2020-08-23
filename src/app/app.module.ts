@@ -18,9 +18,10 @@ import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.ser
 import { EPAuthService } from './modules/communications/fe-backend-db/membership/auth.service';
 import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
 import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/analysisDatabase.service';
-
+import { CommunicationModule } from './modules/communications/communication.module';
 import { ChartsModule } from "ng2-charts";
 import { BodyModule } from "./modules/homes/body/body.module";
+import { CommonSearchBarModule } from "./modules/homes/body/common-search-bar/common-search-bar.module";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,9 @@ import { BodyModule } from "./modules/homes/body/body.module";
     FormsModule,
     TagCloudModule,
     LibraryModule,
-    ChartsModule
+    ChartsModule,
+    CommunicationModule,
+    CommonSearchBarModule
 
   ],
   providers: [WordcloudService, EPAuthService, AnalysisDatabaseService],

@@ -68,7 +68,7 @@ export class NavComponent implements OnInit {
   }
   //routers
   navigateSpecials(){
-    this._router.navigateByUrl("specials");
+    this._router.navigateByUrl("/body/specials");
   }
 
   navigateParser(){
@@ -76,7 +76,7 @@ export class NavComponent implements OnInit {
   }
 
   navigateLibrary(){
-    this._router.navigateByUrl("library");
+    this._router.navigateByUrl("/body/library");
   }
 
   navigateQT(){
@@ -96,36 +96,36 @@ export class NavComponent implements OnInit {
   }
 
   toLogin(){
-    this._router.navigateByUrl("membership/login");
+    this._router.navigateByUrl("/body/membership/login");
   }
 ///../core/componetsmembership/login
   toRegister(){
-    console.log("in the toReg func")
-    this._router.navigateByUrl("membership/register");
+    // console.log("in the toReg func")
+    this._router.navigateByUrl("/body/membership/register");
   }
 
   toEvent(){
-    this._router.navigateByUrl("membership/event");
+    this._router.navigateByUrl("/body/membership/event");
   }
 
   toUserPage(){
-    this._router.navigateByUrl("membership/userpage");
+    this._router.navigateByUrl("/body/membership/userpage");
   }
 
   toControl(){
-    this._router.navigateByUrl("membership/control");
+    this._router.navigateByUrl("/body/membership/control");
   }
 
   toCommunity(){
-    this._router.navigateByUrl("community")
+    this._router.navigateByUrl("/body/community")
   }
   
   toAnnouncement(){
-    this._router.navigateByUrl("community/announcement");
+    this._router.navigateByUrl("/body/community/announcement");
   }
 
   toFaq(){
-    this._router.navigateByUrl("community/faq");
+    this._router.navigateByUrl("/body/community/faq");
   }
 }
 
