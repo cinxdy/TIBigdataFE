@@ -51,9 +51,10 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  // navToGraph(){
-  //   this._router.navigateByUrl("search/library/graph");
-  // }
+  navToGraph(){
+    console.log("cat graph?")
+    this._router.navigateByUrl("body/library/graph");
+  }
 
   toggleTopic(i) {
     this.toggleTopics[i] = !this.toggleTopics[i];

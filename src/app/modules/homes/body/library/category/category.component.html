@@ -1,4 +1,92 @@
-<h1>주제 별 문서 분류</h1>
+<hr>
+<!-- 하단부 -->
+자료열람 
+<a (click)="navToGraph()">통일연구동향그래프</a>
+
+<div class="uk-container" uk-grid>
+  <!-- 좌측 패널 responsive web 1/4 of container following 1/4 columns from design-->
+  <div class="uk-width-1-6 left-wing">
+      <!-- border-radius round outline -->
+      <div class="outline">
+          <div>
+              <a (click)="user_menu_set('my_analysis')">
+                  주제별
+              </a>
+          </div>
+          <div>
+              <a (click)="user_menu_set('my_history')">
+                  사전편찬별
+              </a>
+          </div>
+          <div>
+              <a (click)="user_menu_set('my_account')">
+                  기관별
+              </a>
+          </div>
+      </div>
+  </div>
+
+  <!-- 우측 -->
+  <div class="uk-width-5-6 left-wing">
+    <div class="outline">
+        <div class="uk-flex">
+          <button class="uk-button uk-button-primary">전체</button>
+          <button class="uk-button uk-button-primary">정치</button>
+          <button class="uk-button uk-button-primary">경제</button>
+          <button class="uk-button uk-button-primary">사회</button>
+          <button class="uk-button uk-button-primary">문화</button>
+          <button class="uk-button uk-button-primary">국제</button>
+          <button class="uk-button uk-button-primary">과학</button>
+          <button class="uk-button uk-button-primary">스포츠</button>
+          <button class="uk-button uk-button-primary">과학</button>
+        </div>
+
+        <div class="uk-flex">
+          <button class="uk-button uk-button-primary">가</button>
+          <button class="uk-button uk-button-primary">나</button>
+          <button class="uk-button uk-button-primary">다</button>
+          <button class="uk-button uk-button-primary">라</button>
+          <button class="uk-button uk-button-primary">마</button>
+          <button class="uk-button uk-button-primary">ㅂ</button>
+          <button class="uk-button uk-button-primary">ㅅ</button>
+          <button class="uk-button uk-button-primary">ㅇ</button>
+          <button class="uk-button uk-button-primary">ㅈ</button>
+          <button class="uk-button uk-button-primary">ㅊ</button>
+          <button class="uk-button uk-button-primary">ㅋ</button>
+          <button class="uk-button uk-button-primary">ㅌ</button>
+          <button class="uk-button uk-button-primary">ㅍ</button>
+          <button class="uk-button uk-button-primary">ㅎ</button>
+          <button class="uk-button uk-button-primary">A~Z</button>
+        </div>
+
+        <div class="uk-flex">
+          <button class="uk-button uk-button-primary">기관1</button>
+          <button class="uk-button uk-button-primary">기관2</button>
+          <button class="uk-button uk-button-primary">기관3</button>
+          <button class="uk-button uk-button-primary">기관4</button>
+          <button class="uk-button uk-button-primary">기관5</button>
+        </div>
+    </div>
+
+
+  <h2>
+    하단부 계획
+  </h2>
+  <p>
+    search-result component와 유사하므로, search-document-list component을 새로 생성해서 리스트 주루룩 나오는 부분 분류.
+    주제 버튼 누르면 제목 뿐만이 아니라 그냥 search query을 보내도록...
+  </p>
+  <p>
+    고려해볼 수 있는점: 현재 주제 분류 레퍼런스 테이블 결과 = [주제 : 정치, 문서 : [문서1 id, 문서2 id, ...]]
+    그러면 해당 주제를 선택하면, 레퍼런스 테이블에서 문서 id을 불러와서 ES에 쿼리 요청해서 리스트 불러옴. 10개 단위로 끊는다고 하면 limit 쿼리 사용 가능해보인다.
+  </p>
+    
+
+  </div>
+</div>
+
+
+<!-- <h1>주제 별 문서 분류</h1>
 <div class="row">
   <div class="col">
     <div class="uk-container">
@@ -27,8 +115,8 @@
   </div>
   <div class="col">
     <app-category-graph></app-category-graph>
-    <!-- <button (click)="navToGraph()" class="uk-button uk-button-primary"> -->
-    <!-- Show Category Graph -->
-    <!-- </button> -->
+    <button (click)="navToGraph()" class="uk-button uk-button-primary">
+    Show Category Graph
+    </button>
   </div>
-</div>
+</div> -->
