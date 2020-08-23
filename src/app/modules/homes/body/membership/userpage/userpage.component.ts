@@ -7,6 +7,14 @@ import { HttpClient } from "@angular/common/http";
 import { IpService } from 'src/app/ip.service'
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
 
+// enum user_menu{
+//   my_keep,
+//   my_analysis,
+//   my_history,
+//   my_account,
+//   sign_out
+// }
+
 @Component({
   selector: 'app-userpage',
   templateUrl: './userpage.component.html',
@@ -20,18 +28,20 @@ export class UserpageComponent implements OnInit {
   // private myDocsNum : Number;
   private myHst: string[] = [];
   private isDocEmpty: boolean = false;
+  private user_menu : string = "";
+
 
   constructor(
-    private http: HttpClient, private ipService: IpService, private idSvs: IdControlService,
-
-
-    public _router: Router, private _auth: EPAuthService, private _login: LoginComponent, private _gauth: AuthService
-  ) {
-
-  }
+    private http: HttpClient,
+     private ipService: IpService,
+     private idSvs: IdControlService,
+    public _router: Router,
+     private _auth: EPAuthService,
+     private _login: LoginComponent,
+     private _gauth: AuthService
+  ) {}
 
   ngOnInit() {
-    console.log("yo...")
     this._auth.getLogInObs().subscribe((logstat) => {
       this.getKeepDocs();
       this.getMyHst()
@@ -42,6 +52,10 @@ export class UserpageComponent implements OnInit {
 
       // }
     });
+  }
+
+  user_menu_set(event : string){
+      this.user_menu = event;
   }
 
   gSignOut() {

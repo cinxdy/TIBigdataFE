@@ -1,56 +1,89 @@
-<div uk-grid>
+<hr />
 
-    <!-- <div class="row"> -->
-    <!-- <div class="col"> -->
+<!-- 하단부 -->
+<div class="uk-container" uk-grid>
+    <!-- 좌측 패널 responsive web 1/4 of container following 1/4 columns from design-->
+    <div class="uk-width-1-4 left-wing">
+        <!-- border-radius round outline -->
+        마이페이지
+        <div class="outline">
+            <div>
+                <a (click)="user_menu_set('my_keep')">내가 찜한 문서 보관함</a>
+            </div>
+            <div>
+                <a (click)="user_menu_set('my_analysis')">
+                    내 분석함
+                </a>
+            </div>
+            <div>
+                <a (click)="user_menu_set('my_history')">
+                    내 검색기록
+                </a>
+            </div>
+            <div>
+                <a (click)="user_menu_set('my_account')">
+                    회원정보관리
+                </a>
+            </div>
+            <div>
+                <a (click)="user_menu_set('sign_out')">
+                    회원탈퇴
+                </a>
+            </div>
+            <!-- 문서 저장 KEEP -->
+            <!-- <div class="uk-margin-small" uk-grid>
+                <div class="uk-align-center" *ngIf="isLogStat">
+                    <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
+                        KEEP
+                    </button>
+                </div>
+            </div> -->
 
-    <div class="uk-width-auto">
-        <div *ngIf="nowUser;" style="margin: 50px;">
-            <img src="{{nowUser.photoUrl}}">
-            <h4>{{nowUser.name}} 님 안녕하세요</h4>
-            <p>{{nowUser.email}}</p>
-
-            <button type="submit" style="width: 150px;" (click)="gSignOut()"
-                class="btn btn-secondary btn-block login-btn"><a href="#" style="color: white;">구글
-                    로그아웃</a></button>
+            <!-- 좌측 검색 필터 -->
+            <!-- <div class="filter-in-result">
+                <div>
+                </div>
+                <app-search-filter></app-search-filter>
+            </div> -->
         </div>
-
-        <!-- </div> -->
     </div>
-    <!-- <div class="col"> -->
-    <div class="uk-width-expand">
-        <div class="uk-card uk-card-body uk-card-default">
-            <h3>내가 찜한 문서</h3>
 
-            <div *ngFor="let doc of myDocs; index as d">
-                <a>{{ doc }} </a>
-            </div>
-            <div *ngIf="!isDocEmpty">
-                <button (click)="deleteAllMyDocs()">나의 문서 모두 지우기</button>
-            </div>
-        </div>
 
-        <div class="uk-card uk-card-body uk-card-default">
-            <h3>나의 검색 기록</h3>
+    <!-- 중앙 검색 결과 -->
+    <div class="uk-width-3-4 middle-result-area">
+        내보관함 새폴더생성 폴더편집
+        <div>
+            폴더1 폴더2 폴더3
+            <div class="outline">
+                <div *ngIf='user_menu == "my_keep"'>
+                    내가 찜한 문서들
+                    <div *ngFor="let doc of myDocs; index as d">
+                        <a>{{ doc }} </a>
+                    </div>
+                    <div *ngIf="!isDocEmpty">
+                        <button (click)="deleteAllMyDocs()">나의 문서 모두 지우기</button>
+                    </div>
+                </div>
 
-            <div *ngFor="let doc of myHst; index as d">
-                <a>{{ doc }} </a>
+
+
+                <div *ngIf='user_menu == "my_history"'>
+                    나의 검색 기록
+                    <div *ngFor="let doc of myHst; index as d">
+                        <a>{{ doc }} </a>
+                    </div>
+                </div>
             </div>
-            <!-- <button (click)="deleteAllMyDocs()">나의 검색 기록 지우기</button> -->
         </div>
     </div>
 
-    <!-- </div> -->
-    <!-- </div> -->
+    
 </div>
+
+
 
 <!--
-<div class="text-center social-btn">
-    <a (click)="showCookie()" class="btn btn-primary btn-block"><i class="fa fa-cogs"></i>쿠키체크</a>
-</div>
 
-<div class="text-center social-btn">
-    <a (click)="changeCookie()" class="btn btn-success btn-block"><i class="fa fa-cog"></i>쿠키변경</a>
-</div>
 
 <div>
     KEEP 한 문서 : {{ myDocsNum }}
