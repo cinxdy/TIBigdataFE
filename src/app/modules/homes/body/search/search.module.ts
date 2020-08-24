@@ -17,6 +17,7 @@ import { SearchRootComponent } from './search-root/search-root.component';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 
 import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.module';
+import { SearchResultDocumentListComponent } from './search-result/search-result-document-list/search-result-document-list.component';
 // import {} from './article/'
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.mo
     ChosenDocAnalysisComponent,
     SearchRootComponent,
     SearchDetailComponent,
+    SearchResultDocumentListComponent,
 
   ],
   imports: [
