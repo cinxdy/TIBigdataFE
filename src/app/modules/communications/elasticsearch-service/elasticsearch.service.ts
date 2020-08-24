@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Client } from "elasticsearch-browser";
 import * as elasticsearch from "elasticsearch-browser";
 //import { InheritDefinitionFeature } from '@angular/core/src/render3';
-import { ArticleSource } from "src/app/modules/homes/body/search/article/article.interface";
+import { ArticleSource } from "src/app/modules/homes/body/common-search-result-document-list/article/article.interface";
 import { Subject, Observable } from "rxjs";
 import { IpService } from 'src/app/ip.service'
 

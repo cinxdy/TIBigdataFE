@@ -1,4 +1,4 @@
-import { ArticleSource } from '../../article/article.interface';
+import { ArticleSource } from '../../../common-search-result-document-list/article/article.interface';
 import { Injectable } from '@angular/core';
 
 // import { HomesModule } from '../../../homes.module'

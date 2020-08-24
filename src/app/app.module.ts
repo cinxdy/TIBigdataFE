@@ -22,6 +22,7 @@ import { CommunicationModule } from './modules/communications/communication.modu
 import { ChartsModule } from "ng2-charts";
 import { BodyModule } from "./modules/homes/body/body.module";
 import { CommonSearchBarModule } from "./modules/homes/body/common-search-bar/common-search-bar.module";
+import { CommonSearchResultDocumentListModule } from './modules/homes/body/common-search-result-document-list/common-search-result-document-list.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { CommonSearchBarModule } from "./modules/homes/body/common-search-bar/co
     LibraryModule,
     ChartsModule,
     CommunicationModule,
-    CommonSearchBarModule
+    CommonSearchBarModule,
+    CommonSearchResultDocumentListModule
 
   ],
   providers: [WordcloudService, EPAuthService, AnalysisDatabaseService],

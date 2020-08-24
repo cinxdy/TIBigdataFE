@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { BodyContainerComponent } from './body-container/body-container.component';
 import { BodyRoutingModule } from "./body-routing.module";
 import { CommonSearchBarModule } from './common-search-bar/common-search-bar.module';
+import { CommonSearchResultDocumentListModule } from './common-search-result-document-list/common-search-result-document-list.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CommonSearchBarModule } from './common-search-bar/common-search-bar.mod
     // SpecialsModule,
     // CommunicationModule,
     CommonSearchBarModule,
-    BodyRoutingModule
+    BodyRoutingModule,
+    CommonSearchResultDocumentListModule
   ],
   exports: [
     // SearchResultComponent,
