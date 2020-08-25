@@ -7,7 +7,6 @@
 
 # dependencies
 /node_modules
-/UniCenter_backend/node_modules
 /Depreciated_UniCenter_backend
 /fe-backend/node_modules
 
