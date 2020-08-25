@@ -29,8 +29,38 @@ router.get("/getTopicTblPlain", (req, res) => {
     })
 })
 
+function getOneTopicDocs(req,res){
+    let tp = req.body.topic;
+    // console.log(tp)
+    topic.aggregate(
+        [
+            {
+                $match: {"topic": tp }
+            },
+            {
+                $project: {
+                    docID: 1,
+                    // rcmd: { $slice: ["$rcmd", num] }
+                }
+            },
+        ],
+        (err,docs)=>{
+            if(err)
+                console.log(err)
+            else{
+                console.log(docs);
+                res.json(docs);
+            }
+                
+        }
+    );
+    
+}
 
-router.get("/getTopicTbl", (req, res) => {
+router.post("/getOneTopicDocs",getOneTopicDocs);
+
+
+function getTopicTbl(req,res){
     topic.aggregate(
         [
             {
@@ -38,6 +68,11 @@ router.get("/getTopicTbl", (req, res) => {
                     _id: "$topic", info: { $addToSet: { docID: "$docID", name: "$docTitle", value: 10 } }
                 }
             },
+            {
+                $project:{
+                    info: 1
+                }
+            }
             // { $addField : {value : 1} }
         ]
         , (err, docs) => {
@@ -50,7 +85,9 @@ router.get("/getTopicTbl", (req, res) => {
             // console.log(docs)
             res.json(docs);
         })
-});
+}
+
+router.get("/getTopicTbl",getTopicTbl);
 
 router.post("/getTopicTbl", (req, res) => {
     let topicReq = req.body["topic"];
@@ -78,3 +115,4 @@ router.post("/getTopicTbl", (req, res) => {
 })
 
 module.exports = router;
+// module.exports = {getTopicTbl,getOneTopicDocs};

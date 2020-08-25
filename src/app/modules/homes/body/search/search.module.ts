@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { SearchRoutingModule } from './search-routing.module';
 
-import { IdControlService } from './service/id-control-service/id-control.service';
+// import { IdControlService } from './service/id-control-service/id-control.service';
 
 import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/chosen-doc-analysis.component';
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
@@ -42,7 +42,7 @@ import { CommonSearchResultDocumentListModule } from '../shared-module/common-se
 
   ],
   providers :[
-    IdControlService
+    // IdControlService
   ],
   exports: [
     // SearchResultComponent,

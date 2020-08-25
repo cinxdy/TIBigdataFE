@@ -18,7 +18,7 @@ const mockResponse = () => {
 };
 
 //test methods and modules
-const communityModule = require('../communityDocsQuery')
+const communityModule = require('../module/communityDocsQuery')
 const writeNewDoc = communityModule.writeNewDoc;
 const loadFirstDocList = communityModule.loadFirstDocList;
 const loadNextDocList = communityModule.loadNextDocList;

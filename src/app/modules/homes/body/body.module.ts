@@ -9,6 +9,7 @@ import { BodyRoutingModule } from "./body-routing.module";
 import { CommonSearchBarModule } from './shared-module/common-search-bar/common-search-bar.module';
 import { CommonSearchResultDocumentListModule } from './shared-module/common-search-result-document-list/common-search-result-document-list.module'
 
+// import { IdControlService } from './search/service/id-control-service/id-control.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,9 @@ import { CommonSearchResultDocumentListModule } from './shared-module/common-sea
   exports: [
     // SearchResultComponent,
     // SearchBarComponent
-  ]
+  ],
+  // providers:[
+  //   IdControlService
+  // ]
 })
 export class BodyModule { }

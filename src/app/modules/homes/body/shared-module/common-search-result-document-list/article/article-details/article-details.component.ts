@@ -25,7 +25,7 @@ export class ArticleDetailsComponent implements OnInit {
   }
 
   setThisDoc(){
-    // console.log(this.docId);
+    // console.log("article detail id: ", this.docId);
     this.idControl.setIdChosen(this.docId);
     this.navToDocDetail();
 
@@ -33,6 +33,20 @@ export class ArticleDetailsComponent implements OnInit {
     // console.log(this.docId);
     
   }
+
+  //   /**
+  //  * @function setThisDoc
+  //  * @param article_source_idx 
+  //  * @param related_doc_idx 
+  //  * @description 개별 문서 선택할 때 해당 문서 자세히 보는 페이지로 이동
+  //  */
+  // setThisDoc(article_source_idx : number, related_doc_idx: number) {
+  //   console.log("set this doc : ", article_source_idx);
+  //   this.idControl.setIdChosen(this.relatedDocs[article_source_idx][related_doc_idx]["id"]);
+  //   this.navToDocDetail();
+  // }
+
+  
 
     //각 문서마다 들어갈 상위 키워드를 저장할 array
     private keywords: any[] = [];
