@@ -39,9 +39,9 @@ export class AnalysisDatabaseService {
 
   async getOneTopicDocs(tp : string){
     let body = {topic : tp}
-    // console.log(body);
+    console.log(body);
     let res = await this.http.post<any>(this.GET_ONE_TOPIC_DOCS_URL, body).toPromise();
-    // console.log("in db getOneTopicDocs", res);
+    console.log("in db getOneTopicDocs", res);
     // for(var data in res){
     //   data["_id"]
     // }

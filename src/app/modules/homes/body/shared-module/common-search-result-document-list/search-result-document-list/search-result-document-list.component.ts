@@ -127,6 +127,7 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
   async discovery_search_process(){
     let docs_id = await this.load_topic_docs_id()//현재 토픽에 해당하는 내용을 불러온다.
     //transfer_ids
+    console.log("test")
     this.es.search_to_article_source(this.transfer_ids(docs_id));
   }
 
