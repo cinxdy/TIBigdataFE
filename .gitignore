@@ -8,7 +8,7 @@
 # dependencies
 /node_modules
 /UniCenter_backend/node_modules
-
+/fe-backend/node_modules
 # IDEs and editors
 /.idea
 .project
