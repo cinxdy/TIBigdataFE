@@ -16,8 +16,8 @@ import { SearchResultFilterComponent } from './search-result/search-result-filte
 import { SearchRootComponent } from './search-root/search-root.component';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 
-import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.module';
-import { CommonSearchResultDocumentListModule } from '../common-search-result-document-list/common-search-result-document-list.module';
+import { CommonSearchBarModule } from '../shared-module/common-search-bar/common-search-bar.module';
+import { CommonSearchResultDocumentListModule } from '../shared-module/common-search-result-document-list/common-search-result-document-list.module';
 // import {} from './article/'
 @NgModule({
   declarations: [

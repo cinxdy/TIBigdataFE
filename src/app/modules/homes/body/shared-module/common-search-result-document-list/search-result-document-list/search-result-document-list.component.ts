@@ -1,6 +1,8 @@
 import {
   Component,
   OnInit,
+  Input,
+  OnChanges,
   // ChangeDetectorRef,
   // Input,
   // Inject,
@@ -8,33 +10,31 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
-import { ArticleSource } from "../../shared-module/common-search-result-document-list/article/article.interface";
+import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
-import { IdControlService } from "../service/id-control-service/id-control.service";
+import { IdControlService } from "../../../search/service/id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { DocumentService } from "../service/document/document.service";
-
+import { DocumentService } from "../../../search/service/document/document.service";
 import { IpService } from "src/app/ip.service";
-import { RecomandationService } from "../service/recommandation-service/recommandation.service";
-import { EPAuthService } from '../../../../communications/fe-backend-db/membership/auth.service';
-import { EventService } from "../../../../communications/fe-backend-db/membership/event.service";
-import { AnalysisDatabaseService } from "../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
-
-
+import { RecomandationService } from "../../../search/service/recommandation-service/recommandation.service";
+import { EPAuthService } from '../../../../../communications/fe-backend-db/membership/auth.service';
+import { EventService } from "../../../../../communications/fe-backend-db/membership/event.service";
+import { AnalysisDatabaseService } from "../../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service";
 @Component({
-  selector: "app-search-result",
-  templateUrl: "./search-result.component.html",
-  styleUrls: ["./search-result.component.less"]
+  selector: 'app-search-result-document-list',
+  templateUrl: './search-result-document-list.component.html',
+  styleUrls: ['./search-result-document-list.component.less']
 })
-export class SearchResultComponent implements OnInit {
-  
+export class SearchResultDocumentListComponent implements OnInit {
+
+  @Input() cat_button_choice : string;
   public relatedKeywords = [];
   private RCMD_URL: string = this.ipService.get_FE_DB_ServerIp() + ":5000/rcmd";
   private searchResultIdList: string[] = [];
   private keepIdList : string [] = [];
   private relatedDocs: ArticleSource[][] = [];
-  private userSearchHistory: string[];
+  // private userSearchHistory: string[];
   private isSearchLoaded: boolean = false;
   private isRelatedLoaded: boolean = true;//going to be removed
   private isKeyLoaded: boolean = false;
@@ -68,60 +68,97 @@ export class SearchResultComponent implements OnInit {
       // //console.log(info)
     });
   }
+  // ngOnChanges(){
+  //   console.log("search-result-doc-list", this.cat_button_choice);
+
+  // }
 
   ngOnInit() {
 
-    console.log("search result compo")
+    // console.log("search result compo")
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
-    this.loadResultPage();
+    this.load_search_result();
     this.auth.getLogInObs().subscribe(stat=>{
       this.isLogStat = stat;
     })
     // this.isLogStat = this.auth.getLogInStat()
   }
 
+  initialize_search(){
+    this.isSearchLoaded = false;//로딩 안되어있을 때 로딩 중 표시
+    this.isKeyLoaded = false;//연관검색어 로딩 안되어있을 때 로딩 중 표시
+    this.isRelatedLoaded = true;//plan to be removed//연관 검색어 로딩 안되었을 때 로딩 중 표시
 
-  async loadResultPage() {
+    this.idControl.clearIdList();
+    // this.userSearchHistory = [];//유저 검색 기록 표시. depreciated.
+    this.relatedKeywords = [];//연관검색어 담을 array
+    this.searchResultIdList = [];//ES에서 받은 결과 리스트의 id을 담을 array
+    this.keepIdList = [];//유저가 keep 선택한 문서 id을 담을 array
+  }
+
+
+  async load_search_result() {
     // console.log("search result compoenent : loadResultPage working...")
 
 
-    this.isSearchLoaded = false;
-    this.isKeyLoaded = false;
-    this.isRelatedLoaded = true;//plan to be removed
+    this.initialize_search();
 
-    this.idControl.clearIdList();
-    this.userSearchHistory = [];
-    this.relatedKeywords = [];
-    this.searchResultIdList = [];
-    this.keepIdList = [];
-    let queryText = this.es.getKeyword();  
-    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
+
+    /***
+     * ES에서 문서를 불러오는 방법
+     *  키워드 검색 : search_by_keyword
+     *  자료열람 : search_by_id
+     * 
+     * 다른 컴포넌트가 다른 함수를 호출.
+     * 그리고 template은 동일한 형태이다.
+     * 
+     */
+
+
+
+    //자료 열람에서 ... 
+    //키워드 검색으로 문서 호출하는 경우
+    this.search_by_keyword();
+    // this.getUserSearchHistory()//유저 히스토리 depreciated
+    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
+    await this.loadSearchResult();//검색 결과 es.service에서 받아옴
+    this.create_result_doc_id_table();//검색 결과에서 id table 생성
+    this.loadKeywords();//검색 결과에서 연관 문서 및 키워드 호출
+  }
+
+  search_by_keyword(){
+    let queryText = this.es.getKeyword();//현재 선택된 검색어 받아옴
+    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘플 키워드로 검색
     if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
       if (this.es.getKeyword() == undefined) {
-        this.es.setKeyword("북한산");
-        this.queryText = "북한산";
-        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
+        this.es.setKeyword("북한산");//다른 컴포넌트 혹은 서비스에서 사용할 수 있기 때문에 새로 등록
+        this.queryText = this.es.getKeyword();
       }
     }   
-    this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
+    this.es.fullTextSearch("post_body", queryText); //검색 후 es.service에서 articlesource에 저장되어 있다.
+  }
 
-    this.getUserSearchHistory()
-    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
-    await this.loadSearchResult();
-    this.createIdTable();
-    this.loadKeywords();
+  search_by_id(){
+    // this.es.searchByManyId(ids).subscribe(articles=>{
+    //   console.log(articles);
+    // })
+  }
+
+  get_category(){
+    return this.cat_button_choice;
+  }
+
+  create_topic_id_table(){
+    let cat = this.get_category();
+    
   }
 
 
-  
-  //Get result from flask
-  freqAnalysis() {
-    this.searchKeyword = this.es.getKeyword();
-    this._router.navigateByUrl("search/freqAnalysis");
-  }
 
-  // private flags = []
+  /***
+   * 문서 찜하는 기능
+   */
   boxChange(i){
     let idx = this.keepIdList.indexOf(this.searchResultIdList[i]);
     idx != undefined ? 
@@ -143,17 +180,29 @@ export class SearchResultComponent implements OnInit {
     this._router.navigateByUrl("search/DocDetail");
   }
 
+
+  /**
+   * @function setThisDoc
+   * @param article_source_idx 
+   * @param related_doc_idx 
+   * @description 개별 문서 선택할 때 해당 문서 자세히 보는 페이지로 이동
+   */
   setThisDoc(article_source_idx : number, related_doc_idx: number) {
     this.idControl.setIdChosen(this.relatedDocs[article_source_idx][related_doc_idx]["id"]);
     this.navToDocDetail();
   }
+
   tgglRelated(i: number) {
     //console.log("tgglRelated")
     this.loadRelatedDocs(i); //load from flask
     this.relateToggle[i] = !this.relateToggle[i];
   }
 
-
+  /**
+   *
+   * @param idx 
+   * @description 검색 결과에서 해당 idx번째 문서의 연관 문서를 reference table에서 불러온다.
+   */
   loadRelatedDocs(idx: number) {
     // this.relatedDocs[idx]=[];
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
@@ -194,21 +243,14 @@ export class SearchResultComponent implements OnInit {
     this.isKeyLoaded = true;  
   }
 
-
-
-  relatedSearch(keyword: string) {
-    this.es.setKeyword(keyword);
-    this.queryText = keyword;
-    this.auth.addSrchHst(this.queryText);
-
-    this.loadResultPage();
-  }
-
+  /**
+   * @description 현재 검색 키워드의 검색 결과를 es.service에서 불러온다.
+   */
   loadSearchResult() {
-    // //console.log("loadSearchResult");
 
     return new Promise(resolve => {
       this.es.articleInfo$.subscribe(articles => {
+        console.log("search result doc list compo : ", articles)
         this.articleSources = articles;
         this.isSearchLoaded = true;
         resolve();
@@ -216,7 +258,10 @@ export class SearchResultComponent implements OnInit {
     });
   }
 
-  createIdTable() {
+  /**
+   * @description 현재 검색 결과 문서 리스트의 id table을 만든다.
+   */
+  create_result_doc_id_table() {
     // let temp = this.articleSources as []; //검색된 데이터들을 받음
     this.relateToggle = []; //연관 문서 여닫는 버튼 토글 초기화
     for (var i in this.articleSources) {
@@ -224,11 +269,5 @@ export class SearchResultComponent implements OnInit {
       this.relateToggle.push(false);
     }
   }
-
-  async getUserSearchHistory(){
-    this.userSearchHistory = await this.auth.showSrchHst();
-    console.log("userSearch history" + this.userSearchHistory)
-  }
-
 
 }

@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 // import { SearchBarComponent } from './search-bar/search-bar.component';
 import { BodyContainerComponent } from './body-container/body-container.component';
 import { BodyRoutingModule } from "./body-routing.module";
-import { CommonSearchBarModule } from './common-search-bar/common-search-bar.module';
-import { CommonSearchResultDocumentListModule } from './common-search-result-document-list/common-search-result-document-list.module';
+import { CommonSearchBarModule } from './shared-module/common-search-bar/common-search-bar.module';
+import { CommonSearchResultDocumentListModule } from './shared-module/common-search-result-document-list/common-search-result-document-list.module'
 
 
 @NgModule({

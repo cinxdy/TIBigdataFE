@@ -11,15 +11,20 @@ import { IdControlService } from "../../search/service/id-control-service/id-con
   templateUrl: "./category.component.html",
   styleUrls: ["./category.component.less"]
 })
+
 export class CategoryComponent implements OnInit {
   constructor(private db: AnalysisDatabaseService,
     private configService: ConfigService,
     private idControl: IdControlService,
     public _router: Router) { }
+
   private isLoaded: boolean = false;
   private data: any;
   private toggleTopics: boolean[];
-
+  private categories : string[] = ["전체", "pol", "eco", "soc", "int", "it", "spo", "cul"];
+  private dict_orders : string[] = ["전체","ㄱ", "ㄴ", "ㄷ","ㄹ","ㅁ","ㅂ","ㅅ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ", "A-Z"];
+  private institutions : string[] = ["전체","기관1", "기관2", "기관3"]//bring from the fe server
+  cat_button_choice : string = "";
   ngOnInit() {
     // this.db.getTopicTable(true).then(data => {
       
@@ -66,5 +71,9 @@ export class CategoryComponent implements OnInit {
     this.idControl.setIdChosen(id);
     this._router.navigateByUrl("search/DocDetail");
 
+  }
+
+  getTopic($event) {
+    this.cat_button_choice  = $event.target.innerText;
   }
 }
