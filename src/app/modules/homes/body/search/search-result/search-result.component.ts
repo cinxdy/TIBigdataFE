@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
-import { ArticleSource } from "../../common-search-result-document-list/article/article.interface";
+import { ArticleSource } from "../../shared-module/common-search-result-document-list/article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../service/id-control-service/id-control.service";

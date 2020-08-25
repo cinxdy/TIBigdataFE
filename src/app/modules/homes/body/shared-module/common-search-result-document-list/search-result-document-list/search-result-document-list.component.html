@@ -1,0 +1,53 @@
+<p>search-result-document-list works!</p>
+<!-- abcde{{ cat_button_choice }} -->
+    <!-- middle-result-area -->
+    <div class="form-group">
+        <input class="uk-checkbox custom-check" type="checkbox" (change)="this.boxChange(i)" />
+        전체선택
+    </div>
+
+    <div class="search-result">
+        <!-- search-result -->
+        <span uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
+            Loading...
+        </span>
+        <ng-template #loadFin>
+            <div *ngFor="let articleSource of articleSources; index as i">
+                <div class="uk-child-width-expand " uk-grid>
+                    <div *ngIf="isLogStat" class="uk-width-small check-box-postition" >
+                        <!-- check-box-position -->
+
+                        <span class="form-group">
+                            <input class="uk-checkbox custom-check" type="checkbox" (change)="this.boxChange(i)" />
+                        </span>
+                    </div>
+                    <div class="article-detail uk-width-expand">
+                        <!-- article-detail -->
+                        <app-article-details [article]="articleSource">
+                        </app-article-details>
+
+
+                        <div class="uk-width-auto@m">
+                            <!-- style="padding: 1em; margin: auto;  -->
+                            <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
+                                연관문서
+                            </button>
+                            <div *ngIf="relateToggle[i] == true">
+                                <div *ngFor="let rcmd of relatedDocs[i]; index as r">
+                                    <a (click)="setThisDoc(i, r)">{{rcmd["title"]}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <!--검색 결과의 마지막 -->
+            </div>
+            <div *ngIf="articleSources?.length < 1" style="margin-top: 20px;">
+                <div class="uk-position-center">
+                    <h3>검색결과가 없습니다</h3>
+                </div>
+            </div>
+        </ng-template>
+</div>

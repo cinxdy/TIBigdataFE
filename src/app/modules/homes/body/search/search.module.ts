@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { SearchRoutingModule } from './search-routing.module';
 
-import { IdControlService } from './service/id-control-service/id-control.service';
+// import { IdControlService } from './service/id-control-service/id-control.service';
 
 import { ChosenDocAnalysisComponent } from './search-detail/chosen-doc-analysis/chosen-doc-analysis.component';
 import { FreqAnalysisComponent } from './freq-analysis/freq-analysis.component';
@@ -16,8 +16,8 @@ import { SearchResultFilterComponent } from './search-result/search-result-filte
 import { SearchRootComponent } from './search-root/search-root.component';
 import { SearchDetailComponent } from './search-detail/search-detail.component';
 
-import { CommonSearchBarModule } from '../common-search-bar/common-search-bar.module';
-import { CommonSearchResultDocumentListModule } from '../common-search-result-document-list/common-search-result-document-list.module';
+import { CommonSearchBarModule } from '../shared-module/common-search-bar/common-search-bar.module';
+import { CommonSearchResultDocumentListModule } from '../shared-module/common-search-result-document-list/common-search-result-document-list.module';
 // import {} from './article/'
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { CommonSearchResultDocumentListModule } from '../common-search-result-do
 
   ],
   providers :[
-    IdControlService
+    // IdControlService
   ],
   exports: [
     // SearchResultComponent,

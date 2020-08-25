@@ -30,43 +30,26 @@
   <div class="uk-width-5-6 left-wing">
     <div class="outline">
         <div class="uk-flex">
-          <button class="uk-button uk-button-primary">전체</button>
-          <button class="uk-button uk-button-primary">정치</button>
-          <button class="uk-button uk-button-primary">경제</button>
-          <button class="uk-button uk-button-primary">사회</button>
-          <button class="uk-button uk-button-primary">문화</button>
-          <button class="uk-button uk-button-primary">국제</button>
-          <button class="uk-button uk-button-primary">과학</button>
-          <button class="uk-button uk-button-primary">스포츠</button>
-          <button class="uk-button uk-button-primary">과학</button>
+          <div *ngFor="let cat of categories">
+            <button (click)="getTopic($event)" class="uk-button uk-button-primary">{{cat}}</button>
+          </div>
         </div>
 
         <div class="uk-flex">
-          <button class="uk-button uk-button-primary">가</button>
-          <button class="uk-button uk-button-primary">나</button>
-          <button class="uk-button uk-button-primary">다</button>
-          <button class="uk-button uk-button-primary">라</button>
-          <button class="uk-button uk-button-primary">마</button>
-          <button class="uk-button uk-button-primary">ㅂ</button>
-          <button class="uk-button uk-button-primary">ㅅ</button>
-          <button class="uk-button uk-button-primary">ㅇ</button>
-          <button class="uk-button uk-button-primary">ㅈ</button>
-          <button class="uk-button uk-button-primary">ㅊ</button>
-          <button class="uk-button uk-button-primary">ㅋ</button>
-          <button class="uk-button uk-button-primary">ㅌ</button>
-          <button class="uk-button uk-button-primary">ㅍ</button>
-          <button class="uk-button uk-button-primary">ㅎ</button>
-          <button class="uk-button uk-button-primary">A~Z</button>
+          <div *ngFor="let cat of dict_orders">
+            <button (click)="getTopic($event)" class="uk-button uk-button-primary">{{cat}}</button>
+          </div>
         </div>
 
         <div class="uk-flex">
-          <button class="uk-button uk-button-primary">기관1</button>
-          <button class="uk-button uk-button-primary">기관2</button>
-          <button class="uk-button uk-button-primary">기관3</button>
-          <button class="uk-button uk-button-primary">기관4</button>
-          <button class="uk-button uk-button-primary">기관5</button>
+          <div *ngFor="let cat of institutions">
+            <button (click)="getTopic($event)" class="uk-button uk-button-primary">{{cat}}</button>
+          </div>
         </div>
     </div>
+
+    <app-search-result-document-list [cat_button_choice]="cat_button_choice"></app-search-result-document-list>
+
 
 
   <h2>

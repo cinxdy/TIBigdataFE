@@ -1,6 +1,6 @@
 // import { Injectable } from '@angular/core';
 import { IdControlService } from '../service/id-control-service/id-control.service';
-import { Article } from "../../common-search-result-document-list/article/article.interface";
+import { Article } from "../../shared-module/common-search-result-document-list/article/article.interface";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service'
 import { Component, OnInit, Inject } from '@angular/core';
 // import { Article } from '../article/article.interface';
@@ -32,6 +32,7 @@ export class SearchDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log("loadpage : ngoninit");
     this.loadPage();
 
 
@@ -51,8 +52,9 @@ export class SearchDetailComponent implements OnInit {
     this.isDocInfoLoaded = 0;
     // this.relateToggle = false;
     // this.article = this.idControl.getArticle()["_source"];
+    console.log("loadpage : loadpage")
     let id = this.idControl.getIdChosen();
-    // console.log("loadPage : id : " + id)
+    console.log("loadPage : id : " + id)
     // this.es.idSearch(id).then((r) =>{
     //   this.article = r;
     // });
@@ -71,7 +73,7 @@ export class SearchDetailComponent implements OnInit {
     this.es.searchById(id).then((res) => {
       // this.article = res.hits.hits._source
       this.article = res["hits"]["hits"][0]["_source"];
-      // console.log("loadPage : es response ok");
+      console.log("loadPage : es response ok : ", this.article);
       // console.log(this.article)
       this.isDocInfoLoaded ++;
 

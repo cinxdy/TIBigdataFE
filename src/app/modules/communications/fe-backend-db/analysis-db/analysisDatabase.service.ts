@@ -14,6 +14,7 @@ export class AnalysisDatabaseService {
   private GET_RCMD_URL = this.URL + "/rcmd/getRcmdTbl";
   private GET_TOPIC_URL = this.URL + "/topic/getTopicTbl";
   private GET_TOPIC_plain_URL = this.URL + "/topic/getTopicTblPlain";
+  private GET_ONE_TOPIC_DOCS_URL = this.URL + "/topic/getOneTopicDocs";
 
   constructor(private ipService: IpService,
     private http: HttpClient,
@@ -31,8 +32,20 @@ export class AnalysisDatabaseService {
     if (isPlain)
       url = this.GET_TOPIC_plain_URL;
     let res = await this.http.get<any>(url).toPromise();
-    console.log("in db getTopicTable: ",res)
+    // console.log("in db getTopicTable: ",res)
     return res
+  }
+
+
+  async getOneTopicDocs(tp : string){
+    let body = {topic : tp}
+    // console.log(body);
+    let res = await this.http.post<any>(this.GET_ONE_TOPIC_DOCS_URL, body).toPromise();
+    // console.log("in db getOneTopicDocs", res);
+    // for(var data in res){
+    //   data["_id"]
+    // }
+    return res;
   }
 
 
@@ -42,11 +55,11 @@ export class AnalysisDatabaseService {
     * @Param sim : if request cosine similarity of document
   */
   async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
-    console.log("in db getRcmdTable, input ids : ", ids);
+    // console.log("in db getRcmdTable, input ids : ", ids);
     let res = await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
     if(res.succ){
 
-      console.log("in db rcmdTable : ",res);
+      // console.log("in db rcmdTable : ",res);
       return res.payload;
     }
   }
@@ -62,7 +75,7 @@ export class AnalysisDatabaseService {
   */
 
   async getTfidfValue(ids: string | string[] , num?: number, isVal? : boolean) {
-    console.log("in db : getTFIDF ids:", ids);
+    // console.log("in db : getTFIDF ids:", ids);
 
     return await this.http.post<any>(this.GET_KEYWORDS_URL, { "id": ids, "num": num, "isVal": isVal }).toPromise()
   }

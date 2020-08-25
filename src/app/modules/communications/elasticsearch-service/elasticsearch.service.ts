@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Client } from "elasticsearch-browser";
 import * as elasticsearch from "elasticsearch-browser";
 //import { InheritDefinitionFeature } from '@angular/core/src/render3';
-import { ArticleSource } from "src/app/modules/homes/body/common-search-result-document-list/article/article.interface";
+import { ArticleSource } from "src/app/modules/homes/body/shared-module/common-search-result-document-list/article/article.interface";
 import { Subject, Observable } from "rxjs";
 import { IpService } from 'src/app/ip.service'
 
@@ -89,7 +89,7 @@ export class ElasticsearchService {
       .then(response => {
         //검색 후 observable에 저장
         // console.log(response)
-        this.fillSubscrb(response.hits.hits);
+        this.transfer_to_article_source(response.hits.hits);
       });
   }
 
@@ -102,7 +102,7 @@ export class ElasticsearchService {
    * 저장할 article array
    *
    */
-  fillSubscrb(info: ArticleSource[]) {
+  transfer_to_article_source(info: ArticleSource[]) {
     this.articleSource.next(info);
     // console.log("saved : ", this.articleSource);
   }
@@ -137,7 +137,7 @@ export class ElasticsearchService {
   }
 
   searchByManyId(ids: string[]) {
-    console.log("es ts: the num of ids : "+ids.length);
+    // console.log("es ts: the num of ids : "+ids.length);
     return this.client.search({
       // filterPath: ["hits.hits"],
       // index: "nkdb",
@@ -159,6 +159,16 @@ export class ElasticsearchService {
       ]
     });
   }
+
+  search_to_article_source(hookFunc){
+    hookFunc.then(response => {
+      //검색 후 observable에 저장
+      // console.log(response)
+      this.transfer_to_article_source(response.hits.hits);
+    });
+  }
+
+  
 
   //Elasticsearch Connection
   private _connect() {
