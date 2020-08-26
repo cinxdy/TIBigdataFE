@@ -1,5 +1,5 @@
-<div class="uk-container uk-container-center">
-  <div class="uk-align-center uk-margin-small uk-width-1-1" uk-grid>
+<div class="uk-container uk-container-center search-bar-area">
+  <div class="uk-align-center uk-margin-small uk-width-2-3" uk-grid>
     <input class="search-bar uk-input  uk-form-width-large" type="text" (keyup)="updateKeyword($event)"
       value="{{ queryText }}" (keydown.enter)="search()"
       style="     background-image: url(assets/search.png);"
@@ -9,10 +9,12 @@
 
 
   <!-- <div class="uk-margin-small " uk-grid> -->
-    <div class="search-filter uk-width-1-1">
+    <div class="search-filter uk-width-1-1 uk-flex">
       
+      <div class="uk-align-center">
 
-      <button class="filter-font uk-button uk-button-text" style="margin-left:0px;">
+      
+      <button class="filter-font uk-button uk-button-text">
         검색조건&nbsp;&nbsp;<span uk-icon="icon: database; ratio:0.8"></span>
       </button>
 
@@ -108,6 +110,7 @@
       <button class="filter-font uk-button uk-button-text uk-margin-small-left">
         검색도움말&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
       </button>
+    </div>
     </div>
   <!-- </div> -->
 </div>
