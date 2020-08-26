@@ -25,20 +25,24 @@
     <hr />
 
     <!-- 세부메뉴 : 키워드분석, 검색 결과는 몇개 입니다, 최신순, 10건 씩 보기 -->
-    <!-- 키워드분석 -->
-    <div uk-grid>
-        <div class="uk-width-expand">
-
-            <button (click)="freqAnalysis()" class="uk-button uk-button-primary uk-align-center">
-                키워드분석
-            </button>
+    <div calss="uk-container" uk-grid>
+        <!-- 키워드분석 -->
+        <div class="uk-width-1-4" style="background-color: yellowgreen; padding : 0px;">
+            <div class="uk-align-center" style="background-color: cadetblue;">
+                <!-- test -->
+                <button (click)="freqAnalysis()" class="uk-button uk-button-primary">
+                    키워드분석
+                </button>
+            </div>
         </div>
 
-        <div class="uk-width-expand">
+        <!-- 검색 결과 수 -->
+        <div class="uk-width-expand uk-align-center" style="background-color: greenyellow;">
             검색 키워드에 대한 검색 결과는 몇개 입니다.
         </div>
 
-        <div class="uk-width-medium">
+        <!-- 최신순 10건씩 보기 -->
+        <div class="uk-width-medium" style="background-color: burlywood">
 
             <button class="uk-button uk-button-primary bt-color">
                 최신순
@@ -73,7 +77,7 @@
                 <!-- 좌측 검색 필터 -->
                 <div class="filter-in-result">
                     <div>
-                        <!-- filter-in-result -->
+                        filter-in-result
                     </div>
                     <app-search-result-filter></app-search-result-filter>
                 </div>
