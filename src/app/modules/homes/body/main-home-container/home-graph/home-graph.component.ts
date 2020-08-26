@@ -4,6 +4,7 @@ import { CloudData, CloudOptions } from "angular-tag-cloud-module";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import * as CanvasJS from "../../../../../../assets/canvasjs.min.js";
 import { Router } from "@angular/router";
+import { CategoryAnalysisHelperService } from 'src/app/modules/homes/analysis/category-analysis-helper.service';
 
 import { Observable, of } from "rxjs";
 import { CompileShallowModuleMetadata } from "@angular/compiler";
@@ -34,7 +35,11 @@ export class HomeGraphComponent implements OnInit {
   };
   serverData: JSON;
   cData: CloudData[] = [];
-  constructor(private _router : Router, private http: HttpClient, private es: ElasticsearchService) {}
+  constructor(
+    private anls : CategoryAnalysisHelperService,
+    private _router : Router, 
+    private http: HttpClient, 
+    private es: ElasticsearchService) {}
 
   ngOnInit() {
     this.getWordCloud("TOT");
@@ -108,8 +113,8 @@ export class HomeGraphComponent implements OnInit {
     });
   }
 
-  getTopic(event) {
-    var topic = event.target.id;
+  getTopicFromButtonClick(event) {
+    var topic = this.anls.getTopicFromButtonClick(event);
     
     this.getWordCloud(topic);
   }

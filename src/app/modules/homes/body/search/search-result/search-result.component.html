@@ -1,10 +1,8 @@
-<div class="uk-container-center">
+<div class="uk-container uk-container-center uk-margin-medium-left uk-margin-medium-right">
 
-    <!-- 검색 bar -->
-    <form class="uk-search uk-search-default uk-box-shadow-small uk-width-5-6 uk-align-center">
-        <app-search-bar [queryText]="queryText" (searched)="loadResultPage()"></app-search-bar>
-    </form>
-
+    <div class="uk-align-center uk-margin-small uk-width-1-2" uk-grid>
+        <!-- <app-search-bar></app-search-bar> -->
+    </div>
 
     <!-- 연관검색어 -->
     <div class="uk-flex-center" uk-grid>
@@ -23,132 +21,84 @@
         </ng-template>
     </div>
 
-
     <!-- 수평선 긋기 -->
     <hr />
 
-
-    <!-- 하단부 -->
-    <div class="uk-container-center" uk-grid>
-
-
-        <!-- 좌측 패널 -->
-        <div class="uk-width-medium">
-
-            <!-- 키워드분석 -->
-            <div class="uk-margin-small" uk-grid>
-                <button (click)="freqAnalysis()" class="uk-button uk-button-primary uk-align-center">
-                    키워드분석
-                </button>
-            </div>
-
-            <!-- 문서 저장 KEEP -->
-            <div class="uk-margin-small" uk-grid>
-                <div class="uk-align-center" *ngIf="isLogStat">
-                    <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
-                        KEEP
-                    </button>
-                </div>
-            </div>
-
-            <!-- 좌측 검색 필터 -->
-            <div uk-grid>
-                <div class="search-filter uk-align-center">
-                    <app-search-filter></app-search-filter>
-                </div>
-
-            </div>
-        </div>
-        <!-- 중앙 검색 결과 -->
+    <!-- 세부메뉴 : 키워드분석, 검색 결과는 몇개 입니다, 최신순, 10건 씩 보기 -->
+    <!-- 키워드분석 -->
+    <div uk-grid>
         <div class="uk-width-expand">
 
-            <div class="search-result">
-                <div uk-spinner="ratio: 4.5 " *ngIf="isSearchLoaded == false; else loadFin">
-                    Loading...
+            <button (click)="freqAnalysis()" class="uk-button uk-button-primary uk-align-center">
+                키워드분석
+            </button>
+        </div>
+
+        <div class="uk-width-expand">
+            검색 키워드에 대한 검색 결과는 몇개 입니다.
+        </div>
+
+        <div class="uk-width-medium">
+
+            <button class="uk-button uk-button-primary bt-color">
+                최신순
+            </button>
+
+            <button class="uk-button uk-button-primary">
+                10개 씩 보기
+            </button>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- 하단부 -->
+    <div class="uk-container" uk-grid>
+        <!-- 좌측 패널 responsive web 1/4 of container following 1/4 columns from design-->
+        <div class="uk-width-1-4 left-wing">
+            <!-- border-radius round outline -->
+            <div class="outline">
+                <!-- 문서 저장 KEEP -->
+                <div class="uk-margin-small" uk-grid>
+                    <div class="uk-align-center" *ngIf="isLogStat">
+                        <button (click)="keepMyDoc()" class="uk-button uk-button-primary">
+                            KEEP
+                        </button>
+                    </div>
                 </div>
-                <ng-template #loadFin>
-                    <div *ngFor="let articleSource of articleSources; index as i">
-                        <div class="row">
-                            <div class="col-xs" style="margin: auto; padding: 1em;">
-                                <div *ngIf="isLogStat">
 
-                                    <div class="form-group">
-                                        <!-- <input type="checkbox" (click)="this.addList(i)" /> -->
-                                        <input class="uk-checkbox" type="checkbox" (change)="this.boxChange(i)" />
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="row">
-                                    <div class="container">
-                                        <app-article-details [article]="articleSource">
-                                        </app-article-details>
-                                    </div>
-                                </div>
-                                <div #relatedKeyWords class="row">
-                                    <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
-                                        Loading...
-                                    </div>
-                                    <ng-template #infoLoadFin>
-                                        <div class="col">키워드 : {{ keywords[i] }}</div>
-                                        <!-- <div class="col">
-                    <div class="row">연관문서</div>
-                    <div class="row">{{ relatedDocs[i]["rcmd"] }}</div>
-                  </div> -->
-                                    </ng-template>
-                                </div>
-                                <hr>
-                            </div>
-                            <div #relatedDocuments>
-                                <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false">
-                                    Loading...
-                                </div>
-                                <div *ngIf="isRelatedLoaded == true">
-                                    <div class="col-xs" style="margin: auto; padding: 1em;">
-                                        <button class="uk-button uk-button-secondary" (click)="tgglRelated(i)">
-                                            연관문서
-                                        </button>
-                                        <div *ngIf="relateToggle[i] == true">
-                                            <div *ngFor="let rcmd of relatedDocs[i]; index as r">
-                                                <!-- {{ relatedDocs[i]["rcmd"] }} -->
-                                                <a (click)="setThisDoc(i,r)">{{ rcmd["title"] }}</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--검색 결과의 마지막 -->
+                <!-- 좌측 검색 필터 -->
+                <div class="filter-in-result">
+                    <div>
+                        <!-- filter-in-result -->
                     </div>
-                    <div *ngIf="articleSources?.length < 1" style="margin-top:20px">
-                        <div class="uk-position-center">
-                            <h3>검색결과가 없습니다</h3>
-                        </div>
-                    </div>
-                </ng-template>
+                    <app-search-result-filter></app-search-result-filter>
+                </div>
             </div>
+        </div>
+
+        <!-- 중앙 검색 결과 -->
+        <div class="uk-width-3-4 middle-result-area">
+            <!-- middle-result-area -->
+            <app-search-result-document-list></app-search-result-document-list>
         </div>
 
         <!-- 우측 검색 기록 -->
         <div class="uk-width-small">
             <div *ngIf="isLogStat">
-                <!-- {{ console.log(" histroy test")}} -->
-                <!-- {{ console.log( this.auth.schHst )}} -->
 
                 검색 기록
                 <div class="uk-card uk-card-body uk-card-default">
-
                     <div *ngFor="let hst of userSearchHistory; index as i">
-                        <div class="row">
-                            <a (click)="relatedSearch(hst)">{{hst}}</a>
+                        <div uk-grid>
+                            <a (click)="relatedSearch(hst)">{{ hst }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
+</div>

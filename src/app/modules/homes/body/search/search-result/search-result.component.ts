@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
-import { ArticleSource } from "../article/article.interface";
+import { ArticleSource } from "../../shared-module/common-search-result-document-list/article/article.interface";
 import { Subscription } from "rxjs";
 // import { Observable, of } from "rxjs";
 import { IdControlService } from "../service/id-control-service/id-control.service";
@@ -71,6 +71,7 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log("search result compo")
     // this.idControl.clearAll();
     //console.log(this.evtSvs.getSrchHst());
     this.loadResultPage();
@@ -83,15 +84,7 @@ export class SearchResultComponent implements OnInit {
 
   async loadResultPage() {
     // console.log("search result compoenent : loadResultPage working...")
-    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
-    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
-      if (this.es.getKeyword() == undefined) {
-        this.es.setKeyword("북한산");
-        this.queryText = "북한산";
-        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
 
-      }
-    }
 
     this.isSearchLoaded = false;
     this.isKeyLoaded = false;
@@ -102,7 +95,15 @@ export class SearchResultComponent implements OnInit {
     this.relatedKeywords = [];
     this.searchResultIdList = [];
     this.keepIdList = [];
-    let queryText = this.es.getKeyword();     
+    let queryText = this.es.getKeyword();  
+    //debugging 혹은 검색 페이지로 곧바로 들어왔을 때 샘프 키워드로 검색
+    if (this.ipService.get_FE_DB_ServerIp() == this.ipService.getDevIp()) {
+      if (this.es.getKeyword() == undefined) {
+        this.es.setKeyword("북한산");
+        this.queryText = "북한산";
+        this.es.fullTextSearch("post_body", this.queryText); //검색 후 articlesource에 저장되어 있다.
+      }
+    }   
     this.es.fullTextSearch("post_body", queryText); //검색 후 articlesource에 저장되어 있다.
 
     this.getUserSearchHistory()
@@ -156,9 +157,9 @@ export class SearchResultComponent implements OnInit {
   loadRelatedDocs(idx: number) {
     // this.relatedDocs[idx]=[];
     this.db.getRelatedDocs(this.searchResultIdList[idx]).then(res => {
+      console.log("from db : ",res)
       this.relatedDocs[idx] = res as [];
     
-      // console.log("from db : ",res)
       // this.es.searchById("5de1105f4b79a29a5f9880f8").then(res=>{
       //   console.log(res)
       // })
@@ -190,7 +191,7 @@ export class SearchResultComponent implements OnInit {
       }
     })
     // //console.log("keywords : ",this.keywords)
-    this.isKeyLoaded = true;
+    this.isKeyLoaded = true;  
   }
 
 

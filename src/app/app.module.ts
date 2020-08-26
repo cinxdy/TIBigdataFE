@@ -5,23 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SearchModule } from './modules/homes/body/search/search.module';
-import { SpecialsModule } from './modules/homes/body/specials/specials.module';
+
 import { FooterComponent } from './modules/homes/footer/footer.component';
 import { NavComponent } from './modules/homes/nav/nav.component';
 import { MainHomeContainerComponent } from './modules/homes/body/main-home-container/main-home-container.component';
-import { HomeSearchBarComponent } from './modules/homes/body/main-home-container/home-search-bar/home-search-bar.component';
+// import { HomeSearchBarComponent } from './modules/homes/body/main-home-container/home-search-bar/home-search-bar.component';
 import { HomeGraphComponent } from './modules/homes/body/main-home-container/home-graph/home-graph.component';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { LibraryModule } from './modules/homes/body/library/library.module';
 import { WordcloudService } from './modules/homes/graphs/wordcloud/wordcloud.service';
-import { CommunicationModule} from './modules/communications/communication.module';
+// import { SearchBarComponent } from "./modules/homes/body/search/search-bar/search-bar.component";
 import { EPAuthService } from './modules/communications/fe-backend-db/membership/auth.service';
 import { SearchHistoryComponent } from './modules/homes/body/main-home-container/search-history/search-history.component';
 import { AnalysisDatabaseService } from './modules/communications/fe-backend-db/analysis-db/analysisDatabase.service';
-
+import { CommunicationModule } from './modules/communications/communication.module';
 import { ChartsModule } from "ng2-charts";
-
+import { BodyModule } from "./modules/homes/body/body.module";
+import { CommonSearchBarModule } from "./modules/homes/body/shared-module/common-search-bar/common-search-bar.module";
+import { CommonSearchResultDocumentListModule } from './modules/homes/body/shared-module/common-search-result-document-list/common-search-result-document-list.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ChartsModule } from "ng2-charts";
     FooterComponent,
     NavComponent,
     MainHomeContainerComponent,
-    HomeSearchBarComponent,
+    // HomeSearchBarComponent,
+    // SearchBarComponent,
     HomeGraphComponent,
     SearchHistoryComponent,
   ],
@@ -37,13 +39,14 @@ import { ChartsModule } from "ng2-charts";
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    SearchModule,
-    SpecialsModule,
-    CommunicationModule,
+    BodyModule,
     FormsModule,
     TagCloudModule,
     LibraryModule,
-    ChartsModule
+    ChartsModule,
+    CommunicationModule,
+    CommonSearchBarModule,
+    CommonSearchResultDocumentListModule
 
   ],
   providers: [WordcloudService, EPAuthService, AnalysisDatabaseService],

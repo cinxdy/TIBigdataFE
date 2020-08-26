@@ -35,10 +35,6 @@ export class WriteNewCommunityDocComponent implements AfterViewInit {
   private title : string;
   private content : string;
   private fondOptions : boolean[] = [];
-  
-  ngOnInit() {
-    
-  }
 
 
   /**
@@ -147,6 +143,7 @@ export class WriteNewCommunityDocComponent implements AfterViewInit {
     }
   
      this.result.nativeElement.innerHTML = targetString;
+    //  this.content = this.result;
   
    
   
@@ -154,6 +151,12 @@ export class WriteNewCommunityDocComponent implements AfterViewInit {
   
   
    }
+
+  setFontOptions($event){
+    console.log("hello?")
+    console.log($event.target.value);
+    event.preventDefault();
+  }
 
   updateContent($event){
     this.content = $event.target.value;

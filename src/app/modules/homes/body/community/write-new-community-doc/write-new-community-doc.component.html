@@ -61,7 +61,7 @@
         <div class="uk-container-center" uk-grid>
         <br>
 
-        <input (keyup)="updateContent($event)" ##tbString style="width:800px; height:200px" placeholder="문서 내용" />
+        <input (drag)="setFontOptions($event)" (keyup)="updateContent($event)" #tbString style="width:800px; height:200px" placeholder="문서 내용" />
     </div>
     <button class="uk-button uk-button-primary " (click) ="saveNewDocument()">등록하기</button>
     <button class="uk-button uk-button-primary" (click) ="testSave100()"> 테스트 용 100개 더미 만들기</button>

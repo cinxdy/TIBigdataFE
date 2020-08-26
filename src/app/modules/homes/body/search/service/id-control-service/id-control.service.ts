@@ -1,9 +1,13 @@
-import { ArticleSource } from '../../article/article.interface';
+import { ArticleSource } from '../../../shared-module/common-search-result-document-list/article/article.interface';
 import { Injectable } from '@angular/core';
 
 // import { HomesModule } from '../../../homes.module'
 
-@Injectable()
+@Injectable(  
+  {
+    providedIn: 'root'
+  }
+    )
 export class IdControlService {
   private oneID: string = "";
   private idList: string[] = [];

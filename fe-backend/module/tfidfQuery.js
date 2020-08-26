@@ -18,7 +18,10 @@ router.get("/test", (req, res) => {
     });
 });
 
-router.post("/getKeyVal", (req, res) => {
+/**
+ * @description 받은 id 혹은 id list에 대해 그 문서의 tfidf 값을 반환해준다.
+ */
+function getKeyVal(req, res) {
     // console.log(req.body);
     let ids = req.body["id"];
 
@@ -27,75 +30,18 @@ router.post("/getKeyVal", (req, res) => {
 
     else //when send string array
         matchQuery = { docID: { $in: ids } }
+    
+    let isVal = req.body["isVal"];//tfidf 값에 해당하는 키워드를 반환할 때 tfidf 값도 함께 반환할 것인지 파악.
 
+    //tfidf 테이블에서 몇개의 핵심 단어들을 반환할지 결정.  undefined 으로 넘어오면 default 5를 반환해준다.
     let num = req.body["num"]; //could be undefined.
-    let isVal = req.body["isVal"];
     // console.log("get req");
     // console.log(ids);
     if (num == undefined)
         num = 5;
     else
         num = parseInt(num);
-    // let id = ids[0]
-    // let id = "5de1134ab53863d63aa55309"
-    // 문서 [김영윤]우리 정부가 너무 인타깝다와 그 문서의 id 5de11418b53863d63aa5537c
-    //에 해당하는 정보가 tfidf 테이블에 없다.
 
-    // Keywords.aggregate(
-    //     [
-    //         { $match: matchQuery },
-    //         // { $addFields : { keywords : }},
-    //         // {
-    //         //     $project: {
-    //         //         tfidf: {
-    //         //             $slice: ["$tfidf", num, num],//3번째 elemnt(왼쪽 param)까지 3개만큼(right param)
-    //         //         },
-    //         //     }
-    //         // },
-    //         // {
-    //         //     $unwind: "$tfidf"
-    //         // },
-    //         // {
-    //         //     $project: {
-    //         //         tfidf: {
-    //         //             $cond: {
-    //         //                 if: isVal,
-    //         //                 then: "$tfidf",
-    //         //                 else: { $arrayElemAt: ["$tfidf", 0] }
-
-    //         //             }
-    //         //         }
-    //         //     }
-    //         // },
-    //         // {
-    //         //     $group: {
-    //         //         _id: "$_id",
-    //         //         tfidf: { $addToSet: "$tfidf" }
-
-    //         //     }
-    //         // }
-
-    //         // {
-    //         //     $project: {
-    //         //         // $limit : tfidf
-    //         //         // tfidf: { $slice: 3 },
-    //         //         // docID: 0,
-    //         //         // docTitle: 0,
-    //         //         // _id: 0,
-    //         //     }
-    //         // },
-    //         // { $addFields: { tfidfTable: "$tfidf" } },
-    //         // { $arrayElemAt: ["$tfidf", 0] }
-
-    //     ],
-    //     (err, docs) => {
-    //         // console.log("aggragation result: ")
-    //         if (err)
-    //             console.log(err)
-    //         console.log(docs)
-    //         // res.json(docs);
-    //     }
-    // )
 
     //use aggragation
     Keywords.aggregate(
@@ -110,7 +56,7 @@ router.post("/getKeyVal", (req, res) => {
                 }
             },
             {
-                $unwind: "$tfidf"
+                $unwind: "$tfidf"//array을 풀어서 하나의 array으로 만든다.
             },
             {
                 $project: {
@@ -132,17 +78,7 @@ router.post("/getKeyVal", (req, res) => {
                 }
             }
 
-            // {
-            //     $project: {
-            //         // $limit : tfidf
-            //         // tfidf: { $slice: 3 },
-            //         // docID: 0,
-            //         // docTitle: 0,
-            //         // _id: 0,
-            //     }
-            // },
-            // { $addFields: { tfidfTable: "$tfidf" } },
-            // { $arrayElemAt: ["$tfidf", 0] }
+
 
         ],
         (err, docs) => {
@@ -154,29 +90,10 @@ router.post("/getKeyVal", (req, res) => {
         }
     )
 
-    //method to find with doc id array and exclude docID, docTitle, _id
-    // Keywords.find(
-    //     {
-    //         docID: { $in: ids },
-    //     },
-    //     {
-    //         tfidf: { $slice: 3 },
-    //         docID: 0,
-    //         docTitle: 0,
-    //         _id: 0,
-    //     },
-    //     (error, doc) => {
-    //         // Keywords.find( {docID : {$in :ids}}, (error, doc) => {
-    //         if (error) {
-    //             console.log(error);
-    //         }
-    //         // console.log(doc);
-    //         res.json(doc);
-    //     }
-    // );
+
+}
 
 
-
-});
+router.post("/getKeyVal", getKeyVal);
 
 module.exports = router;
