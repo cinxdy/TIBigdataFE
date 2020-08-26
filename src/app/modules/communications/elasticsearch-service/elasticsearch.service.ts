@@ -64,7 +64,7 @@ export class ElasticsearchService {
     this.client
       .search({
         from:0,
-        size: 50,
+        size: 10,
         filterPath: [
           "hits.hits._source",
           "hits.hits._id",
@@ -142,7 +142,7 @@ export class ElasticsearchService {
       // filterPath: ["hits.hits"],
       // index: "nkdb",
       from:0,//not work. github KUBiC issue # 34
-      size: 50,//not work.
+      size: 10,//not work.
       body: {
         query: {
           terms: {

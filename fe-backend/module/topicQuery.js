@@ -31,7 +31,6 @@ router.get("/getTopicTblPlain", (req, res) => {
 
 function getOneTopicDocs(req,res){
     let tp = req.body.topic;
-    console.log(tp)
     topic.aggregate(
         [
             {
