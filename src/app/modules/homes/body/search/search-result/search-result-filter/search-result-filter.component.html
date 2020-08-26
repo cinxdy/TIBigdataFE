@@ -3,7 +3,7 @@
   <div>
     search-filter-component
   </div>
-  <div>
+  <div style="font-weight:bold; font-size:23pt;">
     검색필터&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
   </div>
 
@@ -14,7 +14,9 @@
 
   <!-- 결과내재검색 -->
   <div class="re-search-area">
-    결과내 재검색
+    <span class="filter-header-font">
+      결과내 재검색
+    </span>
     <div>
       <input class="uk-input search-bar uk-form-width-small button-gray uk-button filter-button uk-width-4-5 uk-margin-small" type="text" (keyup)="updateKeyword($event)"
         value="{{ queryText }}" (keydown.enter)="search()"
@@ -34,7 +36,9 @@
   <!-- 기간 -->
 
   <div class="period-area">
-    기간
+    <span class="filter-header-font">
+      기간
+    </span>
 
     <!-- 기간 토글 바 -->
     <div>
@@ -43,26 +47,26 @@
       <!-- 기간 버튼 -->
       <div class="uk-flex">
 
-        <button class="uk-button uk-button-small small-button-size   ">
+        <button class="uk-button uk-button-default uk-button-small small-button-size   ">
           1일
         </button>
-        <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+        <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
           1주
         </button>
-        <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+        <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
           1개월
         </button>
 
       </div>
 
       <div class="uk-flex uk-margin-top">
-        <button class="uk-button uk-button-small small-button-size  ">
+        <button class="uk-button uk-button-default uk-button-small small-button-size  ">
           3개월
         </button>
-        <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+        <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
           6개월
         </button>
-        <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+        <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
           1년
         </button>
       </div>
@@ -72,7 +76,7 @@
 
       <!-- </div> -->
 
-      <button class="uk-button uk-width-1-1 uk-margin-top">
+      <button class="uk-button uk-button-default uk-width-1-1 uk-margin-top">
         전체
       </button>
 
@@ -97,11 +101,13 @@
   <div class="inst-area">
 
     <div>
-      기관별
+      <span class="filter-header-font">
+        기관별
+      </span>
     </div>
     
-    <button class="uk-button uk-button-default uk-button-default uk-width-4-5 uk-align-center uk-margin-small" uk-toggle="target: .filter_date">
-      기관 설정<span uk-icon="icon: triangle-down"></span>
+    <button class="uk-button uk-button-default uk-button-default uk-width-4-5 uk-align-center uk-margin-small" style="background-color:#606060; color:white" uk-toggle="target: .filter_date">
+      기관 추가<span uk-icon="icon: triangle-down"></span>
     </button>
     <button class="uk-button uk-button-default uk-width-4-5 uk-align-center uk-margin-small">
       기관1
@@ -120,39 +126,41 @@
 
   <!-- 주제 -->
   <div class="topic-area">
-  주제별
+    <span class="filter-header-font">
+      주제별
+    </span>
     <div class="uk-flex">
-      <button class="uk-button uk-button-small small-button-size ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size ">
         전체
       </button>
-      <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+      <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
         정치
       </button>
-      <button class="uk-button uk-button-small small-button-size  uk-margin-left">
+      <button class="uk-button uk-button-default uk-button-small small-button-size  uk-margin-left">
         경제
       </button>
     </div>
 
     <div class="uk-flex uk-margin-top">
-      <button class="uk-button uk-button-small small-button-size ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size ">
         사회
       </button>
-      <button class="uk-button uk-button-small small-button-size uk-margin-left ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size uk-margin-left ">
         문화
       </button>
-      <button class="uk-button uk-button-small small-button-size uk-margin-left ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size uk-margin-left ">
         국제
       </button>
     </div>
 
     <div class="uk-flex uk-margin-top">
-      <button class="uk-button uk-button-small small-button-size">
+      <button class="uk-button uk-button-default uk-button-small small-button-size">
         지역
       </button>
-      <button class="uk-button uk-button-small small-button-size uk-margin-left ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size uk-margin-left ">
         스포츠
       </button>
-      <button class="uk-button uk-button-small small-button-size uk-margin-left ">
+      <button class="uk-button uk-button-default uk-button-small small-button-size uk-margin-left ">
         과학
       </button>
     </div>

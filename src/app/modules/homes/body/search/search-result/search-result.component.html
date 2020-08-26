@@ -26,29 +26,27 @@
 
     <!-- 세부메뉴 : 키워드분석, 검색 결과는 몇개 입니다, 최신순, 10건 씩 보기 -->
     <div calss="uk-container" uk-grid>
-        <!-- 키워드분석 -->
-        <div class="uk-width-1-4" style="background-color: yellowgreen; padding : 0px;">
-            <div class="uk-align-center" style="background-color: cadetblue;">
-                <!-- test -->
-                <button (click)="freqAnalysis()" class="uk-button uk-button-primary">
+         <!-- 키워드분석 -->
+         <div class="keyword-anls uk-width-1-4">
+            <!-- <div style="margin : 0auto; text-align:center; background-color: brown"> -->
+                <button (click)="freqAnalysis()" class="uk-button button-blue" style="font-size:21pt;">
                     키워드분석
                 </button>
-            </div>
+            <!-- </div> -->
         </div>
 
         <!-- 검색 결과 수 -->
-        <div class="uk-width-expand uk-align-center" style="background-color: greenyellow;">
+        <div class="num-result uk-width-expand" >
             검색 키워드에 대한 검색 결과는 몇개 입니다.
         </div>
 
         <!-- 최신순 10건씩 보기 -->
         <div class="uk-width-medium" style="background-color: burlywood">
-
-            <button class="uk-button uk-button-primary bt-color">
+            <button class="uk-button button-white button-outline bt-color">
                 최신순
             </button>
 
-            <button class="uk-button uk-button-primary">
+            <button class="uk-button button-white button-outline uk-margin-small-left">
                 10개 씩 보기
             </button>
         </div>
