@@ -55,7 +55,7 @@ export class AnalysisDatabaseService {
     * @Param sim : if request cosine similarity of document
   */
   async getRcmdTable(ids: string | string[], num?: number, sim? : boolean) {
-    // console.log("in db getRcmdTable, input ids : ", ids);
+    console.log("in db getRcmdTable, input ids : ", ids);
     let res = await this.http.post<any>(this.GET_RCMD_URL, { "id": ids, "num": num, "sim" : sim }).toPromise()
     if(res.succ){
 

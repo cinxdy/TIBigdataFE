@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 import { ElasticsearchService } from 'src/app/modules/communications/elasticsearch-service/elasticsearch.service';
 import { ArticleSource } from "../article/article.interface";
 import { Subscription } from "rxjs";
-// import { Observable, of } from "rxjs";
+// import { Observable, of } from "rxjㄹs";
 import { IdControlService } from "../../../search/service/id-control-service/id-control.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DocumentService } from "../../../search/service/document/document.service";
@@ -89,15 +89,6 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
 
 
 
-
-  async discover(){
-
-  }
-
-
-
-
-
   /**
    * 
    * 
@@ -116,7 +107,7 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
 
 
     
-    this.discovery_search_process();
+    await this.discovery_search_process();
     this.create_result_doc_id_table();//검색 결과에서 id table 생성
     this.additional_saerch_feature();
     // this.create_topic_id_table();
@@ -163,11 +154,21 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
    * @description 키워드 입력해서 검색하는 함수들
    */
 
+
+  async keyword_search() {
+    // console.log("search result compoenent : loadResultPage working...")
+
+
+    this.initialize_search();
+    await this.keyword_search_process();
+    this.create_result_doc_id_table();//검색 결과에서 id table 생성
+    this.additional_saerch_feature();
+  }
+
+  //키워드 검색으로 문서 호출하는 경우
   async keyword_search_process(){
-    //키워드 검색으로 문서 호출하는 경우
     this.trans_key_and_search();//키워드를 ES에 전달
     // this.getUserSearchHistory()//유저 히스토리 depreciated
-    //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.load_search_result();//검색 결과 es.service에서 받아옴
   }
 
@@ -213,6 +214,8 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
       this.searchResultIdList[i] = this.articleSources[i]["_id"];
       this.relateToggle.push(false);
     }
+
+    // console.log("create_result_doc_id table : ", this.searchResultIdList )
   }
 
 
@@ -244,30 +247,6 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
   }
 
 
-  async keyword_search() {
-    // console.log("search result compoenent : loadResultPage working...")
-
-
-    this.initialize_search();
-
-
-    /***
-     * ES에서 문서를 불러오는 방법
-     *  키워드 검색 : search_by_keyword
-     *  자료열람 : search_by_id
-     * 
-     * 다른 컴포넌트가 다른 함수를 호출.
-     * 그리고 template은 동일한 형태이다.
-     * 
-     */
-
-
-
-    //자료 열람에서 ... 
-    this.keyword_search_process();
-    this.create_result_doc_id_table();//검색 결과에서 id table 생성
-    this.additional_saerch_feature();
-  }
 
 
 
@@ -316,7 +295,7 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
    * @description 개별 문서 선택할 때 해당 문서 자세히 보는 페이지로 이동
    */
   setThisDoc(article_source_idx : number, related_doc_idx: number) {
-    console.log("set this doc : ", article_source_idx);
+    // console.log("set this doc : ", article_source_idx);
     this.idControl.setIdChosen(this.relatedDocs[article_source_idx][related_doc_idx]["id"]);
     this.navToDocDetail();
   }

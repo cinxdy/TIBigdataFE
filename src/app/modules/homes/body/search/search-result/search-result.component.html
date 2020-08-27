@@ -29,24 +29,24 @@
          <!-- 키워드분석 -->
          <div class="keyword-anls uk-width-1-4">
             <!-- <div style="margin : 0auto; text-align:center; background-color: brown"> -->
-                <button (click)="freqAnalysis()" class="uk-button button-blue" style="font-size:21pt;">
+                <button (click)="freqAnalysis()" class="uk-button button-blue" style="font-size:21px;">
                     키워드분석
                 </button>
             <!-- </div> -->
         </div>
 
         <!-- 검색 결과 수 -->
-        <div class="num-result uk-width-expand" style="font-weight : Regular; font : 20pt; color : #3d3d3d;" >
+        <div class="num-result uk-width-expand" style="text-align:left; padding-bottom : 0; font-weight : Regular; font-size : 20px; color : #3d3d3d;" >
             {{queryText}}에 대한 검색 결과는 몇개 입니다.
         </div>
 
         <!-- 최신순 10건씩 보기 -->
-        <div class="uk-width-medium" style="background-color: burlywood">
-            <button class="uk-button button-white button-outline bt-color">
+        <div class="uk-width-medium" style="padding : 0;background-color: burlywood;text-align:right;">
+            <button class="uk-button button-white button-outline" style="font-weight : regular; font-size:21px; color : #606060;">
                 최신순
             </button>
 
-            <button class="uk-button button-white button-outline uk-margin-small-left">
+            <button class="uk-button button-white button-outline uk-margin-small-left" style="font-weight : regular; font-size:21px; color : #606060;">
                 10개 씩 보기
             </button>
         </div>
