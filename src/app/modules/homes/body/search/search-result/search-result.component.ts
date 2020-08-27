@@ -110,7 +110,7 @@ export class SearchResultComponent implements OnInit {
     //검색한 결과 호출하는 함수를 따로 만들어도 괜찮을 듯.
     await this.loadSearchResult();
     this.createIdTable();
-    this.loadKeywords();
+    this.load_related_keywords();
   }
 
 
@@ -174,7 +174,7 @@ export class SearchResultComponent implements OnInit {
   //각 문서마다 들어갈 상위 키워드를 저장할 array
   private keywords: any[] = [];
 
-  loadKeywords() {
+  load_related_keywords() {
     // console.log("loadKeywords : " ,this.searchResultIdList)
     this.db.getTfidfValue(this.searchResultIdList).then(res => {
       // console.log(res)
@@ -196,7 +196,7 @@ export class SearchResultComponent implements OnInit {
 
 
 
-  relatedSearch(keyword: string) {
+  search_realted_keyword(keyword: string) {
     this.es.setKeyword(keyword);
     this.queryText = keyword;
     this.auth.addSrchHst(this.queryText);

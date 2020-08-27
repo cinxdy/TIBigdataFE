@@ -3,7 +3,7 @@
   <div>
     search-filter-component
   </div>
-  <div style="font-weight:bold; font-size:23pt;">
+  <div style="font-weight:bold; font-size:23pt; color :  #3d3d3d;">
     검색필터&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
   </div>
 
@@ -80,10 +80,28 @@
         전체
       </button>
 
-      <button class="uk-button uk-button-default uk-width-1-1 uk-margin-top" uk-toggle="target: .filter_date">
-        직접 설정<span uk-icon="icon: triangle-down"></span>
-      </button>
+  
+      <div class="uk-margin-small" style="font-size:17pt;">
+        직접입력
+      </div>
 
+      <div>
+        <input class="uk-input search-bar uk-form-width-small button-gray uk-button filter-button uk-width-4-5 uk-margin-small" type="text" (keyup)="updateKeyword($event)"
+          value="{{ queryText }}" (keydown.enter)="search()"
+          placeholder="1990-07-17" />
+  
+      </div>
+  
+      <div>
+  
+        <input class="uk-input search-bar uk-form-width-small button-gray uk-button filter-button uk-width-4-5 uk-margin-small" type="text" (keyup)="updateKeyword($event)"
+          value="{{ queryText }}" (keydown.enter)="search()"
+          placeholder="2020-08-27" />
+        <a (click)="sendResult()"></a>
+      </div>
+      <!--     <button class="uk-button uk-button-default uk-width-1-1 uk-margin-top" uk-toggle="target: .filter_date">
+        직접 입력<span uk-icon="icon: triangle-down"></span>
+      </button>
       <div class="filter_date">
         <div class="uk-card uk-card-small uk-card-body">
           <div class="uk-margin" style="width : 80pt">
@@ -91,7 +109,7 @@
             To {{ sValue }}
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
 

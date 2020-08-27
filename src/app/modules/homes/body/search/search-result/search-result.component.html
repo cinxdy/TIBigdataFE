@@ -6,7 +6,7 @@
 
     <!-- 연관검색어 -->
     <div class="uk-flex-center" uk-grid>
-        <button class="uk-button uk-button-text">
+        <button class="uk-button uk-button-text" style="font-weight : bold; font:18 pt; color : #52b9ff">
             연관검색어&nbsp;&nbsp;<span uk-icon="icon: info; ratio:0.8"></span>
         </button>
         <div uk-spinner="ratio: 2.5 " *ngIf="isKeyLoaded == false; else infoLoadFin">
@@ -15,14 +15,14 @@
         <ng-template #infoLoadFin>
             <ul class="keyword-list" *ngFor="let keyword of relatedKeywords">
                 <li>
-                    <a (click)="relatedSearch(keyword)">{{ keyword }}</a>
+                    <a (click)="search_realted_keyword(keyword)" style="font : 17pt; color: #3d3d3d;">{{ keyword }}</a>
                 </li>
             </ul>
         </ng-template>
     </div>
 
     <!-- 수평선 긋기 -->
-    <hr />
+    <hr style="border : 0; height : 0.5pt; ; background :  #606060">
 
     <!-- 세부메뉴 : 키워드분석, 검색 결과는 몇개 입니다, 최신순, 10건 씩 보기 -->
     <div calss="uk-container" uk-grid>
@@ -36,8 +36,8 @@
         </div>
 
         <!-- 검색 결과 수 -->
-        <div class="num-result uk-width-expand" >
-            검색 키워드에 대한 검색 결과는 몇개 입니다.
+        <div class="num-result uk-width-expand" style="font-weight : Regular; font : 20pt; color : #3d3d3d;" >
+            {{queryText}}에 대한 검색 결과는 몇개 입니다.
         </div>
 
         <!-- 최신순 10건씩 보기 -->
@@ -88,19 +88,6 @@
             <app-search-result-document-list></app-search-result-document-list>
         </div>
 
-        <!-- 우측 검색 기록 -->
-        <div class="uk-width-small">
-            <div *ngIf="isLogStat">
-
-                검색 기록
-                <div class="uk-card uk-card-body uk-card-default">
-                    <div *ngFor="let hst of userSearchHistory; index as i">
-                        <div uk-grid>
-                            <a (click)="relatedSearch(hst)">{{ hst }}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
