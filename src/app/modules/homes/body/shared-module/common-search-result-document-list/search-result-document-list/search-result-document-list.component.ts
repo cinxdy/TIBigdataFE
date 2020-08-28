@@ -69,6 +69,8 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
     });
   }
   ngOnChanges(){
+    let category = this.get_chosen_category();
+    console.log(category)
     // console.log("search-result-doc-list", this.cat_button_choice);
     // this.get_category()
     this.discovery_search();
@@ -123,6 +125,7 @@ export class SearchResultDocumentListComponent implements OnInit,OnChanges {
 
   async load_topic_docs_id(){
     let category = this.get_chosen_category();
+    console.log(category)
     return await this.db.getOneTopicDocs(category) as [];
   }
 

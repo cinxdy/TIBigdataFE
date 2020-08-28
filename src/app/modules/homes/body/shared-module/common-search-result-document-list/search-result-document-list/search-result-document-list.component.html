@@ -1,8 +1,29 @@
-<p>search-result-document-list works!</p>
-<!-- abcde{{ cat_button_choice }} -->
+<!-- <p>search-result-document-list works!</p> -->
     <!-- middle-result-area -->
-    <div class="form-group">
-        <input class="uk-checkbox custom-check" type="checkbox" style="border-radius: 3px; border: 1px solid #3d3d3d; font-size: 18pt; color:#3d3d3d; font-weight: regular;" (change)="this.boxChange(i)" />
+    <!-- 검색결과는 0000건 입니다. -->
+<div uk-grid>
+    
+    
+    <!-- 검색 결과 수 -->
+    <div class="num-result uk-width-expand" style="text-align:left;padding-bottom : 0; font-weight : Regular; font-size : 20px; color : #3d3d3d;" >
+        {{queryText}}에 대한 검색 결과는 몇개 입니다.
+    </div>
+    
+    <!-- 최신순 10건씩 보기 -->
+    <div class="uk-width-medium" style="padding : 0;text-align:right;">
+        <button class="uk-button button-white button-outline" style="font-weight : regular; font-size:21px; color : #606060;">
+            최신순
+        </button>
+        
+        <button class="uk-button button-white button-outline uk-margin-small-left" style="font-weight : regular; font-size:21px; color : #606060;">
+            10개 씩 보기
+        </button>
+    </div>
+</div>
+
+
+    <div class="form-group" style="padding : 0; margin : 0;">
+        <input class="uk-checkbox custom-check" type="checkbox" style="padding : 0; margin : 0; border-radius: 3px; border: 1px solid #3d3d3d; font-size: 18pt; color:#3d3d3d; font-weight: regular;" (change)="this.boxChange(i)" />
         전체선택
     </div>
 
@@ -23,7 +44,7 @@
                     </div>
 
                     <!-- 각 검색 결과 문서 리스트 -->
-                    <div class="article-detail uk-width-expand" style="padding-left: 1em; background-color: linen;">
+                    <div class="article-detail uk-width-expand" style="padding-left: 1em;">
                             <app-article-details [article]="articleSource">
                             </app-article-details>
                         <!-- <div class="margin : 0;"> -->

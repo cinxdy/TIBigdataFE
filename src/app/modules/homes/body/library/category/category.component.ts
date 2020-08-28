@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AnalysisDatabaseService } from '../../../../communications/fe-backend-db/analysis-db/analysisDatabase.service';
 
 import { IdControlService } from "../../search/service/id-control-service/id-control.service";
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -21,11 +22,19 @@ export class CategoryComponent implements OnInit {
   private isLoaded: boolean = false;
   private data: any;
   private toggleTopics: boolean[];
-  private categories : string[] = ["전체", "정치", "경제", "사회", "국제", "IT", "스포츠", "문화"];
-  private dict_orders : string[] = ["전체","ㄱ", "ㄴ", "ㄷ","ㄹ","ㅁ","ㅂ","ㅅ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ", "A-Z"];
+  private categories : string[] = ["전체", "정치", "경제", "사회", "국제", "IT", "스포츠", "문화", "과학"];
+  private dict_orders_1 : string[] = ["전체","ㄱ", "ㄴ", "ㄷ","ㄹ","ㅁ","ㅂ","ㅅ","ㅇ"];
+  private dict_orders_2 : string[] = ["ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ", "A-Z"];
   private institutions : string[] = ["전체","기관1", "기관2", "기관3"]//bring from the fe server
   cat_button_choice : string = "전체";
+
+  private BT_PER_ROW : number = 9;
+  private bt_per_row : number[] =[];
   ngOnInit() {
+    for(var i = 0 ; i < this.BT_PER_ROW; i++){
+      this.bt_per_row[i] = i;
+    }
+
     // this.db.getTopicTable(true).then(data => {
       
     this.configService.getConfig().subscribe(data => {
@@ -76,5 +85,6 @@ export class CategoryComponent implements OnInit {
 
   getTopic($event) {
     this.cat_button_choice  = $event.target.innerText;
+    console.log("cat compo : ", this.cat_button_choice);
   }
 }
